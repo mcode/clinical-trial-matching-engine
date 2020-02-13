@@ -13,10 +13,16 @@
   "devDependencies": {
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-only-error": "^1.0.2",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^1.19.1",
     "ts-jest": "^25.2.0",
     "typescript": "^3.7.5"
   },
   "scripts": {
+    "lint": "eslint './src/**/*.{ts,tsx}'",
     "test": "react-scripts test"
   },
   "repository": {

@@ -1,4 +1,4 @@
-import { ClinicalTrial } from 'clinical-trials-model';
+import { ClinicalTrial } from "clinical-trials-model";
 
 export interface CqlObject {
   main: string;
@@ -19,7 +19,7 @@ export function getFixture(filename: string): Promise<string> {
  * @return the CQL code formatted pretty with the define line
  */
 function cqlFormat(cqlBlock: string, resourceName: string): string {
-  let formattedBlock = '';
+  let formattedBlock = "";
 
   // Definition of CQL block
   const line1 = 'define "' + resourceName + '":\n\t';
@@ -37,7 +37,7 @@ function cqlFormat(cqlBlock: string, resourceName: string): string {
  * @return the cql with the cql block appended correctly
  */
 function cqlAdd(cql: string, cqlBlock: string): string {
-  return cql.concat('\n', '\n', cqlBlock);
+  return cql.concat("\n", "\n", cqlBlock);
 }
 
 /**
@@ -46,7 +46,9 @@ function cqlAdd(cql: string, cqlBlock: string): string {
  * @param clinicalTrial - the entire clinicalTrial object
  * @return a string of the CQL for the criteria in the clinicalTrial
  */
-export function extractCriteriaCQL(clinicalTrial: ClinicalTrial): Promise<string> {
+export function extractCriteriaCQL(
+  clinicalTrial: ClinicalTrial
+): Promise<string> {
   return getFixture(clinicalTrial.library).then(library => {
     let cql = library;
     // Loop through each JSON object in the clinicalTrial
