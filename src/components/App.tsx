@@ -9,6 +9,8 @@ import { FHIRClientProvider } from './FHIRClient';
 import { PatientProvider } from './PatientProvider';
 import PatientRecord from './PatientRecord/PatientRecord';
 import config from 'utils/ConfigManager';
+import { ExportReactCSV } from './ExportReactCSV';
+import { unpackAdvancedMatchResults } from './sample_trial_results';
 
 interface AppProps {
   client: any; // TODO: fhirclient.Client
@@ -16,6 +18,8 @@ interface AppProps {
 
 const App: FC<AppProps> = ({ client }) => {
   const [patientRecords, setPatientRecords] = useState<Array<any>>([]);
+
+  let data = unpackAdvancedMatchResults();
 
   useEffect(() => {
     getPatientRecord(client).then((records: Array<any>) => {
@@ -30,7 +34,9 @@ const App: FC<AppProps> = ({ client }) => {
           <Header logo={logo} title={config.get('appName', 'SMART App')} />
           <Navigation />
         </div>
-
+        <div className="export center">
+          <ExportReactCSV csvData={data} fileName={"test"} />
+        </div>
         <div>{`Fetched ${patientRecords.length} resources`}</div>
         <PatientRecord resources={patientRecords} />
       </PatientProvider>

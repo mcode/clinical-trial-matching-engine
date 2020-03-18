@@ -19,7 +19,8 @@
     "noEmit": true,
     "jsx": "react",
     "sourceMap": true,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "noImplicitAny": false
   },
   "include": [
     "src"
