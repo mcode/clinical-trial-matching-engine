@@ -10,7 +10,7 @@ import { PatientProvider } from './PatientProvider';
 import PatientRecord from './PatientRecord/PatientRecord';
 import config from 'utils/ConfigManager';
 import { ExportReactCSV } from './ExportReactCSV';
-import { unpackAdvancedMatchResults } from './sample_trial_results';
+import { unpackBaseMatchResults } from './sample_trial_results';
 
 interface AppProps {
   client: any; // TODO: fhirclient.Client
@@ -19,7 +19,7 @@ interface AppProps {
 const App: FC<AppProps> = ({ client }) => {
   const [patientRecords, setPatientRecords] = useState<Array<any>>([]);
 
-  let data = unpackAdvancedMatchResults();
+  let data = unpackBaseMatchResults();
 
   useEffect(() => {
     getPatientRecord(client).then((records: Array<any>) => {

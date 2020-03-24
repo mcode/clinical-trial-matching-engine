@@ -1,4 +1,5 @@
 import advSample from './adv_test_data.json';
+import sample from './test_data.json';
 
 const clearPunctuation = (entry:string) => {
 
@@ -9,9 +10,22 @@ const clearPunctuation = (entry:string) => {
   return entry;
 }
 
-export const unpackAdvancedMatchResults = () => {
+export const unpackBaseMatchResults = () => {
   let data:object[] = [];
   data.push({"Match Count" : sample.data.baseMatches.totalCount});
+  sample.data.baseMatches.edges.forEach( match => {
+
+    let trial = match.node
+    recursiveUnpacking(data, trial);
+
+  });
+
+  return data;
+}
+
+export const unpackAdvancedMatchResults = () => {
+  let data:object[] = [];
+  data.push({"Match Count" : advSample.data.advancedMatches.totalCount});
   advSample.data.advancedMatches.edges.forEach( match => {
 
     let trial = match.node
@@ -44,21 +58,22 @@ export const unpackAdvancedMatchResults = () => {
   return data;
 }
 
-/*
 const recursiveUnpacking = (data, unravel) => {
 
   let mainRow:object = {};
   let subsequent:object[] = [];
 
+  console.log(unravel)
+
   Object.keys(unravel).forEach( field => {
-    if ( typeof unravel[field] !== "object" ) {
+    if ( typeof unravel[field] === "object" && unravel[field] !== null) {
+      subsequent.push(unravel[field]);
+    } else {
       let value = unravel[field]
-      if (field === "conditions"){
+      if (field === "conditions"){ // value.includes("\"")
         value = clearPunctuation(value)
       }
       mainRow[field] = value;
-    } else {
-      subsequent.push(unravel[field]);
     }
   });
 
@@ -68,13 +83,18 @@ const recursiveUnpacking = (data, unravel) => {
   } else {
     subsequent.forEach( complex_field => {
       Object.keys(complex_field).forEach( index => {
-        recursiveUnpacking(data, complex_field[index])
+        let num_test = Number(index)
+        if (!isNaN(num_test) && typeof complex_field[index] === "object") { // object is an array
+          recursiveUnpacking(data, complex_field[index])
+        } else { // object is an object
+          recursiveUnpacking(data, complex_field)
+        }
+
       });
     });
   }
 
 }
-*/
 
 /*
 export const sample_trial_results = () => {
