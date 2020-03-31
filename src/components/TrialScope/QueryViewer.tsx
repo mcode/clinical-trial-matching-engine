@@ -1,8 +1,8 @@
 import React from 'react';
 
 import TrialScopeEndpoint, { TrialScopeResult } from '../../trialscope';
-import { ExportReactCSV } from '../ExportTrials/ExportReactCSV'; // import export react csv
-import { unpackMatchResults } from '../ExportTrials/parseResults'; // import results parser
+import { ExportReactCSV } from '../ExportTrials/ExportReactCSV';
+import { unpackMatchResults } from '../ExportTrials/ParseResults';
 
 interface QueryViewerProperties {
   endpoint: TrialScopeEndpoint;
@@ -32,7 +32,7 @@ export class QueryViewer extends React.Component<QueryViewerProperties, QueryVie
 
   render() {
     let results;
-    let exportable_results; // declaring exportable results
+    let exportable_results;
     if (this.state.result === null) {
       if (this.state.error === null) {
         results = <div>No results.</div>
@@ -43,15 +43,15 @@ export class QueryViewer extends React.Component<QueryViewerProperties, QueryVie
       }
     } else {
       results = <pre>{JSON.stringify(this.state.result, null, 2)}</pre>
-      exportable_results = unpackMatchResults(this.state.result) // parse results data
+      exportable_results = unpackMatchResults(this.state.result);
     }
-    return ( // add export button between button ans results, on condition that exportable_results is not null
+    return (
       <div>
         <textarea defaultValue={this.state.query} onChange={this.handleChange}></textarea>
         <button onClick={this.runQuery}>Run Query</button>
-        {exportable_results &&
-          <ExportReactCSV csvData={exportable_results} fileName={"trial_list.csv"}/>
-        }
+         { exportable_results &&
+           <ExportReactCSV csvData={exportable_results} fileName={"trial_list.csv"}/>
+         }
         {results}
       </div>
     );
