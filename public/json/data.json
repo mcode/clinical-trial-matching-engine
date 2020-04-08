@@ -1,0 +1,3967 @@
+{
+    "data": {
+      "baseMatches": {
+        "totalCount": 41,
+        "edges": [
+          {
+            "node": {
+              "nctId": "NCT02942264",
+              "title": "Zotiraciclib (TG02) Plus Dose-Dense or Metronomic Temozolomide Followed by Randomized Phase II Trial of Zotiraciclib (TG02) Plus Temozolomide Versus Temozolomide Alone in Adults With Recurrent Anaplastic Astrocytoma and Glioblastoma",
+              "conditions": "[\"Brain Tumor\", \"Astrocytoma\", \"Astroglioma\", \"Glioblastoma\", \"Gliosarcoma\"]",
+              "gender": "All",
+              "phase": "Phase 1/Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "National Institutes of Health Clinical Center",
+                  "contactName": "For more information at the NIH Clinical Center contact National Cancer Institute Referral Office",
+                  "contactEmail": "",
+                  "contactPhone": "888-624-1937",
+                  "latitude": 39.0023604,
+                  "longitude": -77.097455
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT02743078",
+              "title": "Optune® Plus Bevacizumab in Bevacizumab-Refractory Recurrent Glioblastoma",
+              "conditions": "[\"Glioblastoma\", \"Glioma\", \"Gliosarcoma\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 22,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "University of California, San Diego",
+                  "contactName": "Erika Bautista",
+                  "contactEmail": "e8bautista@ucsd.edu",
+                  "contactPhone": "858-822-1847",
+                  "latitude": 32.8843552,
+                  "longitude": -117.2338066
+                },
+                {
+                  "facility": "University of California Irvine, Chao Family Comprehensive Cancer Center",
+                  "contactName": "Jinah Chung",
+                  "contactEmail": "jinahec@uci.edu",
+                  "contactPhone": "714-456-8442",
+                  "latitude": 33.78659,
+                  "longitude": -117.8750976
+                },
+                {
+                  "facility": "Miami Cancer Institute at Baptist Health",
+                  "contactName": "Alex Kudryashev",
+                  "contactEmail": "alexku@baptisthealth.net",
+                  "contactPhone": "786-527-8809",
+                  "latitude": 25.6624457,
+                  "longitude": -80.3547286
+                },
+                {
+                  "facility": "UF Health Cancer Center at Orlando Health",
+                  "contactName": "Sherri Walton",
+                  "contactEmail": "sherri.walton@orlandohealth.com",
+                  "contactPhone": "321-841-1907",
+                  "latitude": 28.5085825,
+                  "longitude": -81.3564411
+                },
+                {
+                  "facility": "Emory University",
+                  "contactName": "Rikesh Patel",
+                  "contactEmail": "rikesh.b.patel@emory.edu",
+                  "contactPhone": "404-778-2981",
+                  "latitude": 33.7980995,
+                  "longitude": -84.3259367
+                },
+                {
+                  "facility": "Washington University School of Medicine",
+                  "contactName": "Grayson Talcott",
+                  "contactEmail": "wu-grayson@wustl.edu",
+                  "contactPhone": "312-273-0656",
+                  "latitude": 38.6270025,
+                  "longitude": -90.1994042
+                },
+                {
+                  "facility": "University of Rochester",
+                  "contactName": "Therese Smudzin",
+                  "contactEmail": "therese_smudzin@urmc.rochester.edu",
+                  "contactPhone": "585-275-7848",
+                  "latitude": 43.1224766,
+                  "longitude": -77.6242574
+                },
+                {
+                  "facility": "Cleveland Clinic Foundation",
+                  "contactName": "Leslie King",
+                  "contactEmail": "kingl2@ccf.org",
+                  "contactPhone": "216-445-9868",
+                  "latitude": 41.5034177,
+                  "longitude": -81.6204806
+                },
+                {
+                  "facility": "Thomas Jefferson University",
+                  "contactName": "Daniel Vernau",
+                  "contactEmail": "daniel.vernau@jefferson.edu",
+                  "contactPhone": "215-955-3773",
+                  "latitude": 39.9559288,
+                  "longitude": -75.1574567
+                },
+                {
+                  "facility": "Medical University of South Carolina",
+                  "contactName": "Lauren Collins",
+                  "contactEmail": "collinln@musc.edu",
+                  "contactPhone": "843-792-1303",
+                  "latitude": 32.785895,
+                  "longitude": -79.9479496
+                },
+                {
+                  "facility": "Medical College of Wisconsin",
+                  "contactName": "Matthew Lasowski",
+                  "contactEmail": "miasowski@mcw.edu",
+                  "contactPhone": "414-805-8375",
+                  "latitude": 43.0513426,
+                  "longitude": -88.0411993
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT03137888",
+              "title": "Spectroscopic MRI-Guided Radiation Therapy Planning in Glioblastoma",
+              "conditions": "[\"Glioblastoma\", \"Gliosarcoma\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "University of Miami Miller School of Medicine-Sylvester Cancer Center",
+                  "contactName": "Raymond S. Vado, MD",
+                  "contactEmail": "rxv307@med.miami.edu",
+                  "contactPhone": "305-243-6809",
+                  "latitude": 25.7870967,
+                  "longitude": -80.2042436
+                },
+                {
+                  "facility": "Emory University/Winship Cancer Institute",
+                  "contactName": "Stacey Worrell",
+                  "contactEmail": "stacey.worrell@emory.edu",
+                  "contactPhone": "404-778-4206",
+                  "latitude": 33.7980995,
+                  "longitude": -84.3259367
+                },
+                {
+                  "facility": "Johns Hopkins University/Sidney Kimmel Cancer Center",
+                  "contactName": "Farah Shaukat",
+                  "contactEmail": "fshauka2@jhmi.edu",
+                  "contactPhone": "410-614-3158",
+                  "latitude": 39.2962372,
+                  "longitude": -76.5928888
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT01434602",
+              "title": "Phase I-II Everolimus and Sorafenib in Recurrent High-Grade Gliomas",
+              "conditions": "[\"Brain Tumor\", \"Glioblastoma\", \"Anaplastic Glioma\"]",
+              "gender": "All",
+              "phase": "Phase 1/Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 99,
+              "sites": [
+                {
+                  "facility": "National Institutes of Health Clinical Center, 9000 Rockville Pike",
+                  "contactName": "For more information at the NIH Clinical Center contact National Cancer Institute Referral Office",
+                  "contactEmail": "",
+                  "contactPhone": "888-624-1937",
+                  "latitude": 39.0023604,
+                  "longitude": -77.097455
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT01454596",
+              "title": "CAR T Cell Receptor Immunotherapy Targeting EGFRvIII for Patients With Malignant Gliomas Expressing EGFRvIII",
+              "conditions": "[\"Malignant Glioma\", \"Glioblastoma\", \"Brain Cancer\", \"Gliosarcoma\"]",
+              "gender": "All",
+              "phase": "Phase 1/Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 70,
+              "sites": [
+                {
+                  "facility": "National Institutes of Health Clinical Center, 9000 Rockville Pike",
+                  "contactName": "For more information at the NIH Clinical Center contact NCI/Surgery Branch Recruitment Center",
+                  "contactEmail": "irc@nih.gov",
+                  "contactPhone": "866-820-4505",
+                  "latitude": 39.0023604,
+                  "longitude": -77.097455
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT02858895",
+              "title": "Convection-Enhanced Delivery (CED) of MDNA55 in Adults With Recurrent or Progressive Glioblastoma",
+              "conditions": "[\"Glioblastoma\", \"Grade IV Astrocytoma\", \"Glioblastoma Multiforme\", \"Grade IV Glioma\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "University of California San Francisco",
+                  "contactName": "Nurse Line",
+                  "contactEmail": "",
+                  "contactPhone": "415-353-2652",
+                  "latitude": 37.7642093,
+                  "longitude": -122.4571623
+                },
+                {
+                  "facility": "John Wayne Cancer Institute at Providence Saint John's Health Center",
+                  "contactName": "Naj Boucher",
+                  "contactEmail": "Najee.Boucher@providence.org",
+                  "contactPhone": "310-582-7460",
+                  "latitude": 34.02875,
+                  "longitude": -118.4717975
+                },
+                {
+                  "facility": "Boca Raton Regional Hospital",
+                  "contactName": "Pilar Zuniga, MD",
+                  "contactEmail": "pzuniga@brrh.com",
+                  "contactPhone": "561-955-4800",
+                  "latitude": 26.3424842,
+                  "longitude": -80.1149414
+                },
+                {
+                  "facility": "Duke University Medical Center",
+                  "contactName": "Brain Tumor Center",
+                  "contactEmail": "",
+                  "contactPhone": "919-684-5301",
+                  "latitude": 36.0038131,
+                  "longitude": -78.9387241
+                },
+                {
+                  "facility": "Oregon Health & Science University",
+                  "contactName": "Michael McGehee, MS",
+                  "contactEmail": "nsgclinicalresearch@ohsu.edu",
+                  "contactPhone": "503-494-4988",
+                  "latitude": 45.4874111,
+                  "longitude": -122.6875541
+                },
+                {
+                  "facility": "Hospital of the University of Pennsylvania",
+                  "contactName": "Timothy Prior",
+                  "contactEmail": "NCRD-BTC@uphs.upenn.edu",
+                  "contactPhone": "215-662-6832",
+                  "latitude": 39.9559288,
+                  "longitude": -75.1574567
+                },
+                {
+                  "facility": "Cancer Therapy and Research Center at The University of Texas Health Science Center at San Antonio",
+                  "contactName": "Epp Goodwin",
+                  "contactEmail": "CTRC-ReferralCenter@uthscsa.edu",
+                  "contactPhone": "210-450-5798",
+                  "latitude": 29.5060908,
+                  "longitude": -98.577596
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT02330562",
+              "title": "Stage 1: Marizomib + Bevacizumab in WHO Gr IV GBM; Stage 2: Marizomib Alone; Stage 3: Combination of Marizomib and Bevacizumab",
+              "conditions": "[\"Malignant Glioma\", \"Glioblastoma\"]",
+              "gender": "All",
+              "phase": "Phase 1/Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "University of Californai, Irvine",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 33.78659,
+                  "longitude": -117.8750976
+                },
+                {
+                  "facility": "John Wayne Cancer Institute",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 34.02875,
+                  "longitude": -118.4717975
+                },
+                {
+                  "facility": "Weill Cornell Medical College",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 40.7645239,
+                  "longitude": -73.9624327
+                },
+                {
+                  "facility": "Duke Univ Medical Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 36.0038131,
+                  "longitude": -78.9387241
+                },
+                {
+                  "facility": "Princess Margaret Hospital, Medical Oncology",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 43.658084,
+                  "longitude": -79.3903735
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT02977780",
+              "title": "INdividualized Screening Trial of Innovative Glioblastoma Therapy (INSIGhT)",
+              "conditions": "[\"Glioblastoma\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "University of Alabama at Birmingham",
+                  "contactName": "L. Burt Nabors, MD",
+                  "contactEmail": "bnabors@uab.edu",
+                  "contactPhone": "205-934-1432",
+                  "latitude": 33.5075555,
+                  "longitude": -86.8093239
+                },
+                {
+                  "facility": "Massachusetts General Hospital",
+                  "contactName": "Isabel Arrillaga-Romany, MD PhD",
+                  "contactEmail": "iarrillaga@mgh.harvard.edu",
+                  "contactPhone": "617-724-8770",
+                  "latitude": 42.3652917,
+                  "longitude": -71.0646337
+                },
+                {
+                  "facility": "Dana Farber Cancer Institute",
+                  "contactName": "Patrick Y. Wen, MD",
+                  "contactEmail": "patrick_wen@dfci.harvard.edu",
+                  "contactPhone": "617-632-2166",
+                  "latitude": 42.339904,
+                  "longitude": -71.0898892
+                },
+                {
+                  "facility": "Mayo Clinic",
+                  "contactName": "Eva Galanis, MD",
+                  "contactEmail": "galanis.evanthia@mayo.edu",
+                  "contactPhone": "507-284-2511",
+                  "latitude": 44.0557303,
+                  "longitude": -92.5253639
+                },
+                {
+                  "facility": "Columbia University Medical Center",
+                  "contactName": "Mary Welch, MD",
+                  "contactEmail": "mw2517@cumc.columbia.edu",
+                  "contactPhone": "212-342-0571",
+                  "latitude": 40.8409822,
+                  "longitude": -73.9447994
+                },
+                {
+                  "facility": "Memorial Sloan Kettering Cancer Center",
+                  "contactName": "Thomas Kaley, MD",
+                  "contactEmail": "kaleyt@mskcc.org",
+                  "contactPhone": "212-639-5122",
+                  "latitude": 40.7645239,
+                  "longitude": -73.96243270000001
+                },
+                {
+                  "facility": "Cleveland Clinic",
+                  "contactName": "Manmeet Ahluwalia,, MD",
+                  "contactEmail": "ahluwam@ccf.org",
+                  "contactPhone": "216-444-6145",
+                  "latitude": 41.5034177,
+                  "longitude": -81.6204806
+                },
+                {
+                  "facility": "University of Pittsburgh Medical Center",
+                  "contactName": "Jan Drappatz, MD",
+                  "contactEmail": "drappatzj@upmc.edu",
+                  "contactPhone": "412-864-7791",
+                  "latitude": 40.451096,
+                  "longitude": -79.9332613
+                },
+                {
+                  "facility": "Lifespan / Rhode Island Hospital",
+                  "contactName": "Jaroslaw Hepel, MD",
+                  "contactEmail": "jhepel@lifespan.org",
+                  "contactPhone": "401-444-8311",
+                  "latitude": 41.816736,
+                  "longitude": -71.40915629999999
+                },
+                {
+                  "facility": "UT MD Anderson Cancer Center",
+                  "contactName": "John DeGroot, MD",
+                  "contactEmail": "jdegroot@mdanderson.org",
+                  "contactPhone": "713-745-3072",
+                  "latitude": 29.7050857,
+                  "longitude": -95.40180869999999
+                },
+                {
+                  "facility": "Huntsman Cancer Institute",
+                  "contactName": "Howard Colman, MD",
+                  "contactEmail": "Howard.colman@hci.utah.edu",
+                  "contactPhone": "801-587-4042",
+                  "latitude": 40.7652201,
+                  "longitude": -111.8419536
+                },
+                {
+                  "facility": "University of Virginia Health System",
+                  "contactName": "David Schiff, MD",
+                  "contactEmail": "Ds4jd@virginia.edu",
+                  "contactPhone": "434-924-5610",
+                  "latitude": 38.031942,
+                  "longitude": -78.49858499999999
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT02981940",
+              "title": "A Study of Abemaciclib in Recurrent Glioblastoma",
+              "conditions": "[\"Glioblastoma\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "University of California Los Angeles",
+                  "contactName": "Timothy Cloughesy, MD",
+                  "contactEmail": "tcloughesy@mednet.ucla.edu",
+                  "contactPhone": "310-825-5321",
+                  "latitude": 34.070264,
+                  "longitude": -118.4440562
+                },
+                {
+                  "facility": "University of California, San Francisco",
+                  "contactName": "Jennie Taylor, MD",
+                  "contactEmail": "jennie.taylor@ucsf.edu",
+                  "contactPhone": "415-353-2966",
+                  "latitude": 37.7642093,
+                  "longitude": -122.4571623
+                },
+                {
+                  "facility": "Massachusetts General Hospital",
+                  "contactName": "Isabel Arrillaga-Romany, MD, PhD",
+                  "contactEmail": "iarrillaga@mgh.harvard.edu",
+                  "contactPhone": "617-724-8770",
+                  "latitude": 42.3652917,
+                  "longitude": -71.0646337
+                },
+                {
+                  "facility": "Dana Farber Cancer Institute",
+                  "contactName": "Eudocia Q Lee, MD MPH",
+                  "contactEmail": "eqlee@partners.org",
+                  "contactPhone": "877-338-7425",
+                  "latitude": 42.339904,
+                  "longitude": -71.0898892
+                },
+                {
+                  "facility": "Memorial Sloan-Kettering Cancer Center",
+                  "contactName": "Thomas Kaley, MD",
+                  "contactEmail": "kaleyt@mskcc.org",
+                  "contactPhone": "212-639-5122",
+                  "latitude": 40.7700703,
+                  "longitude": -73.9580246
+                },
+                {
+                  "facility": "UT, M.D. Anderson Cancer Center",
+                  "contactName": "John de Groot, MD",
+                  "contactEmail": "jdegroot@mdanderson.org",
+                  "contactPhone": "713-745-3072",
+                  "latitude": 29.7050857,
+                  "longitude": -95.40180869999999
+                },
+                {
+                  "facility": "Huntsman Cancer Institute",
+                  "contactName": "Howard Colman, MD",
+                  "contactEmail": "howard.colman@hci.utah.edu",
+                  "contactPhone": "801-587-4042",
+                  "latitude": 40.7652201,
+                  "longitude": -111.8419536
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT03018288",
+              "title": "Radiation Therapy Plus Temozolomide and Pembrolizumab With and Without HSPPC-96 in Newly Diagnosed Glioblastoma (GBM)",
+              "conditions": "[\"Glioblastoma\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "Barrow Neurological Institute",
+                  "contactName": "Surasak Phuphanich, M.D.",
+                  "contactEmail": "",
+                  "contactPhone": "602-406-6274",
+                  "latitude": 33.5080943,
+                  "longitude": -112.0863874
+                },
+                {
+                  "facility": "UF Health Cancer Center at Orlando Health",
+                  "contactName": "Nicholas Avgeropoulos, M.D.",
+                  "contactEmail": "Erica.Jones@orlandohealth.com",
+                  "contactPhone": "321-841-6059",
+                  "latitude": 28.5085825,
+                  "longitude": -81.3564411
+                },
+                {
+                  "facility": "Northwestern University",
+                  "contactName": "Priya Kumthekar, M.D.",
+                  "contactEmail": "anne.mendelke@nm.org",
+                  "contactPhone": "312-695-4772",
+                  "latitude": 41.8925085,
+                  "longitude": -87.61616959999999
+                },
+                {
+                  "facility": "Northshore University Health System",
+                  "contactName": "Ryan Merrell, M.D.",
+                  "contactEmail": "plada@northshore.org",
+                  "contactPhone": "847-570-2025",
+                  "latitude": 42.092172,
+                  "longitude": -87.8205864
+                },
+                {
+                  "facility": "National Institutes of Health Clinical Center",
+                  "contactName": "For more information at the NIH Clinical Center contact National Cancer Institute Referral Office",
+                  "contactEmail": "",
+                  "contactPhone": "888-624-1937",
+                  "latitude": 39.0023604,
+                  "longitude": -77.097455
+                },
+                {
+                  "facility": "Henry Ford Health Systems",
+                  "contactName": "Tobias Walbert, M.D.",
+                  "contactEmail": "SSARVES1@hfhs.org",
+                  "contactPhone": "313-916-2490",
+                  "latitude": 42.3664506,
+                  "longitude": -83.0737195
+                },
+                {
+                  "facility": "University of North Carolina at Chapel Hill",
+                  "contactName": "Simon Khagi, M.D.",
+                  "contactEmail": "michael_roxas@med.unc.edu",
+                  "contactPhone": "919-962-8834",
+                  "latitude": 35.9722081,
+                  "longitude": -79.04755589999999
+                },
+                {
+                  "facility": "MUSC Hollings Cancer Center",
+                  "contactName": "David Cachia, M.D.",
+                  "contactEmail": "hamrickr@musc.edu",
+                  "contactPhone": "843-792-3855",
+                  "latitude": 32.785895,
+                  "longitude": -79.94794960000002
+                },
+                {
+                  "facility": "Texas Oncology-Austin Brain Tumor Center",
+                  "contactName": "Morris Groves, M.D.",
+                  "contactEmail": "morris.groves@usoncology.com",
+                  "contactPhone": "512-421-4100",
+                  "latitude": 30.2961708,
+                  "longitude": -97.73895429999999
+                },
+                {
+                  "facility": "Baylor University Medical Center",
+                  "contactName": "Vovwe Sido",
+                  "contactEmail": "oghenevovwero.sido@bswhealth.org",
+                  "contactPhone": "214-820-6168",
+                  "latitude": 32.7962048,
+                  "longitude": -96.7694752
+                },
+                {
+                  "facility": "University Of Texas SW Medical Center",
+                  "contactName": "Edward Pan, M.D.",
+                  "contactEmail": "Darren.Fleming@utsouthwestern.edu",
+                  "contactPhone": "214-648-8310",
+                  "latitude": 32.8113367,
+                  "longitude": -96.8397899
+                },
+                {
+                  "facility": "University of Utah",
+                  "contactName": "Howard Colman, M.D.",
+                  "contactEmail": "",
+                  "contactPhone": "801-587-4702",
+                  "latitude": 40.7652201,
+                  "longitude": -111.8419536
+                },
+                {
+                  "facility": "University of Washington Medical Center",
+                  "contactName": "Lynne Taylor, M.D.",
+                  "contactEmail": "avmartin@uw.edu",
+                  "contactPhone": "206-221-1538",
+                  "latitude": 47.6508882,
+                  "longitude": -122.3084023
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT02315534",
+              "title": "A Study of BBI608 in Combination With Temozolomide in Adult Patients With Recurrent or Progressed Glioblastoma",
+              "conditions": "[\"Glioblastoma\"]",
+              "gender": "All",
+              "phase": "Phase 1/Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "Laura and Isaac Perlmutter Cancer Center",
+                  "contactName": "Sunita Latchman, Regulatory Specialist",
+                  "contactEmail": "sunita.latchman@nyumc.org",
+                  "contactPhone": "929-455-2432",
+                  "latitude": 40.74727,
+                  "longitude": -73.9800645
+                },
+                {
+                  "facility": "University of Calgary",
+                  "contactName": "Mailin Deane, Clinical Research Coordinator",
+                  "contactEmail": "mailin.deane@albertahealthservices.ca",
+                  "contactPhone": "403-521-3888",
+                  "latitude": 51.0486151,
+                  "longitude": -114.0708459
+                },
+                {
+                  "facility": "Princess Margaret Cancer Centre",
+                  "contactName": "Warren Mason, MD",
+                  "contactEmail": "Warren.Mason@uhn.ca",
+                  "contactPhone": "416-946-2277",
+                  "latitude": 43.653226,
+                  "longitude": -79.3831843
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT03149003",
+              "title": "A Study of DSP-7888 Dosing Emulsion in Combination With Bevacizumab in Patients With Recurrent or Progressive Glioblastoma Following Initial Therapy",
+              "conditions": "[\"Glioblastoma\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "University of Alabama at Birmingham",
+                  "contactName": "",
+                  "contactEmail": "US121@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 33.5075555,
+                  "longitude": -86.8093239
+                },
+                {
+                  "facility": "Barrow Neurological Institute",
+                  "contactName": "",
+                  "contactEmail": "US140@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 33.5080943,
+                  "longitude": -112.0863874
+                },
+                {
+                  "facility": "Center for Neurosciences",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 32.3389931,
+                  "longitude": -110.9268201
+                },
+                {
+                  "facility": "Highlands Oncology Group",
+                  "contactName": "",
+                  "contactEmail": "US116@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 36.1192532,
+                  "longitude": -94.0388918
+                },
+                {
+                  "facility": "UCSD- Moores Cancer Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 32.88435520000001,
+                  "longitude": -117.2338066
+                },
+                {
+                  "facility": "Kaiser Permanente Los Angeles Medical Center",
+                  "contactName": "",
+                  "contactEmail": "US141@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 34.1220545,
+                  "longitude": -118.2935891
+                },
+                {
+                  "facility": "Cedars Sinai Medical Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 34.0741548,
+                  "longitude": -118.3724915
+                },
+                {
+                  "facility": "University of California Los Angeles Neuro-Oncology (UCLA)",
+                  "contactName": "",
+                  "contactEmail": "neuroonc@mednet.ucla.edu",
+                  "contactPhone": "310-794-3521; 310-825-5321",
+                  "latitude": 34.070264,
+                  "longitude": -118.4440562
+                },
+                {
+                  "facility": "Neuro-Oncology/ US Irvine Medical Center",
+                  "contactName": "",
+                  "contactEmail": "US137@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 33.78659,
+                  "longitude": -117.8750976
+                },
+                {
+                  "facility": "Sansum Clinic",
+                  "contactName": "",
+                  "contactEmail": "US145@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 34.4402467,
+                  "longitude": -119.7289889
+                },
+                {
+                  "facility": "John Wayne Cancer Institute",
+                  "contactName": "",
+                  "contactEmail": "US119@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 34.02875,
+                  "longitude": -118.4717975
+                },
+                {
+                  "facility": "Rocky Mountain Cancer Center",
+                  "contactName": "",
+                  "contactEmail": "US144@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 39.73274600000001,
+                  "longitude": -104.9710123
+                },
+                {
+                  "facility": "Medical Family Associates, George Washington University",
+                  "contactName": "",
+                  "contactEmail": "US113@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 38.9042365,
+                  "longitude": -77.0521289
+                },
+                {
+                  "facility": "Piedmont brain tumor center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 33.7971137,
+                  "longitude": -84.3804888
+                },
+                {
+                  "facility": "Rush University Medical Center",
+                  "contactName": "",
+                  "contactEmail": "US135@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 41.8816606,
+                  "longitude": -87.6926257
+                },
+                {
+                  "facility": "University of Kentucky / Department of Internal Medicine / Markey Cancer Center",
+                  "contactName": "",
+                  "contactEmail": "US107@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 38.0328237,
+                  "longitude": -84.5067424
+                },
+                {
+                  "facility": "Norton Cancer Institute",
+                  "contactName": "",
+                  "contactEmail": "US117@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 38.25569280000001,
+                  "longitude": -85.751283
+                },
+                {
+                  "facility": "Tufts Medical Center",
+                  "contactName": "",
+                  "contactEmail": "US124@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 42.3514653,
+                  "longitude": -71.0601767
+                },
+                {
+                  "facility": "Henry Ford Health System",
+                  "contactName": "",
+                  "contactEmail": "US105@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 42.3664506,
+                  "longitude": -83.0737195
+                },
+                {
+                  "facility": "Abbott Northwestern Hospital",
+                  "contactName": "",
+                  "contactEmail": "US109@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 44.9398026,
+                  "longitude": -93.2533339
+                },
+                {
+                  "facility": "University of Minnesota",
+                  "contactName": "",
+                  "contactEmail": "US132@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 44.97415609999999,
+                  "longitude": -93.2342
+                },
+                {
+                  "facility": "Nebraska Cancer Specialists",
+                  "contactName": "",
+                  "contactEmail": "US143@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 41.2395091,
+                  "longitude": -96.2004383
+                },
+                {
+                  "facility": "Hackensack University Medical Center",
+                  "contactName": "",
+                  "contactEmail": "US122@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 40.8876273,
+                  "longitude": -74.04763779999999
+                },
+                {
+                  "facility": "Dent Neurosciences Research Center",
+                  "contactName": "",
+                  "contactEmail": "US102@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 42.9674726,
+                  "longitude": -78.7986181
+                },
+                {
+                  "facility": "NYU Winthrop Neuro Science Medical",
+                  "contactName": "",
+                  "contactEmail": "US133@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 40.7476654,
+                  "longitude": -73.6389038
+                },
+                {
+                  "facility": "Weill Cornell Medicine",
+                  "contactName": "",
+                  "contactEmail": "US138@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 40.7700703,
+                  "longitude": -73.9580246
+                },
+                {
+                  "facility": "Columbia University Medical Center/ Neurological Institute of New York",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 40.8409822,
+                  "longitude": -73.9447994
+                },
+                {
+                  "facility": "University of Rochester Medical Center",
+                  "contactName": "",
+                  "contactEmail": "US110@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 43.12247660000001,
+                  "longitude": -77.62425739999999
+                },
+                {
+                  "facility": "University Hospitals of Cleveland",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 41.5091257,
+                  "longitude": -81.6089873
+                },
+                {
+                  "facility": "Cleveland Clinic Taussig Cancer Center",
+                  "contactName": "",
+                  "contactEmail": "US136@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 41.5034177,
+                  "longitude": -81.6204806
+                },
+                {
+                  "facility": "University of Toledo",
+                  "contactName": "",
+                  "contactEmail": "US111@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 41.6735366,
+                  "longitude": -83.624201
+                },
+                {
+                  "facility": "Hospital of the University of Pennsylvania",
+                  "contactName": "",
+                  "contactEmail": "US127@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 39.9583587,
+                  "longitude": -75.1953934
+                },
+                {
+                  "facility": "University of Pittsburgh Medical Center (UPMC)",
+                  "contactName": "",
+                  "contactEmail": "US106@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 40.451096,
+                  "longitude": -79.9332613
+                },
+                {
+                  "facility": "Rhode Island Hospital",
+                  "contactName": "",
+                  "contactEmail": "US131@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 41.816736,
+                  "longitude": -71.40915629999999
+                },
+                {
+                  "facility": "University of Tennessee Academic Medicalcenter Cancer Institute",
+                  "contactName": "",
+                  "contactEmail": "US112@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 35.9113041,
+                  "longitude": -83.8685072
+                },
+                {
+                  "facility": "Texas Oncology Austin Midtown",
+                  "contactName": "",
+                  "contactEmail": "US108@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 30.2961708,
+                  "longitude": -97.73895429999999
+                },
+                {
+                  "facility": "Baylor Scott and White",
+                  "contactName": "",
+                  "contactEmail": "US129@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 32.7962048,
+                  "longitude": -96.7694752
+                },
+                {
+                  "facility": "Houston Methodist",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 29.7050857,
+                  "longitude": -95.40180869999999
+                },
+                {
+                  "facility": "Mischer Neuroscience Associates/Memorial Hermann Hospital",
+                  "contactName": "",
+                  "contactEmail": "US114@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 29.7050857,
+                  "longitude": -95.40180869999999
+                },
+                {
+                  "facility": "UT MD Anderson cancer Center",
+                  "contactName": "",
+                  "contactEmail": "US146@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 29.7050857,
+                  "longitude": -95.40180869999999
+                },
+                {
+                  "facility": "Renovatio Clinical",
+                  "contactName": "",
+                  "contactEmail": "US115@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 30.1261952,
+                  "longitude": -95.46729619999999
+                },
+                {
+                  "facility": "Virginia Cancer Specialists, PC",
+                  "contactName": "",
+                  "contactEmail": "US142@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 38.864187,
+                  "longitude": -77.2577571
+                },
+                {
+                  "facility": "Swedish Medical Center",
+                  "contactName": "",
+                  "contactEmail": "US128@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 47.6087583,
+                  "longitude": -122.2964235
+                },
+                {
+                  "facility": "University Of Wisconsin Hospital",
+                  "contactName": "",
+                  "contactEmail": "US128@xfactorbbi.com",
+                  "contactPhone": "844-904-7088",
+                  "latitude": 43.0772547,
+                  "longitude": -89.430773
+                },
+                {
+                  "facility": "Cross Cancer Institute",
+                  "contactName": "",
+                  "contactEmail": "CA202@xfactorbbi.com",
+                  "contactPhone": "833-394-6555",
+                  "latitude": 53.5183887,
+                  "longitude": -113.531416
+                },
+                {
+                  "facility": "CancerCare Manitoba",
+                  "contactName": "",
+                  "contactEmail": "CA201@xfactorbbi.com",
+                  "contactPhone": "(844) 543-0977",
+                  "latitude": 49.9035183,
+                  "longitude": -97.15812509999999
+                },
+                {
+                  "facility": "Montreal Neurological Institute and Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 45.5099817,
+                  "longitude": -73.58182339999999
+                },
+                {
+                  "facility": "University of Sherbrooke",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 45.447561,
+                  "longitude": -71.8681227
+                },
+                {
+                  "facility": "Hokkaido University Hospital",
+                  "contactName": "",
+                  "contactEmail": "tiken@med.hokudai.ac.jp",
+                  "contactPhone": "+81-11-706-7600",
+                  "latitude": 43.0776381,
+                  "longitude": 141.345329
+                },
+                {
+                  "facility": "Kagoshima University Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 31.547713,
+                  "longitude": 130.5277831
+                },
+                {
+                  "facility": "Niigata University Medical and Dental Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 37.9183755,
+                  "longitude": 139.0356963
+                },
+                {
+                  "facility": "Osaka International Cancer Institute",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 34.6850337,
+                  "longitude": 135.5193136
+                },
+                {
+                  "facility": "The University of Tokyo Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 35.7128176,
+                  "longitude": 139.7654243
+                },
+                {
+                  "facility": "National Cancer Center Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 35.6640869,
+                  "longitude": 139.7715977
+                },
+                {
+                  "facility": "Hiroshima University Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 34.3795533,
+                  "longitude": 132.4780638
+                },
+                {
+                  "facility": "Kumamoto University Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 32.79634,
+                  "longitude": 130.7126742
+                },
+                {
+                  "facility": "University Hospital, Kyoto Prefectural University of Medicine",
+                  "contactName": "",
+                  "contactEmail": "nouge@koto.kpu-m.ac.jp",
+                  "contactPhone": "+81-75-251-5111",
+                  "latitude": 35.0228964,
+                  "longitude": 135.7702984
+                },
+                {
+                  "facility": "National Hospital Organization Kyoto Medical Center",
+                  "contactName": "",
+                  "contactEmail": "chiken@kyotolan.hosp.go.jp",
+                  "contactPhone": "+81-75-643-6420",
+                  "latitude": 34.9536394,
+                  "longitude": 135.7744562
+                },
+                {
+                  "facility": "Tokyo Women's Medical University Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 35.6975735,
+                  "longitude": 139.719339
+                },
+                {
+                  "facility": "Yamagata University Hospital",
+                  "contactName": "",
+                  "contactEmail": "mebihara@med.id.yamagata-u.ac.jp",
+                  "contactPhone": "+81-23-628-5840",
+                  "latitude": 38.2156227,
+                  "longitude": 140.3188465
+                },
+                {
+                  "facility": "Seoul National University Bundang Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 37.4449168,
+                  "longitude": 127.1388684
+                },
+                {
+                  "facility": "Gangnam Severance Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 37.5172363,
+                  "longitude": 127.0473248
+                },
+                {
+                  "facility": "Samsung Medical Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 37.5172363,
+                  "longitude": 127.0473248
+                },
+                {
+                  "facility": "Seoul National University Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 37.5729503,
+                  "longitude": 126.9793579
+                },
+                {
+                  "facility": "The Catholic University of Korea, Seoul St. Mary's Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 37.4837121,
+                  "longitude": 127.0324112
+                },
+                {
+                  "facility": "Severance Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 37.5791158,
+                  "longitude": 126.9367789
+                },
+                {
+                  "facility": "Asan Medical Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 37.5145437,
+                  "longitude": 127.1065971
+                },
+                {
+                  "facility": "China Medical University Hospital",
+                  "contactName": "",
+                  "contactEmail": "TW402@xfactorbbi.com",
+                  "contactPhone": "+886-00-801-12-7200",
+                  "latitude": 24.1572333,
+                  "longitude": 120.6748999
+                },
+                {
+                  "facility": "National Taiwan University Hospital",
+                  "contactName": "",
+                  "contactEmail": "TW403@xfactorbbi.com",
+                  "contactPhone": "+886-00-801-12-7200",
+                  "latitude": 25.040173,
+                  "longitude": 121.5181383
+                },
+                {
+                  "facility": "Chang Gung Memorial Hospital LinKou Medical Center",
+                  "contactName": "",
+                  "contactEmail": "TW401@xfactorbbi.com",
+                  "contactPhone": "+886-00-801-12-7200",
+                  "latitude": 24.9,
+                  "longitude": 121.1333333
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT01931098",
+              "title": "Oral Pazopanib Plus Oral Topotecan Metronomic Antiangiogenic Therapy for Recurrent Glioblastoma Multiforme (A) Without Prior Bevacizumab Exposure and (B) After Failing Prior Bevacizumab",
+              "conditions": "[\"Glioblastoma\", \"Glioblastoma Multiforme\", \"Gliosarcoma\", \"Brain Neoplasms\", \"Central Nervous System Neoplasms\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 99,
+              "sites": [
+                {
+                  "facility": "National Institutes of Health Clinical Center, 9000 Rockville Pike",
+                  "contactName": "For more information at the NIH Clinical Center contact National Cancer Institute Referral Office",
+                  "contactEmail": "",
+                  "contactPhone": "888-624-1937",
+                  "latitude": 39.0023604,
+                  "longitude": -77.097455
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT02968940",
+              "title": "Avelumab With Hypofractionated Radiation Therapy in Adults With Isocitrate Dehydrogenase (IDH) Mutant Glioblastoma",
+              "conditions": "[\"Glioblastoma\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "UCSF Medical Center",
+                  "contactName": "Jennie Taylor, MD, MPH",
+                  "contactEmail": "Jennie.Taylor@ucsf.edu",
+                  "contactPhone": "415-353-2966",
+                  "latitude": 37.7642093,
+                  "longitude": -122.4571623
+                },
+                {
+                  "facility": "University of California, Los Angeles (UCLA)",
+                  "contactName": "Timothy Cloughesy, MD",
+                  "contactEmail": "tcloughesy@mednet.ucla.edu",
+                  "contactPhone": "310-825-5321",
+                  "latitude": 34.070264,
+                  "longitude": -118.4440562
+                },
+                {
+                  "facility": "Massachusetts General Hospital",
+                  "contactName": "Isabel Arrillaga-Romany, MD, PhD",
+                  "contactEmail": "iarrillaga@mgh.harvard.edu",
+                  "contactPhone": "617-724-8770",
+                  "latitude": 42.3652917,
+                  "longitude": -71.0646337
+                },
+                {
+                  "facility": "Laura & Isaac Perlmutter Cancer Center & NYU Langone Medical Center",
+                  "contactName": "Amie S Patel, RN",
+                  "contactEmail": "Amie.Patel@nyumc.org",
+                  "contactPhone": "212-731-6267",
+                  "latitude": 40.74727,
+                  "longitude": -73.9800645
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT01811498",
+              "title": "Repeated Super-Selective Intraarterial Cerebral Infusion of Bevacizumab (Avastin) for Treatment of Newly Diagnosed GBM",
+              "conditions": "[\"Glioblastoma Multiforme\", \"Brain Tumor\"]",
+              "gender": "All",
+              "phase": "Phase 1/Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "Lenox Hill Brain Tumor Center",
+                  "contactName": "John Boockvar, MD",
+                  "contactEmail": "jboockvar@nshs.edu",
+                  "contactPhone": "",
+                  "latitude": 40.7645239,
+                  "longitude": -73.96243270000001
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT02798406",
+              "title": "Combination Adenovirus + Pembrolizumab to Trigger Immune Virus Effects",
+              "conditions": "[\"Brain Cancer\", \"Brain Neoplasm\", \"Glioma\", \"Glioblastoma\", \"Gliosarcoma\", \"Malignant Brain Tumor\", \"Neoplasm, Neuroepithelial\", \"Neuroectodermal Tumors\", \"Neoplasm by Histologic Type\", \"Neoplasm, Nerve Tissue\", \"Nervous System Diseases\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "University of Arkansas for Medical Sciences (UAMS)",
+                  "contactName": "Sandy Annis",
+                  "contactEmail": "AMAnnis@uams.edu",
+                  "contactPhone": "501-686-8274",
+                  "latitude": 34.7486563,
+                  "longitude": -92.3542193
+                },
+                {
+                  "facility": "UCLA Medical Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 34.070264,
+                  "longitude": -118.4440562
+                },
+                {
+                  "facility": "Northwestern University",
+                  "contactName": "Laura Sharp",
+                  "contactEmail": "laura.sharp@northwestern.edu",
+                  "contactPhone": "312-695-1005",
+                  "latitude": 41.8925085,
+                  "longitude": -87.6161696
+                },
+                {
+                  "facility": "University of Minnesota Neurosurgery",
+                  "contactName": "Clark Chen, MD, PhD",
+                  "contactEmail": "ccchen@umn.edu",
+                  "contactPhone": "612-624-1207",
+                  "latitude": 44.9741561,
+                  "longitude": -93.2342
+                },
+                {
+                  "facility": "Rutgers Cancer Institute of New Jersey",
+                  "contactName": "Celeste Jackson, B.S.",
+                  "contactEmail": "clarkce@cinj.rutgers.edu",
+                  "contactPhone": "732-235-9427",
+                  "latitude": 40.52,
+                  "longitude": -74.41
+                },
+                {
+                  "facility": "Memorial Sloan Kettering Cancer Center",
+                  "contactName": "Mariza Daras (Brain Tumor Line), MD",
+                  "contactEmail": "",
+                  "contactPhone": "212-639-6767",
+                  "latitude": 40.7645239,
+                  "longitude": -73.9624327
+                },
+                {
+                  "facility": "Weill-Cornell Medicine New York-Presbyterian",
+                  "contactName": "Andrea Zanello",
+                  "contactEmail": "anz2018@med.cornell.edu",
+                  "contactPhone": "212-746-1788",
+                  "latitude": 40.7645239,
+                  "longitude": -73.9624327
+                },
+                {
+                  "facility": "UNC Lineberger Comprehensive Cancer Center",
+                  "contactName": "Lisa A Brett, RN, CCRC",
+                  "contactEmail": "lisa_brett@med.unc.edu",
+                  "contactPhone": "984-974-8253",
+                  "latitude": 35.9722081,
+                  "longitude": -79.0475559
+                },
+                {
+                  "facility": "Cleveland Clinic",
+                  "contactName": "Cathy Schilero",
+                  "contactEmail": "schilec@ccf.org",
+                  "contactPhone": "216-636-9410",
+                  "latitude": 41.5034177,
+                  "longitude": -81.6204806
+                },
+                {
+                  "facility": "Ohio State University James Cancer Center",
+                  "contactName": "Omar Raslan",
+                  "contactEmail": "omar.raslan@osumc.edu",
+                  "contactPhone": "614-366-6398",
+                  "latitude": 39.9990626,
+                  "longitude": -83.0173386
+                },
+                {
+                  "facility": "Lehigh Valley Health Network",
+                  "contactName": "Ashley Patzuk, RN, BSN",
+                  "contactEmail": "Ashley_O.Patzuk@lvhn.org",
+                  "contactPhone": "610-402-0546",
+                  "latitude": 40.5719198,
+                  "longitude": -75.4927278
+                },
+                {
+                  "facility": "Texas Oncology Austin-Midtown",
+                  "contactName": "Kristen K Brueggemann, RN, BSN",
+                  "contactEmail": "Kristen.Brueggemann@USONCOLOGY.COM",
+                  "contactPhone": "512-421-4108",
+                  "latitude": 30.2961708,
+                  "longitude": -97.7389543
+                },
+                {
+                  "facility": "MD Anderson Cancer Center",
+                  "contactName": "Sharon Ji, MD, MS",
+                  "contactEmail": "xji@mdanderson.org",
+                  "contactPhone": "713-792-2400",
+                  "latitude": 29.7050857,
+                  "longitude": -95.4018087
+                },
+                {
+                  "facility": "Huntsman Cancer Institute",
+                  "contactName": "Robert Duncan",
+                  "contactEmail": "rob.duncan@hci.utah.edu",
+                  "contactPhone": "801-213-6198",
+                  "latitude": 40.7652201,
+                  "longitude": -111.8419536
+                },
+                {
+                  "facility": "University Health Network",
+                  "contactName": "Takyee Tung",
+                  "contactEmail": "Takyee.Tung@uhn.ca",
+                  "contactPhone": "416-603-5800",
+                  "latitude": 43.6534023,
+                  "longitude": -79.4053266
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT02800486",
+              "title": "Super Selective Intra-arterial Repeated Infusion of Cetuximab (Erbitux) With Reirradiation for Treatment of Relapsed/Refractory GBM, AA, and AOA",
+              "conditions": "[\"Glioblastoma\", \"Anaplastic Astrocytoma\", \"Anaplastic Oligoastrocytoma\", \"Glioma\", \"Brain Neoplasm\", \"Brain Cancer\", \"Brain Tumor\", \"Brain Tumor, Recurrent\", \"Brain Neoplasm, Malignant\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "Lenox Hill Brain Tumor Center",
+                  "contactName": "John Boockvar, MD",
+                  "contactEmail": "jboockvar@northwell.edu",
+                  "contactPhone": "212-434-3900",
+                  "latitude": 40.7728432,
+                  "longitude": -73.9558204
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT02861898",
+              "title": "Super-selective Intra-arterial Repeated Infusion of Cetuximab for the Treatment of Newly Diagnosed Glioblastoma",
+              "conditions": "[\"Glioblastoma\", \"Brain Cancer\", \"Brain Neoplasm\", \"Brain Tumor\", \"Brain Neoplasm, Malignant\", \"EGFR Gene Overexpression\", \"GBM\"]",
+              "gender": "All",
+              "phase": "Phase 1/Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "Lenox Hill Brain Tumor Center",
+                  "contactName": "John Boockvar, MD",
+                  "contactEmail": "jboockvar@northwell.edu",
+                  "contactPhone": "212-434-3900",
+                  "latitude": 40.7728432,
+                  "longitude": -73.9558204
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT03220646",
+              "title": "The Purpose of This Study is to Test Any Good and Bad Effects of a Study Drug Called Abemaciclib (LY2835219) in Patients With Recurrent Brain Tumors.",
+              "conditions": "[\"Brain Tumor\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "Hartford Healthcare Cancer Institute @ Hartford Hospital",
+                  "contactName": "Ahmad Daher, MD",
+                  "contactEmail": "",
+                  "contactPhone": "860-696-5169",
+                  "latitude": 41.7516429,
+                  "longitude": -72.6817647
+                },
+                {
+                  "facility": "Memoral Sloan Kettering Basking Ridge",
+                  "contactName": "Thomas Kaley, MD",
+                  "contactEmail": "",
+                  "contactPhone": "212-639-5122",
+                  "latitude": 40.7066174,
+                  "longitude": -74.5493284
+                },
+                {
+                  "facility": "Memorial Sloan Kettering Monmouth",
+                  "contactName": "Thomas Kaley, MD",
+                  "contactEmail": "",
+                  "contactPhone": "212-639-5122",
+                  "latitude": 40.3925365,
+                  "longitude": -74.1181234
+                },
+                {
+                  "facility": "Memorial Sloan Kettering Bergen",
+                  "contactName": "Thomas Kaley, MD",
+                  "contactEmail": "",
+                  "contactPhone": "212-639-5122",
+                  "latitude": 41.0467635,
+                  "longitude": -74.0229173
+                },
+                {
+                  "facility": "Memorial Sloan Kettering Commack",
+                  "contactName": "Thomas Kaley, MD",
+                  "contactEmail": "",
+                  "contactPhone": "212-639-5122",
+                  "latitude": 40.8357683,
+                  "longitude": -73.28243309999999
+                },
+                {
+                  "facility": "Memorial Sloan Kettering Westchester",
+                  "contactName": "Thomas Kaley, MD",
+                  "contactEmail": "",
+                  "contactPhone": "212-639-5122",
+                  "latitude": 41.0603977,
+                  "longitude": -73.7419017
+                },
+                {
+                  "facility": "Memorial Sloan Kettering Cancer Center",
+                  "contactName": "Thomas Kaley, MD",
+                  "contactEmail": "",
+                  "contactPhone": "212-639-5122",
+                  "latitude": 40.7645239,
+                  "longitude": -73.96243270000001
+                },
+                {
+                  "facility": "Lehigh Valley Health Network",
+                  "contactName": "Tara Morrison, MD",
+                  "contactEmail": "",
+                  "contactPhone": "610-402-7880",
+                  "latitude": 40.5719198,
+                  "longitude": -75.4927278
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT03213002",
+              "title": "Oral Capecitabine and Temozolomide (CAPTEM) for Newly Diagnosed GBM",
+              "conditions": "[\"Glioblastoma Multiforme (GBM)\", \"Glioblastoma\", \"Glioma of Brain\", \"Glioblastoma, Adult\", \"Brain Tumor\", \"Brain Tumor, Primary\", \"Brain Tumor Adult\", \"Cancer\", \"Brain Cancer\"]",
+              "gender": "All",
+              "phase": "Phase 1/Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 74,
+              "sites": [
+                {
+                  "facility": "Lenox Hill Brain Tumor Center",
+                  "contactName": "Tamika Wong, MPH",
+                  "contactEmail": "twong4@northwell.edu",
+                  "contactPhone": "212-434-4836",
+                  "latitude": 40.7728432,
+                  "longitude": -73.9558204
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT02153957",
+              "title": "Trial Evaluating an Enhanced Physical Activity Intervention to Improve Cognitive Late Effects in Children Treated With Cranial Radiation for Brain Tumors",
+              "conditions": "[\"Brain Tumor\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 8,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "National Institutes of Health Clinical Center, 9000 Rockville Pike",
+                  "contactName": "For more information at the NIH Clinical Center contact National Cancer Institute Referral Office",
+                  "contactEmail": "",
+                  "contactPhone": "888-624-1937",
+                  "latitude": 39.0023604,
+                  "longitude": -77.097455
+                },
+                {
+                  "facility": "Dana Farber Cancer Institute",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 42.339904,
+                  "longitude": -71.0898892
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT03212274",
+              "title": "Olaparib in Treating Patients With Advanced Glioma, Cholangiocarcinoma, or Solid Tumors With IDH1 or IDH2 Mutations",
+              "conditions": "[\"Advanced Malignant Solid Neoplasm\", \"Glioblastoma\", \"Recurrent Cholangiocarcinoma\", \"Recurrent Glioma\", \"Recurrent Malignant Solid Neoplasm\", \"WHO Grade II Glioma\", \"WHO Grade III Glioma\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "Los Angeles County-USC Medical Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "323-865-0451",
+                  "latitude": 34.0502898,
+                  "longitude": -118.2117257
+                },
+                {
+                  "facility": "USC / Norris Comprehensive Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "323-865-0451",
+                  "latitude": 34.0502898,
+                  "longitude": -118.2117257
+                },
+                {
+                  "facility": "USC Norris Oncology/Hematology-Newport Beach",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "323-865-0451",
+                  "latitude": 33.615828,
+                  "longitude": -117.9307584
+                },
+                {
+                  "facility": "Stanford Cancer Institute Palo Alto",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "ccto-office@stanford.edu",
+                  "contactPhone": "650-498-7061",
+                  "latitude": 37.3813444,
+                  "longitude": -122.1802812
+                },
+                {
+                  "facility": "University of California Davis Comprehensive Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "916-734-3089",
+                  "latitude": 38.5500434,
+                  "longitude": -121.4599012
+                },
+                {
+                  "facility": "Smilow Cancer Center/Yale-New Haven Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "canceranswers@yale.edu",
+                  "contactPhone": "203-785-5702",
+                  "latitude": 41.3052226,
+                  "longitude": -72.92686259999999
+                },
+                {
+                  "facility": "Yale University",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "canceranswers@yale.edu",
+                  "contactPhone": "203-785-5702",
+                  "latitude": 41.3065186,
+                  "longitude": -72.9310714
+                },
+                {
+                  "facility": "MedStar Georgetown University Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 38.9156487,
+                  "longitude": -77.0737149
+                },
+                {
+                  "facility": "University of Florida Health Science Center - Gainesville",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "cancer-center@ufl.edu",
+                  "contactPhone": "352-273-8010",
+                  "latitude": 29.6389921,
+                  "longitude": -82.3430269
+                },
+                {
+                  "facility": "Emory University Hospital Midtown",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "888-946-7447",
+                  "latitude": 33.7717008,
+                  "longitude": -84.3726049
+                },
+                {
+                  "facility": "Emory University Hospital/Winship Cancer Institute",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "404-778-1868",
+                  "latitude": 33.7980995,
+                  "longitude": -84.3259367
+                },
+                {
+                  "facility": "Emory Saint Joseph's Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "404-851-7115",
+                  "latitude": 33.8856615,
+                  "longitude": -84.3699767
+                },
+                {
+                  "facility": "University of Kentucky/Markey Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "859-257-3379",
+                  "latitude": 38.0328237,
+                  "longitude": -84.5067424
+                },
+                {
+                  "facility": "Johns Hopkins University/Sidney Kimmel Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "jhcccro@jhmi.edu",
+                  "contactPhone": "410-955-8804",
+                  "latitude": 39.2962372,
+                  "longitude": -76.5928888
+                },
+                {
+                  "facility": "Massachusetts General Hospital Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "877-726-5130",
+                  "latitude": 42.3652917,
+                  "longitude": -71.0646337
+                },
+                {
+                  "facility": "Brigham and Women's Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "617-724-5200",
+                  "latitude": 42.339904,
+                  "longitude": -71.0898892
+                },
+                {
+                  "facility": "Beth Israel Deaconess Medical Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 42.3476181,
+                  "longitude": -71.1002881
+                },
+                {
+                  "facility": "Dana-Farber Cancer Institute",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "877-442-3324",
+                  "latitude": 42.3476181,
+                  "longitude": -71.1002881
+                },
+                {
+                  "facility": "Siteman Cancer Center at West County Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "info@siteman.wustl.edu",
+                  "contactPhone": "800-600-3606",
+                  "latitude": 38.6624944,
+                  "longitude": -90.4785495
+                },
+                {
+                  "facility": "Washington University School of Medicine",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "info@siteman.wustl.edu",
+                  "contactPhone": "800-600-3606",
+                  "latitude": 38.6212468,
+                  "longitude": -90.2526163
+                },
+                {
+                  "facility": "Siteman Cancer Center-South County",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "info@siteman.wustl.edu",
+                  "contactPhone": "800-600-3606",
+                  "latitude": 38.4530404,
+                  "longitude": -90.3089777
+                },
+                {
+                  "facility": "Siteman Cancer Center at Christian Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "info@siteman.wustl.edu",
+                  "contactPhone": "800-600-3606",
+                  "latitude": 38.7470186,
+                  "longitude": -90.2526163
+                },
+                {
+                  "facility": "Siteman Cancer Center at Saint Peters Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "info@siteman.wustl.edu",
+                  "contactPhone": "800-600-3606",
+                  "latitude": 38.7874699,
+                  "longitude": -90.6298922
+                },
+                {
+                  "facility": "Rutgers Cancer Institute of New Jersey-Robert Wood Johnson University Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "732-235-8675",
+                  "latitude": 40.52,
+                  "longitude": -74.41
+                },
+                {
+                  "facility": "Rutgers Cancer Institute of New Jersey",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "732-235-8675",
+                  "latitude": 40.52,
+                  "longitude": -74.41
+                },
+                {
+                  "facility": "UNC Lineberger Comprehensive Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "cancerclinicaltrials@med.unc.edu",
+                  "contactPhone": "877-668-0683",
+                  "latitude": 35.905249,
+                  "longitude": -79.0581498
+                },
+                {
+                  "facility": "Duke University Medical Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 36.0038131,
+                  "longitude": -78.9387241
+                },
+                {
+                  "facility": "Ohio State University Comprehensive Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "Jamesline@osumc.edu",
+                  "contactPhone": "800-293-5066",
+                  "latitude": 39.9990626,
+                  "longitude": -83.01733860000002
+                },
+                {
+                  "facility": "University of Pittsburgh Cancer Institute (UPCI)",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "412-647-8073",
+                  "latitude": 40.451096,
+                  "longitude": -79.9332613
+                },
+                {
+                  "facility": "Vanderbilt Breast Center at One Hundred Oaks",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "800-811-8480",
+                  "latitude": 36.1003494,
+                  "longitude": -86.7718017
+                },
+                {
+                  "facility": "Vanderbilt University/Ingram Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "800-811-8480",
+                  "latitude": 36.1426398,
+                  "longitude": -86.8001068
+                },
+                {
+                  "facility": "M D Anderson Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "askmdanderson@mdanderson.org",
+                  "contactPhone": "877-632-6789",
+                  "latitude": 29.7050857,
+                  "longitude": -95.40180869999999
+                },
+                {
+                  "facility": "University of Wisconsin Hospital and Clinics",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "800-622-8922",
+                  "latitude": 43.0772547,
+                  "longitude": -89.430773
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT03058289",
+              "title": "A Phase 1/2 Safety Study of Intratumorally Dosed INT230-6",
+              "conditions": "[\"Melanoma\", \"Head and Neck Cancer\", \"Lymphoma\", \"Breast Cancer\", \"Pancreatic Cancer\", \"Liver Cancer\", \"Colon Cancer\", \"Lung Cancer\", \"Glioblastoma\", \"Bile Duct Cancer\", \"Ovarian Cancer\", \"Sarcoma\", \"Squamous Cell Carcinoma\"]",
+              "gender": "All",
+              "phase": "Phase 1/Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "USC Norris",
+                  "contactName": "Xiomara Menendez",
+                  "contactEmail": "xiomara.menendez@med.usc.edu",
+                  "contactPhone": "323-409-4368",
+                  "latitude": 34.0502898,
+                  "longitude": -118.2117257
+                },
+                {
+                  "facility": "USC HOAG",
+                  "contactName": "Cristina de Leon",
+                  "contactEmail": "cristina.deleon@hoag.org",
+                  "contactPhone": "949-764-5543",
+                  "latitude": 33.615828,
+                  "longitude": -117.9307584
+                },
+                {
+                  "facility": "Sidney Kimmel Comprehensive Cancer Center at Johns Hopkins",
+                  "contactName": "Jennifer Hale, RN",
+                  "contactEmail": "phase1trials@exchange.johnshopkins.edu",
+                  "contactPhone": "410-502-5140",
+                  "latitude": 39.30420549999999,
+                  "longitude": -76.557493
+                },
+                {
+                  "facility": "UMASS Memorial Medical Center",
+                  "contactName": "Cancer Research Office",
+                  "contactEmail": "cancer.research@umassmed.edu",
+                  "contactPhone": "508-856-3216",
+                  "latitude": 42.27174429999999,
+                  "longitude": -71.7588217
+                },
+                {
+                  "facility": "Columbia University Medical Center",
+                  "contactName": "Lisa Olmos, RN",
+                  "contactEmail": "cancerclinicaltrials@cumc.columbia.edu",
+                  "contactPhone": "212-342-5162",
+                  "latitude": 40.8409822,
+                  "longitude": -73.9447994
+                },
+                {
+                  "facility": "Fox Chase Cancer Center",
+                  "contactName": "Ikenna Opurum",
+                  "contactEmail": "Ikenna.Opurum@fccc.edu",
+                  "contactPhone": "215-728-5518",
+                  "latitude": 40.0635817,
+                  "longitude": -75.07863569999999
+                },
+                {
+                  "facility": "Princess Margaret Cancer Center - University Health Network",
+                  "contactName": "Oncology Referral",
+                  "contactEmail": "",
+                  "contactPhone": "416-946-4575",
+                  "latitude": 43.6590395,
+                  "longitude": -79.3910772
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT02709889",
+              "title": "Rovalpituzumab Tesirine in Delta-Like Protein 3-Expressing Advanced Solid Tumors",
+              "conditions": "[\"Malignant Melanoma\", \"Medullary Thyroid Cancer\", \"Glioblastoma\", \"Large Cell Neuroendocrine Carcinoma\", \"Neuroendocrine Prostate Cancer\", \"High Grade Gastroenteropancreatic Neuroendocrine Carcinoma\", \"Other Neuroendocrine Carcinoma\", \"Other Solid Tumors\"]",
+              "gender": "All",
+              "phase": "Phase 1/Phase 2",
+              "minimumAge": 0,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "Banner MD Anderson Cancer Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "855-256-6444",
+                  "latitude": 33.3650631,
+                  "longitude": -111.7495419
+                },
+                {
+                  "facility": "Mayo Clinic Arizona",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "855-776-0015",
+                  "latitude": 33.6923299,
+                  "longitude": -111.9403254
+                },
+                {
+                  "facility": "Cedars-Sinai Medical Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "310-423-2133",
+                  "latitude": 34.0741548,
+                  "longitude": -118.3724915
+                },
+                {
+                  "facility": "University of California, Los Angeles",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "310-794-7700",
+                  "latitude": 34.070264,
+                  "longitude": -118.4440562
+                },
+                {
+                  "facility": "University of California San Francisco",
+                  "contactName": "",
+                  "contactEmail": "communications@cc.ucsf.edu",
+                  "contactPhone": "877-827-3222",
+                  "latitude": 37.7877522,
+                  "longitude": -122.4382307
+                },
+                {
+                  "facility": "University of Colorado Denver",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "720-848-0637",
+                  "latitude": 39.7503186,
+                  "longitude": -104.8367063
+                },
+                {
+                  "facility": "Sarah Cannon Research Institute",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "720-754-2610",
+                  "latitude": 39.732746,
+                  "longitude": -104.9710123
+                },
+                {
+                  "facility": "UF Health Cancer Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "352-273-8675",
+                  "latitude": 29.6156734,
+                  "longitude": -82.3659168
+                },
+                {
+                  "facility": "H. Lee Moffitt Cancer Center & Research Institute",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "888-663-3488",
+                  "latitude": 28.0563834,
+                  "longitude": -82.4427769
+                },
+                {
+                  "facility": "Emory Winship Cancer Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "404-778-1868",
+                  "latitude": 33.7980995,
+                  "longitude": -84.3259367
+                },
+                {
+                  "facility": "University of Kentucky",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "866-340-4488",
+                  "latitude": 38.0328237,
+                  "longitude": -84.5067424
+                },
+                {
+                  "facility": "Johns Hopkins University",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "410-464-6713",
+                  "latitude": 39.3042055,
+                  "longitude": -76.557493
+                },
+                {
+                  "facility": "Massachusetts General Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "877-420-3951",
+                  "latitude": 42.3652917,
+                  "longitude": -71.0646337
+                },
+                {
+                  "facility": "Mayo Clinic",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "507-284-2511",
+                  "latitude": 44.0557303,
+                  "longitude": -92.5253639
+                },
+                {
+                  "facility": "Washington University School of Medicine",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "314-362-1000",
+                  "latitude": 38.6212468,
+                  "longitude": -90.2526163
+                },
+                {
+                  "facility": "Rutgers Cancer Institute of New Jersey",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "732-235-8675",
+                  "latitude": 40.52,
+                  "longitude": -74.41
+                },
+                {
+                  "facility": "Roswell Park Cancer Institute",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "877-275-7724",
+                  "latitude": 42.8980985,
+                  "longitude": -78.8662195
+                },
+                {
+                  "facility": "Weill Cornell Medicine",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "646-962-8215",
+                  "latitude": 40.7645239,
+                  "longitude": -73.9624327
+                },
+                {
+                  "facility": "Duke University School of Medicine",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "919-684-6342",
+                  "latitude": 36.0038131,
+                  "longitude": -78.9387241
+                },
+                {
+                  "facility": "University Hospitals Cleveland Medical Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "800-641-2422",
+                  "latitude": 41.5091257,
+                  "longitude": -81.6089873
+                },
+                {
+                  "facility": "Oregon Health and Science University",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "503-494-1080",
+                  "latitude": 45.4874111,
+                  "longitude": -122.6875541
+                },
+                {
+                  "facility": "Greenville Health System",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "864-455-7070",
+                  "latitude": 34.7671945,
+                  "longitude": -82.3777335
+                },
+                {
+                  "facility": "Mary Crowley Cancer Research Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "972-566-3000",
+                  "latitude": 32.9005121,
+                  "longitude": -96.7868794
+                },
+                {
+                  "facility": "Texas Oncology",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "817-850-2230",
+                  "latitude": 32.7248887,
+                  "longitude": -97.3138554
+                },
+                {
+                  "facility": "MD Anderson Cancer Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "855-590-5652",
+                  "latitude": 29.7050857,
+                  "longitude": -95.4018087
+                },
+                {
+                  "facility": "Huntsman Cancer Institute",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "888-424-2100",
+                  "latitude": 40.7652201,
+                  "longitude": -111.8419536
+                },
+                {
+                  "facility": "Virginia Cancer Specialists",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "703-280-5390",
+                  "latitude": 38.864187,
+                  "longitude": -77.2577571
+                },
+                {
+                  "facility": "Compass Oncology",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "360-944-9889",
+                  "latitude": 45.6254031,
+                  "longitude": -122.5192894
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT02327078",
+              "title": "A Study of the Safety, Tolerability, and Efficacy of Epacadostat Administered in Combination With Nivolumab in Select Advanced Cancers (ECHO-204)",
+              "conditions": "[\"B-cell Malignancies\", \"Colorectal Cancer (CRC)\", \"Head and Neck Cancer\", \"Lung Cancer\", \"Lymphoma\", \"Melanoma\", \"Ovarian Cancer\", \"Glioblastoma\"]",
+              "gender": "All",
+              "phase": "Phase 1/Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "UAB Comprehensive Cancer Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 33.5075555,
+                  "longitude": -86.8093239
+                },
+                {
+                  "facility": "The Angeles Clinic and Research Institute",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 34.0448583,
+                  "longitude": -118.4484367
+                },
+                {
+                  "facility": "UCSF - University of California San Francisco",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 37.7877522,
+                  "longitude": -122.4382307
+                },
+                {
+                  "facility": "University of Colorado Anschutz Medical Campus",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 39.7503186,
+                  "longitude": -104.8367063
+                },
+                {
+                  "facility": "University Cancer and Blood Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 34.0137081,
+                  "longitude": -83.4750241
+                },
+                {
+                  "facility": "The University of Kansas Clinical Research Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 39.0222277,
+                  "longitude": -94.6319018
+                },
+                {
+                  "facility": "Johns Hopkins Sidney Kimmel Comprehensive Cancer Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 39.287866,
+                  "longitude": -76.5921665
+                },
+                {
+                  "facility": "Dana Farber Cancer Institute",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 42.3476181,
+                  "longitude": -71.1002881
+                },
+                {
+                  "facility": "Lahey Hospital & Medical Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 42.4883003,
+                  "longitude": -71.2015991
+                },
+                {
+                  "facility": "NYU Cancer Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 40.74727,
+                  "longitude": -73.9800645
+                },
+                {
+                  "facility": "Columbia University, Herbert Irving Comprehensive Cancer Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 40.8409822,
+                  "longitude": -73.9447994
+                },
+                {
+                  "facility": "Duke University Medical Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 36.0038131,
+                  "longitude": -78.9387241
+                },
+                {
+                  "facility": "Wake Forest Medical Center Boulevard",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 36.0906568,
+                  "longitude": -80.2715385
+                },
+                {
+                  "facility": "Sanford Research",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 46.8843099,
+                  "longitude": -96.7847834
+                },
+                {
+                  "facility": "St. Lukes University Health Network",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 40.6841006,
+                  "longitude": -75.2829046
+                },
+                {
+                  "facility": "Thomas Jefferson University Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 39.9559288,
+                  "longitude": -75.1574567
+                },
+                {
+                  "facility": "University of Pittsburgh School of Medicine",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 40.451096,
+                  "longitude": -79.9332613
+                },
+                {
+                  "facility": "Sanford Research",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 43.5701622,
+                  "longitude": -96.7216671
+                },
+                {
+                  "facility": "Vanderbilt University Medical Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 36.1426398,
+                  "longitude": -86.8001068
+                },
+                {
+                  "facility": "Texas Oncology Research",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 30.2961708,
+                  "longitude": -97.7389543
+                },
+                {
+                  "facility": "MD Anderson Cancer Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 29.7050857,
+                  "longitude": -95.4018087
+                },
+                {
+                  "facility": "Hunstman Cancer Institute",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 40.7652201,
+                  "longitude": -111.8419536
+                },
+                {
+                  "facility": "Medical College of Wisconsin",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 43.0513426,
+                  "longitude": -88.0411993
+                },
+                {
+                  "facility": "The Christie NHS Foundation Trust",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 53.4297494,
+                  "longitude": -2.2300494
+                },
+                {
+                  "facility": "Oxford University Hospitals NHS Trust",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 51.7503318,
+                  "longitude": -1.2147087
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT02052778",
+              "title": "A Study of TAS-120 in Patients With Advanced Solid Tumors",
+              "conditions": "[\"Cholangiocarcinoma\", \"Brain Tumor\", \"Urothelial Cancer\", \"Other Tumor Types With FGFR2 Gene Fusions\", \"Activating Mutations\", \"FGFR2 Amplification\"]",
+              "gender": "All",
+              "phase": "Phase 1/Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "Banner MD Anderson Cancer Center",
+                  "contactName": "Rachel Hungerford, RN",
+                  "contactEmail": "BMDACCResearch@bannerhealth.com",
+                  "contactPhone": "480-256-5423",
+                  "latitude": 33.3650631,
+                  "longitude": -111.7495419
+                },
+                {
+                  "facility": "Mayo Clinic (AZ)",
+                  "contactName": "Brett Madden",
+                  "contactEmail": "Madden.brett@mayo.edu",
+                  "contactPhone": "480-342-4800",
+                  "latitude": 33.5910441,
+                  "longitude": -111.7972384
+                },
+                {
+                  "facility": "City of Hope National Medical Center",
+                  "contactName": "Daneng Li",
+                  "contactEmail": "danli@coh.org",
+                  "contactPhone": "626-471-9200",
+                  "latitude": 34.1579788,
+                  "longitude": -117.9424743
+                },
+                {
+                  "facility": "UCSF - Helen Diller",
+                  "contactName": "Lillian Jahan",
+                  "contactEmail": "lillian.jahan@ucsf.edu",
+                  "contactPhone": "415-502-4174",
+                  "latitude": 37.7748363,
+                  "longitude": -122.3872576
+                },
+                {
+                  "facility": "Mayo Clinic (Jacksonville)",
+                  "contactName": "Evans Pope",
+                  "contactEmail": "Pope.evans@mayo.edu",
+                  "contactPhone": "904-953-3814",
+                  "latitude": 30.2606613,
+                  "longitude": -81.46085599999999
+                },
+                {
+                  "facility": "Florida Hospital",
+                  "contactName": "Jerry Huang, MD",
+                  "contactEmail": "jhuang@taihooncology.com",
+                  "contactPhone": "609-250-7208",
+                  "latitude": 28.5747416,
+                  "longitude": -81.3949264
+                },
+                {
+                  "facility": "Cancer Treatment Centers of America",
+                  "contactName": "Becky Slawik",
+                  "contactEmail": "Becky.slawik@ctca-hope.com",
+                  "contactPhone": "770-400-7191",
+                  "latitude": 33.3931572,
+                  "longitude": -84.7106567
+                },
+                {
+                  "facility": "Cancer Treatment Centers of America Zion, IL",
+                  "contactName": "Maria E Rivas",
+                  "contactEmail": "maria.rivas@ctca-hope.com",
+                  "contactPhone": "847-872-4019",
+                  "latitude": 42.4461322,
+                  "longitude": -87.83285049999999
+                },
+                {
+                  "facility": "The University of Kansas Cancer Center",
+                  "contactName": "LaToya Berry",
+                  "contactEmail": "lberry4@kumc.edu",
+                  "contactPhone": "913-945-8871",
+                  "latitude": 39.0405608,
+                  "longitude": -94.6169013
+                },
+                {
+                  "facility": "Massachusetts General Hospital",
+                  "contactName": "Patty Lynch",
+                  "contactEmail": "lynch.patricia2@mgh.harvard.edu",
+                  "contactPhone": "617-643-0815",
+                  "latitude": 42.3652917,
+                  "longitude": -71.0646337
+                },
+                {
+                  "facility": "Cancer Center at Beth Israel Deaconess Medical Center",
+                  "contactName": "Mary Linton Peters",
+                  "contactEmail": "mbpeters@bidmc.harvard.edu",
+                  "contactPhone": "617-667-2100",
+                  "latitude": 42.3476181,
+                  "longitude": -71.1002881
+                },
+                {
+                  "facility": "Dana Farber Cancer Institution",
+                  "contactName": "GI Clinical Research Line",
+                  "contactEmail": "",
+                  "contactPhone": "617-632-5960",
+                  "latitude": 42.3476181,
+                  "longitude": -71.1002881
+                },
+                {
+                  "facility": "Wayne State Universtity (Karmanos Cancer Institute)",
+                  "contactName": "Amanda Newman",
+                  "contactEmail": "newmana@karmanos.org",
+                  "contactPhone": "313-576-8411",
+                  "latitude": 42.348495,
+                  "longitude": -83.0602998
+                },
+                {
+                  "facility": "Mayo Clinic (MN)",
+                  "contactName": "Toni Mangskau",
+                  "contactEmail": "cancerctr@mayo.edu",
+                  "contactPhone": "507-538-3365",
+                  "latitude": 44.0557303,
+                  "longitude": -92.5253639
+                },
+                {
+                  "facility": "New Mexico Cancer Care Alliance",
+                  "contactName": "Ursa Brown-Glaberman",
+                  "contactEmail": "ubrown-glaberman@salud.unm.edu",
+                  "contactPhone": "505-272-4946",
+                  "latitude": 35.0729762,
+                  "longitude": -106.6173415
+                },
+                {
+                  "facility": "Roswell Park Cancer Institute",
+                  "contactName": "Jerry Huang, MD",
+                  "contactEmail": "jhuang@taihooncology.com",
+                  "contactPhone": "609-250-7208",
+                  "latitude": 42.8980985,
+                  "longitude": -78.8662195
+                },
+                {
+                  "facility": "University of Pennsylvania",
+                  "contactName": "Jerry Huang, MD",
+                  "contactEmail": "jhuang@taihooncology.com",
+                  "contactPhone": "609-250-7208",
+                  "latitude": 39.9583587,
+                  "longitude": -75.1953934
+                },
+                {
+                  "facility": "Sidney Kimmel Cancer Center at Jefferson",
+                  "contactName": "Cynthia Perez",
+                  "contactEmail": "Cynthia.Perez@jefferson.edu",
+                  "contactPhone": "215-955-6407",
+                  "latitude": 39.9559288,
+                  "longitude": -75.1574567
+                },
+                {
+                  "facility": "Cancer Treatment Centers of America Philadelphia, PA",
+                  "contactName": "Paolo Casibang, RN",
+                  "contactEmail": "ERMC@ctca-hope.com",
+                  "contactPhone": "215-537-6438",
+                  "latitude": 40.0149445,
+                  "longitude": -75.0903154
+                },
+                {
+                  "facility": "University of Pittsburgh Medical Center",
+                  "contactName": "Kimberly Auth",
+                  "contactEmail": "preastk@upmc.edu",
+                  "contactPhone": "412-623-5396",
+                  "latitude": 40.451096,
+                  "longitude": -79.9332613
+                },
+                {
+                  "facility": "Greenville Health System ITOR",
+                  "contactName": "Lisa Johnson",
+                  "contactEmail": "Ljohnson4@ghs.org",
+                  "contactPhone": "864-455-3600",
+                  "latitude": 34.7671945,
+                  "longitude": -82.37773349999999
+                },
+                {
+                  "facility": "Spartanburg Medical Center",
+                  "contactName": "Ken Kuenzli, RN",
+                  "contactEmail": "kkuenzli@gibbscc.org",
+                  "contactPhone": "864-560-7579",
+                  "latitude": 34.9803527,
+                  "longitude": -81.9425701
+                },
+                {
+                  "facility": "Mary Crowley",
+                  "contactName": "Mary Crowley Cancer Research",
+                  "contactEmail": "",
+                  "contactPhone": "972-566-3000",
+                  "latitude": 32.9208727,
+                  "longitude": -96.77349110000002
+                },
+                {
+                  "facility": "MD Anderson Cancer Center",
+                  "contactName": "Funda Meric-Bernstam",
+                  "contactEmail": "Fmeric@mdanderson.org",
+                  "contactPhone": "713-792-3737",
+                  "latitude": 29.7050857,
+                  "longitude": -95.40180869999999
+                },
+                {
+                  "facility": "Virginia Mason Cancer Center",
+                  "contactName": "Ryan Sinit",
+                  "contactEmail": "Ryan.Sinit@virginiamason.org",
+                  "contactPhone": "206-341-8945",
+                  "latitude": 47.6084921,
+                  "longitude": -122.336407
+                },
+                {
+                  "facility": "UW Carbone Cancer Center",
+                  "contactName": "Cancer Connect",
+                  "contactEmail": "cancerconnect@uwhealth.org",
+                  "contactPhone": "608-262-5223",
+                  "latitude": 43.0772547,
+                  "longitude": -89.430773
+                },
+                {
+                  "facility": "Medical College of Wisconsin",
+                  "contactName": "Medical College of Wisconsin Clinical Trials office",
+                  "contactEmail": "_cccto@mcw.edu",
+                  "contactPhone": "866-680-0505",
+                  "latitude": 43.0513426,
+                  "longitude": -88.0411993
+                },
+                {
+                  "facility": "Royal Melbourne Hospital",
+                  "contactName": "Jerry Huang, MD",
+                  "contactEmail": "jhuang@taihooncology.com",
+                  "contactPhone": "609-250-7208",
+                  "latitude": -37.8136276,
+                  "longitude": 144.9630576
+                },
+                {
+                  "facility": "Scientia Clinical Research University of New South Wales",
+                  "contactName": "Jerry Huang, MD",
+                  "contactEmail": "jhuang@taihooncology.com",
+                  "contactPhone": "609-250-7208",
+                  "latitude": -33.91643,
+                  "longitude": 151.23653
+                },
+                {
+                  "facility": "Scientia Clinical Research University of New South Wales",
+                  "contactName": "Noman Bakhshi",
+                  "contactEmail": "noman.bakhshi@scientiaclinicalresearch.com.au",
+                  "contactPhone": "+61 29382 5824",
+                  "latitude": -33.91643,
+                  "longitude": 151.23653
+                },
+                {
+                  "facility": "Institut Bergonie",
+                  "contactName": "Jerry Huang, MD",
+                  "contactEmail": "jhuang@taihooncology.com",
+                  "contactPhone": "609-250-7208",
+                  "latitude": 44.8350088,
+                  "longitude": -0.5872689999999999
+                },
+                {
+                  "facility": "Hospices Civils de Lyon",
+                  "contactName": "Jerry Huang, MD",
+                  "contactEmail": "jhuang@taihooncology.com",
+                  "contactPhone": "609-250-7208",
+                  "latitude": 45.74938,
+                  "longitude": 4.898454999999999
+                },
+                {
+                  "facility": "Centre Léon Bérard Bât",
+                  "contactName": "Jerry Huang, MD",
+                  "contactEmail": "jhuang@taihooncology.com",
+                  "contactPhone": "609-250-7208",
+                  "latitude": 45.7315386,
+                  "longitude": 4.869616499999999
+                },
+                {
+                  "facility": "Pitié-Salpêtrière Hospital",
+                  "contactName": "Marc Sanson",
+                  "contactEmail": "marc.sanson@aphp.fr",
+                  "contactPhone": "0033142160435",
+                  "latitude": 48.830759,
+                  "longitude": 2.359204
+                },
+                {
+                  "facility": "Institute Goustave-Roussy",
+                  "contactName": "Jerry Huang, MD",
+                  "contactEmail": "jhuang@taihooncology.com",
+                  "contactPhone": "609-250-7208",
+                  "latitude": 48.856614,
+                  "longitude": 2.3522219
+                },
+                {
+                  "facility": "Rennes, Centre Eugène Marquis",
+                  "contactName": "Christelle Nicolle",
+                  "contactEmail": "c.nicolle@rennes.unicancer.fr",
+                  "contactPhone": "+33 (0)2 99 25 32 64",
+                  "latitude": 48.1180206,
+                  "longitude": -1.6366945
+                },
+                {
+                  "facility": "The Chinese University of Hong Kong",
+                  "contactName": "Dr. Stephen Lam Chan",
+                  "contactEmail": "l_chan@clo.cuhk.edu.hk",
+                  "contactPhone": "(852) 35052166",
+                  "latitude": 22.3771304,
+                  "longitude": 114.1974398
+                },
+                {
+                  "facility": "Prince of Wales Hospital",
+                  "contactName": "Dr. Stephen Lam Chan",
+                  "contactEmail": "chanlam_stephen@cuhk.edu.hk",
+                  "contactPhone": "(852) 35052166",
+                  "latitude": 22.3771304,
+                  "longitude": 114.1974398
+                },
+                {
+                  "facility": "Nagoya University Hospital",
+                  "contactName": "Takashi Mizuno",
+                  "contactEmail": "tmzn@med.nagoya-u.ac.jp",
+                  "contactPhone": "+81 52744 2222",
+                  "latitude": 35.15866949999999,
+                  "longitude": 136.9211638
+                },
+                {
+                  "facility": "Osaka International Cancer Institute",
+                  "contactName": "Tatsuya Ioka",
+                  "contactEmail": "ioka_ta@hotmail.com",
+                  "contactPhone": "06 6945 1181",
+                  "latitude": 34.6850973,
+                  "longitude": 135.5193193
+                },
+                {
+                  "facility": "Yonsei University, Severance Hospital (Seoul)",
+                  "contactName": "Hyun Jung Park",
+                  "contactEmail": "HJWWJD@yuhs.ac",
+                  "contactPhone": "82-2-2228-8054",
+                  "latitude": 37.566535,
+                  "longitude": 126.9779692
+                },
+                {
+                  "facility": "ASAN Medical Center (Seoul)",
+                  "contactName": "Su-Young Kim",
+                  "contactEmail": "sykim92@amc.seoul.kr",
+                  "contactPhone": "+82 2 3010 5634",
+                  "latitude": 37.5318046,
+                  "longitude": 126.9141547
+                },
+                {
+                  "facility": "Samsung Medical Center (Seoul)",
+                  "contactName": "Joon Oh Park, M.D., Ph.D",
+                  "contactEmail": "oncopark@skku.edu",
+                  "contactPhone": "+82 2 3410 3459",
+                  "latitude": 37.566535,
+                  "longitude": 126.9779692
+                },
+                {
+                  "facility": "Seoul National University Hospital",
+                  "contactName": "Dr. Do-Youn Oh",
+                  "contactEmail": "ohdoyoun@snu.ac.kr",
+                  "contactPhone": "+82 2 2072 0701",
+                  "latitude": 37.6177254,
+                  "longitude": 127.0629037
+                },
+                {
+                  "facility": "University of Amsterdam",
+                  "contactName": "HJ Klumpen",
+                  "contactEmail": "Secr-onco@amc.nl",
+                  "contactPhone": "+31205665955",
+                  "latitude": 52.2949983,
+                  "longitude": 4.9602433
+                },
+                {
+                  "facility": "Val D'Hebron University Hospital",
+                  "contactName": "Ignacio Matos",
+                  "contactEmail": "imatos@vhio.net",
+                  "contactPhone": "34934894350",
+                  "latitude": 41.4264213,
+                  "longitude": 2.1401139
+                },
+                {
+                  "facility": "Hospital Clinic i Provincial de Barcelona,",
+                  "contactName": "Dr Javier García-Corbacho",
+                  "contactEmail": "Garcia33@clinic.ub.es",
+                  "contactPhone": "93 2279214",
+                  "latitude": 41.3899238,
+                  "longitude": 2.1511635
+                },
+                {
+                  "facility": "University Hospital Ramón y Cajal",
+                  "contactName": "Federico Longo",
+                  "contactEmail": "federico.longo@salud.madrid.org",
+                  "contactPhone": "+34913368263",
+                  "latitude": 40.4998271,
+                  "longitude": -3.6876803
+                },
+                {
+                  "facility": "Centro Integral Oncológico Clara Campal - Hospital Universitario Madrid Sanchinarro",
+                  "contactName": "Valentina Boni",
+                  "contactEmail": "Valentina.Boni@start.stoh.com",
+                  "contactPhone": "+34 917567825",
+                  "latitude": 40.4167754,
+                  "longitude": -3.7037902
+                },
+                {
+                  "facility": "National Taiwan University Hospital",
+                  "contactName": "Chih-Hung Hsu",
+                  "contactEmail": "chihhunghsu@ntu.edu.tw",
+                  "contactPhone": "+886 2 2312 3456",
+                  "latitude": 25.0329694,
+                  "longitude": 121.5654177
+                },
+                {
+                  "facility": "Guy's and St Thomas' NHS Foundation Trust",
+                  "contactName": "Dr. Debashis Sarker",
+                  "contactEmail": "earlyphaseresearchteam@gstt.nhs.uk",
+                  "contactPhone": "+44 20 7188 8103",
+                  "latitude": 51.504642,
+                  "longitude": -0.08898969999999999
+                },
+                {
+                  "facility": "University College London Hospital",
+                  "contactName": "Jerry Huang, MD",
+                  "contactEmail": "jhuang@taihooncology.com",
+                  "contactPhone": "609-250-7208",
+                  "latitude": 51.522709,
+                  "longitude": -0.1359905
+                },
+                {
+                  "facility": "Sarah Cannon Research Institute",
+                  "contactName": "Tobias Arkenau",
+                  "contactEmail": "Tobias.Arkenau@HCAHealthcare.co.uk",
+                  "contactPhone": "0203 219 5200",
+                  "latitude": 51.5073509,
+                  "longitude": -0.1277583
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT03412877",
+              "title": "Administration of Autologous T-Cells Genetically Engineered to Express T-Cell Receptors Reactive Against Mutated Neoantigens in People With Metastatic Cancer",
+              "conditions": "[\"Glioblastoma\", \"Non-Small Cell Lung Cancer\", \"Ovarian Cancer\", \"Breast Cancer\", \"Gastrointestinal/Genitourinary Cancer\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 70,
+              "sites": [
+                {
+                  "facility": "National Institutes of Health Clinical Center",
+                  "contactName": "For more information at the NIH Clinical Center contact NCI/Surgery Branch Recruitment Center",
+                  "contactEmail": "irc@nih.gov",
+                  "contactPhone": "866-820-4505",
+                  "latitude": 39.0023604,
+                  "longitude": -77.097455
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT01986348",
+              "title": "A Phase 2 Study Evaluating the Efficacy and Safety of Selinexor (KPT-330) in Patients With Recurrent Gliomas",
+              "conditions": "[\"Glioblastoma\", \"Glioma\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "Massachusetts General Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 42.3652917,
+                  "longitude": -71.0646337
+                },
+                {
+                  "facility": "Dana Farber Cancer Institute, Center for Neuro-Oncology",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 42.3476181,
+                  "longitude": -71.1002881
+                },
+                {
+                  "facility": "Columbia University, Herbert Irving Comprehensive Cancer Center",
+                  "contactName": "Andrew B Lassman, MD",
+                  "contactEmail": "",
+                  "contactPhone": "212-851-4680",
+                  "latitude": 40.8409822,
+                  "longitude": -73.9447994
+                },
+                {
+                  "facility": "The Phase I Unit, Dept. of Oncology, Rigshospitalet",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 55.7085326,
+                  "longitude": 12.5727764
+                },
+                {
+                  "facility": "University of Groningen Faculty of Medical Sciences, Medical Oncology",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 53.2207562,
+                  "longitude": 6.5762139
+                },
+                {
+                  "facility": "Erasmus MC-Daniel den Hoed Cancer Center- Neuro-Oncology Unit",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 51.917701,
+                  "longitude": 4.4730261
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT03475186",
+              "title": "Testing Ramipril to Prevent Memory Loss in People With Glioblastoma",
+              "conditions": "[\"Glioblastoma\", \"Radiotherapy; Complications\", \"Cognitive Decline\", \"Chemoradiation\"]",
+              "gender": "All",
+              "phase": "Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "Kaiser Permanente Los Angeles Medical Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "clinical.trials@kp.org",
+                  "contactPhone": "800-398-3996",
+                  "latitude": 34.1220545,
+                  "longitude": -118.2935891
+                },
+                {
+                  "facility": "Porter Adventist Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "clinicaltrials@sfmc-gi.org",
+                  "contactPhone": "308-398-6518",
+                  "latitude": 39.6751269,
+                  "longitude": -104.9680914
+                },
+                {
+                  "facility": "Littleton Adventist Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "clinicaltrials@sfmc-gi.org",
+                  "contactPhone": "308-398-6518",
+                  "latitude": 39.5756558,
+                  "longitude": -104.9564084
+                },
+                {
+                  "facility": "Parker Adventist Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "clinicaltrials@sfmc-gi.org",
+                  "contactPhone": "308-398-6518",
+                  "latitude": 39.5267931,
+                  "longitude": -104.670443
+                },
+                {
+                  "facility": "Northside Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "ClinicalTrials@northside.com",
+                  "contactPhone": "404-303-3355",
+                  "latitude": 33.8856615,
+                  "longitude": -84.3699767
+                },
+                {
+                  "facility": "Lewis Cancer and Research Pavilion at Saint Joseph's/Candler",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "underberga@sjchs.org",
+                  "contactPhone": "912-819-5704",
+                  "latitude": 32.0371137,
+                  "longitude": -81.1747498
+                },
+                {
+                  "facility": "Hawaii Cancer Care - Savio",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 21.386338,
+                  "longitude": -157.9255357
+                },
+                {
+                  "facility": "Hawaii Oncology Inc-Pali Momi",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 21.386338,
+                  "longitude": -157.9255357
+                },
+                {
+                  "facility": "Pali Momi Medical Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 21.386338,
+                  "longitude": -157.9255357
+                },
+                {
+                  "facility": "The Cancer Center of Hawaii-Pali Momi",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 21.386338,
+                  "longitude": -157.9255357
+                },
+                {
+                  "facility": "Hawaii Cancer Care Inc-POB II",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 21.3136151,
+                  "longitude": -157.8480364
+                },
+                {
+                  "facility": "Hawaii Oncology Inc-POB I",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 21.3136151,
+                  "longitude": -157.8480364
+                },
+                {
+                  "facility": "Queen's Medical Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 21.3136151,
+                  "longitude": -157.8480364
+                },
+                {
+                  "facility": "Straub Clinic and Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 21.3136151,
+                  "longitude": -157.8480364
+                },
+                {
+                  "facility": "University of Hawaii Cancer Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 21.3136151,
+                  "longitude": -157.8480364
+                },
+                {
+                  "facility": "Hawaii Oncology Inc-Kuakini",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 21.3433967,
+                  "longitude": -157.8390944
+                },
+                {
+                  "facility": "The Cancer Center of Hawaii-Liliha",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 21.3433967,
+                  "longitude": -157.8390944
+                },
+                {
+                  "facility": "Illinois CancerCare-Bloomington",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "andersonj@illinoiscancercare.com",
+                  "contactPhone": "309-243-3605",
+                  "latitude": 40.4772644,
+                  "longitude": -88.93180819999999
+                },
+                {
+                  "facility": "Centralia Oncology Clinic",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 38.5285169,
+                  "longitude": -89.1316944
+                },
+                {
+                  "facility": "Cancer Care Specialists of Illinois - Decatur",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "rhamrick@dmhhs.org",
+                  "contactPhone": "217-876-4740",
+                  "latitude": 39.9049392,
+                  "longitude": -88.9892448
+                },
+                {
+                  "facility": "Decatur Memorial Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 39.9049392,
+                  "longitude": -88.9892448
+                },
+                {
+                  "facility": "Crossroads Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "rhamrick@dmhhs.org",
+                  "contactPhone": "217-876-4740",
+                  "latitude": 39.1200418,
+                  "longitude": -88.5433829
+                },
+                {
+                  "facility": "Illinois CancerCare-Galesburg",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "andersonj@illinoiscancercare.com",
+                  "contactPhone": "309-243-3605",
+                  "latitude": 40.937822,
+                  "longitude": -90.3936722
+                },
+                {
+                  "facility": "Illinois CancerCare-Peoria",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "andersonj@illinoiscancercare.com",
+                  "contactPhone": "309-243-3605",
+                  "latitude": 40.8064627,
+                  "longitude": -89.6345796
+                },
+                {
+                  "facility": "Memorial Medical Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "217-788-3528",
+                  "latitude": 39.8094846,
+                  "longitude": -89.6560492
+                },
+                {
+                  "facility": "Carle Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "Research@carle.com",
+                  "contactPhone": "800-446-5532",
+                  "latitude": 40.1059233,
+                  "longitude": -88.2120315
+                },
+                {
+                  "facility": "Saint Luke's Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "Rachel.varner@unitypoint.org",
+                  "contactPhone": "319-368-5514",
+                  "latitude": 42.0166364,
+                  "longitude": -91.6663523
+                },
+                {
+                  "facility": "Iowa Methodist Medical Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "515-241-6727",
+                  "latitude": 41.5816456,
+                  "longitude": -93.6243133
+                },
+                {
+                  "facility": "Medical Oncology and Hematology Associates-Des Moines",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "515-282-2921",
+                  "latitude": 41.5816456,
+                  "longitude": -93.6243133
+                },
+                {
+                  "facility": "Cancer Center of Kansas-Wichita Medical Arts Tower",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 37.701103,
+                  "longitude": -97.27607599999999
+                },
+                {
+                  "facility": "Ascension Via Christi Hospitals Wichita",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 37.70405239999999,
+                  "longitude": -97.3138554
+                },
+                {
+                  "facility": "Cancer Center of Kansas - Wichita",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 37.70405239999999,
+                  "longitude": -97.3138554
+                },
+                {
+                  "facility": "Culicchia Neurological Clinic LLC",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "emede1@lsuhsc.edu",
+                  "contactPhone": "504-210-3539",
+                  "latitude": 29.8120151,
+                  "longitude": -90.13077969999999
+                },
+                {
+                  "facility": "West Jefferson Medical Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "emede1@lsuhsc.edu",
+                  "contactPhone": "504-210-3539",
+                  "latitude": 29.8120151,
+                  "longitude": -90.13077969999999
+                },
+                {
+                  "facility": "Louisiana State University Health Science Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 29.95957689999999,
+                  "longitude": -90.0770127
+                },
+                {
+                  "facility": "University Medical Center New Orleans",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "emede1@lsuhsc.edu",
+                  "contactPhone": "504-210-3539",
+                  "latitude": 29.95957689999999,
+                  "longitude": -90.0770127
+                },
+                {
+                  "facility": "Spectrum Health at Butterworth Campus",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "crcwm-regulatory@crcwm.org",
+                  "contactPhone": "616-391-1230",
+                  "latitude": 42.9616689,
+                  "longitude": -85.6588999
+                },
+                {
+                  "facility": "Mercy Health Mercy Campus",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "crcwm-regulatory@crcwm.org",
+                  "contactPhone": "616-391-1230",
+                  "latitude": 43.1790617,
+                  "longitude": -86.1853474
+                },
+                {
+                  "facility": "Metro Health Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "crcwm-regulatory@crcwm.org",
+                  "contactPhone": "616-391-1230",
+                  "latitude": 42.8959695,
+                  "longitude": -85.7205065
+                },
+                {
+                  "facility": "Fairview Ridges Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 44.7758378,
+                  "longitude": -93.2684215
+                },
+                {
+                  "facility": "Mercy Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 45.1670628,
+                  "longitude": -93.3132624
+                },
+                {
+                  "facility": "Essentia Health Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "CancerTrials@EssentiaHealth.org",
+                  "contactPhone": "218-786-3308",
+                  "latitude": 46.8013694,
+                  "longitude": -92.0925034
+                },
+                {
+                  "facility": "Fairview-Southdale Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 44.8721412,
+                  "longitude": -93.33385469999999
+                },
+                {
+                  "facility": "Unity Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 45.0935798,
+                  "longitude": -93.2641955
+                },
+                {
+                  "facility": "Fairview Maple Grove Medical Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 45.1255339,
+                  "longitude": -93.45091239999999
+                },
+                {
+                  "facility": "Minnesota Oncology Hematology PA-Maplewood",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 45.0155505,
+                  "longitude": -93.0435224
+                },
+                {
+                  "facility": "Saint John's Hospital - Healtheast",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 45.0155505,
+                  "longitude": -93.0435224
+                },
+                {
+                  "facility": "Abbott-Northwestern Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 44.9398026,
+                  "longitude": -93.2533339
+                },
+                {
+                  "facility": "Hennepin County Medical Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 44.97583909999999,
+                  "longitude": -93.25710339999999
+                },
+                {
+                  "facility": "Health Partners Inc",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 44.9669685,
+                  "longitude": -93.2409552
+                },
+                {
+                  "facility": "North Memorial Medical Health Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 45.0167268,
+                  "longitude": -93.3364004
+                },
+                {
+                  "facility": "Park Nicollet Clinic - Saint Louis Park",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 44.9465193,
+                  "longitude": -93.3439291
+                },
+                {
+                  "facility": "Regions Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 44.9513188,
+                  "longitude": -93.0901841
+                },
+                {
+                  "facility": "United Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 44.9343827,
+                  "longitude": -93.1127413
+                },
+                {
+                  "facility": "Lakeview Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 45.056004,
+                  "longitude": -92.80884429999999
+                },
+                {
+                  "facility": "Rice Memorial Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 45.1223711,
+                  "longitude": -95.048659
+                },
+                {
+                  "facility": "Minnesota Oncology Hematology PA-Woodbury",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 44.915423,
+                  "longitude": -92.9475662
+                },
+                {
+                  "facility": "Fairview Lakes Medical Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 45.3422963,
+                  "longitude": -93.08864559999999
+                },
+                {
+                  "facility": "AtlantiCare Health Park-Cape May Court House",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "888-369-2427",
+                  "latitude": 39.0826135,
+                  "longitude": -74.82377860000001
+                },
+                {
+                  "facility": "AtlantiCare Surgery Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "609-748-7200",
+                  "latitude": 39.34804219999999,
+                  "longitude": -74.66346399999999
+                },
+                {
+                  "facility": "Lovelace Medical Center-Saint Joseph Square",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 35.0848894,
+                  "longitude": -106.6468148
+                },
+                {
+                  "facility": "University of New Mexico Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "LByatt@nmcca.org",
+                  "contactPhone": "505-925-0366",
+                  "latitude": 35.0848894,
+                  "longitude": -106.6468148
+                },
+                {
+                  "facility": "Lovelace Radiation Oncology",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 35.15900680000001,
+                  "longitude": -106.5760857
+                },
+                {
+                  "facility": "Northwell Health Imbert Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "516-734-8896",
+                  "latitude": 40.7360384,
+                  "longitude": -73.2411506
+                },
+                {
+                  "facility": "Northwell Health/Center for Advanced Medicine",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "516-734-8896",
+                  "latitude": 40.7572158,
+                  "longitude": -73.69629479999999
+                },
+                {
+                  "facility": "Randolph Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "vivian.sheidler@conehealth.com",
+                  "contactPhone": "336-832-0836",
+                  "latitude": 35.7312824,
+                  "longitude": -79.7960523
+                },
+                {
+                  "facility": "Mission Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 35.5927461,
+                  "longitude": -82.5564559
+                },
+                {
+                  "facility": "Cone Health Cancer Center at Alamance Regional",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "kaye.shoffner@conehealth.com",
+                  "contactPhone": "336-538-7725",
+                  "latitude": 36.0955555,
+                  "longitude": -79.4379412
+                },
+                {
+                  "facility": "Cone Health Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "vivian.sheidler@conehealth.com",
+                  "contactPhone": "336-832-0821",
+                  "latitude": 36.0733691,
+                  "longitude": -79.8240715
+                },
+                {
+                  "facility": "Margaret R Pardee Memorial Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "karen.morris@unchealth.unc.edu",
+                  "contactPhone": "828-696-4716",
+                  "latitude": 35.3664107,
+                  "longitude": -82.50775929999999
+                },
+                {
+                  "facility": "Novant Health Oncology Specialists-Kernersville",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "asmarrs@novanthealth.org",
+                  "contactPhone": "336-718-8335",
+                  "latitude": 36.1198588,
+                  "longitude": -80.07365329999999
+                },
+                {
+                  "facility": "Novant Health Forsyth Medical Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "asmarrs@novanthealth.org",
+                  "contactPhone": "336-718-8335",
+                  "latitude": 36.0564654,
+                  "longitude": -80.33245140000001
+                },
+                {
+                  "facility": "Wake Forest University Health Sciences",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "",
+                  "contactPhone": "336-713-6771",
+                  "latitude": 36.0906568,
+                  "longitude": -80.27153849999999
+                },
+                {
+                  "facility": "Sanford Broadway Medical Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "OncologyClinicalTrialsFargo@sanfordhealth.org",
+                  "contactPhone": "701-323-5760",
+                  "latitude": 46.8843099,
+                  "longitude": -96.7847834
+                },
+                {
+                  "facility": "Sanford Roger Maris Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "OncologyClinicalTrialsFargo@sanfordhealth.org",
+                  "contactPhone": "701-234-6161",
+                  "latitude": 46.8843099,
+                  "longitude": -96.7847834
+                },
+                {
+                  "facility": "Riverside Methodist Hospital",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "sheree@columbusccop.org",
+                  "contactPhone": "614-566-4475",
+                  "latitude": 40.0480476,
+                  "longitude": -83.025396
+                },
+                {
+                  "facility": "The Mark H Zangmeister Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "sheree@columbusccop.org",
+                  "contactPhone": "614-488-2118",
+                  "latitude": 40.0415191,
+                  "longitude": -82.9178838
+                },
+                {
+                  "facility": "Geisinger Medical Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "HemonCCTrials@geisinger.edu",
+                  "contactPhone": "570-271-5251",
+                  "latitude": 40.9675163,
+                  "longitude": -76.60444439999999
+                },
+                {
+                  "facility": "Geisinger Medical Oncology-Lewisburg",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "HemonCCTrials@geisinger.edu",
+                  "contactPhone": "570-374-8555",
+                  "latitude": 40.9645293,
+                  "longitude": -76.8844101
+                },
+                {
+                  "facility": "Paoli Memorial Hospital",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 40.0461442,
+                  "longitude": -75.4869033
+                },
+                {
+                  "facility": "Geisinger Wyoming Valley/Henry Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "HemonCCTrials@geisinger.edu",
+                  "contactPhone": "570-271-5251",
+                  "latitude": 41.2525126,
+                  "longitude": -75.8040022
+                },
+                {
+                  "facility": "Lankenau Medical Center",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 39.9890545,
+                  "longitude": -75.2770721
+                },
+                {
+                  "facility": "Medical University of South Carolina",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "hcc-clinical-trials@musc.edu",
+                  "contactPhone": "843-792-9321",
+                  "latitude": 32.785895,
+                  "longitude": -79.94794960000002
+                },
+                {
+                  "facility": "Prisma Health Cancer Institute - Easley",
+                  "contactName": "",
+                  "contactEmail": "",
+                  "contactPhone": "",
+                  "latitude": 34.829838,
+                  "longitude": -82.6015206
+                },
+                {
+                  "facility": "Prisma Health Cancer Institute - Butternut",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "kim.williams3@prismahealth.org",
+                  "contactPhone": "864-522-2066",
+                  "latitude": 34.7671945,
+                  "longitude": -82.37773349999999
+                },
+                {
+                  "facility": "Prisma Health Cancer Institute - Faris",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "kim.williams3@prismahealth.org",
+                  "contactPhone": "864-522-2066",
+                  "latitude": 34.7671945,
+                  "longitude": -82.37773349999999
+                },
+                {
+                  "facility": "Prisma Health Cancer Institute - Eastside",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "kim.williams3@prismahealth.org",
+                  "contactPhone": "864-522-2066",
+                  "latitude": 34.8742328,
+                  "longitude": -82.33433749999999
+                },
+                {
+                  "facility": "Prisma Health Cancer Institute - Greer",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "kim.williams3@prismahealth.org",
+                  "contactPhone": "864-522-2066",
+                  "latitude": 34.8920374,
+                  "longitude": -82.269193
+                },
+                {
+                  "facility": "Prisma Health Cancer Institute - Seneca",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "kim.williams3@prismahealth.org",
+                  "contactPhone": "864-522-2066",
+                  "latitude": 34.6856555,
+                  "longitude": -82.9532036
+                },
+                {
+                  "facility": "Prisma Health Cancer Institute - Spartanburg",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "kim.williams3@prismahealth.org",
+                  "contactPhone": "864-522-2066",
+                  "latitude": 34.9730414,
+                  "longitude": -81.8333656
+                },
+                {
+                  "facility": "Duluth Clinic Ashland",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "CancerTrials@EssentiaHealth.org",
+                  "contactPhone": "218-786-3308",
+                  "latitude": 46.5924428,
+                  "longitude": -90.8837982
+                },
+                {
+                  "facility": "Marshfield Clinic-Chippewa Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "oncology.clinical.trials@marshfieldresearch.org",
+                  "contactPhone": "800-782-8581",
+                  "latitude": 44.9369054,
+                  "longitude": -91.39293479999999
+                },
+                {
+                  "facility": "Marshfield Medical Center-EC Cancer Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "oncology.clinical.trials@marshfieldresearch.org",
+                  "contactPhone": "800-782-8581",
+                  "latitude": 44.7470586,
+                  "longitude": -91.50150090000001
+                },
+                {
+                  "facility": "Gundersen Lutheran Medical Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "cancerctr@gundersenhealth.org",
+                  "contactPhone": "608-775-2385",
+                  "latitude": 43.8013556,
+                  "longitude": -91.23958069999999
+                },
+                {
+                  "facility": "Marshfield Clinic - Ladysmith Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "oncology.clinical.trials@marshfieldresearch.org",
+                  "contactPhone": "800-782-8581",
+                  "latitude": 45.4630231,
+                  "longitude": -91.10403579999999
+                },
+                {
+                  "facility": "Marshfield Medical Center-Marshfield",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "oncology.clinical.trials@marshfieldresearch.org",
+                  "contactPhone": "800-782-8581",
+                  "latitude": 44.6688524,
+                  "longitude": -90.1717987
+                },
+                {
+                  "facility": "Marshfield Clinic-Minocqua Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "oncology.clinical.trials@marshfieldresearch.org",
+                  "contactPhone": "800-782-8581",
+                  "latitude": 45.8710837,
+                  "longitude": -89.7092705
+                },
+                {
+                  "facility": "Cancer Center of Western Wisconsin",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "mmcorc@healthpartners.com",
+                  "contactPhone": "952-993-1517",
+                  "latitude": 45.1230213,
+                  "longitude": -92.5365865
+                },
+                {
+                  "facility": "Marshfield Medical Center-Rice Lake",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "oncology.clinical.trials@marshfieldresearch.org",
+                  "contactPhone": "800-782-8581",
+                  "latitude": 45.5060682,
+                  "longitude": -91.738225
+                },
+                {
+                  "facility": "Marshfield Clinic Stevens Point Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "oncology.clinical.trials@marshfieldresearch.org",
+                  "contactPhone": "800-782-8581",
+                  "latitude": 44.52357920000001,
+                  "longitude": -89.574563
+                },
+                {
+                  "facility": "Marshfield Clinic-Wausau Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "oncology.clinical.trials@marshfieldresearch.org",
+                  "contactPhone": "800-782-8581",
+                  "latitude": 44.9591352,
+                  "longitude": -89.6301221
+                },
+                {
+                  "facility": "Diagnostic and Treatment Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "oncology.clinical.trials@marshfieldresearch.org",
+                  "contactPhone": "888-799-3989",
+                  "latitude": 44.9056901,
+                  "longitude": -89.5308903
+                },
+                {
+                  "facility": "Marshfield Clinic - Weston Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "oncology.clinical.trials@marshfieldresearch.org",
+                  "contactPhone": "800-782-8581",
+                  "latitude": 44.9056901,
+                  "longitude": -89.5308903
+                },
+                {
+                  "facility": "Marshfield Clinic - Wisconsin Rapids Center",
+                  "contactName": "Site Public Contact",
+                  "contactEmail": "oncology.clinical.trials@marshfieldresearch.org",
+                  "contactPhone": "800-782-8581",
+                  "latitude": 44.38357630000001,
+                  "longitude": -89.8173465
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "nctId": "NCT03491683",
+              "title": "INO-5401 and INO-9012 Delivered by Electroporation (EP) in Combination With Cemiplimab (REGN2810) in Newly-Diagnosed Glioblastoma (GBM)",
+              "conditions": "[\"Glioblastoma\"]",
+              "gender": "All",
+              "phase": "Phase 1/Phase 2",
+              "minimumAge": 18,
+              "maximumAge": 120,
+              "sites": [
+                {
+                  "facility": "City of Hope",
+                  "contactName": "Site Care Coordinator Nurse Fatemeh Bidmeshk, BSN",
+                  "contactEmail": "fbidmeshki@coh.org",
+                  "contactPhone": "626-218-4062",
+                  "latitude": 34.1579788,
+                  "longitude": -117.9424743
+                },
+                {
+                  "facility": "Stanford University, School of Medicine",
+                  "contactName": "Study Coordinator Hari Priya Yerraballa",
+                  "contactEmail": "yhpriya@stanford.edu",
+                  "contactPhone": "650-724-9363",
+                  "latitude": 37.3813444,
+                  "longitude": -122.1802812
+                },
+                {
+                  "facility": "University of California, San Francisco",
+                  "contactName": "Study Coordinator Karishma Kumar",
+                  "contactEmail": "karishma.kumar@ucsf.edu",
+                  "contactPhone": "415-514-5529",
+                  "latitude": 37.7642093,
+                  "longitude": -122.4571623
+                },
+                {
+                  "facility": "University of Miami - Sylvester Comprehensive Cancer Center",
+                  "contactName": "Study Coordinator Alain Fernandez",
+                  "contactEmail": "axf1187@med.miami.edu",
+                  "contactPhone": "305-243-9553",
+                  "latitude": 25.7870967,
+                  "longitude": -80.2042436
+                },
+                {
+                  "facility": "Moffitt Cancer Center",
+                  "contactName": "Study Coordinator Ali Drury-Sibiga",
+                  "contactEmail": "ali.drury-sibiga@moffitt.org",
+                  "contactPhone": "813-745-5689",
+                  "latitude": 28.0563834,
+                  "longitude": -82.4427769
+                },
+                {
+                  "facility": "Emory University School of Medicine",
+                  "contactName": "Study Coordinator Jana Drummond",
+                  "contactEmail": "jana.drummond@emory.edu",
+                  "contactPhone": "404-778-4579",
+                  "latitude": 33.7980995,
+                  "longitude": -84.3259367
+                },
+                {
+                  "facility": "Dana-Farber Cancer Institute",
+                  "contactName": "Study Coordinator Swati Madhok",
+                  "contactEmail": "swati_madhok@dfci.harvard.edu",
+                  "contactPhone": "617-632-3237",
+                  "latitude": 42.3476181,
+                  "longitude": -71.1002881
+                },
+                {
+                  "facility": "Henry Ford Health System",
+                  "contactName": "Study Coordinator John Gaggin, RN",
+                  "contactEmail": "gaggin1@hfhs.org",
+                  "contactPhone": "313-916-3731",
+                  "latitude": 42.3664506,
+                  "longitude": -83.0737195
+                },
+                {
+                  "facility": "Rutgers University - Cancer Institute of New Jersey",
+                  "contactName": "Study Coordinator Coordinator Sarah Nabeel, CCRP",
+                  "contactEmail": "sn569@cinj.rutgers.edu",
+                  "contactPhone": "732-235-8995",
+                  "latitude": 40.4861552,
+                  "longitude": -74.45185
+                },
+                {
+                  "facility": "New York University Langone Medical Center; Perlmutter Cancer Center",
+                  "contactName": "Study Coordinator Amie Patel, RN",
+                  "contactEmail": "Amie.Patel@nyumc.org",
+                  "contactPhone": "",
+                  "latitude": 40.74727,
+                  "longitude": -73.9800645
+                },
+                {
+                  "facility": "Icahn School of Medicine at Mount Sinai",
+                  "contactName": "Study Coordinator Angela Stangarone",
+                  "contactEmail": "angela.stangarone@mssm.edu",
+                  "contactPhone": "212-241-9843",
+                  "latitude": 40.7916407,
+                  "longitude": -73.9447994
+                },
+                {
+                  "facility": "Columbia University Medical Center The Neurological Institute of New York",
+                  "contactName": "Clinical Research Manager Natalie Busby",
+                  "contactEmail": "Nb2718@cumc.columbia.edu",
+                  "contactPhone": "212-305-8487",
+                  "latitude": 40.8409822,
+                  "longitude": -73.9447994
+                },
+                {
+                  "facility": "New York-Presbyterian Hospital/Weill Cornell Medical Center",
+                  "contactName": "Study Coordinator Alexandra Mavracick",
+                  "contactEmail": "alm2074@med.cornell.edu",
+                  "contactPhone": "646-962-8169",
+                  "latitude": 40.7645239,
+                  "longitude": -73.9624327
+                },
+                {
+                  "facility": "University of North Carolina School of Medicine",
+                  "contactName": "Study Coordinator Lisa Brett",
+                  "contactEmail": "lisa_brett@med.unc.edu",
+                  "contactPhone": "984-974-8253",
+                  "latitude": 35.905249,
+                  "longitude": -79.0581498
+                },
+                {
+                  "facility": "Stephenson Cancer Center",
+                  "contactName": "Senior Oncology Research Nurse Team Lead Dena Suthers",
+                  "contactEmail": "Phase1ResearchNurses@ouhsc.edu",
+                  "contactPhone": "405-271-8001",
+                  "latitude": 35.4718556,
+                  "longitude": -97.5057737
+                },
+                {
+                  "facility": "Oregon Health & Science University",
+                  "contactName": "Study Coordinator Michael McGehee",
+                  "contactEmail": "mcgehee@ohsu.edu",
+                  "contactPhone": "503-494-4988",
+                  "latitude": 45.4874111,
+                  "longitude": -122.6875541
+                },
+                {
+                  "facility": "University of Pennsylvania Health System: Penn Medicine",
+                  "contactName": "Department of Neurosurgery Penn Brain Tumor Center",
+                  "contactEmail": "NCRD-BTC@uphs.upenn.edu",
+                  "contactPhone": "",
+                  "latitude": 39.9583587,
+                  "longitude": -75.1953934
+                },
+                {
+                  "facility": "UPMC Cancer Center Neuro-Oncology; UPMC Cancer Pavilion",
+                  "contactName": "Supervisor, Clinical Research Services Melinda Vargas-Jaffe, BSN RN CCRC",
+                  "contactEmail": "vargasjaffema@upmc.edu",
+                  "contactPhone": "412-235-1320",
+                  "latitude": 40.451096,
+                  "longitude": -79.9332613
+                },
+                {
+                  "facility": "Texas Oncology",
+                  "contactName": "Study Coordinator Kristen Brueggemann",
+                  "contactEmail": "kristen.brueggemann@usoncology.com",
+                  "contactPhone": "512-421-4108",
+                  "latitude": 30.2961708,
+                  "longitude": -97.7389543
+                },
+                {
+                  "facility": "Baylor College of Medicine",
+                  "contactName": "Study Coordinator Michelle O' Bryne",
+                  "contactEmail": "obyrne@bcm.edu",
+                  "contactPhone": "713-798-2125",
+                  "latitude": 29.7050857,
+                  "longitude": -95.4018087
+                },
+                {
+                  "facility": "Huntsman Cancer Institute",
+                  "contactName": "Clinical Research Coordinator Matt Halverson",
+                  "contactEmail": "Matt.Halverson@hci.utah.edu",
+                  "contactPhone": "801-587-4756",
+                  "latitude": 40.7652201,
+                  "longitude": -111.8419536
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
