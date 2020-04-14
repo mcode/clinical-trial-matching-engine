@@ -20,11 +20,18 @@ export class AppComponent {
     this.loadDropDownData(recPhase, 'rec');
     this.patient = fhirService.getPatient().then(patient => {
       // Wrap the patient in a class that handles extracting values
-      console.log(`Got patient: ${patient}`)
-      return new Patient(patient);
+      const p = new Patient(patient);
+      // Also take this opportunity to set the zip code, if there is one
+      let zipCode = p.getHomePostalCode();
+      if (zipCode) {
+        if (!this.searchReqObject.zipCode) {
+          this.searchReqObject.zipCode = zipCode;
+        }
+      }
+      return p;
     });
   }
-  public patient?: any;
+  public patient: Promise<Patient> | Patient;
   /*
   variable for phase Drop Down
   * */
