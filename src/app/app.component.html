@@ -28,7 +28,7 @@
     <div class="col-sm-8">
       <!-- Home page-->
       <div class="mi-margin-30" *ngIf='!searchPage'>
-        <h1 class="color1 header">Welcome Greg,</h1>
+        <h1 class="color1 header">Welcome {{(patient | async)?.getUsualName()}},</h1>
         <h1 class="color2 header2">Let’s find some clinical trials</h1>
         <h1 class="color1 subText"> We found your <span class="color12">record</span>. Just fill in some preferences and
           we’ll do the rest</h1>

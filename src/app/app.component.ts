@@ -1,6 +1,10 @@
 import { CommonService } from './services/common/common.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
+
+import { ClientService } from './smartonfhir/client.service';
+import Patient from './patient';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,12 +13,18 @@ import * as _ from 'lodash';
 export class AppComponent {
   title = 'clinicalTrial';
   public self = this;
-  constructor(public commonService: CommonService, ) {
+  constructor(public commonService: CommonService, private fhirService: ClientService, ) {
     var paramPhase = '{ __type(name: "Phase") { enumValues { name } } }'
     var recPhase = '{ __type(name: "RecruitmentStatusEnum") { enumValues { name } } }'
     this.loadDropDownData(paramPhase, 'phase');
     this.loadDropDownData(recPhase, 'rec');
+    this.patient = fhirService.getPatient().then(patient => {
+      // Wrap the patient in a class that handles extracting values
+      console.log(`Got patient: ${patient}`)
+      return new Patient(patient);
+    });
   }
+  public patient?: any;
   /*
   variable for phase Drop Down
   * */
@@ -239,7 +249,7 @@ export class AppComponent {
     }
   }
   /*
-    Function for check selected condition exist or not 
+    Function for check selected condition exist or not
     * */
   public checkValue(value, arr) {
     var status = 'Not exist';
