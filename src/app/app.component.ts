@@ -1,5 +1,6 @@
 import { CommonService } from './services/common/common.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgxSpinnerService } from "ngx-spinner";
 import * as _ from 'lodash';
 
 import { ClientService } from './smartonfhir/client.service';
@@ -13,7 +14,7 @@ import Patient from './patient';
 export class AppComponent {
   title = 'clinicalTrial';
   public self = this;
-  constructor(public commonService: CommonService, private fhirService: ClientService, ) {
+  constructor(public commonService: CommonService, private spinner: NgxSpinnerService, private fhirService: ClientService) {
     var paramPhase = '{ __type(name: "Phase") { enumValues { name } } }'
     var recPhase = '{ __type(name: "RecruitmentStatusEnum") { enumValues { name } } }'
     this.loadDropDownData(paramPhase, 'phase');
@@ -68,10 +69,14 @@ export class AppComponent {
      variable for show details of selected clinical trial
   * */
   public detailPageSelectedData: any;
+  public  pages = [];
+  public pageData = [];
+  public selectedPage : any = 1;
+  public itemPerPages : any = 10;
   /*
      variable for create object of search clinical trial request
   * */
-  searchReqObject = {
+  searchReqObject: { zipCode: string | null, travelRadius: number | null, phase: string, recruitmentStatus: string } = {
     zipCode: null,
     travelRadius: null,
     phase: 'any',
@@ -81,9 +86,11 @@ export class AppComponent {
     Function for load phase and recruitment trial data
  * */
   public loadDropDownData(req, val) {
+    this.spinner.show();
     var self = this;
     var reqobj = {
-      "inputParam": req
+      "inputParam": req,
+      'type': 'drop'
     }
     self.commonService.getDropDownData(reqobj).subscribe(response => {
       if (response['status'] == 200) {
@@ -94,6 +101,7 @@ export class AppComponent {
           data = JSON.parse(response['_body']);
           self.recDropDown = data.data.__type.enumValues;
         }
+        this.spinner.hide();
       }
       else { }
     },
@@ -103,81 +111,132 @@ export class AppComponent {
   /*
     Function for search Clinical trial data
  * */
-  public searchClinicalTrials() {
+  public searchClinicalTrials(endCursor) {
     var self = this;
-    var req = '{baseMatches(conditions:[BRAIN_TUMOR, GLIOBLASTOMA],baseFilters: {  '
-    if (this.searchReqObject.zipCode != null) {
-      req += ',zipCode: "' + this.searchReqObject.zipCode + '"'
+    this.spinner.show();
+    if(endCursor == null){
+      this.clinicalTraildata = [];
     }
-    if (this.searchReqObject.travelRadius != null) {
-      req += ',travelRadius: ' + this.searchReqObject.travelRadius
-    }
-    if (this.searchReqObject.phase != 'any') {
-      req += ',phase:' + this.searchReqObject.phase
-    }
-    if (this.searchReqObject.recruitmentStatus != 'all') {
-      req += ',recruitmentStatus:' + this.searchReqObject.recruitmentStatus
-    }
-    req += ',gender:FEMALE,age:50,studyType:INTERVENTIONAL}){totalCount '
-    req += 'edges{ node{ nctId  title conditions gender description detailedDescription criteria sponsor overallContactPhone overallContactEmail overallStatus armGroups phase minimumAge studyType '
-    req += 'maximumAge sites {  facility contactName  contactEmail contactPhone   latitude longitude }}} }}'
-    var reqObj = {
-      "inputParam": req
-    }
-    self.commonService.searchClinialTrial(reqObj).subscribe(response => {
-      if (response['status'] == 200) {
-        var data = JSON.parse(response['_body']);
-        self.clinicalTraildata = data;
-        self.clinicalTraildataCopy = [...data.data.baseMatches.edges]
-        var newArray = [];
-        var myArray = _.uniqBy(data.data.baseMatches.edges, 'node.conditions');
-        for (let i = 0; i < myArray.length; i++) {
-          var tempArray = JSON.parse(myArray[i].node.conditions)
-          for (let j = 0; j < tempArray.length; j++) {
-            var t = {
-              key: tempArray[j]
-            }
-            newArray.push(t);
-          }
-        }
-        this.filtersArray = [
-          {
-            val: 'My Conditions',
-            selectedVal: 'conditions',
-            data: _.uniq(_.map(newArray, 'key'))
-          },
-          {
-            val: 'Recruitment',
-            selectedVal: 'overallStatus',
-            data: _.uniq(_.map(data.data.baseMatches.edges, 'node.overallStatus'))
-          },
-          {
-            val: 'Phase',
-            selectedVal: 'phase',
-            data: _.uniq(_.map(data.data.baseMatches.edges, 'node.phase'))
-          },
-          {
-            val: 'Study Type',
-            selectedVal: 'studyType',
-            data: _.uniq(_.map(data.data.baseMatches.edges, 'node.studyType'))
-          }
-        ]
-        for (let x = 0; x < self.filtersArray.length; x++) {
-          for (let y = 0; y < self.filtersArray[x].data.length; y++) {
-            var tempKey = {
-              val: self.filtersArray[x].data[y],
-              selectedItems: false,
-            }
-            self.filtersArray[x].data[y] = tempKey;
-          }
-        }
-        this.searchtable = false;
-        this.searchPage = true;
+    if (this.searchReqObject.zipCode == null) {
+       alert("Enter Zipcode")
+     }
+     else{
+      var req = '{baseMatches(first:30 after: "'  + endCursor + '"'
+      req += ' conditions:[BRAIN_CANCER, GLIOBLASTOMA],baseFilters: {  '
+      if (this.searchReqObject.zipCode != null) {
+        req += 'zipCode: "' + this.searchReqObject.zipCode + '"'
       }
-      else { }
-    },
-      err => { }
-    );
+      if (this.searchReqObject.travelRadius != null) {
+        req += ',travelRadius: ' + this.searchReqObject.travelRadius
+      }
+      if (this.searchReqObject.phase != 'any') {
+        req += ',phase:' + this.searchReqObject.phase
+      }
+      if (this.searchReqObject.recruitmentStatus != 'all') {
+        req += ',recruitmentStatus:' + this.searchReqObject.recruitmentStatus
+      }
+      req += '}){totalCount '
+      req += 'edges{ node{ nctId  title conditions gender description detailedDescription criteria sponsor overallContactPhone overallContactEmail overallStatus armGroups phase minimumAge studyType '
+      req += 'maximumAge sites {  facility contactName  contactEmail contactPhone   latitude longitude }} cursor}    pageInfo { endCursor hasNextPage  }}}'
+      var reqObj = {
+        "inputParam": req,
+        'type': 'search'
+      }
+      self.commonService.searchClinialTrial(reqObj).subscribe(response => {
+        if (response['status'] == 200) {
+          var data = JSON.parse(response['_body']);
+          if(self.clinicalTraildata.length != 0){
+            self.clinicalTraildata.data.baseMatches.edges.push(...data.data.baseMatches.edges);
+          }
+          else{
+            self.clinicalTraildata = data;
+          }
+          if(data.data.baseMatches.pageInfo.hasNextPage){
+               this.searchClinicalTrials(data.data.baseMatches.pageInfo.endCursor);
+          }
+          else{
+            self.clinicalTraildata.data.baseMatches.edges =  _.uniqBy(self.clinicalTraildata.data.baseMatches.edges, 'node.nctId');
+            self.clinicalTraildataCopy = [...self.clinicalTraildata.data.baseMatches.edges]
+            var newArray = [];
+            var myArray = _.uniqBy(self.clinicalTraildata.data.baseMatches.edges, 'node.conditions');
+            for (let i = 0; i < myArray.length; i++) {
+              var tempArray = JSON.parse(myArray[i].node.conditions)
+              for (let j = 0; j < tempArray.length; j++) {
+                var t = {
+                  key: tempArray[j]
+                }
+                newArray.push(t);
+              }
+            }
+            this.filtersArray = [
+              {
+                val: 'My Conditions',
+                selectedVal: 'conditions',
+                data: _.uniq(_.map(newArray, 'key'))
+              },
+              {
+                val: 'Recruitment',
+                selectedVal: 'overallStatus',
+                data: _.uniq(_.map(self.clinicalTraildata.data.baseMatches.edges, 'node.overallStatus'))
+              },
+              {
+                val: 'Phase',
+                selectedVal: 'phase',
+                data: _.uniq(_.map(self.clinicalTraildata.data.baseMatches.edges, 'node.phase'))
+              },
+              {
+                val: 'Study Type',
+                selectedVal: 'studyType',
+                data: _.uniq(_.map(self.clinicalTraildata.data.baseMatches.edges, 'node.studyType'))
+              }
+            ]
+            for (let x = 0; x < self.filtersArray.length; x++) {
+              for (let y = 0; y < self.filtersArray[x].data.length; y++) {
+                var tempKey = {
+                  val: self.filtersArray[x].data[y],
+                  selectedItems: false,
+                }
+                self.filtersArray[x].data[y] = tempKey;
+              }
+            }
+            this.searchtable = false;
+            this.searchPage = true;
+            this.countPages(this.clinicalTraildata);
+          }
+        }
+        else { }
+      },
+        err => { }
+      );
+     }
+  }
+  /*
+    Function for count pages
+ * */
+  public countPages(data){
+    var self = this;
+    self.pages = [];
+    self.selectedPage = 1;
+    var pageCount = data.data.baseMatches.edges.length / self.itemPerPages
+    for(let i=0;i<pageCount;i++){
+      var temp = {
+        val:i+1,
+        startIndex :i*10,
+        endIndex : i*10 + 10
+      }
+       self.pages.push(temp);
+    }
+   self.viewPage(self.pages[0]);
+   this.spinner.hide();
+  }
+  /*
+    Function for view data based on selected page
+ * */
+  public viewPage(page){
+    var self = this;
+    self.selectedPage =  page.val;
+    self.pageData = JSON.parse(JSON.stringify(self.clinicalTraildata))
+    self.pageData['data'].baseMatches.edges = self.pageData['data'].baseMatches.edges.slice(page.startIndex,page.endIndex);
   }
   /*
   Function for show details of clinical trial
@@ -219,6 +278,7 @@ export class AppComponent {
     * */
   public applyFilter() {
     var self = this;
+    this.spinner.show();
     var filterArrays = [], filterArrayData = [];
     for (let i = 0; i < this.filtersArray.length; i++) {
       var res = {
@@ -254,6 +314,7 @@ export class AppComponent {
     else {
       this.clinicalTraildata.data.baseMatches.edges = self.clinicalTraildataCopy.data.baseMatches.edges;
     }
+    this.countPages(this.clinicalTraildata)
   }
   /*
     Function for check selected condition exist or not

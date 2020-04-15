@@ -513,3 +513,6 @@ line-height: 25px;
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
   }
+  .selectedPage{
+      color:black;
+  }
