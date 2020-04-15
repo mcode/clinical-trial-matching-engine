@@ -1,3 +1,10 @@
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
 <html lang="en">
 <head>
 </head>
@@ -61,7 +68,7 @@
               <option *ngFor="let rec of recDropDown" [value]="rec.name">{{rec.name}}</option>
             </select>
           </div>
-          <div class="block2" (click)="searchClinicalTrials();">
+          <div class="block2" (click)="searchClinicalTrials(null);">
             <svg style="display: block;  margin: auto; margin-top: 15%;" id="search-24px"
               xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
               <path id="Path_5" data-name="Path 5"
@@ -77,7 +84,7 @@
         <div class="containingDIV padding-bottom-20">
           <div class="totalCount padding-top-10"></div>
           <span class="color4 matching">
-            <span class="matching color3">{{clinicalTraildata.data.baseMatches.totalCount}}</span>
+            <span class="matching color3">{{clinicalTraildata.data.baseMatches.edges.length}}</span>
             Matching Trials</span>
           <div>
             <div *ngFor="let filter of filtersArray;let i = index;" class="filters mi-margin-10"
@@ -120,16 +127,16 @@
             <span class="cardText2 font-size-20">{{searchReqObject.travelRadius}} Miles</span>
           </div>
         </div>
-        <div style="padding-bottom: 200px;" class="mitTable">
-          <div *ngFor="let trial of clinicalTraildata.data.baseMatches.edges; let i=index">
-            <div class="row containingDIV cards" (click)="showDeatails(i)"
+        <div style="padding-bottom: 20px; height: 60vh;overflow-y: scroll;" class="mitTable">
+          <div *ngFor="let trial of pageData.data.baseMatches.edges; let k=index">
+            <div class="row containingDIV cards" (click)="showDeatails(k)"
               style="background-color: white;margin-bottom : 10px;">
               <div class="col15"> <button class="recButton mi-margin-10"> {{trial.node.overallStatus}} </button><span
                   class="color3 mi-margin-20">NEW!</span>
               </div>
               <div class="col35 padding-top-15 padding-bottom-15 ">
                 <h2 class="cardtext ">
-                  {{trial.node.title}} </h2>
+                  {{trial.node.title}}{{k}} </h2>
                 <div class="containingDIV padding-top-10">
                   <h3 class="cardtext color13">Conditions:</h3>
                   <span class="cardtext color13"> {{trial.node.conditions}}</span>
@@ -199,6 +206,10 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="containingDIV float-right">
+        <span class="mi-margin-10">Pages :</span>
+        <span  *ngFor="let page of pages" class="mi-margin-10 color7" (click)="viewPage(page)" [ngClass]="selectedPage == page.val ? 'selectedPage':''">{{page.val}}</span>
         </div>
       </div>
       <!-- Details page-->
