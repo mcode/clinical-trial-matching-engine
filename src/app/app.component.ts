@@ -71,12 +71,12 @@ export class AppComponent {
   public detailPageSelectedData: any;
   public  pages = [];
   public pageData = [];
-  public selectedPage : any = 1;
+  public selectedPage : any;
   public itemPerPages : any = 10;
   /*
      variable for create object of search clinical trial request
   * */
-  searchReqObject: { zipCode: string | null, travelRadius: number | null, phase: string, recruitmentStatus: string } = {
+  searchReqObject: { zipCode: string | null, travelRadius: string | null, phase: string, recruitmentStatus: string } = {
     zipCode: null,
     travelRadius: null,
     phase: 'any',
@@ -90,7 +90,6 @@ export class AppComponent {
     var self = this;
     var reqobj = {
       "inputParam": req,
-      'type': 'drop'
     }
     self.commonService.getDropDownData(reqobj).subscribe(response => {
       if (response['status'] == 200) {
@@ -113,6 +112,7 @@ export class AppComponent {
  * */
   public searchClinicalTrials(endCursor) {
     var self = this;
+    self.itemPerPages = 10;
     this.spinner.show();
     if(endCursor == null){
       this.clinicalTraildata = [];
@@ -126,7 +126,7 @@ export class AppComponent {
       if (this.searchReqObject.zipCode != null) {
         req += 'zipCode: "' + this.searchReqObject.zipCode + '"'
       }
-      if (this.searchReqObject.travelRadius != null) {
+      if (this.searchReqObject.travelRadius != null && this.searchReqObject.travelRadius != "") {
         req += ',travelRadius: ' + this.searchReqObject.travelRadius
       }
       if (this.searchReqObject.phase != 'any') {
@@ -140,7 +140,6 @@ export class AppComponent {
       req += 'maximumAge sites {  facility contactName  contactEmail contactPhone   latitude longitude }} cursor}    pageInfo { endCursor hasNextPage  }}}'
       var reqObj = {
         "inputParam": req,
-        'type': 'search'
       }
       self.commonService.searchClinialTrial(reqObj).subscribe(response => {
         if (response['status'] == 200) {
@@ -216,16 +215,17 @@ export class AppComponent {
   public countPages(data){
     var self = this;
     self.pages = [];
-    self.selectedPage = 1;
+    self.self.itemPerPages = parseInt(self.itemPerPages)
     var pageCount = data.data.baseMatches.edges.length / self.itemPerPages
     for(let i=0;i<pageCount;i++){
       var temp = {
         val:i+1,
-        startIndex :i*10,
-        endIndex : i*10 + 10
+        startIndex :i*self.itemPerPages,
+        endIndex :( i*self.itemPerPages + self.itemPerPages)
       }
        self.pages.push(temp);
     }
+   self.selectedPage = self.pages[0];
    self.viewPage(self.pages[0]);
    this.spinner.hide();
   }
@@ -234,7 +234,7 @@ export class AppComponent {
  * */
   public viewPage(page){
     var self = this;
-    self.selectedPage =  page.val;
+    self.selectedPage = page;
     self.pageData = JSON.parse(JSON.stringify(self.clinicalTraildata))
     self.pageData['data'].baseMatches.edges = self.pageData['data'].baseMatches.edges.slice(page.startIndex,page.endIndex);
   }
@@ -358,5 +358,19 @@ export class AppComponent {
     this.searchtable = true;
     this.searchPage = false;
     this.detailsPage = true;
+  }
+
+  onChange(val){
+    this.countPages(this.clinicalTraildata)
+  }
+
+  public replace(value,val){
+    let newVal = value.replace(/[\[\]_'""]+/g, ' ');
+    if(val == 'drop'){
+      return newVal.charAt(0).toUpperCase() + newVal.slice(1).toLowerCase();
+    }else{
+      return newVal;
+    }
+
   }
 }

@@ -3,7 +3,7 @@
   size="medium"
   color="#fff"
   type="ball-scale-multiple">
-  <p style="font-size: 20px; color: white">Loading...</p>
+  <p class="font20 color8">Loading...</p>
 </ngx-spinner>
 <html lang="en">
 <head>
@@ -34,12 +34,12 @@
   <div class="row">
     <div class="col-sm-8">
       <!-- Home page-->
-      <div class="mi-margin-30" *ngIf='!searchPage'>
+      <div class="center" *ngIf='!searchPage'>
         <h1 class="color1 header">Welcome {{(patient | async)?.getUsualName()}},</h1>
         <h1 class="color2 header2">Let’s find some clinical trials</h1>
         <h1 class="color1 subText"> We found your <span class="color12">record</span>. Just fill in some preferences and
           we’ll do the rest</h1>
-        <div class="containingDIV col100">
+        <div class="containingDIV col100" style="padding-right: 10%;">
           <div class="block">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24.5 35">
               <path id="ic_place_24px"
@@ -59,13 +59,13 @@
           <div class="block">
             <select class="select" [(ngModel)]="searchReqObject.phase">
               <option value="any">Any Phase</option>
-              <option *ngFor="let phase of phaseDropDown" [value]="phase.name">{{phase.name}}</option>
+              <option *ngFor="let phase of phaseDropDown" [value]="phase.name">{{replace(phase.name,'drop')}}</option>
             </select>
           </div>
           <div class="block">
             <select class="select" [(ngModel)]="searchReqObject.recruitmentStatus">
               <option value="all">All</option>
-              <option *ngFor="let rec of recDropDown" [value]="rec.name">{{rec.name}}</option>
+              <option *ngFor="let rec of recDropDown" [value]="rec.name">{{replace(rec.name,'drop')}}</option>
             </select>
           </div>
           <div class="block2" (click)="searchClinicalTrials(null);">
@@ -80,7 +80,7 @@
         </div>
       </div>
       <!-- Cards page-->
-      <div class="mi-margin-30" *ngIf='!searchtable'>
+      <div class="mi-margin-5" style="margin-top: 9%;" *ngIf='!searchtable'>
         <div class="containingDIV padding-bottom-20">
           <div class="totalCount padding-top-10"></div>
           <span class="color4 matching">
@@ -127,19 +127,19 @@
             <span class="cardText2 font-size-20">{{searchReqObject.travelRadius}} Miles</span>
           </div>
         </div>
-        <div style="padding-bottom: 20px; height: 60vh;overflow-y: scroll;" class="mitTable">
+        <span class="color11 ">Showing {{selectedPage.startIndex + 1}}-<span *ngIf="selectedPage.endIndex < clinicalTraildata.data.baseMatches.edges.length">{{selectedPage.endIndex}}</span> <span *ngIf="selectedPage.endIndex > clinicalTraildata.data.baseMatches.edges.length">{{clinicalTraildata.data.baseMatches.edges.length}}</span> of {{clinicalTraildata.data.baseMatches.edges.length}}</span>
+        <div style="padding-bottom: 20px; height: 60vh;overflow-y: scroll;margin-top: 10px;" class="mitTable">
           <div *ngFor="let trial of pageData.data.baseMatches.edges; let k=index">
-            <div class="row containingDIV cards" (click)="showDeatails(k)"
-              style="background-color: white;margin-bottom : 10px;">
+            <div class="row containingDIV cards" (click)="showDeatails(k)">
               <div class="col15"> <button class="recButton mi-margin-10"> {{trial.node.overallStatus}} </button><span
                   class="color3 mi-margin-20">NEW!</span>
               </div>
               <div class="col35 padding-top-15 padding-bottom-15 ">
                 <h2 class="cardtext ">
-                  {{trial.node.title}}{{k}} </h2>
+                  {{trial.node.title}}</h2>
                 <div class="containingDIV padding-top-10">
                   <h3 class="cardtext color13">Conditions:</h3>
-                  <span class="cardtext color13"> {{trial.node.conditions}}</span>
+                  <span class="cardtext color13 mi-margin-left-10"> {{replace(trial.node.conditions,'search')}}</span>
                 </div>
               </div>
               <div class="col10">
@@ -208,12 +208,17 @@
           </div>
         </div>
         <div class="containingDIV float-right">
-        <span class="mi-margin-10">Pages :</span>
-        <span  *ngFor="let page of pages" class="mi-margin-10 color7" (click)="viewPage(page)" [ngClass]="selectedPage == page.val ? 'selectedPage':''">{{page.val}}</span>
+        <p class="mi-margin-10 color7">Items per page</p>
+        <select class="selectItemPerPage color7" [(ngModel)]="itemPerPages" (change)="countPages(clinicalTraildata)">
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="30">30</option>
+        </select>
+        <span  *ngFor="let page of pages" class="mi-margin-10 color7" (click)="viewPage(page)" [ngClass]="selectedPage.val == page.val ? 'selectedPage':''">{{page.val}}</span>
         </div>
       </div>
       <!-- Details page-->
-      <div class="mi-margin-30" *ngIf='!detailsPage'>
+      <div class="mi-margin-2" style="margin-top: 10%;" *ngIf='!detailsPage'>
         <div style="border-radius: 0px 0px 10px 10px;
           background: #525151;">
           <div class="mi-margin-30 col100 containingDIV" (click)="backToSearch();">
@@ -228,13 +233,13 @@
           </div>
           <div class="row col100 mi-margin-30">
             <div class="col80 containingDIV float-left">
-              <div class="row cards">
-                <div class="col100 padding-top-15 padding-bottom-15">
+              <div class="row">
+                <div class="padding-top-15 padding-bottom-15">
                   <h2 class="detailCardtext upperCase">{{detailPageSelectedData.node.title}}
                   </h2>
                   <div class="containingDIV padding-top-10">
                     <h3 class="cardtext upperCase color7">Conditions:</h3>
-                    <span class="cardtext color8 mi-margin-left-10">{{detailPageSelectedData.node.conditions}}</span>
+                    <span class="cardtext color8 mi-margin-left-10">{{replace(detailPageSelectedData.node.conditions,'search')}}</span>
                   </div>
                 </div>
                 <div>
@@ -244,36 +249,30 @@
                 </div>
 
                 <div class="col100 containingDIV ">
-                  <div class="col33 mi-margin-10" style="width: 321px;
-                  height: 217px;
-                  background: rgba(255, 255, 255, 0.94);">
-                    <div style="    margin-left: 25%;
-                   margin-top: 10%;">
-                      <button class="recButton mi-margin-10" style="    width: auto;
-                        padding: 10px;">{{detailPageSelectedData.node.overallStatus}}</button>
-                      <p class="color3 mi-margin-30" style="margin-left: 20%;">NEW!</p>
+                  <div class="col33 mi-margin-10 outerDiv">
+                    <div class="innerDiv">
+                      <button class="recButton mi-margin-10 padding-10" style="width: auto;">{{detailPageSelectedData.node.overallStatus}}</button>
+                      <p class="color3 mi-margin-30 mi-margin-left-p">NEW!</p>
                       <span>
                         Actively recruiting
                       </span>
                     </div>
                   </div>
-                  <div class="col33 mi-margin-10" style="width: 321px;
-                    height: 217px;
-                    background: rgba(255, 255, 255, 0.94);">
-                    <div style="margin-left: 30%;margin-top: 10%;">
-                      <svg style="margin-left: 20%;" xmlns="http://www.w3.org/2000/svg" width="47" height="47"
+                  <div class="col33 mi-margin-10 outerDiv">
+                    <div class="innerDiv">
+                      <svg class="mi-margin-left-p" xmlns="http://www.w3.org/2000/svg" width="47" height="47"
                         viewBox="0 0 47 47">
                         <path id="ic_directions_24px"
                           d="M48.32,23.84,27.165,2.685a2.341,2.341,0,0,0-3.314,0L2.7,23.84a2.341,2.341,0,0,0,0,3.314L23.85,48.31a2.341,2.341,0,0,0,3.314,0L48.32,27.155a2.341,2.341,0,0,0,0-3.314ZM30.2,31.386V25.509h-9.4v7.052h-4.7v-9.4a2.358,2.358,0,0,1,2.351-2.351H30.2V14.932l8.227,8.227Z"
                           transform="translate(-2.007 -1.997)" fill="#525151" />
                       </svg>
-                      <p class="color3 mi-margin-30" style="margin-left: 20%;">3.5 m</p>
+                      <p class="color3 mi-margin-30 mi-margin-left-p">3.5 m</p>
                       <span>
                         Closest location
                       </span>
                     </div>
                   </div>
-                  <div class="col33 mi-margin-10" style="width: 321px;
+                  <div class="col33 mi-margin-10 " style="width: 321px;
                       height: 217px;
                       background: rgba(255, 255, 255, 0.94);">
                     <div>
@@ -306,8 +305,7 @@
                       d="M7.525,12.738a18.936,18.936,0,0,0,8.238,8.238l2.75-2.75a1.243,1.243,0,0,1,1.275-.3,14.259,14.259,0,0,0,4.462.712,1.254,1.254,0,0,1,1.25,1.25V24.25a1.254,1.254,0,0,1-1.25,1.25A21.248,21.248,0,0,1,3,4.25,1.254,1.254,0,0,1,4.25,3H8.625a1.254,1.254,0,0,1,1.25,1.25,14.2,14.2,0,0,0,.712,4.462,1.254,1.254,0,0,1-.312,1.275Z"
                       transform="translate(0.75 0.75)" fill="#0079e0" />
                   </svg>
-                  <span class="color10"
-                    style="font-size: 15px;">{{detailPageSelectedData.node.overallContactPhone}}</span>
+                  <span class="color10 font15">{{detailPageSelectedData.node.overallContactPhone}}</span>
                 </div>
                 <div class=" mi-margin-10 containingDIV">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 25 20">
@@ -315,8 +313,7 @@
                       d="M24.5,4H4.5A2.5,2.5,0,0,0,2.013,6.5L2,21.5A2.507,2.507,0,0,0,4.5,24h20A2.507,2.507,0,0,0,27,21.5V6.5A2.507,2.507,0,0,0,24.5,4Zm0,5-10,6.25L4.5,9V6.5l10,6.25,10-6.25Z"
                       transform="translate(-2 -4)" fill="#0079e0" />
                   </svg>
-                  <span class="color10"
-                    style="font-size: 15px;">{{detailPageSelectedData.node.overallContactEmail}}</span>
+                  <span class="color10 font15">{{detailPageSelectedData.node.overallContactEmail}}</span>
                 </div>
               </div>
               <div class="col80">
@@ -381,9 +378,7 @@
     </div>
     <div class="row footer" *ngIf='!searchPage'>
       <div class="col-sm-4">
-        <div>
-          <img src="../assets/images/strip_bottom.png" alt="Italian Trulli">
-        </div>
+
       </div>
     </div>
   </div>
