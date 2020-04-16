@@ -6,9 +6,9 @@ type FHIRPatient = fhirclient.FHIR.Patient;
 
 /** Maps name types to their "power" - higher is better (makes the comparison read better below) */
 const casualNamePreferences = {
-  'usual': 3,
-  'nickname': 2,
-  'official': 1
+  usual: 3,
+  nickname: 2,
+  official: 1
 };
 
 function objectComparator(usePreferences) {
@@ -46,7 +46,7 @@ export default class Patient {
    * null. This prefers names in the order of usual, nickname, official.
    */
   getUsualName(): string | null {
-    let name = this.getPreferredName();
+    const name = this.getPreferredName();
     if (name == null) {
       return null;
     } else if (name.given && Array.isArray(name.given) && name.given.length > 0) {
@@ -64,14 +64,14 @@ export default class Patient {
     }
   }
   getHomePostalCode(): string | null {
-    let address = this.getHomeAddress();
+    const address = this.getHomeAddress();
     return address ? address.postalCode : null;
   }
   getHomeAddress() {
     if (Array.isArray(this.resource.address) && this.resource.address.length > 0) {
       return this.resource.address.reduce(objectComparator({
-        'home': 2,
-        'office': 1
+        home: 2,
+        office: 1
       }));
     }
   }
