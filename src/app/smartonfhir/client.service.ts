@@ -6,8 +6,6 @@ import { fhirclient } from 'fhirclient/lib/types';
 
 type Patient = fhirclient.FHIR.Patient;
 
-let client: Client;
-
 /**
  * This provides a wrapper around the FHIR client. The FHIR client still needs
  * to be initialized.
