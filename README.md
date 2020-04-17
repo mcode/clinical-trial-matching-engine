@@ -1,36 +1,27 @@
-# SMART on FHIR React Template [![Build Status](https://travis-ci.com/standardhealth/smart-react-app-template.svg?branch=master)](https://travis-ci.com/standardhealth/smart-react-app-template)
+# ClinicalTrial
 
-This project is meant to be a template for a minimal SMART on FHIR React application. This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and has installed the `fhirclient` library to facilitate the SMART authorization process and interactions with the EHR.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.3.
 
-The rest of your application can be built out in `App.js` and beyond.  If additional FHIR resources are needed it can fetched in `index.js` by making a call using `client.request()` and passed down to `App.js`.
+## Development server
 
-## Testing with a launcher
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-1. Run `yarn install` to install the necessary packages.
-2. Run `yarn start` to start the application.
-3. Launch the application from the SMART launcher.
-    - Visit [SMART Launcher](http://launch.smarthealthit.org)
-    - Launch `http://localhost:3000`
-    - Select a practitioner and a patient
-    - Page will load with name of selected patient displayed.
-    
-## Running tests
+## Code scaffolding
 
-Tests can be run by executing:
-```shell script
-yarn test
-```
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Running the code linter
+## Build
 
-Code liniting can be run by executing:
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-```shell script
-yarn lint
-```
+## Running unit tests
 
-Some issues can be automatically corrected with:
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-```shell script
-yarn lint-fix
-```
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

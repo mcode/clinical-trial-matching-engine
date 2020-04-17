@@ -1,0 +1,386 @@
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple">
+  <p class="font20 color8">Loading...</p>
+</ngx-spinner>
+<html lang="en">
+<head>
+</head>
+<body>
+  <header>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="Graph-section" id="header">
+          <h1 (click)="beckToHomePage();">
+            <svg xmlns="http://www.w3.org/2000/svg" width="33.5" height="40.926" viewBox="0 0 33.5 40.926">
+              <path id="iconfinder_laboratory_microscope_research_science__5310256"
+                d="M70.663,35.492a.682.682,0,0,1,0-.965L72.592,32.6a.682.682,0,0,1,.965,0l2.894,2.894a.682.682,0,0,1,0,.965l-1.929,1.929a.682.682,0,0,1-.965,0ZM92.849,20.058,90.438,22.47l1.447,1.447a.682.682,0,0,1,0,.965l-3.8,3.8a4.242,4.242,0,0,1,.341,4.376A14.279,14.279,0,0,1,79.33,49.923v1.547h6.821a3.414,3.414,0,0,1,3.411,3.411v1.364a.682.682,0,0,1-.682.682H60.231a.682.682,0,0,1-.682-.682V54.88a3.414,3.414,0,0,1,3.411-3.411h6.821V48.059a4.751,4.751,0,0,1,.278-1.6L61.113,37.51a.682.682,0,0,1,0-.965l1.929-1.929a.682.682,0,0,1,.965,0l8.945,8.945a4.766,4.766,0,0,1,4.995,1.14,8.9,8.9,0,0,0,5.425-9.52,4.2,4.2,0,0,1-1.191-.6l-1.833,1.833a.682.682,0,0,1-.965,0L72.63,29.665a.682.682,0,0,1,0-.965L84.167,17.164a.682.682,0,0,1,.965,0l1.447,1.447L88.991,16.2a.682.682,0,0,1,.965,0l2.894,2.894a.682.682,0,0,1,0,.965Zm-6.734,9.627a2.073,2.073,0,1,0,0,2.932,2.073,2.073,0,0,0,0-2.932ZM76.6,48.059A2.046,2.046,0,1,0,74.555,50.1,2.046,2.046,0,0,0,76.6,48.059Z"
+                transform="translate(-59.549 -16)" fill="#f5f5f5" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="355" height="43" viewBox="0 0 355 43">
+              <text id="Clinical_Trial_Finder" data-name="Clinical Trial Finder" transform="translate(0 34)"
+                fill="#f5f5f5" font-size="32" font-family="Roboto-Black, Roboto" font-weight="800">
+                <tspan x="0" y="0">CLINICAL TRIAL FINDER
+                </tspan>
+              </text>
+            </svg>
+          </h1>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="row">
+    <div class="col-sm-8">
+      <!-- Home page-->
+      <div class="center" *ngIf='!searchPage'>
+        <h1 class="color1 header">Welcome {{(patient | async)?.getUsualName()}},</h1>
+        <h1 class="color2 header2">Let’s find some clinical trials</h1>
+        <h1 class="color1 subText"> We found your <span class="color12">record</span>. Just fill in some preferences and
+          we’ll do the rest</h1>
+        <div class="containingDIV col100" style="padding-right: 10%;">
+          <div class="block">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24.5 35">
+              <path id="ic_place_24px"
+                d="M17.25,2A12.241,12.241,0,0,0,5,14.25C5,23.437,17.25,37,17.25,37S29.5,23.437,29.5,14.25A12.241,12.241,0,0,0,17.25,2Zm0,16.625a4.375,4.375,0,1,1,4.375-4.375A4.377,4.377,0,0,1,17.25,18.625Z"
+                transform="translate(-5 -2)" fill="#525151" />
+            </svg>
+            <input class="input" type="text" placeholder="zip code or city" [(ngModel)]="searchReqObject.zipCode">
+          </div>
+          <div class="block">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 39 39">
+              <path id="ic_directions_24px"
+                d="M40.437,20.122,22.883,2.568a1.942,1.942,0,0,0-2.75,0L2.578,20.122a1.942,1.942,0,0,0,0,2.75L20.132,40.427a1.942,1.942,0,0,0,2.75,0L40.437,22.873a1.942,1.942,0,0,0,0-2.75ZM25.4,26.383V21.507H17.6v5.851H13.7v-7.8a1.956,1.956,0,0,1,1.95-1.95H25.4V12.73l6.827,6.827Z"
+                transform="translate(-2.008 -1.997)" fill="#525151" />
+            </svg>
+            <input class="input" type="text" placeholder="travel distance " [(ngModel)]="searchReqObject.travelRadius">
+          </div>
+          <div class="block">
+            <select class="select" [(ngModel)]="searchReqObject.phase">
+              <option value="any">Any Phase</option>
+              <option *ngFor="let phase of phaseDropDown" [value]="phase.name">{{replace(phase.name,'drop')}}</option>
+            </select>
+          </div>
+          <div class="block">
+            <select class="select" [(ngModel)]="searchReqObject.recruitmentStatus">
+              <option value="all">All</option>
+              <option *ngFor="let rec of recDropDown" [value]="rec.name">{{replace(rec.name,'drop')}}</option>
+            </select>
+          </div>
+          <div class="block2" (click)="searchClinicalTrials(null);">
+            <svg style="display: block;  margin: auto; margin-top: 15%;" id="search-24px"
+              xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+              <path id="Path_5" data-name="Path 5"
+                d="M22.224,19.917H21.009l-.431-.415A10.012,10.012,0,1,0,19.5,20.579l.415.431v1.215l7.69,7.674L29.9,27.607Zm-9.228,0A6.921,6.921,0,1,1,19.917,13,6.912,6.912,0,0,1,13,19.917Z"
+                transform="translate(3.037 3.037)" fill="#efefef" />
+              <path id="Path_6" data-name="Path 6" d="M0,0H40V40H0Z" fill="none" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <!-- Cards page-->
+      <div class="mi-margin-5" style="margin-top: 9%;" *ngIf='!searchtable'>
+        <div class="containingDIV padding-bottom-20">
+          <div class="totalCount padding-top-10"></div>
+          <span class="color4 matching">
+            <span class="matching color3">{{clinicalTraildata.data.baseMatches.edges.length}}</span>
+            Matching Trials</span>
+          <div>
+            <div *ngFor="let filter of filtersArray;let i = index;" class="filters mi-margin-10"
+              style=" position: relative;display: inline-block;"> <span class="color1 filterText">
+                {{filter.val}} </span>
+              <div class="dropdown-content">
+                <div style=" height: 230px; overflow-y: scroll; ">
+                  <ul *ngFor="let filterdrop of filter.data;let j = index;">
+                    <li (click)="checkBoxClick(i,j)" class="color11"><input type="checkbox" class="checkboxClass"
+                        [checked]="filterdrop.selectedItems" [value]="filterdrop.selectedItems">{{filterdrop.val}}
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <div style="border-top: 0.5px solid #9D9D9D;margin-bottom: 10px;">
+                    <div class="float-right mi-margin-10">
+                      <span (click)="clearFilter(i)" class="color11">CLEAR</span>
+                      <button (click)="applyFilter()" class="mi-margin-left-10 color8"
+                        style="background-color: #52E0F2;width: 89px;">Apply</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="padding-left-20 padding-top-15">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 37 37">
+              <path id="ic_directions_24px"
+                d="M38.466,19.193,21.812,2.539a1.843,1.843,0,0,0-2.609,0L2.549,19.193a1.843,1.843,0,0,0,0,2.609L19.2,38.456a1.843,1.843,0,0,0,2.609,0L38.466,21.8a1.843,1.843,0,0,0,0-2.609ZM24.2,25.133V20.507H16.8v5.551H13.1v-7.4a1.856,1.856,0,0,1,1.85-1.85H24.2V12.18l6.477,6.477Z"
+                transform="translate(-2.007 -1.997)" fill="#525151"></path>
+            </svg>
+            <span class="cardText2 font-size-20">{{searchReqObject.zipCode}}</span>
+          </div>
+          <div class="padding-left-20 padding-top-15">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 37 37">
+              <path id="ic_directions_24px"
+                d="M38.466,19.193,21.812,2.539a1.843,1.843,0,0,0-2.609,0L2.549,19.193a1.843,1.843,0,0,0,0,2.609L19.2,38.456a1.843,1.843,0,0,0,2.609,0L38.466,21.8a1.843,1.843,0,0,0,0-2.609ZM24.2,25.133V20.507H16.8v5.551H13.1v-7.4a1.856,1.856,0,0,1,1.85-1.85H24.2V12.18l6.477,6.477Z"
+                transform="translate(-2.007 -1.997)" fill="#525151"></path>
+            </svg>
+            <span class="cardText2 font-size-20">{{searchReqObject.travelRadius}} Miles</span>
+          </div>
+        </div>
+        <span class="color11 ">Showing {{selectedPage.startIndex + 1}}-<span *ngIf="selectedPage.endIndex < clinicalTraildata.data.baseMatches.edges.length">{{selectedPage.endIndex}}</span> <span *ngIf="selectedPage.endIndex > clinicalTraildata.data.baseMatches.edges.length">{{clinicalTraildata.data.baseMatches.edges.length}}</span> of {{clinicalTraildata.data.baseMatches.edges.length}}</span>
+        <div style="padding-bottom: 20px; height: 60vh;overflow-y: scroll;margin-top: 10px;" class="mitTable">
+          <div *ngFor="let trial of pageData.data.baseMatches.edges; let k=index">
+            <div class="row containingDIV cards" (click)="showDeatails(k)">
+              <div class="col15"> <button class="recButton mi-margin-10"> {{trial.node.overallStatus}} </button><span
+                  class="color3 mi-margin-20">NEW!</span>
+              </div>
+              <div class="col35 padding-top-15 padding-bottom-15 ">
+                <h2 class="cardtext ">
+                  {{trial.node.title}}</h2>
+                <div class="containingDIV padding-top-10">
+                  <h3 class="cardtext color13">Conditions:</h3>
+                  <span class="cardtext color13 mi-margin-left-10"> {{replace(trial.node.conditions,'search')}}</span>
+                </div>
+              </div>
+              <div class="col10">
+                <div class="padding-top-30 padding-left-20"> <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                    height="20" viewBox="0 0 37 37">
+                    <path id="ic_directions_24px"
+                      d="M38.466,19.193,21.812,2.539a1.843,1.843,0,0,0-2.609,0L2.549,19.193a1.843,1.843,0,0,0,0,2.609L19.2,38.456a1.843,1.843,0,0,0,2.609,0L38.466,21.8a1.843,1.843,0,0,0,0-2.609ZM24.2,25.133V20.507H16.8v5.551H13.1v-7.4a1.856,1.856,0,0,1,1.85-1.85H24.2V12.18l6.477,6.477Z"
+                      transform="translate(-2.007 -1.997)" fill="#525151" />
+                  </svg><span class="cardText2">3.5 m</span></div>
+              </div>
+              <div class="col20">
+                <div class="containingDIV padding-top-10" style="margin-top: 7%;">
+                  <div>
+                    <h2 class="color1 padding-bottom-10 opacity-60 letter-spacing text-transform-uppercase">Match
+                      likelihood:</h2>
+                    <h2 class="color5">High Likelihood</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="col20 padding-10" style="background-color:#DFEEF0;">
+                <div class="containingDIV padding-bottom-5">
+                  <div class="col33"><svg class="float-right padding-right-5" id="email-24px"
+                      xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+                      <path id="Path_22" data-name="Path 22"
+                        d="M24.5,4H4.5A2.5,2.5,0,0,0,2.013,6.5L2,21.5A2.507,2.507,0,0,0,4.5,24h20A2.507,2.507,0,0,0,27,21.5V6.5A2.507,2.507,0,0,0,24.5,4Zm0,5-10,6.25L4.5,9V6.5l10,6.25,10-6.25Z"
+                        transform="translate(0.5 1)" fill="#0079e0" />
+                      <path id="Path_23" data-name="Path 23" d="M0,0H30V30H0Z" fill="none" /></svg>
+                  </div>
+                  <div class="col33"><svg id="phone-24px" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                      viewBox="0 0 30 30">
+                      <path id="Path_26" data-name="Path 26" d="M0,0H30V30H0Z" fill="none" />
+                      <path id="Path_27" data-name="Path 27"
+                        d="M7.525,12.738a18.936,18.936,0,0,0,8.238,8.238l2.75-2.75a1.243,1.243,0,0,1,1.275-.3,14.259,14.259,0,0,0,4.462.712,1.254,1.254,0,0,1,1.25,1.25V24.25a1.254,1.254,0,0,1-1.25,1.25A21.248,21.248,0,0,1,3,4.25,1.254,1.254,0,0,1,4.25,3H8.625a1.254,1.254,0,0,1,1.25,1.25,14.2,14.2,0,0,0,.712,4.462,1.254,1.254,0,0,1-.312,1.275Z"
+                        transform="translate(0.75 0.75)" fill="#0079e0" />
+                    </svg> </div>
+                  <div class="col33"><svg class="text-align-left" id="open_in_new-24px"
+                      xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34">
+                      <path id="Path_24" data-name="Path 24" d="M0,0H34V34H0Z" fill="none" />
+                      <path id="Path_25" data-name="Path 25"
+                        d="M25.667,25.667H5.833V5.833H15.75V3H5.833A2.833,2.833,0,0,0,3,5.833V25.667A2.833,2.833,0,0,0,5.833,28.5H25.667A2.842,2.842,0,0,0,28.5,25.667V15.75H25.667ZM18.583,3V5.833h5.086L9.743,19.759l2,2L25.667,7.831v5.086H28.5V3Z"
+                        transform="translate(1.25 1.25)" fill="#0079e0" />
+                    </svg> </div>
+                </div><svg xmlns="http://www.w3.org/2000/svg" width="222" height="40" viewBox="0 0 222 40">
+                  <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)">
+                    <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
+                      <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)" fill="none"
+                        stroke="#707070" stroke-width="1">
+                        <rect width="222" height="40" rx="10" stroke="none" />
+                        <rect x="0.5" y="0.5" width="221" height="39" rx="9.5" fill="none" />
+                      </g>
+                      <g id="save-24px" transform="translate(1603.053 477)">
+                        <path id="Path_30" data-name="Path 30" d="M0,0H32V32H0Z" fill="none" />
+                        <path id="Path_31" data-name="Path 31"
+                          d="M21.667,3h-16A2.666,2.666,0,0,0,3,5.667V24.333A2.666,2.666,0,0,0,5.667,27H24.333A2.675,2.675,0,0,0,27,24.333v-16ZM15,24.333a4,4,0,1,1,4-4A3.995,3.995,0,0,1,15,24.333ZM19,11H5.667V5.667H19Z"
+                          transform="translate(1 1)" fill="#0079e0" />
+                      </g>
+                      <text id="Save_study" data-name="Save study" transform="translate(1654 500)" fill="#0079e0"
+                        font-size="20" font-family="Roboto-Bold, Roboto" font-weight="700">
+                        <tspan x="0" y="0">SAVE STUDY</tspan>
+                      </text>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="containingDIV float-right">
+        <p class="mi-margin-10 color7">Items per page</p>
+        <select class="selectItemPerPage color7" [(ngModel)]="itemPerPages" (change)="countPages(clinicalTraildata)">
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="30">30</option>
+        </select>
+        <span  *ngFor="let page of pages" class="mi-margin-10 color7" (click)="viewPage(page)" [ngClass]="selectedPage.val == page.val ? 'selectedPage':''">{{page.val}}</span>
+        </div>
+      </div>
+      <!-- Details page-->
+      <div class="mi-margin-2" style="margin-top: 10%;" *ngIf='!detailsPage'>
+        <div style="border-radius: 0px 0px 10px 10px;
+          background: #525151;">
+          <div class="mi-margin-30 col100 containingDIV" (click)="backToSearch();">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40.641" height="40.641" viewBox="0 0 40.641 40.641">
+              <g id="arrow_upward-24px" transform="translate(0 40.641) rotate(-90)">
+                <path id="Path_20" data-name="Path 20" d="M0,0H40.641V40.641H0Z" fill="none" />
+                <path id="Path_21" data-name="Path 21"
+                  d="M4,17.547l2.388,2.388,9.466-9.449V31.094H19.24V10.486l9.449,9.466,2.4-2.4L17.547,4Z"
+                  transform="translate(2.773 2.773)" fill="#efefef" />
+              </g>
+            </svg><span class="color8" style="margin-top: 10px;"> Back to results</span>
+          </div>
+          <div class="row col100 mi-margin-30">
+            <div class="col80 containingDIV float-left">
+              <div class="row">
+                <div class="padding-top-15 padding-bottom-15">
+                  <h2 class="detailCardtext upperCase">{{detailPageSelectedData.node.title}}
+                  </h2>
+                  <div class="containingDIV padding-top-10">
+                    <h3 class="cardtext upperCase color7">Conditions:</h3>
+                    <span class="cardtext color8 mi-margin-left-10">{{replace(detailPageSelectedData.node.conditions,'search')}}</span>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="cardtext upperCase color7">Brief summary</h3>
+                  <span class="cardtext color8">{{detailPageSelectedData.node.description}}
+                  </span>
+                </div>
+
+                <div class="col100 containingDIV ">
+                  <div class="col33 mi-margin-10 outerDiv">
+                    <div class="innerDiv">
+                      <button class="recButton mi-margin-10 padding-10" style="width: auto;">{{detailPageSelectedData.node.overallStatus}}</button>
+                      <p class="color3 mi-margin-30 mi-margin-left-p">NEW!</p>
+                      <span>
+                        Actively recruiting
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col33 mi-margin-10 outerDiv">
+                    <div class="innerDiv">
+                      <svg class="mi-margin-left-p" xmlns="http://www.w3.org/2000/svg" width="47" height="47"
+                        viewBox="0 0 47 47">
+                        <path id="ic_directions_24px"
+                          d="M48.32,23.84,27.165,2.685a2.341,2.341,0,0,0-3.314,0L2.7,23.84a2.341,2.341,0,0,0,0,3.314L23.85,48.31a2.341,2.341,0,0,0,3.314,0L48.32,27.155a2.341,2.341,0,0,0,0-3.314ZM30.2,31.386V25.509h-9.4v7.052h-4.7v-9.4a2.358,2.358,0,0,1,2.351-2.351H30.2V14.932l8.227,8.227Z"
+                          transform="translate(-2.007 -1.997)" fill="#525151" />
+                      </svg>
+                      <p class="color3 mi-margin-30 mi-margin-left-p">3.5 m</p>
+                      <span>
+                        Closest location
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col33 mi-margin-10 " style="width: 321px;
+                      height: 217px;
+                      background: rgba(255, 255, 255, 0.94);">
+                    <div>
+                      <svg style="margin-left: 30%;margin-top: 10%;" xmlns="http://www.w3.org/2000/svg" width="103"
+                        height="103" viewBox="0 0 103 103">
+                        <g id="Ellipse_1" data-name="Ellipse 1" fill="none" stroke="#30b400" stroke-width="10">
+                          <circle cx="51.5" cy="51.5" r="51.5" stroke="none" />
+                          <circle cx="51.5" cy="51.5" r="46.5" fill="none" />
+                        </g>
+                      </svg>
+                      <p style="margin-left: 11%;margin-top: 10%;">
+                        Match likelihood: High Likelihood
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col20  float-right">
+              <div class="col80 mi-margin-10" style="
+                      height: 217px;
+                      background: white;">
+                <p class="color9 text-transform-uppercase mi-margin-10 padding-top-10">Contact information</p>
+                <span class="color9 text-transform-uppercase  mi-margin-left-10">sponsor: </span><span
+                  class="color9">{{detailPageSelectedData.node.sponsor}}</span>
+                <div class=" mi-margin-10 containingDIV">
+                  <svg id="phone-24px" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 30 30">
+                    <path id="Path_26" data-name="Path 26" d="M0,0H30V30H0Z" fill="none" />
+                    <path id="Path_27" data-name="Path 27"
+                      d="M7.525,12.738a18.936,18.936,0,0,0,8.238,8.238l2.75-2.75a1.243,1.243,0,0,1,1.275-.3,14.259,14.259,0,0,0,4.462.712,1.254,1.254,0,0,1,1.25,1.25V24.25a1.254,1.254,0,0,1-1.25,1.25A21.248,21.248,0,0,1,3,4.25,1.254,1.254,0,0,1,4.25,3H8.625a1.254,1.254,0,0,1,1.25,1.25,14.2,14.2,0,0,0,.712,4.462,1.254,1.254,0,0,1-.312,1.275Z"
+                      transform="translate(0.75 0.75)" fill="#0079e0" />
+                  </svg>
+                  <span class="color10 font15">{{detailPageSelectedData.node.overallContactPhone}}</span>
+                </div>
+                <div class=" mi-margin-10 containingDIV">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 25 20">
+                    <path id="Path_22" data-name="Path 22"
+                      d="M24.5,4H4.5A2.5,2.5,0,0,0,2.013,6.5L2,21.5A2.507,2.507,0,0,0,4.5,24h20A2.507,2.507,0,0,0,27,21.5V6.5A2.507,2.507,0,0,0,24.5,4Zm0,5-10,6.25L4.5,9V6.5l10,6.25,10-6.25Z"
+                      transform="translate(-2 -4)" fill="#0079e0" />
+                  </svg>
+                  <span class="color10 font15">{{detailPageSelectedData.node.overallContactEmail}}</span>
+                </div>
+              </div>
+              <div class="col80">
+                <svg xmlns="http://www.w3.org/2000/svg" width="222" height="40" viewBox="0 0 222 40">
+                  <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)">
+                    <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
+                      <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)" fill="#efefef"
+                        stroke="#707070" stroke-width="1">
+                        <rect width="222" height="40" rx="10" stroke="none" />
+                        <rect x="0.5" y="0.5" width="221" height="39" rx="9.5" fill="#efefef" />
+                      </g>
+                      <g id="save-24px" transform="translate(1603.053 477)">
+                        <path id="Path_30" data-name="Path 30" d="M0,0H32V32H0Z" fill="none" />
+                        <path id="Path_31" data-name="Path 31"
+                          d="M21.667,3h-16A2.666,2.666,0,0,0,3,5.667V24.333A2.666,2.666,0,0,0,5.667,27H24.333A2.675,2.675,0,0,0,27,24.333v-16ZM15,24.333a4,4,0,1,1,4-4A3.995,3.995,0,0,1,15,24.333ZM19,11H5.667V5.667H19Z"
+                          transform="translate(1 1)" fill="#0079e0" />
+                      </g>
+                      <text id="Save_study" data-name="Save study" transform="translate(1654 500)" fill="#0079e0"
+                        font-size="20" font-family="Roboto-Bold, Roboto" font-weight="700">
+                        <tspan x="0" y="0">SAVE STUDY</tspan>
+                      </text>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div style="background-color: white;">
+            <button class="accordion" (click)="showHideAccordian($event)">Description</button>
+            <div class="panel">
+              <p id="description" class="color9" style="font-size: 20px;">
+                {{detailPageSelectedData.node.detailedDescription}}
+              </p>
+            </div>
+            <button class="accordion" (click)="showHideAccordian($event)">Study Design </button>
+            <div class="panel">
+              <p id="studyDesign " class="color9" style="font-size: 20px;">
+                NA
+              </p>
+            </div>
+            <button class="accordion" (click)="showHideAccordian($event)">Eligibility criteria</button>
+            <div class="panel">
+              <p id="eligibilityCriteria" class="color9" style="font-size: 20px;">
+                {{detailPageSelectedData.node.criteria}}
+              </p>
+            </div>
+            <button class="accordion" (click)="showHideAccordian($event)">Arms & Interventions</button>
+            <div class="panel">
+              <p id="interventions" class="color9" style="font-size: 20px;">
+                NA
+              </p>
+            </div>
+            <button class="accordion" (click)="showHideAccordian($event)">More information</button>
+            <div class="panel">
+              <p id="moreInformation" class="color9" style="font-size: 20px;">
+                NA
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row footer" *ngIf='!searchPage'>
+      <div class="col-sm-4">
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>
