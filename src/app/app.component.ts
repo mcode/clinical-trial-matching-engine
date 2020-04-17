@@ -129,9 +129,22 @@ export class AppComponent {
       if (this.searchReqObject.recruitmentStatus !== 'all') {
         req += ',recruitmentStatus:' + this.searchReqObject.recruitmentStatus;
       }
-      req += '}){totalCount ';
-      req += 'edges{ node{ nctId  title conditions gender description detailedDescription criteria sponsor overallContactPhone overallContactEmail overallStatus armGroups phase minimumAge studyType ';
-      req += 'maximumAge sites {  facility contactName  contactEmail contactPhone   latitude longitude }} cursor}    pageInfo { endCursor hasNextPage  }}}';
+      req += `})
+      {
+        totalCount
+        edges {
+          node {
+            nctId title conditions gender description detailedDescription
+            criteria sponsor overallContactPhone overallContactEmail
+            overallStatus armGroups phase minimumAge studyType
+            maximumAge sites {
+              facility contactName contactEmail contactPhone latitude longitude
+            }
+          }
+          cursor
+        }
+        pageInfo { endCursor hasNextPage }
+      } }`;
       const reqObj = {
         inputParam: req
       };
