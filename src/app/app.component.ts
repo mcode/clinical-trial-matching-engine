@@ -93,6 +93,10 @@ export class AppComponent {
     recruitmentStatus: 'all',
   }
   /*
+    export text variable
+  **/
+  public exportButtonText: string = "Export All Trials";
+  /*
     Function for load phase and recruitment trial data
  * */
   public loadDropDownData(req, val) {
@@ -373,6 +377,7 @@ export class AppComponent {
     Function add trial to Array of saved trials
   * */
   public saveTrial(trialData) {
+    this.exportButtonText = "Export Saved Trials";
     if (!this.savedClinicalTrialsNctIds.has(trialData.node.nctId)) {
       this.savedClinicalTrials.push(trialData);
       this.savedClinicalTrialsNctIds.add(trialData.node.nctId);
