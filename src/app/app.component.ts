@@ -5,6 +5,8 @@ import * as _ from 'lodash';
 
 import { ClientService } from './smartonfhir/client.service';
 import Patient from './patient';
+import { UnpackMatchResults } from './export/parse-data';
+import { ExportTrials } from './export/export-data';
 
 @Component({
   selector: 'app-root',
@@ -65,6 +67,14 @@ export class AppComponent {
      variable for make  copy  of clinical Trail data
   * */
   public clinicalTraildataCopy: any = [];
+  /*
+    variable for Array of saved clinical trials
+  * */
+  public savedClinicalTrials: any = [];
+  /*
+      variable for set of saved clinical trials nctIds
+  * */
+  public savedClinicalTrialsNctIds: any = new Set();
   /*
      variable for show details of selected clinical trial
   * */
@@ -358,6 +368,25 @@ export class AppComponent {
     this.searchtable = true;
     this.searchPage = false;
     this.detailsPage = true;
+  }
+  /*
+    Function add trial to Array of saved trials
+  * */
+  public saveTrial(trialData) {
+    if (!this.savedClinicalTrialsNctIds.has(trialData.nctId)) {
+      this.savedClinicalTrials.push(trialData);
+      this.savedClinicalTrialsNctIds.add(trialData.nctId);
+      alert("Trial Saved");
+    } else {
+      alert("Trial Already Saved");
+    }
+  }
+  /*
+    Function to export Array of saved trials
+  * */
+  public exportSavedTrials() {
+    let data = UnpackMatchResults(this.savedClinicalTrials);
+    ExportTrials(data, "clinicalTrials");
   }
 
   onChange(val){

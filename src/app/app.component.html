@@ -109,6 +109,9 @@
                 </div>
               </div>
             </div>
+            <div class="filters mi-margin-10" (click)="exportSavedTrials()"
+                 style=" position: relative;display: inline-block;"> <span class="color1 filterText">Export Saved Trials</span>
+            </div>
           </div>
           <div class="padding-left-20 padding-top-15">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 37 37">
@@ -182,7 +185,7 @@
                         d="M25.667,25.667H5.833V5.833H15.75V3H5.833A2.833,2.833,0,0,0,3,5.833V25.667A2.833,2.833,0,0,0,5.833,28.5H25.667A2.842,2.842,0,0,0,28.5,25.667V15.75H25.667ZM18.583,3V5.833h5.086L9.743,19.759l2,2L25.667,7.831v5.086H28.5V3Z"
                         transform="translate(1.25 1.25)" fill="#0079e0" />
                     </svg> </div>
-                </div><svg xmlns="http://www.w3.org/2000/svg" width="222" height="40" viewBox="0 0 222 40">
+                </div><svg xmlns="http://www.w3.org/2000/svg" width="222" height="40" viewBox="0 0 222 40" (click)="saveTrial(pageData.data.baseMatches.edges[k].node)">
                   <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)">
                     <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
                       <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)" fill="none"
@@ -316,7 +319,7 @@
                   <span class="color10 font15">{{detailPageSelectedData.node.overallContactEmail}}</span>
                 </div>
               </div>
-              <div class="col80">
+              <div class="col80" (click)="saveTrial(detailPageSelectedData.node)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="222" height="40" viewBox="0 0 222 40">
                   <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)">
                     <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
