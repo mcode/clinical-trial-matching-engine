@@ -8,7 +8,7 @@ export const UnpackMatchResults = (result) => {
 
   result.forEach( match => {
 
-    let trial = match;
+    let trial = match.node;
     let mainRow = {};
     let sites:object = {};
     let blackList = ["advancedMatchConditions", "armGroups", "interventions"];

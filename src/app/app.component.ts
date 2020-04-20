@@ -373,9 +373,9 @@ export class AppComponent {
     Function add trial to Array of saved trials
   * */
   public saveTrial(trialData) {
-    if (!this.savedClinicalTrialsNctIds.has(trialData.nctId)) {
+    if (!this.savedClinicalTrialsNctIds.has(trialData.node.nctId)) {
       this.savedClinicalTrials.push(trialData);
-      this.savedClinicalTrialsNctIds.add(trialData.nctId);
+      this.savedClinicalTrialsNctIds.add(trialData.node.nctId);
       alert("Trial Saved");
     } else {
       alert("Trial Already Saved");
@@ -385,7 +385,12 @@ export class AppComponent {
     Function to export Array of saved trials
   * */
   public exportSavedTrials() {
-    let data = UnpackMatchResults(this.savedClinicalTrials);
+    let data;
+    if (this.savedClinicalTrials.length > 0) {
+      data = UnpackMatchResults(this.savedClinicalTrials);
+    } else {
+      data = UnpackMatchResults(JSON.parse(JSON.stringify(this.clinicalTraildata))['data'].baseMatches.edges);
+    }
     ExportTrials(data, "clinicalTrials");
   }
 
