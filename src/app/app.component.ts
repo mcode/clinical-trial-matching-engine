@@ -374,13 +374,22 @@ export class AppComponent {
     this.detailsPage = true;
   }
   /*
-    Function add trial to Array of saved trials
+    Function add/remove trial to/from Array of saved trials
   * */
   public saveTrial(trialData) {
     this.exportButtonText = "Export Saved Trials";
     if (!this.savedClinicalTrialsNctIds.has(trialData.node.nctId)) {
       this.savedClinicalTrials.push(trialData);
       this.savedClinicalTrialsNctIds.add(trialData.node.nctId);
+     } else {
+      let index;
+      this.savedClinicalTrials.some(i => {
+          if (i.node.nctId === trialData.node.nctId) {
+              index = this.savedClinicalTrials.indexOf(i, 0);
+          }
+      });
+      this.savedClinicalTrials.splice(index, 1);
+      this.savedClinicalTrialsNctIds.delete(trialData.node.nctId);
      }
   }
   /*
