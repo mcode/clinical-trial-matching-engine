@@ -257,7 +257,7 @@ export class AppComponent {
   * */
   public showDeatails(i) {
     var self = this;
-    self.detailPageSelectedData = self.clinicalTraildata.data.baseMatches.edges[i];
+    self.detailPageSelectedData = self.pageData['data'].baseMatches.edges[i];
     this.searchtable = true;
     this.searchPage = true;
     this.detailsPage = false;
