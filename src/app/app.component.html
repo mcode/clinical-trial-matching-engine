@@ -188,10 +188,10 @@
                 </div><svg xmlns="http://www.w3.org/2000/svg" width="222" height="40" viewBox="0 0 222 40" (click)="saveTrial(pageData.data.baseMatches.edges[k])">
                   <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)">
                     <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
-                      <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)" fill="none"
+                      <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)"
                         stroke="#707070" stroke-width="1">
                         <rect width="222" height="40" rx="10" stroke="none" />
-                        <rect x="0.5" y="0.5" width="221" height="39" rx="9.5" fill="none" />
+                        <rect x="0.5" y="0.5" width="221" height="39" rx="9.5" [ngClass]="savedClinicalTrialsNctIds.has(pageData.data.baseMatches.edges[k].node.nctId) ? 'saved' : 'unsaved'" />
                       </g>
                       <g id="save-24px" transform="translate(1603.053 477)">
                         <path id="Path_30" data-name="Path 30" d="M0,0H32V32H0Z" fill="none" />
@@ -201,7 +201,7 @@
                       </g>
                       <text id="Save_study" data-name="Save study" transform="translate(1654 500)" fill="#0079e0"
                         font-size="20" font-family="Roboto-Bold, Roboto" font-weight="700">
-                        <tspan x="0" y="0">SAVE STUDY</tspan>
+                        <tspan x="0" y="0">{{savedClinicalTrialsNctIds.has(pageData.data.baseMatches.edges[k].node.nctId) ? 'STUDY SAVED' : 'SAVE STUDY'}}</tspan>
                       </text>
                     </g>
                   </g>
@@ -323,10 +323,10 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="222" height="40" viewBox="0 0 222 40">
                   <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)">
                     <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
-                      <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)" fill="#efefef"
+                      <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)" fill="none"
                         stroke="#707070" stroke-width="1">
                         <rect width="222" height="40" rx="10" stroke="none" />
-                        <rect x="0.5" y="0.5" width="221" height="39" rx="9.5" fill="#efefef" />
+                        <rect x="0.5" y="0.5" width="221" height="39" rx="9.5" [ngClass]="savedClinicalTrialsNctIds.has(detailPageSelectedData.node.nctId) ? 'saved' : 'unsaved'" />
                       </g>
                       <g id="save-24px" transform="translate(1603.053 477)">
                         <path id="Path_30" data-name="Path 30" d="M0,0H32V32H0Z" fill="none" />
@@ -335,8 +335,8 @@
                           transform="translate(1 1)" fill="#0079e0" />
                       </g>
                       <text id="Save_study" data-name="Save study" transform="translate(1654 500)" fill="#0079e0"
-                        font-size="20" font-family="Roboto-Bold, Roboto" font-weight="700">
-                        <tspan x="0" y="0">SAVE STUDY</tspan>
+                        font-size="20" font-family="Roboto-Bold, Roboto" font-weight="700" >
+                        <tspan x="0" y="0">{{savedClinicalTrialsNctIds.has(detailPageSelectedData.node.nctId) ? 'STUDY SAVED' : 'SAVE STUDY'}}</tspan>
                       </text>
                     </g>
                   </g>

@@ -381,10 +381,7 @@ export class AppComponent {
     if (!this.savedClinicalTrialsNctIds.has(trialData.node.nctId)) {
       this.savedClinicalTrials.push(trialData);
       this.savedClinicalTrialsNctIds.add(trialData.node.nctId);
-      alert("Trial Saved");
-    } else {
-      alert("Trial Already Saved");
-    }
+     }
   }
   /*
     Function to export Array of saved trials
@@ -410,6 +407,6 @@ export class AppComponent {
     }else{
       return newVal;
     }
-
   }
+
 }
