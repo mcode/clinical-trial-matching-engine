@@ -95,7 +95,7 @@ export class AppComponent {
   /*
     export text variable
   **/
-  public exportButtonText: string = "Export All Trials";
+  public exportButtonText = 'Export All Trials';
   /*
     Function for load phase and recruitment trial data
  * */
@@ -368,7 +368,7 @@ export class AppComponent {
     Function add/remove trial to/from Array of saved trials
   * */
   public saveTrial(trialData) {
-    this.exportButtonText = "Export Saved Trials";
+    this.exportButtonText = 'Export Saved Trials';
     if (!this.savedClinicalTrialsNctIds.has(trialData.node.nctId)) {
       this.savedClinicalTrials.push(trialData);
       this.savedClinicalTrialsNctIds.add(trialData.node.nctId);
@@ -393,7 +393,7 @@ export class AppComponent {
     } else {
       data = UnpackMatchResults(JSON.parse(JSON.stringify(this.clinicalTraildata))['data'].baseMatches.edges);
     }
-    ExportTrials(data, "clinicalTrials");
+    ExportTrials(data, 'clinicalTrials');
   }
 
   onChange(val) {
