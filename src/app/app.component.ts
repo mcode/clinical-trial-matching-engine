@@ -79,7 +79,7 @@ export class AppComponent {
      variable for show details of selected clinical trial
   * */
   public detailPageSelectedData: any;
-  public  pages = [];
+  public pages = [];
   public pageData = [];
   public selectedPage: any;
   public itemPerPages: any = 10;
@@ -238,20 +238,18 @@ export class AppComponent {
     this.viewPage(this.pages[0]);
     this.spinner.hide();
   }
-  /*
-    Function for view data based on selected page
- * */
+  /**
+   * Function to view data based on selected page
+   */
   public viewPage(page) {
-    const self = this;
-    self.selectedPage = page;
-    self.pageData = JSON.parse(JSON.stringify(self.clinicalTraildata));
-    self.pageData['data'].baseMatches.edges = self.pageData['data'].baseMatches.edges.slice(page.startIndex, page.endIndex);
+    this.selectedPage = page;
+    this.pageData = this.clinicalTraildata.data.baseMatches.edges.slice(page.startIndex, page.endIndex);
   }
   /*
   Function for show details of clinical trial
   * */
   public showDeatails(i) {
-    this.detailPageSelectedData = this.pageData['data'].baseMatches.edges[i];
+    this.detailPageSelectedData = this.pageData[i];
     this.searchtable = true;
     this.searchPage = true;
     this.detailsPage = false;
@@ -268,6 +266,8 @@ export class AppComponent {
     Function for back search result page
     * */
   public showHideAccordian(event) {
+    // HTMLNodeList is not an iterator
+    /* tslint:disable:prefer-for-of */
     const acc = document.getElementsByClassName('accordion');
     for (let i = 0; i < acc.length; i++) {
       acc[i].addEventListener('click', function() {
@@ -280,6 +280,7 @@ export class AppComponent {
         }
       });
     }
+    /* tslint:enable:prefer-for-of */
   }
   /*
     Function for apply selected filter
@@ -298,14 +299,14 @@ export class AppComponent {
     for (const filter of filterArrayData) {
       if (filter.arrays.length !== 0) {
         const filterArraysCopy = [];
-        for (let y = 0; y < filter.arrays.length; y++) {
+        for (const filterArray of filter.arrays) {
           for (let z = 0; z < filterArrays.length; z++) {
             if (filter.selecteditem === 'conditions') {
-              if (this.checkValue(filter.arrays[y].val, JSON.parse(filterArrays[z].node.conditions)) === 'Exist') {
+              if (this.checkValue(filterArray.val, JSON.parse(filterArrays[z].node.conditions)) === 'Exist') {
                 filterArraysCopy.push(self.clinicalTraildataCopy[z]);
               }
             } else {
-              if (filter.arrays[y].val === filterArrays[z].node[filter.selecteditem]) {
+              if (filterArray.val === filterArrays[z].node[filter.selecteditem]) {
                 filterArraysCopy.push(self.clinicalTraildataCopy[z]);
               }
             }
@@ -326,8 +327,7 @@ export class AppComponent {
     * */
   public checkValue(value, arr) {
     let status = 'Not exist';
-    for (let i = 0; i < arr.length; i++) {
-      const name = arr[i];
+    for (const name of arr) {
       if (name === value) {
         status = 'Exist';
         break;
@@ -391,7 +391,7 @@ export class AppComponent {
     if (this.savedClinicalTrials.length > 0) {
       data = UnpackMatchResults(this.savedClinicalTrials);
     } else {
-      data = UnpackMatchResults(JSON.parse(JSON.stringify(this.clinicalTraildata))['data'].baseMatches.edges);
+      data = UnpackMatchResults(JSON.parse(JSON.stringify(this.clinicalTraildata)).data.baseMatches.edges);
     }
     ExportTrials(data, 'clinicalTrials');
   }
