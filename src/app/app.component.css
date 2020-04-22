@@ -583,3 +583,11 @@ line-height: 25px;
     margin: 0 auto;
     padding: 10%;
  }
+
+ .saved {
+    fill: #A3C5D2;
+ }
+
+ .unsaved {
+    fill: #efefef;
+ }

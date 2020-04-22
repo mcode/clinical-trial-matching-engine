@@ -5,6 +5,8 @@ import * as _ from 'lodash';
 
 import { ClientService } from './smartonfhir/client.service';
 import Patient from './patient';
+import { UnpackMatchResults } from './export/parse-data';
+import { ExportTrials } from './export/export-data';
 
 @Component({
   selector: 'app-root',
@@ -66,6 +68,14 @@ export class AppComponent {
   * */
   public clinicalTraildataCopy: any = [];
   /*
+    variable for Array of saved clinical trials
+  * */
+  public savedClinicalTrials: any = [];
+  /*
+      variable for set of saved clinical trials nctIds
+  * */
+  public savedClinicalTrialsNctIds: any = new Set();
+  /*
      variable for show details of selected clinical trial
   * */
   public detailPageSelectedData: any;
@@ -82,6 +92,10 @@ export class AppComponent {
     phase: 'any',
     recruitmentStatus: 'all',
   }
+  /*
+    export text variable
+  **/
+  public exportButtonText: string = "Export All Trials";
   /*
     Function for load phase and recruitment trial data
  * */
@@ -243,7 +257,7 @@ export class AppComponent {
   * */
   public showDeatails(i) {
     var self = this;
-    self.detailPageSelectedData = self.clinicalTraildata.data.baseMatches.edges[i];
+    self.detailPageSelectedData = self.pageData['data'].baseMatches.edges[i];
     this.searchtable = true;
     this.searchPage = true;
     this.detailsPage = false;
@@ -359,6 +373,37 @@ export class AppComponent {
     this.searchPage = false;
     this.detailsPage = true;
   }
+  /*
+    Function add/remove trial to/from Array of saved trials
+  * */
+  public saveTrial(trialData) {
+    this.exportButtonText = "Export Saved Trials";
+    if (!this.savedClinicalTrialsNctIds.has(trialData.node.nctId)) {
+      this.savedClinicalTrials.push(trialData);
+      this.savedClinicalTrialsNctIds.add(trialData.node.nctId);
+     } else {
+      let index;
+      this.savedClinicalTrials.some(i => {
+          if (i.node.nctId === trialData.node.nctId) {
+              index = this.savedClinicalTrials.indexOf(i, 0);
+          }
+      });
+      this.savedClinicalTrials.splice(index, 1);
+      this.savedClinicalTrialsNctIds.delete(trialData.node.nctId);
+     }
+  }
+  /*
+    Function to export Array of saved trials
+  * */
+  public exportSavedTrials() {
+    let data;
+    if (this.savedClinicalTrials.length > 0) {
+      data = UnpackMatchResults(this.savedClinicalTrials);
+    } else {
+      data = UnpackMatchResults(JSON.parse(JSON.stringify(this.clinicalTraildata))['data'].baseMatches.edges);
+    }
+    ExportTrials(data, "clinicalTrials");
+  }
 
   onChange(val){
     this.countPages(this.clinicalTraildata)
@@ -371,6 +416,6 @@ export class AppComponent {
     }else{
       return newVal;
     }
-
   }
+
 }
