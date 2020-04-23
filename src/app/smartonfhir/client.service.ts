@@ -28,10 +28,7 @@ export class ClientService {
         clientId: 'Input client id you get when you register the app',
         scope: 'launch/patient openid profile'
       })
-      .then(client => {
-        // Forward the client down the chain
-        return this.client = client;
-      });
+      .then(client => this.client = client); // Forward the client down the chain
   }
   /**
    * Gets the patient from the client. If the client has not be initialized,

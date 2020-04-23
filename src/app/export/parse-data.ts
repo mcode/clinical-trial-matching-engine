@@ -1,6 +1,4 @@
-const clearPunctuation = (entry: string) => {
-  return entry.replace(/"/g, '');
-};
+const clearPunctuation = (entry: string) => entry.replace(/"/g, '');
 
 export const UnpackMatchResults = (result) => {
 

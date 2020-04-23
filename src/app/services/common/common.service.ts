@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 const config = require('../../configuration/configuration.json');
 
@@ -24,27 +25,27 @@ export interface ClinicalTrialResponse {
   providedIn: 'root'
 })
 export class CommonService {
-  constructor(private http: HttpClient) { }
   /*
    * Variable for service URL
    */
   public configURL = '';
+  constructor(private http: HttpClient) { }
   /*
    * get drop down data
    */
-  public getDropDownData(requestObj) {
+  public getDropDownData(requestObj): Observable<GQSchemaResponse> {
     return this.http.post<GQSchemaResponse>(this.getServiceURL() + '/getClinicalTrial', requestObj);
   }
   /*
    * get drop down data
    */
-  public searchClinialTrial(requestObj) {
+  public searchClinialTrial(requestObj): Observable<ClinicalTrialResponse> {
     return this.http.post<ClinicalTrialResponse>(this.getServiceURL() + '/getClinicalTrial', requestObj);
   }
   /*
    * Get service URL
    */
-  public getServiceURL() {
+  public getServiceURL(): string {
     this.configURL = config.SERVICE;
     return this.configURL;
   }

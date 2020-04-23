@@ -16,24 +16,6 @@ import { ExportTrials } from './export/export-data';
 export class AppComponent {
   title = 'clinicalTrial';
   public self = this;
-  constructor(public commonService: CommonService, private spinner: NgxSpinnerService, private fhirService: ClientService) {
-    const paramPhase = '{ __type(name: "Phase") { enumValues { name } } }';
-    const recPhase = '{ __type(name: "RecruitmentStatusEnum") { enumValues { name } } }';
-    this.loadDropDownData(paramPhase, 'phase');
-    this.loadDropDownData(recPhase, 'rec');
-    this.patient = fhirService.getPatient().then(patient => {
-      // Wrap the patient in a class that handles extracting values
-      const p = new Patient(patient);
-      // Also take this opportunity to set the zip code, if there is one
-      const zipCode = p.getHomePostalCode();
-      if (zipCode) {
-        if (!this.searchReqObject.zipCode) {
-          this.searchReqObject.zipCode = zipCode;
-        }
-      }
-      return p;
-    });
-  }
   public patient: Promise<Patient> | Patient;
   /*
   variable for phase Drop Down
@@ -86,7 +68,7 @@ export class AppComponent {
   /*
      variable for create object of search clinical trial request
   * */
-  searchReqObject: { zipCode: string | null, travelRadius: string | null, phase: string, recruitmentStatus: string } = {
+  searchReqObject: { zipCode: string | null; travelRadius: string | null; phase: string; recruitmentStatus: string } = {
     zipCode: null,
     travelRadius: null,
     phase: 'any',
@@ -96,31 +78,47 @@ export class AppComponent {
     export text variable
   **/
   public exportButtonText = 'Export All Trials';
+  constructor(public commonService: CommonService, private spinner: NgxSpinnerService, private fhirService: ClientService) {
+    const paramPhase = '{ __type(name: "Phase") { enumValues { name } } }';
+    const recPhase = '{ __type(name: "RecruitmentStatusEnum") { enumValues { name } } }';
+    this.loadDropDownData(paramPhase, 'phase');
+    this.loadDropDownData(recPhase, 'rec');
+    this.patient = fhirService.getPatient().then(patient => {
+      // Wrap the patient in a class that handles extracting values
+      const p = new Patient(patient);
+      // Also take this opportunity to set the zip code, if there is one
+      const zipCode = p.getHomePostalCode();
+      if (zipCode) {
+        if (!this.searchReqObject.zipCode) {
+          this.searchReqObject.zipCode = zipCode;
+        }
+      }
+      return p;
+    });
+  }
   /*
     Function for load phase and recruitment trial data
  * */
   public loadDropDownData(req, val) {
     this.spinner.show();
-    const self = this;
     const reqobj = {
       inputParam: req
     };
-    self.commonService.getDropDownData(reqobj).subscribe(response => {
+    this.commonService.getDropDownData(reqobj).subscribe(response => {
       if (val === 'phase') {
-        self.phaseDropDown = response.data.__type.enumValues;
+        this.phaseDropDown = response.data.__type.enumValues;
       } else {
-        self.recDropDown = response.data.__type.enumValues;
+        this.recDropDown = response.data.__type.enumValues;
       }
       this.spinner.hide();
     },
-      err => { }
+    err => { }
     );
   }
   /*
     Function for search Clinical trial data
  * */
   public searchClinicalTrials(endCursor) {
-    const self = this;
     this.itemPerPages = 10;
     this.spinner.show();
     if (endCursor == null) {
@@ -162,19 +160,19 @@ export class AppComponent {
       const reqObj = {
         inputParam: req
       };
-      self.commonService.searchClinialTrial(reqObj).subscribe(data => {
-        if (self.clinicalTraildata.length !== 0) {
-          self.clinicalTraildata.data.baseMatches.edges.push(...data.data.baseMatches.edges);
+      this.commonService.searchClinialTrial(reqObj).subscribe(data => {
+        if (this.clinicalTraildata.length !== 0) {
+          this.clinicalTraildata.data.baseMatches.edges.push(...data.data.baseMatches.edges);
         } else {
-          self.clinicalTraildata = data;
+          this.clinicalTraildata = data;
         }
         if (data.data.baseMatches.pageInfo.hasNextPage) {
           this.searchClinicalTrials(data.data.baseMatches.pageInfo.endCursor);
         } else {
-          self.clinicalTraildata.data.baseMatches.edges = _.uniqBy(self.clinicalTraildata.data.baseMatches.edges, 'node.nctId');
-          self.clinicalTraildataCopy = [...self.clinicalTraildata.data.baseMatches.edges];
+          this.clinicalTraildata.data.baseMatches.edges = _.uniqBy(this.clinicalTraildata.data.baseMatches.edges, 'node.nctId');
+          this.clinicalTraildataCopy = [...this.clinicalTraildata.data.baseMatches.edges];
           const newArray = [];
-          const myArray = _.uniqBy(self.clinicalTraildata.data.baseMatches.edges, 'node.conditions');
+          const myArray = _.uniqBy(this.clinicalTraildata.data.baseMatches.edges, 'node.conditions');
           for (const condition of myArray) {
             const tempArray = JSON.parse(condition.node.conditions);
             for (const e of tempArray) {
@@ -190,17 +188,17 @@ export class AppComponent {
             {
               val: 'Recruitment',
               selectedVal: 'overallStatus',
-              data: _.uniq(_.map(self.clinicalTraildata.data.baseMatches.edges, 'node.overallStatus'))
+              data: _.uniq(_.map(this.clinicalTraildata.data.baseMatches.edges, 'node.overallStatus'))
             },
             {
               val: 'Phase',
               selectedVal: 'phase',
-              data: _.uniq(_.map(self.clinicalTraildata.data.baseMatches.edges, 'node.phase'))
+              data: _.uniq(_.map(this.clinicalTraildata.data.baseMatches.edges, 'node.phase'))
             },
             {
               val: 'Study Type',
               selectedVal: 'studyType',
-              data: _.uniq(_.map(self.clinicalTraildata.data.baseMatches.edges, 'node.studyType'))
+              data: _.uniq(_.map(this.clinicalTraildata.data.baseMatches.edges, 'node.studyType'))
             }
           ];
           for (const filter of this.filtersArray.length) {
@@ -216,9 +214,9 @@ export class AppComponent {
           this.countPages(this.clinicalTraildata);
         }
       },
-        err => { }
+      err => { }
       );
-     }
+    }
   }
   /*
     Function for count pages
@@ -267,7 +265,7 @@ export class AppComponent {
     * */
   public showHideAccordian(event) {
     // HTMLNodeList is not an iterator
-    /* tslint:disable:prefer-for-of */
+    /* eslint-disable @typescript-eslint/prefer-for-of */
     const acc = document.getElementsByClassName('accordion');
     for (let i = 0; i < acc.length; i++) {
       acc[i].addEventListener('click', function() {
@@ -280,13 +278,12 @@ export class AppComponent {
         }
       });
     }
-    /* tslint:enable:prefer-for-of */
+    /* eslint-enable @typescript-eslint/prefer-for-of */
   }
   /*
     Function for apply selected filter
     * */
   public applyFilter() {
-    const self = this;
     this.spinner.show();
     const filterArrayData = [];
     for (const filter of this.filtersArray.length) {
@@ -303,11 +300,11 @@ export class AppComponent {
           for (let z = 0; z < filterArrays.length; z++) {
             if (filter.selecteditem === 'conditions') {
               if (this.checkValue(filterArray.val, JSON.parse(filterArrays[z].node.conditions)) === 'Exist') {
-                filterArraysCopy.push(self.clinicalTraildataCopy[z]);
+                filterArraysCopy.push(this.clinicalTraildataCopy[z]);
               }
             } else {
               if (filterArray.val === filterArrays[z].node[filter.selecteditem]) {
-                filterArraysCopy.push(self.clinicalTraildataCopy[z]);
+                filterArraysCopy.push(this.clinicalTraildataCopy[z]);
               }
             }
           }
@@ -318,7 +315,7 @@ export class AppComponent {
     if (filterArrays.length !== 0) {
       this.clinicalTraildata.data.baseMatches.edges = filterArrays;
     } else {
-      this.clinicalTraildata.data.baseMatches.edges = self.clinicalTraildataCopy.data.baseMatches.edges;
+      this.clinicalTraildata.data.baseMatches.edges = this.clinicalTraildataCopy.data.baseMatches.edges;
     }
     this.countPages(this.clinicalTraildata);
   }
@@ -339,19 +336,17 @@ export class AppComponent {
     Function for get event of selected Filter
     * */
   public checkBoxClick(i, j) {
-    const self = this;
-    if (!self.filtersArray[i].data[j].selectedItems) {
-      self.filtersArray[i].data[j].selectedItems = true;
+    if (!this.filtersArray[i].data[j].selectedItems) {
+      this.filtersArray[i].data[j].selectedItems = true;
     } else {
-      self.filtersArray[i].data[j].selectedItems = false;
+      this.filtersArray[i].data[j].selectedItems = false;
     }
   }
   /*
      Function for clear Filter
   * */
   public clearFilter(i) {
-    const self = this;
-    self.filtersArray[i].data.forEach(element => {
+    this.filtersArray[i].data.forEach(element => {
       element.selectedItems = false;
     });
     this.applyFilter();
@@ -372,16 +367,16 @@ export class AppComponent {
     if (!this.savedClinicalTrialsNctIds.has(trialData.node.nctId)) {
       this.savedClinicalTrials.push(trialData);
       this.savedClinicalTrialsNctIds.add(trialData.node.nctId);
-     } else {
+    } else {
       let index;
       this.savedClinicalTrials.some(i => {
-          if (i.node.nctId === trialData.node.nctId) {
-              index = this.savedClinicalTrials.indexOf(i, 0);
-          }
+        if (i.node.nctId === trialData.node.nctId) {
+          index = this.savedClinicalTrials.indexOf(i, 0);
+        }
       });
       this.savedClinicalTrials.splice(index, 1);
       this.savedClinicalTrialsNctIds.delete(trialData.node.nctId);
-     }
+    }
   }
   /*
     Function to export Array of saved trials
