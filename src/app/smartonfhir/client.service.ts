@@ -16,7 +16,6 @@ type Patient = fhirclient.FHIR.Patient;
 export class ClientService {
   client: Client;
   patient: Patient;
-  constructor() { }
   getClient(): Promise<Client> {
     // TODO: There is an edge case where the client is in the process of
     // resolving - there is an outstanding promise resolving the client.

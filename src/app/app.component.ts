@@ -112,7 +112,7 @@ export class AppComponent {
       }
       this.spinner.hide();
     },
-    err => { }
+    err => { /* FIXME: Handle this error */ }
     );
   }
   /*
@@ -214,7 +214,7 @@ export class AppComponent {
           this.countPages(this.clinicalTraildata);
         }
       },
-      err => { }
+      err => { /* FIXME: Handle this error */ }
       );
     }
   }

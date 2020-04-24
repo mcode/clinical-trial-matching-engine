@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+// FIXME: Not sure what best practices are for loading configuration within Angular
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const config = require('../../configuration/configuration.json');
 
 export interface GQEnumValue {
