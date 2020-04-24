@@ -8,4 +8,4 @@ cache: npm
 
 script:
   - ng lint
-  - ng test --browsers ChromeHeadless
+  - ng test --watch false --browsers ChromeHeadless
