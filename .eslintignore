@@ -1,5 +1,2 @@
 # Ignore everything in node_modules
 node_modules
-
-# FIXME: Ignore HTML files for now
-*.html

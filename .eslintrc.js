@@ -12,26 +12,50 @@ https://github.com/typescript-eslint/tslint-to-eslint-config/blob/master/docs/FA
 Happy linting! 💖
 */
 module.exports = {
-  "env": {
-    "browser": true,
-    "node": true
+  env: {
+    browser: true,
+    node: true
   },
-  "extends": [
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking"
-  ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    ecmaVersion: 2020,
-    sourceType: 'module',
-    project: 'tsconfig.json'
-  },
-  "plugins": [
-    "@typescript-eslint",
-    "@typescript-eslint/tslint",
-    "@angular-eslint",
-    "import",
-    "jsdoc"
-    // "prefer-arrow"
+  overrides: [
+    {
+      files: ['*.ts'],
+      extends: [
+        'plugin:@typescript-eslint/recommended',
+        'plugin:@typescript-eslint/recommended-requiring-type-checking'
+      ],
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'module',
+        project: 'tsconfig.json'
+      },
+      plugins: [
+        '@typescript-eslint',
+        '@typescript-eslint/tslint',
+        '@angular-eslint'
+      ]
+    },
+    {
+      files: ['*.component.html'],
+        parser: '@angular-eslint/template-parser',
+        plugins: ['@angular-eslint/template'],
+        rules: {
+          // ORIGINAL tslint.json -> "template-banana-in-box": true,
+          '@angular-eslint/template/banana-in-a-box': 'error',
+
+          // ORIGINAL tslint.json -> "template-no-negated-async": true,
+          '@angular-eslint/template/no-negated-async': 'error',
+        }
+    },
+    {
+      files: ['*.component.ts'],
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'module',
+      },
+      plugins: ['@angular-eslint/template'],
+      processor: '@angular-eslint/template/extract-inline-html',
+    }
   ]
 };
