@@ -4,8 +4,8 @@ language: node_js
 node_js:
   - "12"
 
-cache: yarn
+cache: npm
 
 script:
-  - yarn lint
-  - yarn test
+  - ng lint
+  - ng test --browsers ChromeHeadless
