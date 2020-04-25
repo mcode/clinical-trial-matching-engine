@@ -22,6 +22,7 @@ export class AppComponent {
     this.loadDropDownData(paramPhase, 'phase');
     this.loadDropDownData(recPhase, 'rec');
     this.patient = fhirService.getPatient().then(patient => {
+      console.log(patient)
       // Wrap the patient in a class that handles extracting values
       const p = new Patient(patient);
       // Also take this opportunity to set the zip code, if there is one
@@ -33,6 +34,7 @@ export class AppComponent {
       }
       return p;
     });
+    console.log(this.patient)
   }
   public patient: Promise<Patient> | Patient;
   /*
@@ -416,6 +418,10 @@ export class AppComponent {
     }else{
       return newVal;
     }
+  }
+  public records : boolean = false;
+  public showRecord(){
+    this.records = !this.records
   }
 
 }

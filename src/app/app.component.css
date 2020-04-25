@@ -141,6 +141,12 @@ text-transform: uppercase;
 .color13{
     color: #525151;
 }
+.color14{
+    color: #BABAB8;
+}
+.color15{
+    color: #767575;
+}
 .header{
     font-family: Roboto;
     font-weight: normal;
@@ -226,6 +232,9 @@ text-transform: uppercase;
 }
 .mi-margin-top{
     margin-top: 10%
+}
+.mi-margin-top5{
+    margin-top: 5%
 }
 .mi-margin-2{
 margin: 2%;
@@ -591,3 +600,33 @@ line-height: 25px;
  .unsaved {
     fill: #efefef;
  }
+
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #707070;
+    width: 80%;
+    top: 50%;
+    left: 45%;
+    position: absolute;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
