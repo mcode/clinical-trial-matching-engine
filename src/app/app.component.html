@@ -132,7 +132,7 @@
         </div>
         <span class="color11 ">Showing {{selectedPage.startIndex + 1}}-<span *ngIf="selectedPage.endIndex < clinicalTraildata.data.baseMatches.edges.length">{{selectedPage.endIndex}}</span> <span *ngIf="selectedPage.endIndex > clinicalTraildata.data.baseMatches.edges.length">{{clinicalTraildata.data.baseMatches.edges.length}}</span> of {{clinicalTraildata.data.baseMatches.edges.length}}</span>
         <div style="padding-bottom: 20px; height: 60vh;overflow-y: scroll;margin-top: 10px;" class="mitTable">
-          <div *ngFor="let trial of pageData.data.baseMatches.edges; let k=index">
+          <div *ngFor="let trial of pageData; let k=index">
             <div class="row containingDIV cards" (click)="showDeatails(k)">
               <div class="col15"> <button class="recButton mi-margin-10"> {{trial.node.overallStatus}} </button><span
                   class="color3 mi-margin-20">NEW!</span>
@@ -185,13 +185,13 @@
                         d="M25.667,25.667H5.833V5.833H15.75V3H5.833A2.833,2.833,0,0,0,3,5.833V25.667A2.833,2.833,0,0,0,5.833,28.5H25.667A2.842,2.842,0,0,0,28.5,25.667V15.75H25.667ZM18.583,3V5.833h5.086L9.743,19.759l2,2L25.667,7.831v5.086H28.5V3Z"
                         transform="translate(1.25 1.25)" fill="#0079e0" />
                     </svg> </div>
-                </div><svg xmlns="http://www.w3.org/2000/svg" width="222" height="40" viewBox="0 0 222 40" (click)="saveTrial(pageData.data.baseMatches.edges[k])">
+                </div><svg xmlns="http://www.w3.org/2000/svg" width="222" height="40" viewBox="0 0 222 40" (click)="saveTrial(pageData[k])">
                   <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)">
                     <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
                       <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)"
                         stroke="#707070" stroke-width="1">
                         <rect width="222" height="40" rx="10" stroke="none" />
-                        <rect x="0.5" y="0.5" width="221" height="39" rx="9.5" [ngClass]="savedClinicalTrialsNctIds.has(pageData.data.baseMatches.edges[k].node.nctId) ? 'saved' : 'unsaved'" />
+                        <rect x="0.5" y="0.5" width="221" height="39" rx="9.5" [ngClass]="savedClinicalTrialsNctIds.has(pageData[k].node.nctId) ? 'saved' : 'unsaved'" />
                       </g>
                       <g id="save-24px" transform="translate(1603.053 477)">
                         <path id="Path_30" data-name="Path 30" d="M0,0H32V32H0Z" fill="none" />
@@ -201,7 +201,7 @@
                       </g>
                       <text id="Save_study" data-name="Save study" transform="translate(1654 500)" fill="#0079e0"
                         font-size="20" font-family="Roboto-Bold, Roboto" font-weight="700">
-                        <tspan x="0" y="0">{{savedClinicalTrialsNctIds.has(pageData.data.baseMatches.edges[k].node.nctId) ? 'STUDY SAVED' : 'SAVE STUDY'}}</tspan>
+                        <tspan x="0" y="0">{{savedClinicalTrialsNctIds.has(pageData[k].node.nctId) ? 'STUDY SAVED' : 'SAVE STUDY'}}</tspan>
                       </text>
                     </g>
                   </g>
