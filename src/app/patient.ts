@@ -64,11 +64,11 @@ export default class Patient {
     }
   }
 
-  getGender(){
+  getGender() {
     return this.resource.gender;
   }
 
-  getAge(){
+  getAge() {
     return new Date().getFullYear() - new Date(this.resource.birthDate).getFullYear()
   }
   getHomePostalCode(): string | null {
