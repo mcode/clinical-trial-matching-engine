@@ -16,7 +16,6 @@ type Patient = fhirclient.FHIR.Patient;
 export class ClientService {
   client: Client;
   patient: Patient;
-  constructor() { }
   getClient(): Promise<Client> {
     // TODO: There is an edge case where the client is in the process of
     // resolving - there is an outstanding promise resolving the client.
@@ -28,10 +27,7 @@ export class ClientService {
         clientId: 'Input client id you get when you register the app',
         scope: 'launch/patient openid profile'
       })
-      .then(client => {
-        // Forward the client down the chain
-        return this.client = client;
-      });
+      .then(client => this.client = client); // Forward the client down the chain
   }
   /**
    * Gets the patient from the client. If the client has not be initialized,
