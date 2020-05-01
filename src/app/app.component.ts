@@ -95,6 +95,7 @@ export class AppComponent {
       }
       return p;
     });
+    this.fhirService.getConditions().then(records => console.log(records));
   }
   /*
     Function for load phase and recruitment trial data

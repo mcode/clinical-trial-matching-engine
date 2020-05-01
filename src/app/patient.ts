@@ -11,7 +11,11 @@ const casualNamePreferences = {
   official: 1
 };
 
-function objectComparator(usePreferences) {
+interface ObjectWithUse {
+  use: string;
+}
+
+function objectComparator<T extends ObjectWithUse>(usePreferences: {[key: string]: number}): (a: T, b: T) => T {
   return (a, b) => {
     if (a.use in usePreferences) {
       if (b.use in usePreferences) {
