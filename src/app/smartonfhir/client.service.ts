@@ -7,6 +7,11 @@ import { fhirclient } from 'fhirclient/lib/types';
 type Patient = fhirclient.FHIR.Patient;
 
 /**
+ * Values that can be placed into parameters
+ */
+type Stringable = string | number | boolean | null;
+
+/**
  * This provides a wrapper around the FHIR client.
  */
 @Injectable({
@@ -113,9 +118,17 @@ export class ClientService {
   /**
    * Gets all conditions from the client.
    */
-  getConditions(): Promise<fhirclient.FHIR.Resource[]> {
+  getConditions(parameters?: {[key: string]: Stringable}): Promise<fhirclient.FHIR.Resource[]> {
+    let query = 'Condition';
+    if (parameters) {
+      let params = [];
+      for (const p in parameters) {
+        params.push(encodeURIComponent(p) + '=' + encodeURIComponent(parameters[p] === null ? 'null' : parameters[p].toString()));
+      }
+      query += '?' + params.join('&');
+    }
     // Resources should all be BundleEntries
-    return this.getAllRecords('Condition').then(resources => resources.map(
+    return this.getAllRecords(query).then(resources => resources.map(
       resource => (resource as fhirclient.FHIR.BundleEntry).resource
     ));
   }

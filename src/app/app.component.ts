@@ -7,6 +7,8 @@ import { ClientService } from './smartonfhir/client.service';
 import Patient from './patient';
 import { UnpackMatchResults } from './export/parse-data';
 import { ExportTrials } from './export/export-data';
+import { ConvertCodesService } from './services/convert-codes.service';
+import { pullCodesFromConditions } from './condition';
 
 @Component({
   selector: 'app-root',
@@ -78,7 +80,7 @@ export class AppComponent {
     export text variable
   **/
   public exportButtonText = 'Export All Trials';
-  constructor(public commonService: CommonService, private spinner: NgxSpinnerService, private fhirService: ClientService) {
+  constructor(public commonService: CommonService, private spinner: NgxSpinnerService, private fhirService: ClientService, private convertService: ConvertCodesService) {
     const paramPhase = '{ __type(name: "Phase") { enumValues { name } } }';
     const recPhase = '{ __type(name: "RecruitmentStatusEnum") { enumValues { name } } }';
     this.loadDropDownData(paramPhase, 'phase');
@@ -95,7 +97,9 @@ export class AppComponent {
       }
       return p;
     });
-    this.fhirService.getConditions().then(records => console.log(records));
+    this.fhirService.getConditions({clinicalstatus: 'active'}).then(
+      records => convertService.convertCodes(pullCodesFromConditions(records)).subscribe(codes => console.log(codes))
+    );
   }
   /*
     Function for load phase and recruitment trial data

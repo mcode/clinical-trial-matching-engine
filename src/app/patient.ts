@@ -43,7 +43,6 @@ export default class Patient {
   resource: FHIRPatient;
   constructor(resource: FHIRPatient) {
     this.resource = resource;
-    console.log(this.resource);
   }
   /**
    * Gets the usual name, if possible. If no name exists on the record, returns
@@ -67,10 +66,17 @@ export default class Patient {
       return null;
     }
   }
+  /**
+   * Returns the postal code from the address returned by getHomeAddress, if any.
+   */
   getHomePostalCode(): string | null {
     const address = this.getHomeAddress();
     return address ? address.postalCode : null;
   }
+  /**
+   * Gets the home address, if available, otherwise an office address, otherwise
+   * the first address of any type listed in the patient record.
+   */
   getHomeAddress() {
     if (Array.isArray(this.resource.address) && this.resource.address.length > 0) {
       return this.resource.address.reduce(objectComparator({
