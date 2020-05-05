@@ -63,6 +63,14 @@ export default class Patient {
       return null;
     }
   }
+
+  getGender() {
+    return this.resource.gender;
+  }
+
+  getAge() {
+    return new Date().getFullYear() - new Date(this.resource.birthDate).getFullYear()
+  }
   getHomePostalCode(): string | null {
     const address = this.getHomeAddress();
     return address ? address.postalCode : null;

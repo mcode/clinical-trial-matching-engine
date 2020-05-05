@@ -37,7 +37,7 @@
       <div class="center" *ngIf='!searchPage'>
         <h1 class="color1 header">Welcome {{(patient | async)?.getUsualName()}},</h1>
         <h1 class="color2 header2">Let’s find some clinical trials</h1>
-        <h1 class="color1 subText"> We found your <span class="color12">record</span>. Just fill in some preferences and
+        <h1 class="color1 subText"> We found your <span class="color12" (click)="showRecord();">record</span>. Just fill in some preferences and
           we’ll do the rest</h1>
         <div class="containingDIV col100" style="padding-right: 10%;">
           <div class="block">
@@ -78,6 +78,26 @@
             </svg>
           </div>
         </div>
+        <div  *ngIf='records'>
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close" (click)="showRecord()">&times;</span>
+            <h2 class="cardText2 mi-margin-20">Patient Record</h2>
+            <span class="color14 mi-margin-20">If something doesn’t look right on your record, please contact your healthcare provider.</span>
+             <div class="containingDIV mi-margin-20">
+               <div class="col33 color15">{{(patient | async)?.getUsualName()}}</div>
+               <div class="col33 color15">AGE: {{(patient | async)?.getAge()}}</div>
+               <div class="col33 color15">Gender: {{(patient | async)?.getGender()}}</div>
+             </div>
+             <div class="mi-margin-20 mi-margin-top5">
+                <span class="color14 upperCase">Conditions:</span> Brain tumor, Glioblastoma 
+             </div>
+             <div class="mi-margin-20"><span class="color14">CATEGORY: </span>
+            <p class="color1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            
+          </div>
+          </div>
       </div>
       <!-- Cards page-->
       <div class="mi-margin-5" style="margin-top: 9%;" *ngIf='!searchtable'>

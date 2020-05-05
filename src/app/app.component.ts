@@ -403,5 +403,9 @@ export class AppComponent {
       return newVal;
     }
   }
+  public records = false;
+  public showRecord(){
+    this.records = !this.records
+  }
 
 }
