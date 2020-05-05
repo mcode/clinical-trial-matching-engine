@@ -1,5 +1,5 @@
 import { CommonService } from './services/common/common.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as _ from 'lodash';
 
