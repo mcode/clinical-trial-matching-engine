@@ -66,6 +66,12 @@ export default class Patient {
       return null;
     }
   }
+  getGender() {
+    return this.resource.gender;
+  }
+  getAge() {
+    return new Date().getFullYear() - new Date(this.resource.birthDate).getFullYear()
+  }
   /**
    * Returns the postal code from the address returned by getHomeAddress, if any.
    */
