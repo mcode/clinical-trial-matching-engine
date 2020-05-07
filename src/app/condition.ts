@@ -5,7 +5,7 @@
 import { fhirclient } from 'fhirclient/lib/types';
 
 export function pullCodesFromConditions(resources: fhirclient.FHIR.Resource[], codingSystem: string = null): string[] {
-  let results: string[] = [];
+  const results: string[] = [];
   for (const resource of resources) {
     if (resource.resourceType === 'Condition') {
       // Should have a code

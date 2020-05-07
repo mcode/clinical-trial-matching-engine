@@ -77,7 +77,7 @@ export class ClientService {
    * than 1.
    * @param query the FHIR query to run
    */
-  getRecords(query: string, pages: number = 1): Promise<fhirclient.JsonObject> {
+  getRecords(query: string, pages = 1): Promise<fhirclient.JsonObject> {
     return this.request(query, {flat: true, pageLimit: pages});
   }
   /**
@@ -90,7 +90,7 @@ export class ClientService {
     return new Promise((resolve, reject) => {
       this.getClient().then(client => {
         // Here is where the "magic" happens
-        let results: fhirclient.FHIR.BackboneElement[] = [];
+        const results: fhirclient.FHIR.BackboneElement[] = [];
         const handlePage = bundle => {
           if (bundle.entry) {
             // Append these entries to the list - entry is conceptually optional,
@@ -121,7 +121,7 @@ export class ClientService {
   getConditions(parameters?: {[key: string]: Stringable}): Promise<fhirclient.FHIR.Resource[]> {
     let query = 'Condition';
     if (parameters) {
-      let params = [];
+      const params = [];
       for (const p in parameters) {
         params.push(encodeURIComponent(p) + '=' + encodeURIComponent(parameters[p] === null ? 'null' : parameters[p].toString()));
       }
