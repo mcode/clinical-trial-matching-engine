@@ -8,7 +8,7 @@ import Patient from './patient';
 import { UnpackMatchResults } from './export/parse-data';
 import { ExportTrials } from './export/export-data';
 import { ConvertCodesService } from './services/convert-codes.service';
-import { pullCodesFromConditions } from './condition';
+import { Condition, pullCodesFromConditions } from './condition';
 
 @Component({
   selector: 'app-root',
@@ -67,6 +67,14 @@ export class AppComponent {
   public pageData = [];
   public selectedPage: any;
   public itemPerPages: any = 10;
+  /**
+   * Loaded conditions from the patient.
+   */
+  public conditions: Condition[];
+  /**
+   * Conditions loaded from TrialScope.
+   */
+  public trialScopeConditions: string[];
   /*
      variable for create object of search clinical trial request
   * */
@@ -98,7 +106,10 @@ export class AppComponent {
       return p;
     });
     this.fhirService.getConditions({clinicalstatus: 'active'}).then(
-      records => convertService.convertCodes(pullCodesFromConditions(records)).subscribe(codes => console.log(codes))
+      records => {
+        this.conditions = records.map(record => new Condition(record));
+        convertService.convertCodes(pullCodesFromConditions(records)).subscribe(codes => this.trialScopeConditions = codes);
+      }
     );
   }
   /*
@@ -133,7 +144,7 @@ export class AppComponent {
       alert('Enter Zipcode');
     } else {
       let req = `{baseMatches(first:30 after: "${endCursor}"`;
-      req += ' conditions:[BRAIN_CANCER, GLIOBLASTOMA],baseFilters: {  ';
+      req += ` conditions:[${this.trialScopeConditions.join(', ')}],baseFilters: { `;
       if (this.searchReqObject.zipCode != null) {
         req += `zipCode: "${this.searchReqObject.zipCode}"`;
       }

@@ -18,3 +18,20 @@ export function pullCodesFromConditions(resources: fhirclient.FHIR.Resource[], c
   }
   return results;
 }
+
+/**
+ * A simple wrapper around a FHIR Condition resource to simplify pulling out
+ * codes and display text.
+ */
+export class Condition {
+  constructor(public resource: fhirclient.FHIR.Resource) {
+    console.log(this.resource);
+  }
+
+  /**
+   * Pulls the display text out of the code.
+   */
+  getDisplayText(): string {
+    return this.resource.code.text;
+  }
+}
