@@ -127,7 +127,12 @@ text-transform: uppercase;
     color : #ffffff !important;
 }
 .color9{
-    color : #898686
+    color : #898686;
+}
+
+.color9space{
+    color : #898686;
+    white-space: pre;
 }
 .color10{
     color : #0079E0;
@@ -601,7 +606,7 @@ line-height: 25px;
     fill: #efefef;
  }
 
-  
+
   /* Modal Content */
   .modal-content {
     background-color: #fefefe;
@@ -615,7 +620,7 @@ line-height: 25px;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
   }
-  
+
   /* The Close Button */
   .close {
     color: #aaaaaa;
@@ -623,7 +628,7 @@ line-height: 25px;
     font-size: 28px;
     font-weight: bold;
   }
-  
+
   .close:hover,
   .close:focus {
     color: #000;

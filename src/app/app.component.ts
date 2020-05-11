@@ -84,10 +84,7 @@ export class AppComponent {
     phase: 'any',
     recruitmentStatus: 'all',
   };
-  /*
-    export text variable
-  **/
-  public exportButtonText = 'Export All Trials';
+
   constructor(public commonService: CommonService, private spinner: NgxSpinnerService, private fhirService: ClientService, private convertService: ConvertCodesService) {
     const paramPhase = '{ __type(name: "Phase") { enumValues { name } } }';
     const recPhase = '{ __type(name: "RecruitmentStatusEnum") { enumValues { name } } }';
@@ -379,7 +376,6 @@ export class AppComponent {
     Function add/remove trial to/from Array of saved trials
   * */
   public saveTrial(trialData) {
-    this.exportButtonText = 'Export Saved Trials';
     if (!this.savedClinicalTrialsNctIds.has(trialData.node.nctId)) {
       this.savedClinicalTrials.push(trialData);
       this.savedClinicalTrialsNctIds.add(trialData.node.nctId);
