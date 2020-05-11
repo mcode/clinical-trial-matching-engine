@@ -90,12 +90,12 @@
                <div class="col33 color15">Gender: {{(patient | async)?.getGender()}}</div>
              </div>
              <div class="mi-margin-20 mi-margin-top5">
-                <span class="color14 upperCase">Conditions:</span> Brain tumor, Glioblastoma 
+                <span class="color14 upperCase">Conditions:</span> Brain tumor, Glioblastoma
              </div>
              <div class="mi-margin-20"><span class="color14">CATEGORY: </span>
             <p class="color1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             </div>
-            
+
           </div>
           </div>
       </div>
@@ -130,7 +130,7 @@
               </div>
             </div>
             <div class="filters mi-margin-10" (click)="exportSavedTrials()"
-                 style=" position: relative;display: inline-block;"> <span class="color1 filterText">{{exportButtonText}}</span>
+                 style=" position: relative;display: inline-block;"> <span class="color1 filterText">{{savedClinicalTrialsNctIds.size > 0 ? 'Export Saved Trials' : 'Export All Trials'}}</span>
             </div>
           </div>
           <div class="padding-left-20 padding-top-15">
@@ -154,8 +154,7 @@
         <div style="padding-bottom: 20px; height: 60vh;overflow-y: scroll;margin-top: 10px;" class="mitTable">
           <div *ngFor="let trial of pageData; let k=index">
             <div class="row containingDIV cards" (click)="showDeatails(k)">
-              <div class="col15"> <button class="recButton mi-margin-10"> {{trial.node.overallStatus}} </button><span
-                  class="color3 mi-margin-20">NEW!</span>
+              <div class="col15"> <button class="recButton mi-margin-10"> {{trial.node.overallStatus}} </button>
               </div>
               <div class="col35 padding-top-15 padding-bottom-15 ">
                 <h2 class="cardtext ">
@@ -275,9 +274,8 @@
                   <div class="col33 mi-margin-10 outerDiv">
                     <div class="innerDiv">
                       <button class="recButton mi-margin-10 padding-10" style="width: auto;">{{detailPageSelectedData.node.overallStatus}}</button>
-                      <p class="color3 mi-margin-30 mi-margin-left-p">NEW!</p>
                       <span>
-                        Actively recruiting
+                        <p style="margin-top: 50%;">Actively recruiting</p>
                       </span>
                     </div>
                   </div>
@@ -367,31 +365,31 @@
           <div style="background-color: white;">
             <button class="accordion" (click)="showHideAccordian($event)">Description</button>
             <div class="panel">
-              <p id="description" class="color9" style="font-size: 20px;">
+              <p id="description" class="color9space" style="font-size: 20px;">
                 {{detailPageSelectedData.node.detailedDescription}}
               </p>
             </div>
             <button class="accordion" (click)="showHideAccordian($event)">Study Design </button>
             <div class="panel">
-              <p id="studyDesign " class="color9" style="font-size: 20px;">
+              <p id="studyDesign " class="color9space" style="font-size: 20px;">
                 NA
               </p>
             </div>
             <button class="accordion" (click)="showHideAccordian($event)">Eligibility criteria</button>
             <div class="panel">
-              <p id="eligibilityCriteria" class="color9" style="font-size: 20px;">
+              <p id="eligibilityCriteria" class="color9space" style="font-size: 20px;">
                 {{detailPageSelectedData.node.criteria}}
               </p>
             </div>
             <button class="accordion" (click)="showHideAccordian($event)">Arms & Interventions</button>
             <div class="panel">
-              <p id="interventions" class="color9" style="font-size: 20px;">
+              <p id="interventions" class="color9space" style="font-size: 20px;">
                 NA
               </p>
             </div>
             <button class="accordion" (click)="showHideAccordian($event)">More information</button>
             <div class="panel">
-              <p id="moreInformation" class="color9" style="font-size: 20px;">
+              <p id="moreInformation" class="color9space" style="font-size: 20px;">
                 NA
               </p>
             </div>
