@@ -7,6 +7,8 @@ import { ClientService } from './smartonfhir/client.service';
 import Patient from './patient';
 import { UnpackMatchResults } from './export/parse-data';
 import { ExportTrials } from './export/export-data';
+import { ConvertCodesService } from './services/convert-codes.service';
+import { Condition, pullCodesFromConditions } from './condition';
 
 @Component({
   selector: 'app-root',
@@ -65,6 +67,14 @@ export class AppComponent {
   public pageData = [];
   public selectedPage: any;
   public itemPerPages: any = 10;
+  /**
+   * Loaded conditions from the patient.
+   */
+  public conditions: Condition[];
+  /**
+   * Conditions loaded from TrialScope.
+   */
+  public trialScopeConditions: string[];
   /*
      variable for create object of search clinical trial request
   * */
@@ -74,7 +84,8 @@ export class AppComponent {
     phase: 'any',
     recruitmentStatus: 'all',
   };
-  constructor(public commonService: CommonService, private spinner: NgxSpinnerService, private fhirService: ClientService) {
+
+  constructor(public commonService: CommonService, private spinner: NgxSpinnerService, private fhirService: ClientService, private convertService: ConvertCodesService) {
     const paramPhase = '{ __type(name: "Phase") { enumValues { name } } }';
     const recPhase = '{ __type(name: "RecruitmentStatusEnum") { enumValues { name } } }';
     this.loadDropDownData(paramPhase, 'phase');
@@ -91,6 +102,12 @@ export class AppComponent {
       }
       return p;
     });
+    this.fhirService.getConditions({clinicalstatus: 'active'}).then(
+      records => {
+        this.conditions = records.map(record => new Condition(record));
+        convertService.convertCodes(pullCodesFromConditions(records)).subscribe(codes => this.trialScopeConditions = codes);
+      }
+    );
   }
   /*
     Function for load phase and recruitment trial data
@@ -124,7 +141,7 @@ export class AppComponent {
       alert('Enter Zipcode');
     } else {
       let req = `{baseMatches(first:30 after: "${endCursor}"`;
-      req += ' conditions:[BRAIN_CANCER, GLIOBLASTOMA],baseFilters: {  ';
+      req += ` conditions:[${this.trialScopeConditions.join(', ')}],baseFilters: { `;
       if (this.searchReqObject.zipCode != null) {
         req += `zipCode: "${this.searchReqObject.zipCode}"`;
       }

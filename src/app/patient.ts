@@ -11,7 +11,11 @@ const casualNamePreferences = {
   official: 1
 };
 
-function objectComparator(usePreferences) {
+interface ObjectWithUse {
+  use: string;
+}
+
+function objectComparator<T extends ObjectWithUse>(usePreferences: {[key: string]: number}): (a: T, b: T) => T {
   return (a, b) => {
     if (a.use in usePreferences) {
       if (b.use in usePreferences) {
@@ -39,7 +43,6 @@ export default class Patient {
   resource: FHIRPatient;
   constructor(resource: FHIRPatient) {
     this.resource = resource;
-    console.log(this.resource);
   }
   /**
    * Gets the usual name, if possible. If no name exists on the record, returns
@@ -63,18 +66,23 @@ export default class Patient {
       return null;
     }
   }
-
   getGender() {
     return this.resource.gender;
   }
-
   getAge() {
     return new Date().getFullYear() - new Date(this.resource.birthDate).getFullYear()
   }
+  /**
+   * Returns the postal code from the address returned by getHomeAddress, if any.
+   */
   getHomePostalCode(): string | null {
     const address = this.getHomeAddress();
     return address ? address.postalCode : null;
   }
+  /**
+   * Gets the home address, if available, otherwise an office address, otherwise
+   * the first address of any type listed in the patient record.
+   */
   getHomeAddress() {
     if (Array.isArray(this.resource.address) && this.resource.address.length > 0) {
       return this.resource.address.reduce(objectComparator({
