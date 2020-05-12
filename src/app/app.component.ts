@@ -274,26 +274,6 @@ export class AppComponent {
     this.detailsPage = true;
   }
   /*
-    Function for back search result page
-    * */
-  public showHideAccordian(event) {
-    // HTMLNodeList is not an iterator
-    /* eslint-disable @typescript-eslint/prefer-for-of */
-    const acc = document.getElementsByClassName('accordion');
-    for (let i = 0; i < acc.length; i++) {
-      acc[i].addEventListener('click', function() {
-        this.classList.toggle('active');
-        const panel = this.nextElementSibling;
-        if (panel.style.display === 'block') {
-          panel.style.display = 'none';
-        } else {
-          panel.style.display = 'block';
-        }
-      });
-    }
-    /* eslint-enable @typescript-eslint/prefer-for-of */
-  }
-  /*
     Function for apply selected filter
     * */
   public applyFilter() {
