@@ -648,6 +648,10 @@ line-height: 25px;
   color: #0079E0;
 }
 
+.facility {
+    margin-bottom: 15px;
+}
+
 .phoneIcon, .emailIcon {
   display: inline-block;
   width: 20px;

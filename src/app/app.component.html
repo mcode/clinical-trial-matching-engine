@@ -340,9 +340,9 @@
                 <div class="facilities">
                   <p class="color9 text-transform-uppercase mi-margin-10 padding-top-10">Facilities</p>
                   <ul class="facilityList">
-                    <li *ngFor="let site of detailPageSelectedData.node.sites">{{site.facility}}
-                      <span *ngIf="site.contactPhone" class="phone"><span class="phoneIcon">Phone:</span> {{site.contactPhone}}</span>
-                      <span *ngIf="site.contactEmail" class="email"><span class="emailIcon">Email:</span> {{site.contactEmail}}</span>
+                    <li *ngFor="let site of detailPageSelectedData.node.sites" class="facility">{{site.facility}}
+                      <div *ngIf="site.contactPhone" class="phone"><span class="phoneIcon">Phone:</span> {{site.contactPhone}}</div>
+                      <div *ngIf="site.contactEmail" class="email"><span class="emailIcon">Email:</span> {{site.contactEmail}}</div>
                     </li>
                   </ul>
                 </div>
