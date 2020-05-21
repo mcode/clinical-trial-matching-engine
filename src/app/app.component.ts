@@ -1,4 +1,3 @@
-import { CommonService } from './services/common/common.service';
 import { Component } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as _ from 'lodash';
@@ -9,6 +8,7 @@ import { UnpackMatchResults } from './export/parse-data';
 import { ExportTrials } from './export/export-data';
 import { ConvertCodesService } from './services/convert-codes.service';
 import { Condition, pullCodesFromConditions } from './condition';
+import { TrialScopeService } from './services/trial-scope.service';
 
 @Component({
   selector: 'app-root',
@@ -85,11 +85,9 @@ export class AppComponent {
     recruitmentStatus: 'all',
   };
 
-  constructor(public commonService: CommonService, private spinner: NgxSpinnerService, private fhirService: ClientService, private convertService: ConvertCodesService) {
-    const paramPhase = '{ __type(name: "Phase") { enumValues { name } } }';
-    const recPhase = '{ __type(name: "RecruitmentStatusEnum") { enumValues { name } } }';
-    this.loadDropDownData(paramPhase, 'phase');
-    this.loadDropDownData(recPhase, 'rec');
+  constructor(private spinner: NgxSpinnerService, private trialScopeService: TrialScopeService, private fhirService: ClientService, private convertService: ConvertCodesService) {
+    this.loadDropDownData('Phase', 'phase');
+    this.loadDropDownData('RecruitmentStatusEnum', 'rec');
     this.patient = fhirService.getPatient().then(patient => {
       // Wrap the patient in a class that handles extracting values
       const p = new Patient(patient);
@@ -112,16 +110,13 @@ export class AppComponent {
   /*
     Function for load phase and recruitment trial data
  * */
-  public loadDropDownData(req, val) {
+  public loadDropDownData(type, val) {
     this.spinner.show();
-    const reqobj = {
-      inputParam: req
-    };
-    this.commonService.getDropDownData(reqobj).subscribe(response => {
+    this.trialScopeService.getDropDownData(type).subscribe(response => {
       if (val === 'phase') {
-        this.phaseDropDown = response.data.__type.enumValues;
+        this.phaseDropDown = response;
       } else {
-        this.recDropDown = response.data.__type.enumValues;
+        this.recDropDown = response;
       }
       this.spinner.hide();
     },
@@ -170,10 +165,7 @@ export class AppComponent {
         }
         pageInfo { endCursor hasNextPage }
       } }`;
-      const reqObj = {
-        inputParam: req
-      };
-      this.commonService.searchClinialTrial(reqObj).subscribe(data => {
+      this.trialScopeService.search(req).subscribe(data => {
         if (this.clinicalTraildata.length !== 0) {
           this.clinicalTraildata.data.baseMatches.edges.push(...data.data.baseMatches.edges);
         } else {

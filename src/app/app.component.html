@@ -59,13 +59,13 @@
           <div class="block">
             <select class="select" [(ngModel)]="searchReqObject.phase">
               <option value="any">Any Phase</option>
-              <option *ngFor="let phase of phaseDropDown" [value]="phase.name">{{replace(phase.name,'drop')}}</option>
+              <option *ngFor="let phase of phaseDropDown" [value]="phase">{{replace(phase,'drop')}}</option>
             </select>
           </div>
           <div class="block">
             <select class="select" [(ngModel)]="searchReqObject.recruitmentStatus">
               <option value="all">All</option>
-              <option *ngFor="let rec of recDropDown" [value]="rec.name">{{replace(rec.name,'drop')}}</option>
+              <option *ngFor="let rec of recDropDown" [value]="rec">{{replace(rec,'drop')}}</option>
             </select>
           </div>
           <div class="block2" (click)="searchClinicalTrials(null);">
