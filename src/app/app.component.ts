@@ -9,11 +9,13 @@ import { ConvertCodesService } from './services/convert-codes.service';
 import { Condition, pullCodesFromConditions } from './condition';
 import { TrialScopeService, TrialScopeResult } from './services/trial-scope.service';
 import { Trial } from './trialscope';
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
+/**
+ * Provides basic information about a given page.
+ */
 class SearchPage {
-  public lastIndex: number;
-  constructor(public trials: Partial<Trial>[], public index: number, public firstIndex: number) {
-    this.lastIndex = this.firstIndex + trials.length;
+  constructor(public index: number, public firstIndex: number, public lastIndex: number) {
   }
 }
 
@@ -70,8 +72,16 @@ export class AppComponent {
      variable for show details of selected clinical trial
   * */
   public detailPageSelectedData: any;
+  /**
+   * The currently active page.
+   */
   public selectedPage: SearchPage;
-  public itemPerPages: any = 10;
+  /**
+   * Array of page information.
+   */
+  public pages: SearchPage[];
+  public selectedPageTrials: Partial<Trial>[];
+  public itemsPerPage = 20;
   /**
    * Loaded conditions from the patient.
    */
@@ -113,6 +123,10 @@ export class AppComponent {
     );
   }
 
+  get pageCount() {
+    return Math.ceil(this.resultCount / this.itemsPerPage);
+  }
+
   /*
     Function for load phase and recruitment trial data
  * */
@@ -133,7 +147,7 @@ export class AppComponent {
    * Execute a search on clinical trial data based on the current user.
    */
   public searchClinicalTrials() {
-    this.itemPerPages = 10;
+    this.itemsPerPage = 10;
     this.spinner.show();
     // Blank out any existing results
     if (this.searchReqObject.zipCode == null) {
@@ -154,10 +168,11 @@ export class AppComponent {
     }
     query += ' }';
     this.trialScopeService.baseMatches(query).subscribe(response => {
-      console.log('got response');
         // Store the results
         this.searchResults = response;
         this.resultCount = response.totalCount;
+        // Create our pages array
+        this.createPages();
         // Display the results
         this.showPage(0);
       },
@@ -171,42 +186,38 @@ export class AppComponent {
       console.error(`Cannot show page ${page}: no results`);
       return;
     }
-    console.log(`Showing page ${page}`);
-    this.selectedPage = new SearchPage(this.searchResults.getPage(page).trials, page, page * this.itemPerPages);
-    console.log(this.selectedPage);
+    this.viewPage(this.pages[page]);
+  }
+  /**
+   * View a specific page from within the pages array.
+   */
+  public viewPage(page) {
+    this.selectedPage = page;
+    this.selectedPageTrials = this.searchResults.getTrials(this.selectedPage.firstIndex, this.selectedPage.lastIndex);
     this.searchtable = false;
     this.searchPage = true;
     this.spinner.hide();
   }
   /**
-   * Count the number of pages currently located within the search results.
+   * Populates the pages array based on the current items per pages data.
    */
-  public countPages(data) {/*
+  private createPages() {
     this.pages = [];
-    this.self.itemPerPages = parseInt(this.itemPerPages, 10);
-    const pageCount = data.data.baseMatches.edges.length / this.itemPerPages;
-    for (let i = 0; i < pageCount; i++) {
-      this.pages.push({
-        val: i + 1,
-        startIndex: i * this.itemPerPages,
-        endIndex: (i + 1) * this.itemPerPages
-      });
+    let pageIndex = 0, startIndex = 0, lastIndex = this.itemsPerPage;
+    for (; lastIndex < this.resultCount; pageIndex++, startIndex = lastIndex, lastIndex += this.itemsPerPage) {
+      // Push a complete page
+      this.pages.push(new SearchPage(pageIndex, startIndex, lastIndex));
     }
-    this.selectedPage = this.pages[0];
-    this.viewPage(this.pages[0]);*/
-    this.spinner.hide();
-  }
-  /**
-   * Function to view data based on selected page
-   */
-  public viewPage(page) {
-    this.selectedPage = page;
+    if (startIndex < this.resultCount) {
+      // Have a partial final page
+      this.pages.push(new SearchPage(pageIndex, startIndex, this.resultCount));
+    }
   }
   /*
   Function for show details of clinical trial
   * */
   public showDetails(i) {
-    this.detailPageSelectedData = this.selectedPage[i];
+    this.detailPageSelectedData = this.selectedPageTrials[i];
     this.searchtable = true;
     this.searchPage = true;
     this.detailsPage = false;
@@ -347,6 +358,25 @@ export class AppComponent {
       //data = UnpackMatchResults(JSON.parse(JSON.stringify(this.clinicalTraildata)).data.baseMatches.edges);
     }
     ExportTrials(data, 'clinicalTrials');
+  }
+
+  public updateItemsPerPage(items: string | number) {
+    if (typeof items === 'string') {
+      items = parseInt(items);
+    }
+    // Clamp to 10-100 - this somewhat weird logic is to catch NaN
+    if (!(items > 10 && items < 100)) {
+      if (items > 100) {
+        items = 100;
+      } else {
+        items = 10;
+      }
+    }
+    this.itemsPerPage = items;
+    // Have to recreate our pages
+    this.createPages();
+    // FIXME: Try and show the same page
+    this.showPage(0);
   }
 
   onChange(val) {

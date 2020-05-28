@@ -49,13 +49,11 @@ export interface Trial {
    */
   conditions: string;
 
-
   /**
    * Countries where the trial is recruiting
    */
   // FIXME: Really a string? Not an array?
   countries: string;
-
 
   /**
    * The key requirements that people who want to participate in a clinical

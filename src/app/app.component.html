@@ -155,7 +155,7 @@
         </div>
         <span class="color11 ">Showing {{selectedPage.firstIndex + 1}}-{{selectedPage.lastIndex}} of {{resultCount}}</span>
         <div style="padding-bottom: 20px; height: 60vh;overflow-y: scroll;margin-top: 10px;" class="mitTable">
-          <div *ngFor="let trial of selectedPage.trials; let k=index">
+          <div *ngFor="let trial of selectedPageTrials; let k=index">
             <div class="row containingDIV cards" (click)="showDetails(k)">
               <div class="col15"> <button class="recButton mi-margin-10"> {{trial.overallStatus}} </button>
               </div>
@@ -234,12 +234,12 @@
         </div>
         <div class="containingDIV float-right">
         <p class="mi-margin-10 color7">Items per page</p>
-        <select class="selectItemPerPage color7" [(ngModel)]="itemPerPages" (change)="console.log(event)">
+        <select class="selectItemPerPage color7" (change)="updateItemsPerPage($event.target.value)">
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="30">30</option>
         </select>
-        <span  *ngFor="let page of pages" class="mi-margin-10 color7" (click)="viewPage(page)" [ngClass]="selectedPage.val == page.val ? 'selectedPage':''">{{page.val}}</span>
+        <span *ngFor="let page of pages" class="mi-margin-10 color7" (click)="viewPage(page)" [ngClass]="selectedPage.index == page.index ? 'selectedPage':''">{{page.index + 1}}</span>
         </div>
       </div>
       <!-- Details page-->

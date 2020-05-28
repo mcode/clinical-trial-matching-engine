@@ -16,11 +16,21 @@ export class TrialScopePage {
   trials: Partial<Trial>[];
   nextPageCursor: string;
   hasNextPage: boolean;
-  constructor(json: JsonObject) {
+  /**
+   * Index of the first result (inclusive)
+   */
+  startIndex: number;
+  /**
+   * Index of the last result (exclusive)
+   */
+  endIndex: number;
+  constructor(json: JsonObject, startIndex: number) {
     // The given JSON object should be a TrialScope data object
     this.trials = json.edges.map(edge => edge.node);
     this.nextPageCursor = json.pageInfo.endCursor;
     this.hasNextPage = json.pageInfo.hasNextPage;
+    this.startIndex = startIndex;
+    this.endIndex = startIndex + this.trials.length;
   }
 }
 
@@ -30,24 +40,70 @@ export class TrialScopePage {
 export class TrialScopeResult {
   pages: TrialScopePage[] = [];
   totalCount: number;
-  itemsPerPage = 10;
+  itemsPerPage: number;
   constructor(json: JsonObject) {
     // Pull out the total count
     console.log('Creating result:');
     console.log(json);
     this.totalCount = json.data.baseMatches.totalCount;
-    this.pages = [ new TrialScopePage(json.data.baseMatches) ];
-    console.log('Pages:');
-    console.log(this.pages);
+    this.pages = [ new TrialScopePage(json.data.baseMatches, 0) ];
+    // Pull the items per page out of the first page based on the assumption
+    // that the method used to pull the trials array may change in the future.
+    // TODO: Verify that the items per page will not change on a per-page
+    // basis.
+    this.itemsPerPage = this.pages[0].trials.length;
   }
   /**
-   * Gets a given page.
+   * Gets a given page. (In the future, this may return an observable.)
    * @param page the page number
    */
   getPage(page: number): TrialScopePage {
     // TODO: Ensure the page number is valid
     // TODO: Do not fetch all pages at once
     return this.pages[page];
+  }
+  /**
+   * Gets a slice of trials from the paged results. (In the future, this may
+   * return an observable.) If the end index is past the end of the results,
+   * the result will be smaller than endIndex - startIndex.
+   * @param startIndex the index of the first trial to get (inclusive)
+   * @param endIndex the index of the last trial to get (exclusive)
+   */
+  getTrials(startIndex: number, endIndex: number): Partial<Trial>[] {
+    // TODO: Can we be sure that the pages are always the same size?
+    if (endIndex > this.totalCount) {
+      endIndex = this.totalCount;
+    }
+    const startPage = this.pageIndexForTrialIndex(startIndex);
+    const endPage = this.pageIndexForTrialIndex(endIndex - 1);
+    console.log(`Getting results for trials ${startIndex}-${endIndex} from pages ${startPage}-${endPage} (${this.itemsPerPage} per page)`)
+    if (startPage === endPage) {
+      // Self-contained
+      const page = this.pages[startPage];
+      return page.trials.slice(startIndex - page.startIndex, endIndex - page.startIndex);
+    } else {
+      // Spans pages
+      let page = this.pages[startPage];
+      const results: Partial<Trial>[] = page.trials.slice(startIndex - page.startIndex);
+      for (let index = startPage + 1; index < endPage; index++) {
+        // Just add the entire page
+        results.push(...this.pages[index].trials);
+      }
+      // And finally add the remaining portion of the last page
+      page = this.pages[endPage];
+      results.push(...page.trials.slice(0, endIndex - page.startIndex));
+      return results;
+    }
+  }
+  /**
+   * Convert a trial index into the page index containing that trial.
+   * @param index the index of the trial
+   */
+  pageIndexForTrialIndex(index: number): number {
+    // Currently this assumes pages (except that last) will always be the same
+    // size. This has not been verified. A future version may perform a binary
+    // search.
+    return Math.floor(index / this.itemsPerPage);
   }
   /**
    * Builds lists of unique elements.
