@@ -36,17 +36,17 @@ export class AppComponent {
  variable for recruitment Drop Down
  * */
   public recDropDown = [];
-  /*
- variable for show or hide search Page
- * */
+  /**
+   * Whether or not the search form (not results) page is visible
+   */
   public searchPage = false;
-  /*
-  variable for show or hide search result Page
- * */
+  /**
+   * Whether or not the search results page is visible
+   */
   public searchtable = true;
-  /*
-  variable for show or hide details Page
- * */
+  /**
+   * Whether or not the details page is visible.
+   */
   public detailsPage = true;
   /*
      variable for filters Array
@@ -63,15 +63,15 @@ export class AppComponent {
   /**
    * Saved clinical trials.
    */
-  public savedClinicalTrials: any = [];
+  public savedClinicalTrials: Partial<Trial>[] = [];
   /**
-   * The set of saved clinical trial nctIds
+   * The set of saved clinical trial nctIds.
    */
-  public savedClinicalTrialsNctIds = new Set();
-  /*
-     variable for show details of selected clinical trial
-  * */
-  public detailPageSelectedData: any;
+  public savedClinicalTrialsNctIds = new Set<string>();
+  /**
+   * The trial whose details are being displayed.
+   */
+  public detailedTrial: Partial<Trial> | null = null;
   /**
    * The currently active page.
    */
@@ -80,8 +80,14 @@ export class AppComponent {
    * Array of page information.
    */
   public pages: SearchPage[];
+  /**
+   * Trials on the current page.
+   */
   public selectedPageTrials: Partial<Trial>[];
-  public itemsPerPage = 20;
+  /**
+   * The number of items per page.
+   */
+  private itemsPerPage = 10;
   /**
    * Loaded conditions from the patient.
    */
@@ -90,9 +96,9 @@ export class AppComponent {
    * Conditions loaded from TrialScope.
    */
   public trialScopeConditions: string[];
-  /*
-     variable for create object of search clinical trial request
-  * */
+  /**
+   * The Angular form model for search options.
+   */
   searchReqObject: { zipCode: string | null; travelRadius: string | null; phase: string; recruitmentStatus: string } = {
     zipCode: null,
     travelRadius: null,
@@ -123,14 +129,20 @@ export class AppComponent {
     );
   }
 
+  /**
+   * Gets the total number of pages.
+   */
   get pageCount() {
-    return Math.ceil(this.resultCount / this.itemsPerPage);
+    return this.pages.length;
   }
 
-  /*
-    Function for load phase and recruitment trial data
- * */
-  public loadDropDownData(type, val) {
+  /**
+   * Load the available values for a dropdown from the server.
+   * @param type the schema type to load values for
+   * @param val currently either "phase" to populate the phase dropdown or
+   * literally anything else to populate the "rec" recruitment status dropdown
+   */
+  public loadDropDownData(type: string, val: string) {
     this.spinner.show();
     this.trialScopeService.getDropDownData(type).subscribe(response => {
       if (val === 'phase') {
@@ -181,6 +193,10 @@ export class AppComponent {
       }
     );
   }
+  /**
+   * Show the given page.
+   * @param page the 0-based page number to show
+   */
   public showPage(page: number) {
     if (this.searchResults === null) {
       console.error(`Cannot show page ${page}: no results`);
@@ -213,11 +229,11 @@ export class AppComponent {
       this.pages.push(new SearchPage(pageIndex, startIndex, this.resultCount));
     }
   }
-  /*
-  Function for show details of clinical trial
-  * */
+  /**
+   * Display details of a given trial.
+   */
   public showDetails(i) {
-    this.detailPageSelectedData = this.selectedPageTrials[i];
+    this.detailedTrial = this.selectedPageTrials[i];
     this.searchtable = true;
     this.searchPage = true;
     this.detailsPage = false;
@@ -329,22 +345,17 @@ export class AppComponent {
     this.searchPage = false;
     this.detailsPage = true;
   }
-  /*
-    Function add/remove trial to/from Array of saved trials
-  * */
-  public saveTrial(trialData) {
-    if (!this.savedClinicalTrialsNctIds.has(trialData.node.nctId)) {
-      this.savedClinicalTrials.push(trialData);
-      this.savedClinicalTrialsNctIds.add(trialData.node.nctId);
+  /**
+   * Save or remove a trial from the saved trials list.
+   */
+  public toggleTrialSaved(trial: Partial<Trial>) {
+    if (!this.savedClinicalTrialsNctIds.has(trial.nctId)) {
+      this.savedClinicalTrials.push(trial);
+      this.savedClinicalTrialsNctIds.add(trial.nctId);
     } else {
-      let index;
-      this.savedClinicalTrials.some(i => {
-        if (i.node.nctId === trialData.node.nctId) {
-          index = this.savedClinicalTrials.indexOf(i, 0);
-        }
-      });
+      const index = this.savedClinicalTrials.findIndex(t => t.nctId === trial.nctId);
       this.savedClinicalTrials.splice(index, 1);
-      this.savedClinicalTrialsNctIds.delete(trialData.node.nctId);
+      this.savedClinicalTrialsNctIds.delete(trial.nctId);
     }
   }
   /*

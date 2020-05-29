@@ -1,6 +1,8 @@
+import { Trial } from '../trialscope';
+
 const clearPunctuation = (entry: string) => entry.replace(/"/g, '');
 
-export const UnpackMatchResults = (result) => {
+export const UnpackMatchResults = (result: Partial<Trial>[]) => {
 
   const data: object[] = [];
   // let resultType = Object.keys(result["data"]).includes("baseMatches") ? "baseMatches" : "advancedMatches";
@@ -8,9 +10,7 @@ export const UnpackMatchResults = (result) => {
 
   data.push({'Match Count': result.length});
 
-  result.forEach(match => {
-
-    const trial = match.node;
+  result.forEach(trial => {
     const mainRow = {};
     let sites: object = {};
     const blackList = ['advancedMatchConditions', 'armGroups', 'interventions'];
