@@ -6,8 +6,17 @@ import { AppConfigService } from './app-config.service';
 
 import { Trial } from '../trialscope';
 
-type JsonObject = {[key: string]: any};
-type TrialScopeResponse = JsonObject;
+type JsonObject = {[key: string]: unknown };
+interface TrialScopeResponse {
+  data: JsonObject;
+}
+
+interface PageInfo {
+  endCursor: string;
+  hasNextPage: boolean;
+  hasPreviousPage?: boolean;
+  startCursor: string;
+}
 
 /**
  * This represents a single page returned from TrialScope.
@@ -22,9 +31,12 @@ export class TrialScopePage {
   endIndex: number;
   constructor(json: JsonObject | null, public startIndex: number) {
     // The given JSON object should be a TrialScope data object
-    this.trials = json.edges.map(edge => edge.node);
-    this.nextPageCursor = json.pageInfo.endCursor;
-    this.hasNextPage = json.pageInfo.hasNextPage;
+    if (!Array.isArray(json.edges))
+      throw new Error('Missing edges array in results');
+    this.trials = json.edges.map(edge => edge.node as Partial<Trial>);
+    const pageInfo = json.pageInfo as PageInfo;
+    this.nextPageCursor = pageInfo.endCursor;
+    this.hasNextPage = pageInfo.hasNextPage;
     this.endIndex = startIndex + this.trials.length;
   }
 }
@@ -103,7 +115,7 @@ export class TrialScopeResult {
    * loaded yet.
    */
   buildFilters<T>(property: string): Set<T> {
-    let results = new Set<T>();
+    const results = new Set<T>();
     for (const page of this.pages) {
       page.trials.forEach(trial => results.add(trial[property]));
     }
@@ -156,10 +168,11 @@ export class TrialScopeService {
   public baseMatches(query: string, first = 30, after: string | null = null): Observable<TrialScopeResult> {
     return new Observable(subscriber => {
       // This functions by loading all the pages at present
-      let pages = [], startIndex = 0;
-      const loadPage = response => {
+      const pages = [];
+      let startIndex = 0;
+      const loadPage: (TrialScopeResult) => void = response => {
         // Once we have the first response, we want to keep loading
-        const page = new TrialScopePage(response.data.baseMatches, startIndex);
+        const page = new TrialScopePage(response.data.baseMatches as JsonObject, startIndex);
         pages.push(page);
         startIndex += page.trials.length;
         if (page.hasNextPage) {

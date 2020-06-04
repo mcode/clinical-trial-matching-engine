@@ -9,7 +9,6 @@ import { ConvertCodesService } from './services/convert-codes.service';
 import { Condition, pullCodesFromConditions } from './condition';
 import { TrialScopeService, TrialScopeResult } from './services/trial-scope.service';
 import { Trial } from './trialscope';
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
 /**
  * Provides basic information about a given page.
