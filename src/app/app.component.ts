@@ -185,6 +185,8 @@ export class AppComponent {
         this.resultCount = response.totalCount;
         // Create our pages array
         this.createPages();
+        // Create our filters
+        this.createFilters();
         // Display the results
         this.showPage(0);
       },
@@ -227,6 +229,55 @@ export class AppComponent {
     if (startIndex < this.resultCount) {
       // Have a partial final page
       this.pages.push(new SearchPage(pageIndex, startIndex, this.resultCount));
+    }
+  }
+  /**
+   * Create the filters
+   */
+  private createFilters() {
+    const conditionsArray = this.searchResults.buildFilters<string>('conditions');
+    const conditionsSet = new Set<string>();
+    conditionsArray.forEach(json => {
+      // Each condition is, in fact, a JSON object as a string
+      try {
+        const conditions = JSON.parse(json);
+        if (Array.isArray(conditions)) {
+          conditions.forEach(cond => conditionsSet.add(cond));
+        }
+      } catch (ex) {
+        console.error('Error parsing conditions value (ignored for filter)');
+        console.error(ex);
+      }
+    })
+    this.filtersArray = [
+      {
+        val: 'My Conditions',
+        selectedVal: 'conditions',
+        data: Array.from(conditionsSet)
+      },
+      {
+        val: 'Recruitment',
+        selectedVal: 'overallStatus',
+        data: Array.from(this.searchResults.buildFilters<string>('overallStatus'))
+      },
+      {
+        val: 'Phase',
+        selectedVal: 'phase',
+        data: Array.from(this.searchResults.buildFilters<string>('phase'))
+      },
+      {
+        val: 'Study Type',
+        selectedVal: 'studyType',
+        data: Array.from(this.searchResults.buildFilters<string>('studyType'))
+      }
+    ];
+    for (const filter of this.filtersArray) {
+      for (let y = 0; y < filter.data.length; y++) {
+        filter.data[y] = {
+          val: filter.data[y],
+          selectedItems: false,
+        };
+      }
     }
   }
   /**

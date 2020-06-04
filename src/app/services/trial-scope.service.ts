@@ -17,19 +17,14 @@ export class TrialScopePage {
   nextPageCursor: string;
   hasNextPage: boolean;
   /**
-   * Index of the first result (inclusive)
-   */
-  startIndex: number;
-  /**
    * Index of the last result (exclusive)
    */
   endIndex: number;
-  constructor(json: JsonObject, startIndex: number) {
+  constructor(json: JsonObject | null, public startIndex: number) {
     // The given JSON object should be a TrialScope data object
     this.trials = json.edges.map(edge => edge.node);
     this.nextPageCursor = json.pageInfo.endCursor;
     this.hasNextPage = json.pageInfo.hasNextPage;
-    this.startIndex = startIndex;
     this.endIndex = startIndex + this.trials.length;
   }
 }
@@ -41,12 +36,10 @@ export class TrialScopeResult {
   pages: TrialScopePage[] = [];
   totalCount: number;
   itemsPerPage: number;
-  constructor(json: JsonObject) {
+  constructor(private source: TrialScopeService, private sourceQuery: string, totalCount: number, pages: TrialScopePage[]) {
     // Pull out the total count
-    console.log('Creating result:');
-    console.log(json);
-    this.totalCount = json.data.baseMatches.totalCount;
-    this.pages = [ new TrialScopePage(json.data.baseMatches, 0) ];
+    this.totalCount = totalCount;
+    this.pages = pages;
     // Pull the items per page out of the first page based on the assumption
     // that the method used to pull the trials array may change in the future.
     // TODO: Verify that the items per page will not change on a per-page
@@ -100,59 +93,21 @@ export class TrialScopeResult {
    * @param index the index of the trial
    */
   pageIndexForTrialIndex(index: number): number {
-    // Currently this assumes pages (except that last) will always be the same
+    // Currently this assumes pages (except the last) will always be the same
     // size. This has not been verified. A future version may perform a binary
     // search.
     return Math.floor(index / this.itemsPerPage);
   }
   /**
-   * Builds lists of unique elements.
+   * Builds lists of unique elements. This will skip pages that have not been
+   * loaded yet.
    */
-  buildFilters() {/*
-  this.clinicalTraildata.data.baseMatches.edges = _.uniqBy(this.clinicalTraildata.data.baseMatches.edges, 'node.nctId');
-  this.clinicalTraildataCopy = [...this.clinicalTraildata.data.baseMatches.edges];
-  const newArray = [];
-  const myArray = _.uniqBy(this.clinicalTraildata.data.baseMatches.edges, 'node.conditions');
-  for (const condition of myArray) {
-    const tempArray = JSON.parse(condition.node.conditions);
-    for (const e of tempArray) {
-      newArray.push({ key: e });
+  buildFilters<T>(property: string): Set<T> {
+    let results = new Set<T>();
+    for (const page of this.pages) {
+      page.trials.forEach(trial => results.add(trial[property]));
     }
-  }
-  this.filtersArray = [
-    {
-      val: 'My Conditions',
-      selectedVal: 'conditions',
-      data: _.uniq(_.map(newArray, 'key'))
-    },
-    {
-      val: 'Recruitment',
-      selectedVal: 'overallStatus',
-      data: _.uniq(_.map(this.clinicalTraildata.data.baseMatches.edges, 'node.overallStatus'))
-    },
-    {
-      val: 'Phase',
-      selectedVal: 'phase',
-      data: _.uniq(_.map(this.clinicalTraildata.data.baseMatches.edges, 'node.phase'))
-    },
-    {
-      val: 'Study Type',
-      selectedVal: 'studyType',
-      data: _.uniq(_.map(this.clinicalTraildata.data.baseMatches.edges, 'node.studyType'))
-    }
-  ];
-  for (const filter of this.filtersArray.length) {
-    for (let y = 0; y < filter.data.length; y++) {
-      filter.data[y] = {
-        val: filter.data[y],
-        selectedItems: false,
-      };
-    }
-  }
-  this.searchtable = false;
-  this.searchPage = true;
-  this.countPages(this.clinicalTraildata);
-}*/
+    return results;
   }
 }
 
@@ -199,6 +154,26 @@ export class TrialScopeService {
    * @param after if given, where to start in the query
    */
   public baseMatches(query: string, first = 30, after: string | null = null): Observable<TrialScopeResult> {
+    return new Observable(subscriber => {
+      // This functions by loading all the pages at present
+      let pages = [], startIndex = 0;
+      const loadPage = response => {
+        // Once we have the first response, we want to keep loading
+        const page = new TrialScopePage(response.data.baseMatches, startIndex);
+        pages.push(page);
+        startIndex += page.trials.length;
+        if (page.hasNextPage) {
+          this.loadBaseMatchesPage(query, first, page.nextPageCursor).subscribe(loadPage);
+        } else {
+          subscriber.next(new TrialScopeResult(this, query, response.data.baseMatches.totalCount, pages));
+          subscriber.complete();
+        }
+      };
+      this.loadBaseMatchesPage(query, first, after).subscribe(loadPage);
+    });
+  }
+
+  loadBaseMatchesPage(query: string, first = 30, after: string | null = null): Observable<TrialScopeResponse> {
     return this.search(`
     {
       baseMatches(first: ${first} after: ${JSON.stringify(after)} ${query})
@@ -216,9 +191,7 @@ export class TrialScopeService {
         cursor
       }
       pageInfo { endCursor hasNextPage }
-    } }`).pipe(
-      map(response => new TrialScopeResult(response))
-    );
+    } }`);
   }
 
   /**
