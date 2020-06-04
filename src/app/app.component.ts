@@ -17,6 +17,9 @@ import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 class SearchPage {
   constructor(public index: number, public firstIndex: number, public lastIndex: number) {
   }
+  toString() {
+    return `[Page ${this.index} (${this.firstIndex}-${this.lastIndex})]`;
+  }
 }
 
 @Component({
@@ -57,9 +60,19 @@ export class AppComponent {
    */
   public searchResults: TrialScopeResult | null = null;
   /**
+   * If filters have been applied, the filtered results.
+   */
+  public filteredResults: Partial<Trial>[] | null = null;
+  /**
    * Total number of results found.
    */
-  public resultCount = 0;
+  public get resultCount() {
+    if (this.filteredResults === null) {
+      return this.searchResults === null ? 0 : this.searchResults.totalCount;
+    } else {
+      return this.filteredResults.length;
+    }
+  }
   /**
    * Saved clinical trials.
    */
@@ -152,8 +165,10 @@ export class AppComponent {
       }
       this.spinner.hide();
     },
-    err => { /* FIXME: Handle this error */ }
-    );
+    err => {
+      // FIXME: Handle this error
+      console.error(err);
+    });
   }
   /**
    * Execute a search on clinical trial data based on the current user.
@@ -182,7 +197,6 @@ export class AppComponent {
     this.trialScopeService.baseMatches(query).subscribe(response => {
         // Store the results
         this.searchResults = response;
-        this.resultCount = response.totalCount;
         // Create our pages array
         this.createPages();
         // Create our filters
@@ -209,26 +223,38 @@ export class AppComponent {
   /**
    * View a specific page from within the pages array.
    */
-  public viewPage(page) {
+  public viewPage(page: SearchPage) {
     this.selectedPage = page;
-    this.selectedPageTrials = this.searchResults.getTrials(this.selectedPage.firstIndex, this.selectedPage.lastIndex);
+    console.log(`Showing page ${page}`);
+    if (this.filteredResults === null) {
+      this.selectedPageTrials = this.searchResults.getTrials(this.selectedPage.firstIndex, this.selectedPage.lastIndex);
+    } else {
+      this.selectedPageTrials = this.filteredResults.slice(page.firstIndex, page.lastIndex);
+    }
     this.searchtable = false;
     this.searchPage = true;
     this.spinner.hide();
   }
   /**
    * Populates the pages array based on the current items per pages data.
+   * @param totalResults
+   *          if given, the total number of results to create pages
+   *          for, otherwise defaults to the current result count
    */
-  private createPages() {
-    this.pages = [];
-    let pageIndex = 0, startIndex = 0, lastIndex = this.itemsPerPage;
-    for (; lastIndex < this.resultCount; pageIndex++, startIndex = lastIndex, lastIndex += this.itemsPerPage) {
+  private createPages(totalResults = this.resultCount) {
+    // Always create at least one page, even if it's empty
+    this.pages = [ new SearchPage(0, 0, Math.min(totalResults, this.itemsPerPage)) ];
+    let pageIndex = 1, startIndex = this.itemsPerPage, lastIndex = this.itemsPerPage;
+    // Create all full pages past the first page
+    for (; lastIndex < totalResults; pageIndex++, startIndex = lastIndex, lastIndex += this.itemsPerPage) {
       // Push a complete page
       this.pages.push(new SearchPage(pageIndex, startIndex, lastIndex));
     }
-    if (startIndex < this.resultCount) {
-      // Have a partial final page
-      this.pages.push(new SearchPage(pageIndex, startIndex, this.resultCount));
+    if (startIndex < totalResults) {
+      // Have a partial final page - in the case where there is a single page
+      // that contains less than itemsPerPage, this will be skipped, because
+      // startIndex will be itemsPerPage.
+      this.pages.push(new SearchPage(pageIndex, startIndex, totalResults));
     }
   }
   /**
@@ -317,44 +343,63 @@ export class AppComponent {
     }
     /* eslint-enable @typescript-eslint/prefer-for-of */
   }
-  /*
-    Function for apply selected filter
-    * */
-  public applyFilter() {/*
-    this.spinner.show();
-    const filterArrayData = [];
-    for (const filter of this.filtersArray.length) {
-      filterArrayData.push({
-        selecteditem: filter.selectedVal,
-        arrays: filter.data.filter(records => records.selectedItems === true)
-      });
-    }
-    let filterArrays = this.clinicalTraildataCopy;
-    for (const filter of filterArrayData) {
-      if (filter.arrays.length !== 0) {
-        const filterArraysCopy = [];
-        for (const filterArray of filter.arrays) {
-          for (let z = 0; z < filterArrays.length; z++) {
-            if (filter.selecteditem === 'conditions') {
-              if (this.checkValue(filterArray.val, JSON.parse(filterArrays[z].node.conditions)) === 'Exist') {
-                filterArraysCopy.push(this.clinicalTraildataCopy[z]);
-              }
-            } else {
-              if (filterArray.val === filterArrays[z].node[filter.selecteditem]) {
-                filterArraysCopy.push(this.clinicalTraildataCopy[z]);
-              }
-            }
-          }
-        }
-        filterArrays = filterArraysCopy;
+  /**
+   * Apply user-selected filters
+   */
+  public applyFilter() {
+    const activeFilters = [];
+    for (const filter of this.filtersArray) {
+      // See if there are any active filters in this filter
+      const values = filter.data.filter(value => value.selectedItems === true);
+      if (values.length > 0) {
+        activeFilters.push({
+          selectedItem: filter.selectedVal,
+          values: values.map(v => v.val)
+        });
       }
     }
-    if (filterArrays.length !== 0) {
-      this.clinicalTraildata.data.baseMatches.edges = filterArrays;
-    } else {
-      this.clinicalTraildata.data.baseMatches.edges = this.clinicalTraildataCopy.data.baseMatches.edges;
+    if (activeFilters.length === 0) {
+      // No filters active, don't filter
+      this.filteredResults = null;
+      this.createPages();
+      this.showPage(0);
+      return;
     }
-    this.countPages(this.clinicalTraildata);*/
+    this.filteredResults = [];
+    // Go through all the pages
+    for (const page of this.searchResults.pages) {
+      const filteredPage = page.trials.filter(trial => {
+        for (const filter of activeFilters) {
+          if (filter.selectedItem === 'conditions') {
+            // This one is special
+            try {
+              const conditions = JSON.parse(trial.conditions);
+              if (Array.isArray(conditions)) {
+                if (!conditions.some(v => filter.values.includes(v)))
+                  return false;
+              } else {
+                console.error('Skipping trial with invalid conditions (not an array)');
+                return false;
+              }
+            } catch (ex) {
+              console.error('Skipping trial with unparseable conditions');
+              console.error(ex);
+              return false;
+            }
+          } else {
+            const value = trial[filter.selectedItem];
+            // If it doesn't match, then filter it out
+            if (!filter.values.some(v => v === value))
+              return false;
+          }
+        }
+        // If all filters matched, return true
+        return true;
+      });
+      this.filteredResults.push(...filteredPage);
+    }
+    this.createPages(this.filteredResults.length);
+    this.showPage(0);
   }
   /*
     Function for check selected condition exist or not
