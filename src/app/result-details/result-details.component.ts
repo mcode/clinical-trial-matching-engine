@@ -6,7 +6,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-result-details',
   templateUrl: './result-details.component.html',
-  styleUrls: ['./result-details.component.css']
+  styleUrls: ['../app.component.css'] //refer to app component styling for the time being
 })
 export class ResultDetailsComponent implements OnInit {
   @Input() clinicalTrial: object;
