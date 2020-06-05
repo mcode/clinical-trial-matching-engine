@@ -2,16 +2,7 @@
 <div class="mi-margin-2" style="margin-top: 10%;">
   <div style="border-radius: 0px 0px 10px 10px;
     background: #525151;">
-    <div class="mi-margin-30 col100 containingDIV" (click)="backToSearch();">
-      <svg xmlns="http://www.w3.org/2000/svg" width="40.641" height="40.641" viewBox="0 0 40.641 40.641">
-        <g id="arrow_upward-24px" transform="translate(0 40.641) rotate(-90)">
-          <path id="Path_20" data-name="Path 20" d="M0,0H40.641V40.641H0Z" fill="none" />
-          <path id="Path_21" data-name="Path 21"
-            d="M4,17.547l2.388,2.388,9.466-9.449V31.094H19.24V10.486l9.449,9.466,2.4-2.4L17.547,4Z"
-            transform="translate(2.773 2.773)" fill="#efefef" />
-        </g>
-      </svg><span class="color8" style="margin-top: 10px;"> Back to results</span>
-    </div>
+    <ng-content></ng-content>
     <div class="row col100 mi-margin-30">
       <div class="col80 containingDIV float-left">
         <div class="row">
@@ -20,7 +11,7 @@
             </h2>
             <div class="containingDIV padding-top-10">
               <h3 class="cardtext upperCase color7">Conditions:</h3>
-              <span class="cardtext color8 mi-margin-left-10">{{replace(clinicalTrial.conditions,'search')}}</span>
+              <span class="cardtext color8 mi-margin-left-10">{{replace(clinicalTrial.conditions)}}</span>
             </div>
           </div>
           <div>
@@ -103,14 +94,14 @@
             </ul>
           </div>
         </div>
-        <div class="col80" (click)="toggleTrialSaved(clinicalTrial)">
+        <div class="col80" (click)="toggleTrialSaved()">
           <svg xmlns="http://www.w3.org/2000/svg" width="222" height="40" viewBox="0 0 222 40">
             <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)">
               <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
                 <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)"
                   stroke="#707070" stroke-width="1">
                   <rect width="222" height="40" rx="10" stroke="none" />
-                  <rect x="0.5" y="0.5" width="221" height="39" rx="9.5" [ngClass]="savedClinicalTrialsNctIds.has(clinicalTrial.nctId) ? 'saved' : 'unsaved'" />
+                  <rect x="0.5" y="0.5" width="221" height="39" rx="9.5" [ngClass]="trialSaved ? 'saved' : 'unsaved'" />
                 </g>
                 <g id="save-24px" transform="translate(1603.053 477)">
                   <path id="Path_30" data-name="Path 30" d="M0,0H32V32H0Z" fill="none" />
@@ -120,7 +111,7 @@
                 </g>
                 <text id="Save_study" data-name="Save study" transform="translate(1654 500)" fill="#0079e0"
                   font-size="20" font-family="Roboto-Bold, Roboto" font-weight="700" >
-                  <tspan x="0" y="0">{{savedClinicalTrialsNctIds.has(clinicalTrial.nctId) ? 'STUDY SAVED' : 'SAVE STUDY'}}</tspan>
+                  <tspan x="0" y="0">{{trialSaved ? 'STUDY SAVED' : 'SAVE STUDY'}}</tspan>
                 </text>
               </g>
             </g>
