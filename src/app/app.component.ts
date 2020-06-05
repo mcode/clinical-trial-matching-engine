@@ -424,13 +424,27 @@ export class AppComponent {
    * Save or remove a trial from the saved trials list.
    */
   public toggleTrialSaved(trial: Partial<Trial>) {
-    if (!this.savedClinicalTrialsNctIds.has(trial.nctId)) {
-      this.savedClinicalTrials.push(trial);
-      this.savedClinicalTrialsNctIds.add(trial.nctId);
+    this.setTrialSaved(trial, !this.savedClinicalTrialsNctIds.has(trial.nctId));
+  }
+  /**
+   * Sets whether or not a given trial is part of the saved set.
+   * @param trial the trial to set whether or not it is saved
+   * @param saved the save state of the trial
+   */
+  public setTrialSaved(trial: Partial<Trial>, saved: boolean) {
+    if (saved) {
+      if (!this.savedClinicalTrialsNctIds.has(trial.nctId)) {
+        // Need to add it
+        this.savedClinicalTrials.push(trial);
+        this.savedClinicalTrialsNctIds.add(trial.nctId);
+      }
     } else {
-      const index = this.savedClinicalTrials.findIndex(t => t.nctId === trial.nctId);
-      this.savedClinicalTrials.splice(index, 1);
-      this.savedClinicalTrialsNctIds.delete(trial.nctId);
+      if (this.savedClinicalTrialsNctIds.has(trial.nctId)) {
+        // Need to remove it
+        const index = this.savedClinicalTrials.findIndex(t => t.nctId === trial.nctId);
+        this.savedClinicalTrials.splice(index, 1);
+        this.savedClinicalTrialsNctIds.delete(trial.nctId);
+      }
     }
   }
   /*

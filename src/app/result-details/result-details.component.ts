@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 /**
  * Shows the details page for the results.
@@ -10,20 +10,17 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ResultDetailsComponent implements OnInit {
   @Input() clinicalTrial: object;
+  @Input() trialSaved: boolean = false;
+  @Output() trialSaveChanged = new EventEmitter<boolean>();
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  public get trialSaved(): boolean {
-    // FIXME: Actually determine if the trial is saved
-    return false;
-  }
-
   public toggleTrialSaved(): void {
-    // FIXME: Actually toggle the save status of the trial (probably going to
-    // be an @Output event)
+    this.trialSaved = !this.trialSaved
+    this.trialSaveChanged.emit(this.trialSaved);
   }
 
   public replace(value: string): string {
