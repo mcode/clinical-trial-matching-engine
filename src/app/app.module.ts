@@ -8,6 +8,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 // animation module
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClientService } from './smartonfhir/client.service';
+import { RecordDataComponent } from './record-data/record-data.component';
 
 const fhirInitializeFn = (fhirService: ClientService) => {
   // Grab the client during bootstrap - this prevents the flash of a partially
@@ -18,7 +19,8 @@ const fhirInitializeFn = (fhirService: ClientService) => {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RecordDataComponent
   ],
   imports: [
     BrowserModule,
