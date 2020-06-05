@@ -72,9 +72,7 @@
         </div>
       </div>
       <div class="col20  float-right">
-        <div class="col80 mi-margin-10" style="
-                height: 217px;
-                background: white;">
+        <div class="col80 mi-margin-10" style="background: white;">
           <p class="color9 text-transform-uppercase mi-margin-10 padding-top-10">Contact information</p>
           <span class="color9 text-transform-uppercase  mi-margin-left-10">sponsor: </span><span
             class="color9">{{clinicalTrial.sponsor}}</span>
@@ -94,6 +92,15 @@
                 transform="translate(-2 -4)" fill="#0079e0" />
             </svg>
             <span class="color10 font15">{{clinicalTrial.overallContactEmail}}</span>
+          </div>
+          <div class="facilities">
+            <p class="color9 text-transform-uppercase mi-margin-10 padding-top-10">Facilities</p>
+            <ul class="facilityList">
+              <li *ngFor="let site of clinicalTrial.sites" class="facility">{{site.facility}}
+                <div *ngIf="site.contactPhone" class="phone"><span class="phoneIcon">Phone:</span> {{site.contactPhone}}</div>
+                <div *ngIf="site.contactEmail" class="email"><span class="emailIcon">Email:</span> {{site.contactEmail}}</div>
+              </li>
+            </ul>
           </div>
         </div>
         <div class="col80" (click)="saveTrial(detailPageSelectedData)">
