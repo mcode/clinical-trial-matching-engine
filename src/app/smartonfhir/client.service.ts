@@ -21,6 +21,8 @@ export class ClientService {
   client: Client;
   patient: Patient;
   private pendingClient: Promise<Client> | null = null;
+  public resourceTypes = ["Immunization", "AllergyIntolerance", "MedicationOrder"]//, "MedicationStatement", "Observation", "Procedure"]
+  public resourceParams = {"Immunization" : {}, "AllergyIntolerance" : {}, "MedicationOrder" : {status: 'active'}}//, "MedicationStatement" : {}, "Observation" : {}, "Procedure" : {}}
   /**
    * Gets a Promise that resolves to the client when the client is ready. If
    * the client is already ready, this returns a resolved Promise.
@@ -131,5 +133,54 @@ export class ClientService {
     return this.getAllRecords(query).then(resources => resources.map(
       resource => (resource as fhirclient.FHIR.BundleEntry).resource
     ));
+  }
+  /**
+  * Gets all resources of queryType from the client.
+  */
+  getResources(queryType: string, parameters?: {[key: string]: Stringable}): Promise<fhirclient.FHIR.Resource[]> {
+    let query = queryType;
+    if (parameters) {
+      const params = [];
+      for (const p in parameters) {
+        params.push(encodeURIComponent(p) + '=' + encodeURIComponent(parameters[p] === null ? 'null' : parameters[p].toString()));
+      }
+      query += '?' + params.join('&');
+    }
+    // Resources should all be BundleEntries
+    return this.getAllRecords(query).then(resources => resources.map(
+      resource => (resource as fhirclient.FHIR.BundleEntry).resource
+    ));
+  }
+  /**
+  * Create collection bundle from parameters and entries
+  */
+  createPatientBundle(parameters: {[key: string]: Stringable}, entries: any[]): string {
+    let paramResource = `{
+                           "resourceType": "Parameters",
+                           "parameter": [`
+    for (const p in parameters) {
+      paramResource += `{
+                          "name": "`+ p + `",
+                          "valueString”: "` + parameters[p] + `"
+                        },`;
+    }
+    // need to remove final comma
+    paramResource = paramResource.slice(0,-1);
+    let patient_bundle = `{
+                          	“resourceType”: “Bundle”,
+                          	“type”: collection,
+                          	“entry”: [
+                          		{
+                          			“resource”: ` + paramResource;
+    for (const resource in entries) {
+      patient_bundle += `},
+                         		{
+                         			“resource”:` + JSON.stringify(entries[resource]);
+    }
+    patient_bundle += `		}
+                       	]
+                       }`;
+    console.log(patient_bundle);
+    return JSON.stringify(patient_bundle);
   }
 }

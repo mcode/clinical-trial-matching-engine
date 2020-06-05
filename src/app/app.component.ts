@@ -84,6 +84,10 @@ export class AppComponent {
     phase: 'any',
     recruitmentStatus: 'all',
   };
+  /*
+     variable for test patient bundle
+  * */
+  public testBundle: any = [];
 
   constructor(public commonService: CommonService, private spinner: NgxSpinnerService, private fhirService: ClientService, private convertService: ConvertCodesService) {
     const paramPhase = '{ __type(name: "Phase") { enumValues { name } } }';
@@ -100,14 +104,25 @@ export class AppComponent {
           this.searchReqObject.zipCode = zipCode;
         }
       }
+      this.testBundle.push(patient);
       return p;
     });
     this.fhirService.getConditions({clinicalstatus: 'active'}).then(
       records => {
         this.conditions = records.map(record => new Condition(record));
         convertService.convertCodes(pullCodesFromConditions(records)).subscribe(codes => this.trialScopeConditions = codes);
+        records.map(record => this.testBundle.push(record));
       }
     );
+    this.fhirService.resourceTypes.map(resourceType =>
+      this.fhirService.getResources(resourceType, this.fhirService.resourceParams[resourceType]).then(
+        records => {
+          records.map(record => this.testBundle.push(record));
+        }
+      )
+     );
+    //console.log("TESTING");
+    //console.log(this.testBundle);
   }
   /*
     Function for load phase and recruitment trial data
@@ -140,6 +155,8 @@ export class AppComponent {
     if (this.searchReqObject.zipCode == null) {
       alert('Enter Zipcode');
     } else {
+      let patientBundle = this.fhirService.createPatientBundle(this.searchReqObject, this.testBundle);
+      console.log(patientBundle);
       let req = `{baseMatches(first:30 after: "${endCursor}"`;
       req += ` conditions:[${this.trialScopeConditions.join(', ')}],baseFilters: { `;
       if (this.searchReqObject.zipCode != null) {
@@ -171,7 +188,8 @@ export class AppComponent {
         pageInfo { endCursor hasNextPage }
       } }`;
       const reqObj = {
-        inputParam: req
+        inputParam: req,
+        patientData: patientBundle
       };
       this.commonService.searchClinialTrial(reqObj).subscribe(data => {
         if (this.clinicalTraildata.length !== 0) {
