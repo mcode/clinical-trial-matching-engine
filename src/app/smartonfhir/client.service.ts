@@ -21,8 +21,8 @@ export class ClientService {
   client: Client;
   patient: Patient;
   private pendingClient: Promise<Client> | null = null;
-  public resourceTypes = ["Immunization", "AllergyIntolerance", "MedicationOrder"]//, "MedicationStatement", "Observation", "Procedure"]
-  public resourceParams = {"Immunization" : {}, "AllergyIntolerance" : {}, "MedicationOrder" : {status: 'active'}}//, "MedicationStatement" : {}, "Observation" : {}, "Procedure" : {}}
+  public resourceTypes = ["Immunization", "AllergyIntolerance", ]//"MedicationOrder", "MedicationStatement", "Observation", "Procedure"]
+  public resourceParams = {"Immunization" : {}, "AllergyIntolerance" : {}}//, "MedicationOrder" : {status: 'active'}, "MedicationStatement" : {}, "Observation" : {}, "Procedure" : {}}
   /**
    * Gets a Promise that resolves to the client when the client is ready. If
    * the client is already ready, this returns a resolved Promise.
@@ -161,21 +161,24 @@ export class ClientService {
     for (const p in parameters) {
       paramResource += `{
                           "name": "`+ p + `",
-                          "valueString”: "` + parameters[p] + `"
+                          "valueString": "` + parameters[p] + `"
                         },`;
     }
     // need to remove final comma
     paramResource = paramResource.slice(0,-1);
+    paramResource += `
+                       ]
+                      }`
     let patient_bundle = `{
-                          	“resourceType”: “Bundle”,
-                          	“type”: collection,
-                          	“entry”: [
+                          	"resourceType": "Bundle",
+                          	"type": "collection",
+                          	"entry": [
                           		{
-                          			“resource”: ` + paramResource;
+                          			"resource": ` + paramResource;
     for (const resource in entries) {
       patient_bundle += `},
                          		{
-                         			“resource”:` + JSON.stringify(entries[resource]);
+                         			"resource":` + JSON.stringify(entries[resource]);
     }
     patient_bundle += `		}
                        	]
