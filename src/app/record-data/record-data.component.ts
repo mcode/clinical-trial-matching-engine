@@ -9,7 +9,7 @@ import Patient from '../patient';
   templateUrl: './record-data.component.html',
   styleUrls: ['./record-data.component.css']
 })
-export class RecordDataComponent implements OnInit {
+export class RecordDataComponent {
   @Input() patient: Patient;
   @Input() displayOn: boolean;
   @Input() conditions: Condition[];

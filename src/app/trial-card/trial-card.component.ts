@@ -5,7 +5,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   templateUrl: './trial-card.component.html',
   styleUrls: ['../app.component.css'] //refer to app component styling for the time being
 })
-export class TrialCardComponent implements OnInit {
+export class TrialCardComponent {
   @Input() clinicalTrial: object;
   @Input() trialSaved;
   @Output() trialSaveChanged = new EventEmitter<boolean>();
