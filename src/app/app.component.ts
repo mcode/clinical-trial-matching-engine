@@ -104,14 +104,14 @@ export class AppComponent {
           this.searchReqObject.zipCode = zipCode;
         }
       }
-      this.testBundle.push(patient);
+      //this.testBundle.push(patient);
       return p;
     });
-    this.fhirService.getConditions({clinicalstatus: 'active'}).then(
+    this.fhirService.getConditions({"clinical-status": 'active'}).then(
       records => {
         this.conditions = records.map(record => new Condition(record));
         convertService.convertCodes(pullCodesFromConditions(records)).subscribe(codes => this.trialScopeConditions = codes);
-        records.map(record => this.testBundle.push(record));
+        //records.map(record => this.testBundle.push(record));
       }
     );
     this.fhirService.resourceTypes.map(resourceType =>
@@ -122,7 +122,7 @@ export class AppComponent {
       )
      );
     //console.log("TESTING");
-    //console.log(this.testBundle);
+    console.log(this.testBundle);
   }
   /*
     Function for load phase and recruitment trial data
