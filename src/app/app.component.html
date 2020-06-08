@@ -165,6 +165,11 @@
         <div style="padding-bottom: 20px; height: 60vh;overflow-y: scroll;margin-top: 10px;" class="mitTable">
           <div *ngFor="let trial of selectedPageTrials; let k=index">
             <div class="row containingDIV cards" (click)="showDetails(k)">
+              <!-- Card Component-->
+              <app-trial-card [clinicalTrial]="trial" [trialSaved]="savedClinicalTrialsNctIds.has(trial.nctId)"
+                (trialSaveChanged)="setTrialSaved(trial, $event)">
+              </app-trial-card>
+              <!--
               <div class="col15"> <button class="recButton mi-margin-10"> {{trial.overallStatus}} </button>
               </div>
               <div class="col35 padding-top-15 padding-bottom-15 ">
@@ -215,7 +220,8 @@
                         d="M25.667,25.667H5.833V5.833H15.75V3H5.833A2.833,2.833,0,0,0,3,5.833V25.667A2.833,2.833,0,0,0,5.833,28.5H25.667A2.842,2.842,0,0,0,28.5,25.667V15.75H25.667ZM18.583,3V5.833h5.086L9.743,19.759l2,2L25.667,7.831v5.086H28.5V3Z"
                         transform="translate(1.25 1.25)" fill="#0079e0" />
                     </svg> </div>
-                </div><svg xmlns="http://www.w3.org/2000/svg" width="222" height="40" viewBox="0 0 222 40"
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="222" height="40" viewBox="0 0 222 40"
                   (click)="toggleTrialSaved(trial)">
                   <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)">
                     <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
@@ -238,8 +244,8 @@
                       </text>
                     </g>
                   </g>
-                </svg>
-              </div>
+                </svg> 
+              </div> -->
             </div>
           </div>
         </div>
@@ -254,7 +260,9 @@
             [ngClass]="selectedPage.index == page.index ? 'selectedPage':''">{{page.index + 1}}</span>
         </div>
       </div>
-      <app-result-details *ngIf="!detailsPage" [clinicalTrial]="detailedTrial" [trialSaved]="savedClinicalTrialsNctIds.has(detailedTrial.nctId)" (trialSaveChanged)="setTrialSaved(detailedTrial, $event)">
+      <app-result-details *ngIf="!detailsPage" [clinicalTrial]="detailedTrial"
+        [trialSaved]="savedClinicalTrialsNctIds.has(detailedTrial.nctId)"
+        (trialSaveChanged)="setTrialSaved(detailedTrial, $event)">
         <div class="mi-margin-30 col100 containingDIV" (click)="backToSearch();">
           <svg xmlns="http://www.w3.org/2000/svg" width="40.641" height="40.641" viewBox="0 0 40.641 40.641">
             <g id="arrow_upward-24px" transform="translate(0 40.641) rotate(-90)">
