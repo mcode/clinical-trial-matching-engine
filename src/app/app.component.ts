@@ -133,7 +133,7 @@ export class AppComponent {
       }
       return p;
     });
-    this.fhirService.getConditions({clinicalstatus: 'active'}).then(
+    this.fhirService.getConditions({ clinicalstatus: 'active' }).then(
       records => {
         this.conditions = records.map(record => new Condition(record));
         convertService.convertCodes(pullCodesFromConditions(records)).subscribe(codes => this.trialScopeConditions = codes);
@@ -164,10 +164,10 @@ export class AppComponent {
       }
       this.spinner.hide();
     },
-    err => {
-      // FIXME: Handle this error
-      console.error(err);
-    });
+      err => {
+        // FIXME: Handle this error
+        console.error(err);
+      });
   }
   /**
    * Execute a search on clinical trial data based on the current user.
@@ -194,15 +194,15 @@ export class AppComponent {
     }
     query += ' }';
     this.trialScopeService.baseMatches(query).subscribe(response => {
-        // Store the results
-        this.searchResults = response;
-        // Create our pages array
-        this.createPages();
-        // Create our filters
-        this.createFilters();
-        // Display the results
-        this.showPage(0);
-      },
+      // Store the results
+      this.searchResults = response;
+      // Create our pages array
+      this.createPages();
+      // Create our filters
+      this.createFilters();
+      // Display the results
+      this.showPage(0);
+    },
       err => {
         console.error(err);
       }
@@ -242,8 +242,8 @@ export class AppComponent {
    */
   private createPages(totalResults = this.resultCount) {
     // Always create at least one page, even if it's empty
-    this.pages = [ new SearchPage(0, 0, Math.min(totalResults, this.itemsPerPage)) ];
-    let pageIndex = 1, startIndex = this.itemsPerPage, lastIndex = this.itemsPerPage;
+    this.pages = [new SearchPage(0, 0, Math.min(totalResults, this.itemsPerPage))];
+    let pageIndex = 1, startIndex = this.itemsPerPage, lastIndex = this.itemsPerPage * 2;
     // Create all full pages past the first page
     for (; lastIndex < totalResults; pageIndex++, startIndex = lastIndex, lastIndex += this.itemsPerPage) {
       // Push a complete page
@@ -493,7 +493,7 @@ export class AppComponent {
     }
   }
   public records = false;
-  public showRecord(){
+  public showRecord() {
     this.records = !this.records
   }
 
