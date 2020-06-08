@@ -77,36 +77,10 @@
             </svg>
           </div>
         </div>
+        <!--Patient Records-->
         <app-record-data [(displayOn)]="records" [conditions]="conditions" [patient]="patient">
         </app-record-data>
-        <!-- <div *ngIf='records'>
-          <!-- Modal content
-          <div class="modal-content">
-            <span class="close" (click)="showRecord()">&times;</span>
-            <h2 class="cardText2 mi-margin-20">Patient Record</h2>
-            <span class="color14 mi-margin-20">If something doesn’t look right on your record, please contact your
-              healthcare provider.</span>
-            <div class="containingDIV mi-margin-20">
-              <div class="col33 color15">{{(patient | async)?.getUsualName()}}</div>
-              <div class="col33 color15">AGE: {{(patient | async)?.getAge()}}</div>
-              <div class="col33 color15">Gender: {{(patient | async)?.getGender()}}</div>
-            </div>
-            <div class="mi-margin-20 mi-margin-top5">
-              <span class="color14 upperCase">Conditions:</span>
-              <ul>
-                <li *ngFor="let condition of conditions">{{condition.getDisplayText()}}</li>
-              </ul>
-            </div>
-            <div class="mi-margin-20"><span class="color14">CATEGORY: </span>
-              <p class="color1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </div>
 
-          </div>
-        </div> -->
       </div>
       <!-- Cards page-->
       <div class="mi-margin-5" style="margin-top: 9%;" *ngIf='!searchtable'>
@@ -164,88 +138,12 @@
           {{resultCount}}</span>
         <div style="padding-bottom: 20px; height: 60vh;overflow-y: scroll;margin-top: 10px;" class="mitTable">
           <div *ngFor="let trial of selectedPageTrials; let k=index">
-            <div class="row containingDIV cards" (click)="showDetails(k)">
+            <div (click)="showDetails(k)">
               <!-- Card Component-->
-              <app-trial-card [clinicalTrial]="trial" [trialSaved]="savedClinicalTrialsNctIds.has(trial.nctId)"
+              <app-trial-card class="row containingDIV cards" [clinicalTrial]="trial"
+                [trialSaved]="savedClinicalTrialsNctIds.has(trial.nctId)"
                 (trialSaveChanged)="setTrialSaved(trial, $event)">
               </app-trial-card>
-              <!--
-              <div class="col15"> <button class="recButton mi-margin-10"> {{trial.overallStatus}} </button>
-              </div>
-              <div class="col35 padding-top-15 padding-bottom-15 ">
-                <h2 class="cardtext ">
-                  {{trial.title}}</h2>
-                <div class="containingDIV padding-top-10">
-                  <h3 class="cardtext color13">Conditions:</h3>
-                  <span class="cardtext color13 mi-margin-left-10"> {{replace(trial.conditions,'search')}}</span>
-                </div>
-              </div>
-              <div class="col10">
-                <div class="padding-top-30 padding-left-20"> <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                    height="20" viewBox="0 0 37 37">
-                    <path id="ic_directions_24px"
-                      d="M38.466,19.193,21.812,2.539a1.843,1.843,0,0,0-2.609,0L2.549,19.193a1.843,1.843,0,0,0,0,2.609L19.2,38.456a1.843,1.843,0,0,0,2.609,0L38.466,21.8a1.843,1.843,0,0,0,0-2.609ZM24.2,25.133V20.507H16.8v5.551H13.1v-7.4a1.856,1.856,0,0,1,1.85-1.85H24.2V12.18l6.477,6.477Z"
-                      transform="translate(-2.007 -1.997)" fill="#525151" />
-                  </svg><span class="cardText2">3.5 m</span></div>
-              </div>
-              <div class="col20">
-                <div class="containingDIV padding-top-10" style="margin-top: 7%;">
-                  <div>
-                    <h2 class="color1 padding-bottom-10 opacity-60 letter-spacing text-transform-uppercase">Match
-                      likelihood:</h2>
-                    <h2 class="color5">High Likelihood</h2>
-                  </div>
-                </div>
-              </div>
-              <div class="col20 padding-10" style="background-color:#DFEEF0;">
-                <div class="containingDIV padding-bottom-5">
-                  <div class="col33"><svg class="float-right padding-right-5" id="email-24px"
-                      xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
-                      <path id="Path_22" data-name="Path 22"
-                        d="M24.5,4H4.5A2.5,2.5,0,0,0,2.013,6.5L2,21.5A2.507,2.507,0,0,0,4.5,24h20A2.507,2.507,0,0,0,27,21.5V6.5A2.507,2.507,0,0,0,24.5,4Zm0,5-10,6.25L4.5,9V6.5l10,6.25,10-6.25Z"
-                        transform="translate(0.5 1)" fill="#0079e0" />
-                      <path id="Path_23" data-name="Path 23" d="M0,0H30V30H0Z" fill="none" /></svg>
-                  </div>
-                  <div class="col33"><svg id="phone-24px" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
-                      viewBox="0 0 30 30">
-                      <path id="Path_26" data-name="Path 26" d="M0,0H30V30H0Z" fill="none" />
-                      <path id="Path_27" data-name="Path 27"
-                        d="M7.525,12.738a18.936,18.936,0,0,0,8.238,8.238l2.75-2.75a1.243,1.243,0,0,1,1.275-.3,14.259,14.259,0,0,0,4.462.712,1.254,1.254,0,0,1,1.25,1.25V24.25a1.254,1.254,0,0,1-1.25,1.25A21.248,21.248,0,0,1,3,4.25,1.254,1.254,0,0,1,4.25,3H8.625a1.254,1.254,0,0,1,1.25,1.25,14.2,14.2,0,0,0,.712,4.462,1.254,1.254,0,0,1-.312,1.275Z"
-                        transform="translate(0.75 0.75)" fill="#0079e0" />
-                    </svg> </div>
-                  <div class="col33"><svg class="text-align-left" id="open_in_new-24px"
-                      xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34">
-                      <path id="Path_24" data-name="Path 24" d="M0,0H34V34H0Z" fill="none" />
-                      <path id="Path_25" data-name="Path 25"
-                        d="M25.667,25.667H5.833V5.833H15.75V3H5.833A2.833,2.833,0,0,0,3,5.833V25.667A2.833,2.833,0,0,0,5.833,28.5H25.667A2.842,2.842,0,0,0,28.5,25.667V15.75H25.667ZM18.583,3V5.833h5.086L9.743,19.759l2,2L25.667,7.831v5.086H28.5V3Z"
-                        transform="translate(1.25 1.25)" fill="#0079e0" />
-                    </svg> </div>
-                </div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="222" height="40" viewBox="0 0 222 40"
-                  (click)="toggleTrialSaved(trial)">
-                  <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)">
-                    <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
-                      <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)" stroke="#707070"
-                        stroke-width="1">
-                        <rect width="222" height="40" rx="10" stroke="none" />
-                        <rect x="0.5" y="0.5" width="221" height="39" rx="9.5"
-                          [ngClass]="savedClinicalTrialsNctIds.has(trial.nctId) ? 'saved' : 'unsaved'" />
-                      </g>
-                      <g id="save-24px" transform="translate(1603.053 477)">
-                        <path id="Path_30" data-name="Path 30" d="M0,0H32V32H0Z" fill="none" />
-                        <path id="Path_31" data-name="Path 31"
-                          d="M21.667,3h-16A2.666,2.666,0,0,0,3,5.667V24.333A2.666,2.666,0,0,0,5.667,27H24.333A2.675,2.675,0,0,0,27,24.333v-16ZM15,24.333a4,4,0,1,1,4-4A3.995,3.995,0,0,1,15,24.333ZM19,11H5.667V5.667H19Z"
-                          transform="translate(1 1)" fill="#0079e0" />
-                      </g>
-                      <text id="Save_study" data-name="Save study" transform="translate(1654 500)" fill="#0079e0"
-                        font-size="20" font-family="Roboto-Bold, Roboto" font-weight="700">
-                        <tspan x="0" y="0">
-                          {{savedClinicalTrialsNctIds.has(trial.nctId) ? 'STUDY SAVED' : 'SAVE STUDY'}}</tspan>
-                      </text>
-                    </g>
-                  </g>
-                </svg> 
-              </div> -->
             </div>
           </div>
         </div>
