@@ -16,16 +16,12 @@ export class RecordDataComponent implements OnInit {
   @Output() getDisplayChange = new EventEmitter<boolean>();
 
 
-  constructor() {
+  //constructor() { }
 
-
-
-  }
   setStatus(status: boolean) {
     this.displayOn = status;
     this.getDisplayChange.emit(status);
   }
-  ngOnInit() {
-  }
+  // ngOnInit() {}
 
 }

@@ -10,13 +10,12 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class ResultDetailsComponent implements OnInit {
   @Input() clinicalTrial: object;
-  @Input() trialSaved: boolean = false;
+  @Input() trialSaved = false;
   @Output() trialSaveChanged = new EventEmitter<boolean>();
 
-  constructor() { }
+  //constructor() { }
 
-  ngOnInit() {
-  }
+  //ngOnInit() {}
 
   public toggleTrialSaved(): void {
     this.trialSaved = !this.trialSaved

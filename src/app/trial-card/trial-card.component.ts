@@ -7,9 +7,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class TrialCardComponent implements OnInit {
   @Input() clinicalTrial: object;
-  @Input() trialSaved: boolean = false;
+  @Input() trialSaved;
   @Output() trialSaveChanged = new EventEmitter<boolean>();
-  constructor() { }
+  //constructor() { }
 
   public toggleTrialSaved(): void {
     this.trialSaved = !this.trialSaved
@@ -22,7 +22,6 @@ export class TrialCardComponent implements OnInit {
 
 
 
-  ngOnInit() {
-  }
+  //ngOnInit() {}
 
 }
