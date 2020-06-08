@@ -415,7 +415,7 @@ export class AppComponent {
   /*
      Function for go to home page
   * */
-  public beckToHomePage() {
+  public backToHomePage() {
     this.searchtable = true;
     this.searchPage = false;
     this.detailsPage = true;
