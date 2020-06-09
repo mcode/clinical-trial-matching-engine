@@ -102,7 +102,7 @@ export class AppComponent {
       }
       return p;
     });
-    this.fhirService.getConditions({clinicalstatus: 'active'}).then(
+    this.fhirService.getConditions({ clinicalstatus: 'active' }).then(
       records => {
         this.conditions = records.map(record => new Condition(record));
         convertService.convertCodes(pullCodesFromConditions(records)).subscribe(codes => this.trialScopeConditions = codes);
@@ -125,7 +125,7 @@ export class AppComponent {
       }
       this.spinner.hide();
     },
-    err => { /* FIXME: Handle this error */ }
+      err => { /* FIXME: Handle this error */ }
     );
   }
   /*
@@ -227,7 +227,7 @@ export class AppComponent {
           this.countPages(this.clinicalTraildata);
         }
       },
-      err => { /* FIXME: Handle this error */ }
+        err => { /* FIXME: Handle this error */ }
       );
     }
   }
@@ -367,7 +367,7 @@ export class AppComponent {
   /*
      Function for go to home page
   * */
-  public beckToHomePage() {
+  public backToHomePage() {
     this.searchtable = true;
     this.searchPage = false;
     this.detailsPage = true;
@@ -416,7 +416,7 @@ export class AppComponent {
     }
   }
   public records = false;
-  public showRecord(){
+  public showRecord() {
     this.records = !this.records
   }
 
