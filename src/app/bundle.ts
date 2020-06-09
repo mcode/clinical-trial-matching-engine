@@ -37,6 +37,5 @@ export function createPatientBundle(parameters: {[key: string]: Stringable}, ent
   patient_bundle += `
                       ]
                      }`;
-  console.log(patient_bundle);
   return patient_bundle;
 }
