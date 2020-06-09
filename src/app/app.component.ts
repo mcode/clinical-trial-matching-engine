@@ -133,7 +133,7 @@ export class AppComponent {
       }
       return p;
     });
-    this.fhirService.getConditions({clinicalstatus: 'active'}).then(
+    this.fhirService.getConditions({ clinicalstatus: 'active' }).then(
       records => {
         this.conditions = records.map(record => new Condition(record));
         convertService.convertCodes(pullCodesFromConditions(records)).subscribe(codes => this.trialScopeConditions = codes);
@@ -164,10 +164,10 @@ export class AppComponent {
       }
       this.spinner.hide();
     },
-    err => {
-      // FIXME: Handle this error
-      console.error(err);
-    });
+      err => {
+        // FIXME: Handle this error
+        console.error(err);
+      });
   }
   /**
    * Execute a search on clinical trial data based on the current user.
@@ -194,15 +194,15 @@ export class AppComponent {
     }
     query += ' }';
     this.trialScopeService.baseMatches(query).subscribe(response => {
-        // Store the results
-        this.searchResults = response;
-        // Create our pages array
-        this.createPages();
-        // Create our filters
-        this.createFilters();
-        // Display the results
-        this.showPage(0);
-      },
+      // Store the results
+      this.searchResults = response;
+      // Create our pages array
+      this.createPages();
+      // Create our filters
+      this.createFilters();
+      // Display the results
+      this.showPage(0);
+    },
       err => {
         console.error(err);
       }
@@ -322,26 +322,6 @@ export class AppComponent {
     this.searchPage = true;
     this.detailsPage = true;
   }
-  /*
-    Function for back search result page
-    * */
-  public showHideAccordian(event) {
-    // HTMLNodeList is not an iterator
-    /* eslint-disable @typescript-eslint/prefer-for-of */
-    const acc = document.getElementsByClassName('accordion');
-    for (let i = 0; i < acc.length; i++) {
-      acc[i].addEventListener('click', function() {
-        this.classList.toggle('active');
-        const panel = this.nextElementSibling;
-        if (panel.style.display === 'block') {
-          panel.style.display = 'none';
-        } else {
-          panel.style.display = 'block';
-        }
-      });
-    }
-    /* eslint-enable @typescript-eslint/prefer-for-of */
-  }
   /**
    * Apply user-selected filters
    */
@@ -435,7 +415,7 @@ export class AppComponent {
   /*
      Function for go to home page
   * */
-  public beckToHomePage() {
+  public backToHomePage() {
     this.searchtable = true;
     this.searchPage = false;
     this.detailsPage = true;
@@ -444,13 +424,27 @@ export class AppComponent {
    * Save or remove a trial from the saved trials list.
    */
   public toggleTrialSaved(trial: Partial<Trial>) {
-    if (!this.savedClinicalTrialsNctIds.has(trial.nctId)) {
-      this.savedClinicalTrials.push(trial);
-      this.savedClinicalTrialsNctIds.add(trial.nctId);
+    this.setTrialSaved(trial, !this.savedClinicalTrialsNctIds.has(trial.nctId));
+  }
+  /**
+   * Sets whether or not a given trial is part of the saved set.
+   * @param trial the trial to set whether or not it is saved
+   * @param saved the save state of the trial
+   */
+  public setTrialSaved(trial: Partial<Trial>, saved: boolean) {
+    if (saved) {
+      if (!this.savedClinicalTrialsNctIds.has(trial.nctId)) {
+        // Need to add it
+        this.savedClinicalTrials.push(trial);
+        this.savedClinicalTrialsNctIds.add(trial.nctId);
+      }
     } else {
-      const index = this.savedClinicalTrials.findIndex(t => t.nctId === trial.nctId);
-      this.savedClinicalTrials.splice(index, 1);
-      this.savedClinicalTrialsNctIds.delete(trial.nctId);
+      if (this.savedClinicalTrialsNctIds.has(trial.nctId)) {
+        // Need to remove it
+        const index = this.savedClinicalTrials.findIndex(t => t.nctId === trial.nctId);
+        this.savedClinicalTrials.splice(index, 1);
+        this.savedClinicalTrialsNctIds.delete(trial.nctId);
+      }
     }
   }
   /*
@@ -499,7 +493,7 @@ export class AppComponent {
     }
   }
   public records = false;
-  public showRecord(){
+  public showRecord() {
     this.records = !this.records
   }
 

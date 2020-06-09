@@ -1,0 +1,155 @@
+<!-- Details page-->
+<div class="mi-margin-2" style="margin-top: 10%;">
+  <div style="border-radius: 0px 0px 10px 10px;
+    background: #525151;">
+    <ng-content></ng-content>
+    <div class="row col100 mi-margin-30">
+      <div class="col80 containingDIV float-left">
+        <div class="row">
+          <div class="padding-top-15 padding-bottom-15">
+            <h2 class="detailCardText upperCase">{{clinicalTrial.title}}
+            </h2>
+            <div class="containingDIV padding-top-10">
+              <h3 class="cardtext upperCase color7">Conditions:</h3>
+              <span class="cardtext color8 mi-margin-left-10">{{replace(clinicalTrial.conditions)}}</span>
+            </div>
+          </div>
+          <div>
+            <h3 class="cardtext upperCase color7">Brief summary</h3>
+            <span class="cardtext color8">{{clinicalTrial.description}}
+            </span>
+          </div>
+
+          <div class="col100 containingDIV ">
+            <div class="col33 mi-margin-10 outerDiv">
+              <div class="innerDiv">
+                <button class="recButton mi-margin-10 padding-10" style="width: auto;">{{clinicalTrial.overallStatus}}</button>
+                <span>
+                  <p style="margin-top: 50%;">Actively recruiting</p>
+                </span>
+              </div>
+            </div>
+            <div class="col33 mi-margin-10 outerDiv">
+              <div class="innerDiv">
+                <svg class="mi-margin-left-p" xmlns="http://www.w3.org/2000/svg" width="47" height="47"
+                  viewBox="0 0 47 47">
+                  <path id="ic_directions_24px"
+                    d="M48.32,23.84,27.165,2.685a2.341,2.341,0,0,0-3.314,0L2.7,23.84a2.341,2.341,0,0,0,0,3.314L23.85,48.31a2.341,2.341,0,0,0,3.314,0L48.32,27.155a2.341,2.341,0,0,0,0-3.314ZM30.2,31.386V25.509h-9.4v7.052h-4.7v-9.4a2.358,2.358,0,0,1,2.351-2.351H30.2V14.932l8.227,8.227Z"
+                    transform="translate(-2.007 -1.997)" fill="#525151" />
+                </svg>
+                <p class="color3 mi-margin-30 mi-margin-left-p">3.5 m</p>
+                <span>
+                  Closest location
+                </span>
+              </div>
+            </div>
+            <div class="col33 mi-margin-10 " style="width: 321px;
+                height: 217px;
+                background: rgba(255, 255, 255, 0.94);">
+              <div>
+                <svg style="margin-left: 30%;margin-top: 10%;" xmlns="http://www.w3.org/2000/svg" width="103"
+                  height="103" viewBox="0 0 103 103">
+                  <g id="Ellipse_1" data-name="Ellipse 1" fill="none" stroke="#30b400" stroke-width="10">
+                    <circle cx="51.5" cy="51.5" r="51.5" stroke="none" />
+                    <circle cx="51.5" cy="51.5" r="46.5" fill="none" />
+                  </g>
+                </svg>
+                <p style="margin-left: 11%;margin-top: 10%;">
+                  Match likelihood: High Likelihood
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col20  float-right">
+        <div class="col80 mi-margin-10" style="background: white;">
+          <p class="color9 text-transform-uppercase mi-margin-10 padding-top-10">Contact information</p>
+          <span class="color9 text-transform-uppercase  mi-margin-left-10">sponsor: </span><span
+            class="color9">{{clinicalTrial.sponsor}}</span>
+          <div class=" mi-margin-10 containingDIV">
+            <svg id="phone-24px" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 30 30">
+              <path id="Path_26" data-name="Path 26" d="M0,0H30V30H0Z" fill="none" />
+              <path id="Path_27" data-name="Path 27"
+                d="M7.525,12.738a18.936,18.936,0,0,0,8.238,8.238l2.75-2.75a1.243,1.243,0,0,1,1.275-.3,14.259,14.259,0,0,0,4.462.712,1.254,1.254,0,0,1,1.25,1.25V24.25a1.254,1.254,0,0,1-1.25,1.25A21.248,21.248,0,0,1,3,4.25,1.254,1.254,0,0,1,4.25,3H8.625a1.254,1.254,0,0,1,1.25,1.25,14.2,14.2,0,0,0,.712,4.462,1.254,1.254,0,0,1-.312,1.275Z"
+                transform="translate(0.75 0.75)" fill="#0079e0" />
+            </svg>
+            <span class="color10 font15">{{clinicalTrial.overallContactPhone}}</span>
+          </div>
+          <div class="mi-margin-10 containingDIV">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 25 20">
+              <path id="Path_22" data-name="Path 22"
+                d="M24.5,4H4.5A2.5,2.5,0,0,0,2.013,6.5L2,21.5A2.507,2.507,0,0,0,4.5,24h20A2.507,2.507,0,0,0,27,21.5V6.5A2.507,2.507,0,0,0,24.5,4Zm0,5-10,6.25L4.5,9V6.5l10,6.25,10-6.25Z"
+                transform="translate(-2 -4)" fill="#0079e0" />
+            </svg>
+            <span class="color10 font15">{{clinicalTrial.overallContactEmail}}</span>
+          </div>
+          <div class="facilities">
+            <p class="color9 text-transform-uppercase mi-margin-10 padding-top-10">Facilities</p>
+            <ul class="facilityList">
+              <li *ngFor="let site of clinicalTrial.sites" class="facility">{{site.facility}}
+                <div *ngIf="site.contactPhone" class="phone"><span class="phoneIcon">Phone:</span> {{site.contactPhone}}</div>
+                <div *ngIf="site.contactEmail" class="email"><span class="emailIcon">Email:</span> {{site.contactEmail}}</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col80" (click)="toggleTrialSaved()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="222" height="40" viewBox="0 0 222 40">
+            <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)">
+              <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
+                <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)"
+                  stroke="#707070" stroke-width="1">
+                  <rect width="222" height="40" rx="10" stroke="none" />
+                  <rect x="0.5" y="0.5" width="221" height="39" rx="9.5" [ngClass]="trialSaved ? 'saved' : 'unsaved'" />
+                </g>
+                <g id="save-24px" transform="translate(1603.053 477)">
+                  <path id="Path_30" data-name="Path 30" d="M0,0H32V32H0Z" fill="none" />
+                  <path id="Path_31" data-name="Path 31"
+                    d="M21.667,3h-16A2.666,2.666,0,0,0,3,5.667V24.333A2.666,2.666,0,0,0,5.667,27H24.333A2.675,2.675,0,0,0,27,24.333v-16ZM15,24.333a4,4,0,1,1,4-4A3.995,3.995,0,0,1,15,24.333ZM19,11H5.667V5.667H19Z"
+                    transform="translate(1 1)" fill="#0079e0" />
+                </g>
+                <text id="Save_study" data-name="Save study" transform="translate(1654 500)" fill="#0079e0"
+                  font-size="20" font-family="Roboto-Bold, Roboto" font-weight="700" >
+                  <tspan x="0" y="0">{{trialSaved ? 'STUDY SAVED' : 'SAVE STUDY'}}</tspan>
+                </text>
+              </g>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="background-color: white;">
+  <button class="accordion" (click)="showHideAccordian($event)">Description</button>
+  <div class="panel">
+    <p id="description" class="accordionDetails">
+      {{clinicalTrial.detailedDescription}}
+    </p>
+  </div>
+  <button class="accordion" (click)="showHideAccordian($event)">Study Design </button>
+  <div class="panel">
+    <p id="studyDesign" class="accordionDetails">
+      NA
+    </p>
+  </div>
+  <button class="accordion" (click)="showHideAccordian($event)">Eligibility criteria</button>
+  <div class="panel">
+    <p id="eligibilityCriteria" class="accordionDetails">
+      {{clinicalTrial.criteria}}
+    </p>
+  </div>
+  <button class="accordion" (click)="showHideAccordian($event)">Arms & Interventions</button>
+  <div class="panel">
+    <p id="interventions" class="accordionDetails">
+      NA
+    </p>
+  </div>
+  <button class="accordion" (click)="showHideAccordian($event)">More information</button>
+  <div class="panel">
+    <p id="moreInformation" class="accordionDetails">
+      NA
+    </p>
+  </div>
+</div>
