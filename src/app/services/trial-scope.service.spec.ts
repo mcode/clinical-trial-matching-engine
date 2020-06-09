@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { ConvertCodesService } from './convert-codes.service';
+import { TrialScopeService } from './trial-scope.service';
 
-describe('ConvertCodesService', () => {
+describe('TrialScopeService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule],
-    providers: [ConvertCodesService]
+    providers: [TrialScopeService]
   }));
 
   it('should be created', () => {
-    const service: ConvertCodesService = TestBed.get(ConvertCodesService);
+    const service: TrialScopeService = TestBed.get(TrialScopeService);
     expect(service).toBeTruthy();
   });
 });

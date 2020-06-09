@@ -1,0 +1,28 @@
+<div *ngIf='displayOn'>
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close" (click)="setStatus(false);">&times;</span>
+        <h2 class="cardText2 mi-margin-20">Patient Record</h2>
+        <span class="color14 mi-margin-20">If something doesn’t look right on your record, please contact your
+            healthcare provider.</span>
+        <div class="containingDIV mi-margin-20">
+            <div class="col33 color15">{{(patient | async)?.getUsualName()}}</div>
+            <div class="col33 color15">AGE: {{(patient | async)?.getAge()}}</div>
+            <div class="col33 color15">Gender: {{(patient | async)?.getGender()}}</div>
+        </div>
+        <div class="mi-margin-20 mi-margin-top5">
+            <span class="color14 upperCase">Conditions:</span>
+            <ul>
+                <li *ngFor="let condition of conditions">{{condition.getDisplayText()}}</li>
+            </ul>
+        </div>
+        <div class="mi-margin-20"><span class="color14">CATEGORY: </span>
+            <p class="color1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+
+    </div>
+</div>
