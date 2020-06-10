@@ -43,5 +43,13 @@ describe('TrialCardComponent', () => {
 
     expect(testHostComponent.trial).toBeTruthy();
   });
+  //trialsaved should be false on startup
+  it('trial saved should be false', () => {
+    testHostComponent.trial.clinicalTrial = sampleTrial;
+    testHostComponent.trial.trialSaved = false;
+    testHostFixture.detectChanges();
+
+    expect(testHostComponent.trial.trialSaved).toBeFalsy();
+  });
 
 });

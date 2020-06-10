@@ -37,6 +37,11 @@ describe('ResultDetailsComponent', () => {
 
     expect(testHostComponent.resultDetails).toBeTruthy();
   });
+  //on testing startup no trial should be saved
+  it('trialSaved should be false', () => {
+    expect(testHostComponent.resultDetails.trialSaved).toBeFalsy();
+
+  });
 
 
 });

@@ -8,9 +8,9 @@ describe('RecordDataComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RecordDataComponent ]
+      declarations: [RecordDataComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -22,11 +22,13 @@ describe('RecordDataComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-/*
-  it('should render title in a h1 tag', () => {
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('CLINICAL TRIAL');
-  }); */
+
+  it('displayOn should be false', () => {
+    expect(component.displayOn).toBeFalsy();
+
+  });
+
+
 
 
 
