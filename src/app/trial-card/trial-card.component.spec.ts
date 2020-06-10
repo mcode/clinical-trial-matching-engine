@@ -5,6 +5,8 @@ import { TrialCardComponent } from './trial-card.component';
 
 import { Component } from "@angular/core";
 import { ViewChild } from "@angular/core";
+declare function require(moduleName: string): any;
+import data from '../result-details/sample_trial.json';
 
 describe('TrialCardComponent', () => {
   @Component({
@@ -20,7 +22,7 @@ describe('TrialCardComponent', () => {
   let testHostComponent: TestHostComponent;
   let testHostFixture: ComponentFixture<TestHostComponent>;
 
-  const sampleTrial: any = require('../result-details/sample_trial.json');
+  const sampleTrial: any = data //require('../result-details/sample_trial.json');
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
