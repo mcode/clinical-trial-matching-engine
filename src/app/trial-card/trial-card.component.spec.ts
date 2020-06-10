@@ -1,26 +1,42 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TrialCardComponent } from './trial-card.component';
-/* On startup the results view can not be created
+
+
+import { Component } from "@angular/core";
+import { ViewChild } from "@angular/core";
+
 describe('TrialCardComponent', () => {
-  let component: TrialCardComponent;
-  let fixture: ComponentFixture<TrialCardComponent>;
+  let testHostComponent: TestHostComponent;
+  let testHostFixture: ComponentFixture<TestHostComponent>;
+
+  let sample_trial: any = require('../result-details/sample_trial.json');
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TrialCardComponent ]
+      declarations: [TrialCardComponent, TestHostComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TrialCardComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    testHostFixture = TestBed.createComponent(TestHostComponent);
+    testHostComponent = testHostFixture.componentInstance;
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    testHostComponent.trial.clinicalTrial = sample_trial;
+    testHostComponent.trial.trialSaved = false;
+    testHostFixture.detectChanges();
+
+    expect(testHostComponent.trial).toBeTruthy();
   });
+  @Component({
+    selector: `host-component`,
+    template: `<app-trial-card></app-trial-card>`
+  })
+  class TestHostComponent {
+    @ViewChild(TrialCardComponent, { static: true })
+    public trial: TrialCardComponent;
+  }
 });
-*/
