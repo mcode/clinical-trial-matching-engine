@@ -5,10 +5,18 @@ import { ResultDetailsComponent } from './result-details.component';
 import { Component } from "@angular/core";
 import { ViewChild } from "@angular/core";
 describe('ResultDetailsComponent', () => {
+  @Component({
+    selector: `host-component`,
+    template: `<app-result-details></app-result-details>`
+  })
+  class TestHostComponent {
+    @ViewChild(ResultDetailsComponent, { static: true })
+    public resultDetails: ResultDetailsComponent;
+  }
   let testHostComponent: TestHostComponent;
   let testHostFixture: ComponentFixture<TestHostComponent>;
 
-  let sample_trial: any = require('./sample_trial.json');
+  const sampleTrial: any = require('./sample_trial.json');
   //console.log(sample_trial);
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -23,19 +31,12 @@ describe('ResultDetailsComponent', () => {
   });
 
   it('should create the detail results', () => {
-    testHostComponent.result_details.clinicalTrial = sample_trial;
+    testHostComponent.resultDetails.clinicalTrial = sampleTrial;
     testHostFixture.detectChanges();
 
-    expect(testHostComponent.result_details).toBeTruthy();
+    expect(testHostComponent.resultDetails).toBeTruthy();
   });
 
-  @Component({
-    selector: `host-component`,
-    template: `<app-result-details></app-result-details>`
-  })
-  class TestHostComponent {
-    @ViewChild(ResultDetailsComponent, { static: true })
-    public result_details: ResultDetailsComponent;
-  }
+
 });
 
