@@ -322,6 +322,7 @@ export class AppComponent {
     this.searchPage = true;
     this.detailsPage = true;
   }
+
   /**
    * Apply user-selected filters
    */
