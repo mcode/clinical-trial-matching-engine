@@ -23,19 +23,20 @@ export function createPatientBundle(parameters: {[key: string]: Stringable}, ent
                      ]
                     }
                   },`
-  let patient_bundle = `{
+  let patientBundle = `{
                           "resourceType": "Bundle",
                           "type": "collection",
                           "entry": [
                             {
                               "resource": ` + paramResource;
-  for (const resource in entries) {
-    patient_bundle += `
-    ` +JSON.stringify({ "fullUrl" : entries[resource].fullUrl, "resource" : entries[resource].resource}) + `,`;
-  }
-  patient_bundle = patient_bundle.slice(0,-1);
-  patient_bundle += `
+  //for (const resource in entries)
+  entries.forEach(resource => { // for each instead
+    patientBundle += `
+    ` +JSON.stringify({ "fullUrl" : resource.fullUrl, "resource" : resource.resource}) + `,`;
+  });
+  patientBundle = patientBundle.slice(0,-1);
+  patientBundle += `
                       ]
                      }`;
-  return patient_bundle;
+  return patientBundle;
 }

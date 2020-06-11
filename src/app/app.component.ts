@@ -194,7 +194,7 @@ export class AppComponent {
       return;
     }
     // Create our query
-    let patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
+    const patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
     let query = `conditions:[${this.trialScopeConditions.join(', ')}], baseFilters: { zipCode: "${this.searchReqObject.zipCode}"`;
     if (this.searchReqObject.travelRadius != null && this.searchReqObject.travelRadius !== '') {
       // FIXME: Veryify travel radius is a number
