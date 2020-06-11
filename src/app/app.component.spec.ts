@@ -7,7 +7,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClientService } from './smartonfhir/client.service';
-import { CommonService } from './services/common/common.service';
+import { TrialScopeService } from './services/trial-scope.service';
 
 describe('AppComponent', () => {
 
