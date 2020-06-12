@@ -192,18 +192,4 @@ export class TrialScopeService {
       this.config.getServiceURL() + '/getClinicalTrial', { patientData: patientBundle, first: first, after: after }
     );
   }
-
-
-  /**
-   * Execute a TrialScope query directly. Generally this method should not be
-   * used, either baseMatches or advancedMatches should be used.
-   * @param query the GraphQL query to use
-   */
-  public search(query, patientBundle): Observable<TrialScopeResponse> {
-    console.log('Executing query:');
-    console.log(query);
-    return this.client.post<TrialScopeResponse>(
-      this.config.getServiceURL() + '/getClinicalTrial', { inputParam: query, patientData: patientBundle }
-    );
-  }
 }
