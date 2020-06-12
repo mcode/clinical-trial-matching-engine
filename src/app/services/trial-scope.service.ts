@@ -6,7 +6,7 @@ import { AppConfigService } from './app-config.service';
 
 import { Trial } from '../trialscope';
 
-type JsonObject = {[key: string]: unknown };
+type JsonObject = { [key: string]: unknown };
 interface TrialScopeResponse {
   data: JsonObject;
 }
@@ -48,7 +48,7 @@ export class TrialScopeResult {
   pages: TrialScopePage[] = [];
   totalCount: number;
   itemsPerPage: number;
-  constructor(private source: TrialScopeService, private sourceQuery: string, totalCount: number, pages: TrialScopePage[]) {
+  constructor(private source: TrialScopeService, totalCount: number, pages: TrialScopePage[], private sourceQuery: string = null) {
     // Pull out the total count
     this.totalCount = totalCount;
     this.pages = pages;
@@ -161,11 +161,11 @@ export class TrialScopeService {
    * Executes a "baseMatches" query - this expects the given query to contain
    * **only** the contents for the baseMatches element and **NOT** the entire
    * GraphQL query. A complete GraphQL query will be constructed.
-   * @param query the query to run
+   * @param patientBundle the patient data bundle w/ search parameters 
    * @param first the number of trials to request in this page
    * @param after if given, where to start in the query
    */
-  public baseMatches(query: string, patientBundle: string, first = 30, after: string | null = null): Observable<TrialScopeResult> {
+  public baseMatches(patientBundle: string, first = 30, after: string | null = null): Observable<TrialScopeResult> {
     return new Observable(subscriber => {
       // This functions by loading all the pages at present
       const pages = [];
@@ -176,36 +176,23 @@ export class TrialScopeService {
         pages.push(page);
         startIndex += page.trials.length;
         if (page.hasNextPage) {
-          this.loadBaseMatchesPage(query, patientBundle, first, page.nextPageCursor).subscribe(loadPage);
+          this.loadBaseMatchesPage(patientBundle, first, page.nextPageCursor).subscribe(loadPage);
         } else {
-          subscriber.next(new TrialScopeResult(this, query, response.data.baseMatches.totalCount, pages));
+          subscriber.next(new TrialScopeResult(this, response.data.baseMatches.totalCount, pages));
           subscriber.complete();
         }
       };
-      this.loadBaseMatchesPage(query, patientBundle, first, after).subscribe(loadPage);
+      this.loadBaseMatchesPage(patientBundle, first, after).subscribe(loadPage);
     });
   }
 
-  loadBaseMatchesPage(query: string, patientBundle: string, first = 30, after: string | null = null): Observable<TrialScopeResponse> {
-    return this.search(`
-    {
-      baseMatches(first: ${first} after: ${JSON.stringify(after)} ${query})
-    {
-      totalCount
-      edges {
-        node {
-          nctId title conditions gender description detailedDescription
-          criteria sponsor overallContactPhone overallContactEmail
-          overallStatus armGroups phase minimumAge studyType
-          maximumAge sites {
-            facility contactName contactEmail contactPhone latitude longitude
-          }
-        }
-        cursor
-      }
-      pageInfo { endCursor hasNextPage }
-    } }`, patientBundle);
+  loadBaseMatchesPage(patientBundle: string, first = 30, after: string | null = null): Observable<TrialScopeResponse> {
+
+    return this.client.post<TrialScopeResponse>(
+      this.config.getServiceURL() + '/getClinicalTrial', { patientData: patientBundle, first: first, after: after }
+    );
   }
+
 
   /**
    * Execute a TrialScope query directly. Generally this method should not be
