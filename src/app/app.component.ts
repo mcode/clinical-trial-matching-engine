@@ -138,12 +138,14 @@ export class AppComponent {
       }
       return p;
     });
-    this.fhirService.getConditions({"clinical-status": 'active'}).then(
+    //This can theoretically be removed once moved into server
+    this.fhirService.getConditions({ "clinical-status": 'active' }).then(
       records => {
         this.conditions = records.map(record => new Condition(record));
         convertService.convertCodes(pullCodesFromConditions(records)).subscribe(codes => this.trialScopeConditions = codes);
       }
     );
+
     // Gathering resources for patient bundle
     this.fhirService.resourceTypes.map(resourceType =>
       this.fhirService.getResources(resourceType, this.fhirService.resourceParams[resourceType]).then(
@@ -151,7 +153,7 @@ export class AppComponent {
           records.map(record => this.bundleResources.push(record));
         }
       )
-     );
+    );
   }
 
   /**
@@ -194,20 +196,24 @@ export class AppComponent {
       return;
     }
     // Create our query
-    const patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
-    let query = `conditions:[${this.trialScopeConditions.join(', ')}], baseFilters: { zipCode: "${this.searchReqObject.zipCode}"`;
-    if (this.searchReqObject.travelRadius != null && this.searchReqObject.travelRadius !== '') {
-      // FIXME: Veryify travel radius is a number
-      query += ',travelRadius: ' + this.searchReqObject.travelRadius;
-    }
-    if (this.searchReqObject.phase !== 'any') {
-      query += ',phase:' + this.searchReqObject.phase;
-    }
-    if (this.searchReqObject.recruitmentStatus !== 'all') {
-      query += ',recruitmentStatus:' + this.searchReqObject.recruitmentStatus;
-    }
-    query += ' }';
-    this.trialScopeService.baseMatches(query, patientBundle).subscribe(response => {
+    // patient bundle includes all search paramters except conditions
+    let patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
+    // let conditions = `conditions:[${this.trialScopeConditions.join(', ')}] `; //, baseFilters: { zipCode: "${this.searchReqObject.zipCode}"`;
+
+    /* if (this.searchReqObject.travelRadius != null && this.searchReqObject.travelRadius !== '') {
+       // FIXME: Veryify travel radius is a number
+       query += ',travelRadius: ' + this.searchReqObject.travelRadius;
+     }
+     if (this.searchReqObject.phase !== 'any') {
+       query += ',phase:' + this.searchReqObject.phase;
+     }
+     if (this.searchReqObject.recruitmentStatus !== 'all') {
+       query += ',recruitmentStatus:' + this.searchReqObject.recruitmentStatus;
+     }
+     query += ' }';
+ 
+     */
+    this.trialScopeService.baseMatches(patientBundle).subscribe(response => {
       // Store the results
       this.searchResults = response;
       // Create our pages array
@@ -256,7 +262,7 @@ export class AppComponent {
    */
   private createPages(totalResults = this.resultCount) {
     // Always create at least one page, even if it's empty
-    this.pages = [ new SearchPage(0, 0, Math.min(totalResults, this.itemsPerPage)) ];
+    this.pages = [new SearchPage(0, 0, Math.min(totalResults, this.itemsPerPage))];
     let pageIndex = 1, startIndex = this.itemsPerPage, lastIndex = this.itemsPerPage * 2;
     // Create all full pages past the first page
     for (; lastIndex < totalResults; pageIndex++, startIndex = lastIndex, lastIndex += this.itemsPerPage) {
