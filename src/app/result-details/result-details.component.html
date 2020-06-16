@@ -1,11 +1,10 @@
 <!-- Details page-->
-<div class="mi-margin-2" style="margin-top: 10%;">
-  <div style="border-radius: 0px 0px 10px 10px;
-    background: #525151;">
+<div class="mi-margin-2020" style="margin-top: 10%;">
+  <div class="flexborder">
     <ng-content></ng-content>
     <div class="row col100 mi-margin-30">
-      <div class="col80 containingDIV float-left">
-        <div class="row">
+      <div class="col80 containingDIV">
+        <div class=" row">
           <div class="padding-top-15 padding-bottom-15">
             <h2 class="detailCardText upperCase">{{clinicalTrial.title}}
             </h2>
@@ -23,7 +22,8 @@
           <div class="col100 containingDIV ">
             <div class="col33 mi-margin-10 outerDiv">
               <div class="innerDiv">
-                <button class="recButton mi-margin-10 padding-10" style="width: auto;">{{clinicalTrial.overallStatus}}</button>
+                <button class="recButton mi-margin-10 padding-10"
+                  style="width: auto;">{{clinicalTrial.overallStatus}}</button>
                 <span>
                   <p style="margin-top: 50%;">Actively recruiting</p>
                 </span>
@@ -43,11 +43,9 @@
                 </span>
               </div>
             </div>
-            <div class="col33 mi-margin-10 " style="width: 321px;
-                height: 217px;
-                background: rgba(255, 255, 255, 0.94);">
-              <div>
-                <svg style="margin-left: 30%;margin-top: 10%;" xmlns="http://www.w3.org/2000/svg" width="103"
+            <div class="col33 mi-margin-10 outerDiv">
+              <div class="innerDiv">
+                <svg style="margin-left: 30%; margin-top: 10%;" xmlns="http://www.w3.org/2000/svg" width="103"
                   height="103" viewBox="0 0 103 103">
                   <g id="Ellipse_1" data-name="Ellipse 1" fill="none" stroke="#30b400" stroke-width="10">
                     <circle cx="51.5" cy="51.5" r="51.5" stroke="none" />
@@ -62,8 +60,8 @@
           </div>
         </div>
       </div>
-      <div class="col20  float-right">
-        <div class="col80 mi-margin-10" style="background: white;">
+      <div class="col50 mi-margin-10">
+        <div class="col80 mi-margin-10" style="background: white; position: relative;">
           <p class="color9 text-transform-uppercase mi-margin-10 padding-top-10">Contact information</p>
           <span class="color9 text-transform-uppercase  mi-margin-left-10">sponsor: </span><span
             class="color9">{{clinicalTrial.sponsor}}</span>
@@ -88,18 +86,20 @@
             <p class="color9 text-transform-uppercase mi-margin-10 padding-top-10">Facilities</p>
             <ul class="facilityList">
               <li *ngFor="let site of clinicalTrial.sites" class="facility">{{site.facility}}
-                <div *ngIf="site.contactPhone" class="phone"><span class="phoneIcon">Phone:</span> {{site.contactPhone}}</div>
-                <div *ngIf="site.contactEmail" class="email"><span class="emailIcon">Email:</span> {{site.contactEmail}}</div>
+                <div *ngIf="site.contactPhone" class="phone"><span class="phoneIcon">Phone:</span> {{site.contactPhone}}
+                </div>
+                <div *ngIf="site.contactEmail" class="email"><span class="emailIcon">Email:</span> {{site.contactEmail}}
+                </div>
               </li>
             </ul>
           </div>
         </div>
-        <div class="col80" (click)="toggleTrialSaved()">
+        <div class="col80 mi-margin-10" (click)="toggleTrialSaved()">
           <svg xmlns="http://www.w3.org/2000/svg" width="222" height="40" viewBox="0 0 222 40">
             <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)">
               <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
-                <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)"
-                  stroke="#707070" stroke-width="1">
+                <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)" stroke="#707070"
+                  stroke-width="1">
                   <rect width="222" height="40" rx="10" stroke="none" />
                   <rect x="0.5" y="0.5" width="221" height="39" rx="9.5" [ngClass]="trialSaved ? 'saved' : 'unsaved'" />
                 </g>
@@ -110,7 +110,7 @@
                     transform="translate(1 1)" fill="#0079e0" />
                 </g>
                 <text id="Save_study" data-name="Save study" transform="translate(1654 500)" fill="#0079e0"
-                  font-size="20" font-family="Roboto-Bold, Roboto" font-weight="700" >
+                  font-size="20" font-family="Roboto-Bold, Roboto" font-weight="700">
                   <tspan x="0" y="0">{{trialSaved ? 'STUDY SAVED' : 'SAVE STUDY'}}</tspan>
                 </text>
               </g>

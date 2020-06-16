@@ -242,7 +242,7 @@ export class AppComponent {
    */
   private createPages(totalResults = this.resultCount) {
     // Always create at least one page, even if it's empty
-    this.pages = [ new SearchPage(0, 0, Math.min(totalResults, this.itemsPerPage)) ];
+    this.pages = [new SearchPage(0, 0, Math.min(totalResults, this.itemsPerPage))];
     let pageIndex = 1, startIndex = this.itemsPerPage, lastIndex = this.itemsPerPage * 2;
     // Create all full pages past the first page
     for (; lastIndex < totalResults; pageIndex++, startIndex = lastIndex, lastIndex += this.itemsPerPage) {

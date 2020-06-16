@@ -303,7 +303,7 @@ border: 5px solid #525151;
 .cardtext{
 font-family: Roboto light;
 font-weight: 300;
-font-size: 18px;
+font-size: 1.5vw;
 text-align: left;
 color: #9f9c9c;
 line-height: 25px;
@@ -639,8 +639,10 @@ line-height: 25px;
   
   .outerDiv{
     text-align: center;
-    width: 321px;
-    height: 217px;
+    /*width: 321px; 
+    height: 217px; */
+    width: 25%;
+    height: 20%;
     background: rgba(255, 255, 255, 0.94);
   }
   
@@ -673,17 +675,25 @@ line-height: 25px;
       color : #ffffff !important;
   }
   
-  .cardtext {
-    font-family: Roboto light;
-    font-weight: 300;
-    font-size: 18px;
-    text-align: left;
-    color: #9f9c9c;
-    line-height: 25px;
-  }
   
   .detailCardText {
-    font-size: 30px;
+    display: flex;
+    font-size: 2vw;
     color: #FFFFFF;
   }
   
+
+  .mi-margin-2020{
+    display: flexbox;
+    margin: 2%;
+  }
+  .flexborder {
+  /**  display: flex; */
+    width: 100%;
+    position: relative;
+    flex-flow: row wrap;
+  
+    background: #525151;
+    
+  }
+
