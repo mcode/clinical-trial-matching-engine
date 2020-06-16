@@ -196,7 +196,7 @@ export class AppComponent {
       return;
     }
     // Create our query
-    //patient bundle includes all search paramters except conditions
+    // patient bundle includes all search paramters except conditions
     let patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
     // let conditions = `conditions:[${this.trialScopeConditions.join(', ')}] `; //, baseFilters: { zipCode: "${this.searchReqObject.zipCode}"`;
 
