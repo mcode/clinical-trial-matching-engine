@@ -1,26 +1,55 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TrialCardComponent } from './trial-card.component';
-/* On startup the results view can not be created
+
+
+import { Component } from "@angular/core";
+import { ViewChild } from "@angular/core";
+declare function require(moduleName: string): any;
+import data from '../result-details/sample_trial.json';
+
 describe('TrialCardComponent', () => {
-  let component: TrialCardComponent;
-  let fixture: ComponentFixture<TrialCardComponent>;
+  @Component({
+    selector: `host-component`,
+    template: `<app-trial-card></app-trial-card>`
+  })
+  class TestHostComponent {
+    @ViewChild(TrialCardComponent, { static: true })
+    public trial: TrialCardComponent;
+  }
+
+
+  let testHostComponent: TestHostComponent;
+  let testHostFixture: ComponentFixture<TestHostComponent>;
+
+  const sampleTrial: any = data
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TrialCardComponent ]
+      declarations: [TrialCardComponent, TestHostComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TrialCardComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    testHostFixture = TestBed.createComponent(TestHostComponent);
+    testHostComponent = testHostFixture.componentInstance;
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    testHostComponent.trial.clinicalTrial = sampleTrial;
+    testHostComponent.trial.trialSaved = false;
+    testHostFixture.detectChanges();
+
+    expect(testHostComponent.trial).toBeTruthy();
   });
+  //trialsaved should be false on startup
+  it('trial saved should be false', () => {
+    testHostComponent.trial.clinicalTrial = sampleTrial;
+    testHostComponent.trial.trialSaved = false;
+    testHostFixture.detectChanges();
+
+    expect(testHostComponent.trial.trialSaved).toBeFalsy();
+  });
+
 });
-*/

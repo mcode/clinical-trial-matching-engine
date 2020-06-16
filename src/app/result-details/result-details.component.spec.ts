@@ -1,27 +1,48 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ResultDetailsComponent } from './result-details.component';
-/* On startup the detailed result view can not be created
+
+import { Component } from "@angular/core";
+import { ViewChild } from "@angular/core";
+import data from './sample_trial.json';
 describe('ResultDetailsComponent', () => {
-  let component: ResultDetailsComponent;
-  let fixture: ComponentFixture<ResultDetailsComponent>;
+  @Component({
+    selector: `host-component`,
+    template: `<app-result-details></app-result-details>`
+  })
+  class TestHostComponent {
+    @ViewChild(ResultDetailsComponent, { static: true })
+    public resultDetails: ResultDetailsComponent;
+  }
+  let testHostComponent: TestHostComponent;
+  let testHostFixture: ComponentFixture<TestHostComponent>;
+
+  const sampleTrial: any = data
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ResultDetailsComponent]
+      declarations: [ResultDetailsComponent, TestHostComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ResultDetailsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    testHostFixture = TestBed.createComponent(TestHostComponent);
+    testHostComponent = testHostFixture.componentInstance;
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should create the detail results', () => {
+    testHostComponent.resultDetails.clinicalTrial = sampleTrial;
+    testHostFixture.detectChanges();
+
+    expect(testHostComponent.resultDetails).toBeTruthy();
   });
+  //on testing startup no trial should be saved
+  it('trialSaved should be false', () => {
+    expect(testHostComponent.resultDetails.trialSaved).toBeFalsy();
+
+  });
+
 
 });
-*/
+
