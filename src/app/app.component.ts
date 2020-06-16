@@ -310,7 +310,6 @@ export class AppComponent {
    */
   public showDetails(i) {
     this.detailedTrial = this.selectedPageTrials[i];
-    console.log(this.detailedTrial);
     this.searchtable = true;
     this.searchPage = true;
     this.detailsPage = false;

@@ -22,7 +22,7 @@ describe('TrialCardComponent', () => {
   let testHostComponent: TestHostComponent;
   let testHostFixture: ComponentFixture<TestHostComponent>;
 
-  const sampleTrial: any = data //require('../result-details/sample_trial.json');
+  const sampleTrial: any = data
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -17,8 +17,8 @@ describe('ResultDetailsComponent', () => {
   let testHostComponent: TestHostComponent;
   let testHostFixture: ComponentFixture<TestHostComponent>;
 
-  const sampleTrial: any = data //require('./sample_trial.json');
-  //console.log(sample_trial);
+  const sampleTrial: any = data
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ResultDetailsComponent, TestHostComponent]
