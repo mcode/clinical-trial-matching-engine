@@ -197,7 +197,7 @@ export class AppComponent {
     }
     // Create our query
     // patient bundle includes all search paramters except conditions
-    let patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
+    const patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
     // let conditions = `conditions:[${this.trialScopeConditions.join(', ')}] `; //, baseFilters: { zipCode: "${this.searchReqObject.zipCode}"`;
 
     /* if (this.searchReqObject.travelRadius != null && this.searchReqObject.travelRadius !== '') {
@@ -211,7 +211,7 @@ export class AppComponent {
        query += ',recruitmentStatus:' + this.searchReqObject.recruitmentStatus;
      }
      query += ' }';
- 
+
      */
     this.trialScopeService.baseMatches(patientBundle).subscribe(response => {
       // Store the results
