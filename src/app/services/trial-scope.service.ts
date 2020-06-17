@@ -76,6 +76,11 @@ export class TrialScopeResult {
    */
   getTrials(startIndex: number, endIndex: number): Partial<Trial>[] {
     // TODO: Can we be sure that the pages are always the same size?
+    // If there are no trials in the results, return an empty array
+    if (this.totalCount == 0) {
+      const emptyResults: Partial<Trial>[] = [];
+      return emptyResults;
+    }
     if (endIndex > this.totalCount) {
       endIndex = this.totalCount;
     }
@@ -161,7 +166,7 @@ export class TrialScopeService {
    * Executes a "baseMatches" query - this expects the given query to contain
    * **only** the contents for the baseMatches element and **NOT** the entire
    * GraphQL query. A complete GraphQL query will be constructed.
-   * @param patientBundle the patient data bundle w/ search parameters 
+   * @param patientBundle the patient data bundle w/ search parameters
    * @param first the number of trials to request in this page
    * @param after if given, where to start in the query
    */
