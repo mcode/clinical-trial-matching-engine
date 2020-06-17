@@ -56,7 +56,8 @@ export class TrialScopeResult {
     // that the method used to pull the trials array may change in the future.
     // TODO: Verify that the items per page will not change on a per-page
     // basis.
-    this.itemsPerPage = this.pages[0].trials.length;
+    if (totalCount > 0)
+      this.itemsPerPage = this.pages[0].trials.length;
   }
   /**
    * Gets a given page. (In the future, this may return an observable.)
@@ -177,14 +178,20 @@ export class TrialScopeService {
       let startIndex = 0;
       const loadPage: (TrialScopeResult) => void = response => {
         // Once we have the first response, we want to keep loading
-        const page = new TrialScopePage(response.data.baseMatches as JsonObject, startIndex);
-        pages.push(page);
-        startIndex += page.trials.length;
-        if (page.hasNextPage) {
-          this.loadBaseMatchesPage(patientBundle, first, page.nextPageCursor).subscribe(loadPage);
-        } else {
-          subscriber.next(new TrialScopeResult(this, response.data.baseMatches.totalCount, pages));
+        if (response.data === null) {
+          subscriber.next(new TrialScopeResult(this, 0, pages));
           subscriber.complete();
+        }
+        else {
+          const page = new TrialScopePage(response.data.baseMatches as JsonObject, startIndex);
+          pages.push(page);
+          startIndex += page.trials.length;
+          if (page.hasNextPage) {
+            this.loadBaseMatchesPage(patientBundle, first, page.nextPageCursor).subscribe(loadPage);
+          } else {
+            subscriber.next(new TrialScopeResult(this, response.data.baseMatches.totalCount, pages));
+            subscriber.complete();
+          }
         }
       };
       this.loadBaseMatchesPage(patientBundle, first, after).subscribe(loadPage);
