@@ -126,8 +126,7 @@ export class AppComponent {
   constructor(private spinner: NgxSpinnerService, private trialScopeService: TrialScopeService, private fhirService: ClientService, private convertService: ConvertCodesService) {
     this.phaseDropDown = ["Early Phase 1", "Phase 1", "Phase 2", "Phase 3", "Phase 4"];
     this.recDropDown = ["ACTIVE_NOT_RECRUITING", "COMPLETED", "ENROLLING_BY_INVITATION", "NOT_YET_RECRUITING", "RECRUITING", "SUSPENDED", "TERMINATED", "UNKNOWN", "WITHDRAWN"];
-    //this.loadDropDownData('Phase', 'phase');
-    //  this.loadDropDownData('RecruitmentStatusEnum', 'rec');
+
 
 
     this.patient = fhirService.getPatient().then(patient => {
@@ -167,27 +166,6 @@ export class AppComponent {
     return this.pages.length;
   }
 
-  /**
-   * Load the available values for a dropdown from the server.
-   * @param type the schema type to load values for
-   * @param val currently either "phase" to populate the phase dropdown or
-   * literally anything else to populate the "rec" recruitment status dropdown
-   */
-  public loadDropDownData(type: string, val: string) {
-    this.spinner.show();
-    this.trialScopeService.getDropDownData(type).subscribe(response => {
-      if (val === 'phase') {
-        this.phaseDropDown = response;
-      } else {
-        this.recDropDown = response;
-      }
-      this.spinner.hide();
-    },
-      err => {
-        // FIXME: Handle this error
-        console.error(err);
-      });
-  }
   /**
    * Execute a search on clinical trial data based on the current user.
    */
