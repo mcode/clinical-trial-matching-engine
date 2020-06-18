@@ -124,8 +124,12 @@ export class AppComponent {
   public bundleResources: any = [];
 
   constructor(private spinner: NgxSpinnerService, private trialScopeService: TrialScopeService, private fhirService: ClientService, private convertService: ConvertCodesService) {
-    this.loadDropDownData('Phase', 'phase');
-    this.loadDropDownData('RecruitmentStatusEnum', 'rec');
+    this.phaseDropDown = ["Early Phase 1", "Phase 1", "Phase 2", "Phase 3", "Phase 4"];
+    this.recDropDown = ["ACTIVE_NOT_RECRUITING", "COMPLETED", "ENROLLING_BY_INVITATION", "NOT_YET_RECRUITING", "RECRUITING", "SUSPENDED", "TERMINATED", "UNKNOWN", "WITHDRAWN"];
+    //this.loadDropDownData('Phase', 'phase');
+    //  this.loadDropDownData('RecruitmentStatusEnum', 'rec');
+
+
     this.patient = fhirService.getPatient().then(patient => {
       // Wrap the patient in a class that handles extracting values
       const p = new Patient(patient);
