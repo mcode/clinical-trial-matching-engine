@@ -9,6 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "license": "Apache-2.0",
   "private": true,
   "dependencies": {
     "@angular-eslint/schematics": "0.0.1-alpha.29",
