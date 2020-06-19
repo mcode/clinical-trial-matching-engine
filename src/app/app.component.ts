@@ -7,6 +7,7 @@ import { UnpackMatchResults } from './export/parse-data';
 import { ExportTrials } from './export/export-data';
 import { ConvertCodesService } from './services/convert-codes.service';
 import { Condition, pullCodesFromConditions } from './condition';
+import { createPatientBundle } from './bundle';
 import { TrialScopeService, TrialScopeResult } from './services/trial-scope.service';
 import { Trial } from './trialscope';
 
@@ -117,10 +118,17 @@ export class AppComponent {
     phase: 'any',
     recruitmentStatus: 'all',
   };
+  /*
+     variable for gathering patient bundle resources
+  * */
+  public bundleResources: any = [];
 
   constructor(private spinner: NgxSpinnerService, private trialScopeService: TrialScopeService, private fhirService: ClientService, private convertService: ConvertCodesService) {
-    this.loadDropDownData('Phase', 'phase');
-    this.loadDropDownData('RecruitmentStatusEnum', 'rec');
+    this.phaseDropDown = ["Early Phase 1", "Phase 1", "Phase 2", "Phase 3", "Phase 4"];
+    this.recDropDown = ["ACTIVE_NOT_RECRUITING", "COMPLETED", "ENROLLING_BY_INVITATION", "NOT_YET_RECRUITING", "RECRUITING", "SUSPENDED", "TERMINATED", "UNKNOWN", "WITHDRAWN"];
+
+
+
     this.patient = fhirService.getPatient().then(patient => {
       // Wrap the patient in a class that handles extracting values
       const p = new Patient(patient);
@@ -133,11 +141,21 @@ export class AppComponent {
       }
       return p;
     });
-    this.fhirService.getConditions({ clinicalstatus: 'active' }).then(
+    //This can theoretically be removed once moved into server
+    this.fhirService.getConditions({ "clinical-status": 'active' }).then(
       records => {
         this.conditions = records.map(record => new Condition(record));
         convertService.convertCodes(pullCodesFromConditions(records)).subscribe(codes => this.trialScopeConditions = codes);
       }
+    );
+
+    // Gathering resources for patient bundle
+    this.fhirService.resourceTypes.map(resourceType =>
+      this.fhirService.getResources(resourceType, this.fhirService.resourceParams[resourceType]).then(
+        records => {
+          records.map(record => this.bundleResources.push(record));
+        }
+      )
     );
   }
 
@@ -148,27 +166,6 @@ export class AppComponent {
     return this.pages.length;
   }
 
-  /**
-   * Load the available values for a dropdown from the server.
-   * @param type the schema type to load values for
-   * @param val currently either "phase" to populate the phase dropdown or
-   * literally anything else to populate the "rec" recruitment status dropdown
-   */
-  public loadDropDownData(type: string, val: string) {
-    this.spinner.show();
-    this.trialScopeService.getDropDownData(type).subscribe(response => {
-      if (val === 'phase') {
-        this.phaseDropDown = response;
-      } else {
-        this.recDropDown = response;
-      }
-      this.spinner.hide();
-    },
-      err => {
-        // FIXME: Handle this error
-        console.error(err);
-      });
-  }
   /**
    * Execute a search on clinical trial data based on the current user.
    */
@@ -181,19 +178,24 @@ export class AppComponent {
       return;
     }
     // Create our query
-    let query = `conditions:[${this.trialScopeConditions.join(', ')}], baseFilters: { zipCode: "${this.searchReqObject.zipCode}"`;
-    if (this.searchReqObject.travelRadius != null && this.searchReqObject.travelRadius !== '') {
-      // FIXME: Veryify travel radius is a number
-      query += ',travelRadius: ' + this.searchReqObject.travelRadius;
-    }
-    if (this.searchReqObject.phase !== 'any') {
-      query += ',phase:' + this.searchReqObject.phase;
-    }
-    if (this.searchReqObject.recruitmentStatus !== 'all') {
-      query += ',recruitmentStatus:' + this.searchReqObject.recruitmentStatus;
-    }
-    query += ' }';
-    this.trialScopeService.baseMatches(query).subscribe(response => {
+    // patient bundle includes all search paramters except conditions
+    const patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
+    // let conditions = `conditions:[${this.trialScopeConditions.join(', ')}] `; //, baseFilters: { zipCode: "${this.searchReqObject.zipCode}"`;
+
+    /* if (this.searchReqObject.travelRadius != null && this.searchReqObject.travelRadius !== '') {
+       // FIXME: Veryify travel radius is a number
+       query += ',travelRadius: ' + this.searchReqObject.travelRadius;
+     }
+     if (this.searchReqObject.phase !== 'any') {
+       query += ',phase:' + this.searchReqObject.phase;
+     }
+     if (this.searchReqObject.recruitmentStatus !== 'all') {
+       query += ',recruitmentStatus:' + this.searchReqObject.recruitmentStatus;
+     }
+     query += ' }';
+
+     */
+    this.trialScopeService.baseMatches(patientBundle).subscribe(response => {
       // Store the results
       this.searchResults = response;
       // Create our pages array

@@ -1,3 +1,5 @@
+import { ResultDetailsComponent } from './result-details/result-details.component';
+import { RecordDataComponent } from './record-data/record-data.component';
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
@@ -8,10 +10,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClientService } from './smartonfhir/client.service';
 import { TrialScopeService } from './services/trial-scope.service';
-
+import { TrialCardComponent } from './trial-card/trial-card.component';
+/*Commenting out test cases since Travis doesn't like fhirService
 describe('AppComponent', () => {
 
-  /** Commenting out these test cases while we figure out issues with travis and fhirservice 
+
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -24,11 +27,14 @@ describe('AppComponent', () => {
 
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        RecordDataComponent,
+        ResultDetailsComponent,
+        TrialCardComponent
       ],
       providers: [
         ClientService,
-        CommonService
+        TrialScopeService
       ]
     }).compileComponents();
   }));
@@ -51,5 +57,6 @@ describe('AppComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain('CLINICAL TRIAL');
   });
-  */
-}); 
+
+});
+*/

@@ -21,6 +21,8 @@ export class ClientService {
   client: Client;
   patient: Patient;
   private pendingClient: Promise<Client> | null = null;
+  public resourceTypes = ["Patient", "Immunization", "AllergyIntolerance", "Condition", "MedicationStatement", "Observation", "Procedure"]
+  public resourceParams = {"Patient": {}, "Immunization" : {}, "AllergyIntolerance" : {}, "Condition" : {"clinical-status": "active"}, "MedicationStatement" : {}, "Observation" : {}, "Procedure" : {}}
   /**
    * Gets a Promise that resolves to the client when the client is ready. If
    * the client is already ready, this returns a resolved Promise.
@@ -131,5 +133,20 @@ export class ClientService {
     return this.getAllRecords(query).then(resources => resources.map(
       resource => (resource as fhirclient.FHIR.BundleEntry).resource
     ));
+  }
+  /**
+  * Gets all resources of queryType from the client.
+  */
+  getResources(queryType: string, parameters?: {[key: string]: Stringable}): Promise<fhirclient.FHIR.BackboneElement[]> {
+    let query = queryType;
+    if (parameters) {
+      const params = [];
+      for (const p in parameters) {
+        params.push(encodeURIComponent(p) + '=' + encodeURIComponent(parameters[p] === null ? 'null' : parameters[p].toString()));
+      }
+      query += '?' + params.join('&');
+    }
+    // Resources should all be BundleEntries
+    return this.getAllRecords(query);
   }
 }
