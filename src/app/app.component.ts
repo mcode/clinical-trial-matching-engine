@@ -277,11 +277,11 @@ export class AppComponent {
       }
     })
     this.filtersArray = [
-      {
-        val: 'My Conditions',
-        selectedVal: 'conditions',
-        data: Array.from(conditionsSet)
-      },
+      // {
+      //   val: 'My Conditions',
+      //   selectedVal: 'conditions',
+      //   data: Array.from(conditionsSet)
+      // },
       {
         val: 'Recruitment',
         selectedVal: 'overallStatus',
