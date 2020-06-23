@@ -423,6 +423,9 @@ line-height: 25px;
 .col30{
     width: 30%;
 }
+.col65{
+    width: 65%;
+}
 * {
     box-sizing: border-box;
   }
