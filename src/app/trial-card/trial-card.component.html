@@ -5,7 +5,7 @@
         {{clinicalTrial.title}}</h2>
     <div class="containingDIV padding-top-10">
         <h3 class="cardtext color13">Conditions:</h3>
-        <span class="cardtext color13 mi-margin-left-10"> {{replace(clinicalTrial.conditions,'search')}}</span>
+        <span class="cardtext color13 mi-margin-left-10" *ngFor="let condition of clinicalTrial.condition"> {{condition.text}}</span>
     </div>
 </div>
 <div class="col10">
@@ -73,3 +73,5 @@
             </g>
         </g>
     </svg>
+
+    
