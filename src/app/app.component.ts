@@ -319,7 +319,6 @@ export class AppComponent {
        query += ',recruitmentStatus:' + this.searchReqObject.recruitmentStatus;
      }
      query += ' }';
-
      */
     this.trialScopeService.baseMatches(patientBundle).subscribe(response => {
       // Store the results

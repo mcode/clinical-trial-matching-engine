@@ -137,13 +137,13 @@
         <span class="color11 ">Showing {{selectedPage.firstIndex + 1}}-{{selectedPage.lastIndex}} of
           {{resultCount}}</span>
         <div style="padding-bottom: 20px; height: 60vh;overflow-y: scroll;margin-top: 10px;" class="mitTable">
-          <div>
-            <div (click)="showDetails(0)">
+          <div *ngFor="let trial of selectedPageTrials; let k=index">
+            <div (click)="showDetails(k)">
               <!-- Card Component-->
-              <app-trial-card class="row containingDIV cards" [clinicalTrial]="response"
-              [trialSaved]="savedClinicalTrialsNctIds.has(response)"
-              (trialSaveChanged)="setTrialSaved(response, $event)">
-            </app-trial-card>
+              <app-trial-card class="row containingDIV cards" [clinicalTrial]="trial"
+                [trialSaved]="savedClinicalTrialsNctIds.has(trial.nctId)"
+                (trialSaveChanged)="setTrialSaved(trial, $event)">
+              </app-trial-card>
             </div>
           </div>
         </div>
