@@ -11,6 +11,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 Run `ng serve` for a dev server. 
 Once the dev server is running, launch the application from the SMART launcher.
     - Visit [SMART Launcher](http://launch.smarthealthit.org) (for example)
+    - Make sure r4 is selected for the FHIR version
     - Launch `http://localhost:4200`
     - Select a practitioner and a patient
     - Page will load with name of selected patient displayed. The app will automatically reload if you change any of the source files.
