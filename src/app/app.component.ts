@@ -328,9 +328,8 @@ export class AppComponent {
       for (const filter of activeFilters) {
         if (filter.selectedItem === 'conditions') {
           // This one is special
-          /* FIXME: Need to figure out how this maps now
           try {
-            const conditions = JSON.parse(trial.conditions);
+            const conditions = JSON.parse(study.conditions);
             if (Array.isArray(conditions)) {
               if (!conditions.some(v => filter.values.includes(v)))
                 return false;
@@ -343,10 +342,8 @@ export class AppComponent {
             console.error(ex);
             return false;
           }
-          */
-         return false;
         } else {
-          const value = study[filter.selectedItem];
+          const value = study.lookup(filter.selectedItem);
           // If it doesn't match, then filter it out
           if (!filter.values.some(v => v === value))
             return false;

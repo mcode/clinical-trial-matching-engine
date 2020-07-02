@@ -11,6 +11,15 @@ type PatientBundle = string;
 export type ResearchStudy = fhirclient.FHIR.Resource;
 
 /**
+ * TrialScope facility. Will be removed eventually.
+ */
+interface Facility {
+  facility: string;
+  contactPhone?: string;
+  contactEmail?: string;
+}
+
+/**
  * Wrapper class for a research study. Provides hooks to deal with looking up
  * fields that may be missing in the actual FHIR result.
  */
@@ -33,7 +42,75 @@ export class ResearchStudySearchEntry {
     return this.resource.title ? this.resource.title : '(unknown)';
   }
   get conditions(): string {
-    return this.resource.condition ? this.resource.condition.map((condition) => condition.text).join(', ') : '';
+    return this.resource.condition ? JSON.stringify(this.resource.condition.map((condition) => condition.text)) : '';
+  }
+  get studyType(): string {
+    return this.resource.category && this.resource.category.length > 0 ? this.resource.category[0].text : '';
+  }
+  get description(): string {
+    return this.detailedDescription;
+  }
+  get detailedDescription(): string {
+    return this.resource.description ? this.resource.description : '';
+  }
+  get criteria(): string {
+    if (this.resource.enrollment) {
+      return this.resource.enrollment.map((enrollment) => enrollment.display).join(', ');
+    } else {
+      return '';
+    }
+  }
+  get phase(): string {
+    return this.resource.phase && this.resource.phase.text ? this.resource.phase.text : '(unknown)';
+  }
+  get sponsor(): string {
+    // FIXME: Needs to pull a mapped field
+    return 'sponsor';
+  }
+  get overallContact(): fhirclient.FHIR.RelatedPerson | null {
+    return this.resource.contact && this.resource.contact.length > 0 ? this.resource.contact[0] : null;
+  }
+  get overallContactPhone(): string {
+    // Use the first contact?
+    const contact = this.overallContact;
+    if (contact.telecom && contact.telecom.length > 0) {
+      const result = contact.telecom.find((telecom) => telecom.system === 'phone');
+      if (result) {
+        return result.value;
+      }
+    }
+    return '';
+  }
+  get overallContactEmail(): string {
+    const contact = this.overallContact;
+    if (contact.telecom && contact.telecom.length > 0) {
+      const result = contact.telecom.find((telecom) => telecom.system === 'email');
+      if (result) {
+        return result.value;
+      }
+    }
+    return '';
+  }
+  get sites(): Facility[] {
+    return [];
+  }
+
+  /**
+   * Lookup a value by FHIR path within the resource (NOT the bundle entry) for
+   * this result.
+   *
+   * NOTE: Currently, this is simply implemented via looking up fields within
+   * the wrapper object for mapping from TrialScope back to FHIR, it does NOT
+   * function properly - yet.
+   *
+   * @param path the FHIR path
+   */
+  lookup(path: string): string | null {
+    if (path in this) {
+      return this[path];
+    } else {
+      return null;
+    }
   }
 }
 
@@ -47,7 +124,6 @@ export class SearchResultsBundle {
 
   constructor(public bundle: fhirclient.FHIR.Bundle) {
     if (bundle.entry) {
-      console.log(`Filtering ${bundle.entry.length} results, looking for studies...`);
       this.researchStudies = bundle.entry.filter((entry) => {
         return entry.resource.resourceType === 'ResearchStudy'
       }).map((entry) => new ResearchStudySearchEntry(entry));
@@ -60,9 +136,19 @@ export class SearchResultsBundle {
     return this.researchStudies.length;
   }
 
-  buildFilters(property: string): Set<string> {
-    // FIXME: Implement
-    return new Set<string>();
+  /**
+   * Create a set of all current values at the given FHIR path. Values are
+   * assumed to be string values.
+   * @param path the FHIR path
+   */
+  buildFilters(path: string): Set<string> {
+    const results = new Set<string>();
+    for (const researchStudy of this.researchStudies) {
+      const value = researchStudy.lookup(path);
+      if (value !== null)
+        results.add(value);
+    }
+    return results;
   }
 }
 
