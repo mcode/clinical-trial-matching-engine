@@ -91,7 +91,17 @@ export class ResearchStudySearchEntry {
     }
     return '';
   }
+  get nctId(): string {
+    if (this.resource.identifier && this.resource.identifier.length > 0) {
+      const identifier = this.resource.identifier.find((id) => id.use === 'official' && id.system === 'http://clinicaltrials.gov');
+      if (identifier) {
+        return identifier.value;
+      }
+    }
+    return '';
+  }
   get sites(): Facility[] {
+    // FIXME: Implement
     return [];
   }
 

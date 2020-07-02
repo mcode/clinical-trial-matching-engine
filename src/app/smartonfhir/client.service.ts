@@ -93,7 +93,7 @@ export class ClientService {
       this.getClient().then(client => {
         // Here is where the "magic" happens
         const results: fhirclient.FHIR.BackboneElement[] = [];
-        const handlePage = bundle => {
+        const handlePage = (bundle): void => {
           if (bundle.entry) {
             // Append these entries to the list - entry is conceptually optional,
             // so make sure it exists before appending
@@ -105,13 +105,15 @@ export class ClientService {
             for (const link of bundle.link) {
               if (link.relation === 'next') {
                 // Have a next page link - so follow it and only the first one.
-                return client.request(link.url).then(handlePage).catch(reject);
+                client.request(link.url).then(handlePage).catch(reject);
+                return;
               }
             }
           }
           // If we've fallen through, we have no links, so just resolve with
           // whatever we have
-          return resolve(results);
+          resolve(results);
+          return;
         };
         client.patient.request(query).then(handlePage).catch(reject);
       }).catch(reject);

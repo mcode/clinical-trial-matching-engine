@@ -399,7 +399,7 @@ export class AppComponent {
    * Save or remove a trial from the saved trials list.
    */
   public toggleTrialSaved(trial: ResearchStudySearchEntry): void {
-    //this.setTrialSaved(trial, !this.savedClinicalTrialsNctIds.has(trial.nctId));
+    this.setTrialSaved(trial, !this.savedClinicalTrialsNctIds.has(trial.nctId));
   }
   /**
    * Sets whether or not a given trial is part of the saved set.
@@ -407,8 +407,6 @@ export class AppComponent {
    * @param saved the save state of the trial
    */
   public setTrialSaved(trial: ResearchStudySearchEntry, saved: boolean): void {
-    /*
-    FIXME
     if (saved) {
       if (!this.savedClinicalTrialsNctIds.has(trial.nctId)) {
         // Need to add it
@@ -423,7 +421,6 @@ export class AppComponent {
         this.savedClinicalTrialsNctIds.delete(trial.nctId);
       }
     }
-    */
   }
   /*
     Function to export Array of saved trials
