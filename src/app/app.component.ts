@@ -8,8 +8,8 @@ import { ExportTrials } from './export/export-data';
 import { ConvertCodesService } from './services/convert-codes.service';
 import { Condition, pullCodesFromConditions } from './condition';
 import { createPatientBundle } from './bundle';
-import { TrialScopeService, TrialScopeResult } from './services/trial-scope.service';
-import { Trial } from './trialscope';
+import { TrialScopeService } from './services/trial-scope.service';
+import { SearchService, SearchResultsBundle, ResearchStudySearchEntry } from './services/search.service';
 
 /**
  * Provides basic information about a given page.
@@ -17,8 +17,26 @@ import { Trial } from './trialscope';
 class SearchPage {
   constructor(public index: number, public firstIndex: number, public lastIndex: number) {
   }
-  toString() {
+  toString(): string {
     return `[Page ${this.index} (${this.firstIndex}-${this.lastIndex})]`;
+  }
+}
+
+/**
+ * Internal class for filter data
+ */
+class FilterValue {
+  constructor(public val: string, public selectedItems = false) {
+  }
+}
+
+/**
+ * Internal interface for filter data.
+ */
+class FilterData {
+  data: FilterValue[];
+  constructor(public val: string, public selectedVal: string | null = null, data: Iterable<string>) {
+    this.data = Array.from(data, (value) => new FilterValue(value));
   }
 }
 
@@ -51,22 +69,22 @@ export class AppComponent {
    * Whether or not the details page is visible.
    */
   public detailsPage = true;
-  /*
-     variable for filters Array
-  * */
-  public filtersArray: any = [];
+  /**
+   * Filter data.
+   */
+  public filtersArray: FilterData[] = [];
   /**
    * The most recent search results. If null, no search has been executed.
    */
-  public searchResults: TrialScopeResult | null = null;
+  public searchResults: SearchResultsBundle | null = null;
   /**
    * If filters have been applied, the filtered results.
    */
-  public filteredResults: Partial<Trial>[] | null = null;
+  public filteredResults: ResearchStudySearchEntry[] | null = null;
   /**
    * Total number of results found.
    */
-  public get resultCount() {
+  public get resultCount(): number {
     if (this.filteredResults === null) {
       return this.searchResults === null ? 0 : this.searchResults.totalCount;
     } else {
@@ -76,7 +94,7 @@ export class AppComponent {
   /**
    * Saved clinical trials.
    */
-  public savedClinicalTrials: Partial<Trial>[] = [];
+  public savedClinicalTrials: ResearchStudySearchEntry[] = [];
   /**
    * The set of saved clinical trial nctIds.
    */
@@ -84,7 +102,7 @@ export class AppComponent {
   /**
    * The trial whose details are being displayed.
    */
-  public detailedTrial: Partial<Trial> | null = null;
+  public detailedTrial: ResearchStudySearchEntry | null = null;
   /**
    * The currently active page.
    */
@@ -96,7 +114,7 @@ export class AppComponent {
   /**
    * Trials on the current page.
    */
-  public selectedPageTrials: Partial<Trial>[];
+  public selectedPageTrials: ResearchStudySearchEntry[];
   /**
    * The number of items per page.
    */
@@ -123,11 +141,9 @@ export class AppComponent {
   * */
   public bundleResources: any = [];
 
-  constructor(private spinner: NgxSpinnerService, private trialScopeService: TrialScopeService, private fhirService: ClientService, private convertService: ConvertCodesService) {
+  constructor(private spinner: NgxSpinnerService, private trialScopeService: TrialScopeService, private searchService: SearchService, private fhirService: ClientService, private convertService: ConvertCodesService) {
     this.phaseDropDown = ["Early Phase 1", "Phase 1", "Phase 2", "Phase 3", "Phase 4"];
     this.recDropDown = ["ACTIVE_NOT_RECRUITING", "COMPLETED", "ENROLLING_BY_INVITATION", "NOT_YET_RECRUITING", "RECRUITING", "SUSPENDED", "TERMINATED", "UNKNOWN", "WITHDRAWN"];
-
-
 
     this.patient = fhirService.getPatient().then(patient => {
       // Wrap the patient in a class that handles extracting values
@@ -141,7 +157,7 @@ export class AppComponent {
       }
       return p;
     });
-    //This can theoretically be removed once moved into server
+    // This can theoretically be removed once moved into server
     this.fhirService.getConditions({ "clinical-status": 'active' }).then(
       records => {
         this.conditions = records.map(record => new Condition(record));
@@ -162,14 +178,14 @@ export class AppComponent {
   /**
    * Gets the total number of pages.
    */
-  get pageCount() {
+  get pageCount(): number {
     return this.pages.length;
   }
 
   /**
    * Execute a search on clinical trial data based on the current user.
    */
-  public searchClinicalTrials() {
+  public searchClinicalTrials(): void {
     this.itemsPerPage = 10;
     this.spinner.show();
     // Blank out any existing results
@@ -177,25 +193,9 @@ export class AppComponent {
       alert('Enter Zipcode');
       return;
     }
-    // Create our query
     // patient bundle includes all search paramters except conditions
     const patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
-    // let conditions = `conditions:[${this.trialScopeConditions.join(', ')}] `; //, baseFilters: { zipCode: "${this.searchReqObject.zipCode}"`;
-
-    /* if (this.searchReqObject.travelRadius != null && this.searchReqObject.travelRadius !== '') {
-       // FIXME: Veryify travel radius is a number
-       query += ',travelRadius: ' + this.searchReqObject.travelRadius;
-     }
-     if (this.searchReqObject.phase !== 'any') {
-       query += ',phase:' + this.searchReqObject.phase;
-     }
-     if (this.searchReqObject.recruitmentStatus !== 'all') {
-       query += ',recruitmentStatus:' + this.searchReqObject.recruitmentStatus;
-     }
-     query += ' }';
-
-     */
-    this.trialScopeService.baseMatches(patientBundle).subscribe(response => {
+    this.searchService.searchClinicalTrials(patientBundle).subscribe(response => {
       // Store the results
       this.searchResults = response;
       // Create our pages array
@@ -214,7 +214,7 @@ export class AppComponent {
    * Show the given page.
    * @param page the 0-based page number to show
    */
-  public showPage(page: number) {
+  public showPage(page: number): void {
     if (this.searchResults === null) {
       console.error(`Cannot show page ${page}: no results`);
       return;
@@ -224,11 +224,11 @@ export class AppComponent {
   /**
    * View a specific page from within the pages array.
    */
-  public viewPage(page: SearchPage) {
+  public viewPage(page: SearchPage): void {
     this.selectedPage = page;
     console.log(`Showing page ${page}`);
     if (this.filteredResults === null) {
-      this.selectedPageTrials = this.searchResults.getTrials(this.selectedPage.firstIndex, this.selectedPage.lastIndex);
+      this.selectedPageTrials = this.searchResults.researchStudies.slice(this.selectedPage.firstIndex, this.selectedPage.lastIndex);
     } else {
       this.selectedPageTrials = this.filteredResults.slice(page.firstIndex, page.lastIndex);
     }
@@ -242,7 +242,8 @@ export class AppComponent {
    *          if given, the total number of results to create pages
    *          for, otherwise defaults to the current result count
    */
-  private createPages(totalResults = this.resultCount) {
+  private createPages(totalResults = this.resultCount): void {
+    console.log(`Creating pages for ${totalResults} results`);
     // Always create at least one page, even if it's empty
     this.pages = [new SearchPage(0, 0, Math.min(totalResults, this.itemsPerPage))];
     let pageIndex = 1, startIndex = this.itemsPerPage, lastIndex = this.itemsPerPage * 2;
@@ -261,8 +262,8 @@ export class AppComponent {
   /**
    * Create the filters
    */
-  private createFilters() {
-    const conditionsArray = this.searchResults.buildFilters<string>('conditions');
+  private createFilters(): void {
+    const conditionsArray = this.searchResults.buildFilters('conditions');
     const conditionsSet = new Set<string>();
     conditionsArray.forEach(json => {
       // Each condition is, in fact, a JSON object as a string
@@ -277,40 +278,16 @@ export class AppComponent {
       }
     })
     this.filtersArray = [
-      {
-        val: 'My Conditions',
-        selectedVal: 'conditions',
-        data: Array.from(conditionsSet)
-      },
-      {
-        val: 'Recruitment',
-        selectedVal: 'overallStatus',
-        data: Array.from(this.searchResults.buildFilters<string>('overallStatus'))
-      },
-      {
-        val: 'Phase',
-        selectedVal: 'phase',
-        data: Array.from(this.searchResults.buildFilters<string>('phase'))
-      },
-      {
-        val: 'Study Type',
-        selectedVal: 'studyType',
-        data: Array.from(this.searchResults.buildFilters<string>('studyType'))
-      }
+      new FilterData('My Conditions', 'conditions', conditionsSet),
+      new FilterData('Recruitment', 'overallStatus', this.searchResults.buildFilters('overallStatus')),
+      new FilterData('Phase', 'phase', this.searchResults.buildFilters('phase')),
+      new FilterData('Study Type', 'studyType', this.searchResults.buildFilters('studyType'))
     ];
-    for (const filter of this.filtersArray) {
-      for (let y = 0; y < filter.data.length; y++) {
-        filter.data[y] = {
-          val: filter.data[y],
-          selectedItems: false,
-        };
-      }
-    }
   }
   /**
    * Display details of a given trial.
    */
-  public showDetails(i) {
+  public showDetails(i: number): void {
     this.detailedTrial = this.selectedPageTrials[i];
     this.searchtable = true;
     this.searchPage = true;
@@ -319,7 +296,7 @@ export class AppComponent {
   /*
   Function for back search result page
   * */
-  public backToSearch() {
+  public backToSearch(): void {
     this.searchtable = false;
     this.searchPage = true;
     this.detailsPage = true;
@@ -328,7 +305,7 @@ export class AppComponent {
   /**
    * Apply user-selected filters
    */
-  public applyFilter() {
+  public applyFilter(): void {
     const activeFilters = [];
     for (const filter of this.filtersArray) {
       // See if there are any active filters in this filter
@@ -347,46 +324,44 @@ export class AppComponent {
       this.showPage(0);
       return;
     }
-    this.filteredResults = [];
-    // Go through all the pages
-    for (const page of this.searchResults.pages) {
-      const filteredPage = page.trials.filter(trial => {
-        for (const filter of activeFilters) {
-          if (filter.selectedItem === 'conditions') {
-            // This one is special
-            try {
-              const conditions = JSON.parse(trial.conditions);
-              if (Array.isArray(conditions)) {
-                if (!conditions.some(v => filter.values.includes(v)))
-                  return false;
-              } else {
-                console.error('Skipping trial with invalid conditions (not an array)');
+    this.filteredResults = this.searchResults.researchStudies.filter(study => {
+      for (const filter of activeFilters) {
+        if (filter.selectedItem === 'conditions') {
+          // This one is special
+          /* FIXME: Need to figure out how this maps now
+          try {
+            const conditions = JSON.parse(trial.conditions);
+            if (Array.isArray(conditions)) {
+              if (!conditions.some(v => filter.values.includes(v)))
                 return false;
-              }
-            } catch (ex) {
-              console.error('Skipping trial with unparseable conditions');
-              console.error(ex);
+            } else {
+              console.error('Skipping trial with invalid conditions (not an array)');
               return false;
             }
-          } else {
-            const value = trial[filter.selectedItem];
-            // If it doesn't match, then filter it out
-            if (!filter.values.some(v => v === value))
-              return false;
+          } catch (ex) {
+            console.error('Skipping trial with unparseable conditions');
+            console.error(ex);
+            return false;
           }
+          */
+         return false;
+        } else {
+          const value = study[filter.selectedItem];
+          // If it doesn't match, then filter it out
+          if (!filter.values.some(v => v === value))
+            return false;
         }
-        // If all filters matched, return true
-        return true;
-      });
-      this.filteredResults.push(...filteredPage);
-    }
+      }
+      // If all filters matched, return true
+      return true;
+    });
     this.createPages(this.filteredResults.length);
     this.showPage(0);
   }
   /*
     Function for check selected condition exist or not
     * */
-  public checkValue(value, arr) {
+  public checkValue(value, arr): string {
     let status = 'Not exist';
     for (const name of arr) {
       if (name === value) {
@@ -399,7 +374,7 @@ export class AppComponent {
   /*
     Function for get event of selected Filter
     * */
-  public checkBoxClick(i, j) {
+  public checkBoxClick(i, j): void {
     if (!this.filtersArray[i].data[j].selectedItems) {
       this.filtersArray[i].data[j].selectedItems = true;
     } else {
@@ -409,7 +384,7 @@ export class AppComponent {
   /*
      Function for clear Filter
   * */
-  public clearFilter(i) {
+  public clearFilter(i): void {
     this.filtersArray[i].data.forEach(element => {
       element.selectedItems = false;
     });
@@ -418,7 +393,7 @@ export class AppComponent {
   /*
      Function for go to home page
   * */
-  public backToHomePage() {
+  public backToHomePage(): void {
     this.searchtable = true;
     this.searchPage = false;
     this.detailsPage = true;
@@ -426,15 +401,17 @@ export class AppComponent {
   /**
    * Save or remove a trial from the saved trials list.
    */
-  public toggleTrialSaved(trial: Partial<Trial>) {
-    this.setTrialSaved(trial, !this.savedClinicalTrialsNctIds.has(trial.nctId));
+  public toggleTrialSaved(trial: ResearchStudySearchEntry): void {
+    //this.setTrialSaved(trial, !this.savedClinicalTrialsNctIds.has(trial.nctId));
   }
   /**
    * Sets whether or not a given trial is part of the saved set.
    * @param trial the trial to set whether or not it is saved
    * @param saved the save state of the trial
    */
-  public setTrialSaved(trial: Partial<Trial>, saved: boolean) {
+  public setTrialSaved(trial: ResearchStudySearchEntry, saved: boolean): void {
+    /*
+    FIXME
     if (saved) {
       if (!this.savedClinicalTrialsNctIds.has(trial.nctId)) {
         // Need to add it
@@ -449,21 +426,22 @@ export class AppComponent {
         this.savedClinicalTrialsNctIds.delete(trial.nctId);
       }
     }
+    */
   }
   /*
     Function to export Array of saved trials
   * */
-  public exportSavedTrials() {
+  public exportSavedTrials(): void {
     let data;
     if (this.savedClinicalTrials.length > 0) {
-      data = UnpackMatchResults(this.savedClinicalTrials);
+      //data = UnpackMatchResults(this.savedClinicalTrials);
     } else {
       //data = UnpackMatchResults(JSON.parse(JSON.stringify(this.clinicalTraildata)).data.baseMatches.edges);
     }
     ExportTrials(data, 'clinicalTrials');
   }
 
-  public updateItemsPerPage(items: string | number) {
+  public updateItemsPerPage(items: string | number): void {
     if (typeof items === 'string') {
       items = parseInt(items);
     }
@@ -482,12 +460,12 @@ export class AppComponent {
     this.showPage(0);
   }
 
-  onChange(val) {
+  onChange(val): void {
     console.log('onChange: ' + val)
     //this.countPages();
   }
 
-  public replace(value, val) {
+  public replace(value, val): string {
     const newVal = value.replace(/[\[\]_'""]+/g, ' ');
     if (val === 'drop') {
       return newVal.charAt(0).toUpperCase() + newVal.slice(1).toLowerCase();
@@ -496,7 +474,7 @@ export class AppComponent {
     }
   }
   public records = false;
-  public showRecord() {
+  public showRecord(): void {
     this.records = !this.records
   }
 
