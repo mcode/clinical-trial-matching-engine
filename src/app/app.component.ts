@@ -5,8 +5,6 @@ import { ClientService } from './smartonfhir/client.service';
 import Patient from './patient';
 import { UnpackMatchResults } from './export/parse-data';
 import { ExportTrials } from './export/export-data';
-import { ConvertCodesService } from './services/convert-codes.service';
-import { Condition, pullCodesFromConditions } from './condition';
 import { createPatientBundle } from './bundle';
 import { SearchService, SearchResultsBundle, ResearchStudySearchEntry } from './services/search.service';
 import { ResearchStudyStatus, ResearchStudyPhase } from './fhir-constants';
@@ -150,7 +148,7 @@ export class AppComponent {
    */
   public bundleResources: fhirclient.FHIR.BundleEntry[] = [];
 
-  constructor(private spinner: NgxSpinnerService, private searchService: SearchService, private fhirService: ClientService, private convertService: ConvertCodesService) {
+  constructor(private spinner: NgxSpinnerService, private searchService: SearchService, private fhirService: ClientService) {
     this.phaseDropDown = Object.keys(ResearchStudyPhase);
     this.recDropDown = Object.keys(ResearchStudyStatus);
 
@@ -166,8 +164,6 @@ export class AppComponent {
       }
       return p;
     });
-    // This can theoretically be removed once moved into server
-
 
     // Gathering resources for patient bundle
     this.fhirService.resourceTypes.map(resourceType =>
@@ -270,25 +266,21 @@ export class AppComponent {
    * Create the filters
    */
   private createFilters(): void {
-    const conditionsArray = this.searchResults.buildFilters('conditions');
+    const conditionsArray = this.searchResults.buildFilters('condition.text');
     const conditionsSet = new Set<string>();
-    conditionsArray.forEach(json => {
-      // Each condition is, in fact, a JSON object as a string
-      try {
-        const conditions = JSON.parse(json);
-        if (Array.isArray(conditions)) {
-          conditions.forEach(cond => conditionsSet.add(cond));
-        }
-      } catch (ex) {
-        console.error('Error parsing conditions value (ignored for filter)');
-        console.error(ex);
+    conditionsArray.forEach(conditions => {
+      if (Array.isArray(conditions)) {
+        conditions.forEach(cond => conditionsSet.add(cond));
+      } else {
+        console.error('Unexpected object for conditions');
+        console.error(conditions);
       }
-    })
+    });
     this.filtersArray = [
       new FilterData('My Conditions', 'conditions', conditionsSet),
-      new FilterData('Recruitment', 'overallStatus', this.searchResults.buildFilters('overallStatus')),
-      new FilterData('Phase', 'phase', this.searchResults.buildFilters('phase')),
-      new FilterData('Study Type', 'studyType', this.searchResults.buildFilters('studyType'))
+      new FilterData('Recruitment', 'status', this.searchResults.buildFilters('status')),
+      new FilterData('Phase', 'phase.text', this.searchResults.buildFilters('phase.text')),
+      new FilterData('Study Type', 'category.text', this.searchResults.buildFilters('category.text'))
     ];
   }
   /**
@@ -313,7 +305,7 @@ export class AppComponent {
    * Apply user-selected filters
    */
   public applyFilter(): void {
-    const activeFilters = [];
+    const activeFilters: { selectedItem: string; values: string[] }[] = [];
     for (const filter of this.filtersArray) {
       // See if there are any active filters in this filter
       const values = filter.data.filter(value => value.selectedItems === true);

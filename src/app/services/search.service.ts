@@ -4,9 +4,15 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppConfigService } from './app-config.service';
 import { fhirclient } from 'fhirclient/lib/types';
+import * as fhirpath from 'fhirpath';
 
 // Type alias for the patient bundle which presumably won't always be a string
 type PatientBundle = string;
+
+/**
+ * Marks a path.
+ */
+export type FHIRPath = string;
 
 export type ResearchStudy = fhirclient.FHIR.Resource;
 
@@ -36,13 +42,13 @@ export class ResearchStudySearchEntry {
   // These map existing TrialScope properties to their new FHIR types. They
   // will likely be removed in the future.
   get overallStatus(): string {
-    return this.resource.status;
+    return this.lookup('status');
   }
   get title(): string {
-    return this.resource.title ? this.resource.title : '(unknown)';
+    return this.lookup('title');
   }
   get conditions(): string {
-    return this.resource.condition ? JSON.stringify(this.resource.condition.map((condition) => condition.text)) : '';
+    return JSON.stringify(this.lookup('condition.text'));
   }
   get studyType(): string {
     return this.resource.category && this.resource.category.length > 0 ? this.resource.category[0].text : '';
@@ -51,7 +57,7 @@ export class ResearchStudySearchEntry {
     return this.detailedDescription;
   }
   get detailedDescription(): string {
-    return this.resource.description ? this.resource.description : '';
+    return this.lookup('description');
   }
   get criteria(): string {
     if (this.resource.enrollment) {
@@ -91,6 +97,11 @@ export class ResearchStudySearchEntry {
     }
     return '';
   }
+  /**
+   * @deprecated This will be REMOVED as the NCT ID is not the proper ID to
+   * track for saved trials. Instead the URL of the ResearchStudy should be
+   * used.
+   */
   get nctId(): string {
     if (this.resource.identifier && this.resource.identifier.length > 0) {
       const identifier = this.resource.identifier.find((id) => id.use === 'official' && id.system === 'http://clinicaltrials.gov');
@@ -109,18 +120,10 @@ export class ResearchStudySearchEntry {
    * Lookup a value by FHIR path within the resource (NOT the bundle entry) for
    * this result.
    *
-   * NOTE: Currently, this is simply implemented via looking up fields within
-   * the wrapper object for mapping from TrialScope back to FHIR, it does NOT
-   * function properly - yet.
-   *
    * @param path the FHIR path
    */
-  lookup(path: string): string | null {
-    if (path in this) {
-      return this[path];
-    } else {
-      return null;
-    }
+  lookup(path: FHIRPath): string | null {
+    return fhirpath.evaluate(this.resource, path);
   }
 }
 
@@ -155,8 +158,8 @@ export class SearchResultsBundle {
     const results = new Set<string>();
     for (const researchStudy of this.researchStudies) {
       const value = researchStudy.lookup(path);
-      if (value !== null)
-        results.add(value);
+      if (value !== null && value !== undefined)
+        results.add(value.toString());
     }
     return results;
   }
