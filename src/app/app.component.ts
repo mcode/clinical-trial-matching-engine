@@ -8,8 +8,9 @@ import { ExportTrials } from './export/export-data';
 import { ConvertCodesService } from './services/convert-codes.service';
 import { Condition, pullCodesFromConditions } from './condition';
 import { createPatientBundle } from './bundle';
-import { TrialScopeService } from './services/trial-scope.service';
 import { SearchService, SearchResultsBundle, ResearchStudySearchEntry } from './services/search.service';
+import { ResearchStudyStatus, ResearchStudyPhase } from './fhir-constants';
+import { fhirclient } from 'fhirclient/lib/types';
 
 /**
  * Provides basic information about a given page.
@@ -38,6 +39,22 @@ class FilterData {
   constructor(public val: string, public selectedVal: string | null = null, data: Iterable<string>) {
     this.data = Array.from(data, (value) => new FilterValue(value));
   }
+}
+
+interface SearchFields {
+  // This simply indicates that our fields are always string-able and is
+  // necessary to pass the object to the patient bundle converter function.
+  [key: string]: string | null;
+  zipCode: string | null;
+  travelRadius: string | null;
+  /**
+   * Recruitment phase (null means not specified/any)
+   */
+  phase: ResearchStudyPhase | null;
+  /**
+   * Recruitment status (null means not specified/any)
+   */
+  recruitmentStatus: ResearchStudyStatus | null;
 }
 
 @Component({
@@ -120,30 +137,22 @@ export class AppComponent {
    */
   private itemsPerPage = 10;
   /**
-   * Loaded conditions from the patient.
-   */
-  public conditions: Condition[];
-  /**
-   * Conditions loaded from TrialScope.
-   */
-  public trialScopeConditions: string[];
-  /**
    * The Angular form model for search options.
    */
-  searchReqObject: { zipCode: string | null; travelRadius: string | null; phase: string; recruitmentStatus: string } = {
+  searchReqObject: SearchFields = {
     zipCode: null,
     travelRadius: null,
-    phase: 'any',
-    recruitmentStatus: 'all',
+    phase: null,
+    recruitmentStatus: null,
   };
-  /*
-     variable for gathering patient bundle resources
-  * */
-  public bundleResources: any = [];
+  /**
+   * Patient bundle resources from the FHIR client.
+   */
+  public bundleResources: fhirclient.FHIR.BundleEntry[] = [];
 
-  constructor(private spinner: NgxSpinnerService, private trialScopeService: TrialScopeService, private searchService: SearchService, private fhirService: ClientService, private convertService: ConvertCodesService) {
-    this.phaseDropDown = ["Early Phase 1", "Phase 1", "Phase 2", "Phase 3", "Phase 4"];
-    this.recDropDown = ["ACTIVE_NOT_RECRUITING", "COMPLETED", "ENROLLING_BY_INVITATION", "NOT_YET_RECRUITING", "RECRUITING", "SUSPENDED", "TERMINATED", "UNKNOWN", "WITHDRAWN"];
+  constructor(private spinner: NgxSpinnerService, private searchService: SearchService, private fhirService: ClientService, private convertService: ConvertCodesService) {
+    this.phaseDropDown = Object.keys(ResearchStudyPhase);
+    this.recDropDown = Object.keys(ResearchStudyStatus);
 
     this.patient = fhirService.getPatient().then(patient => {
       // Wrap the patient in a class that handles extracting values
@@ -158,18 +167,16 @@ export class AppComponent {
       return p;
     });
     // This can theoretically be removed once moved into server
-    this.fhirService.getConditions({ "clinical-status": 'active' }).then(
-      records => {
-        this.conditions = records.map(record => new Condition(record));
-        convertService.convertCodes(pullCodesFromConditions(records)).subscribe(codes => this.trialScopeConditions = codes);
-      }
-    );
+
 
     // Gathering resources for patient bundle
     this.fhirService.resourceTypes.map(resourceType =>
       this.fhirService.getResources(resourceType, this.fhirService.resourceParams[resourceType]).then(
         records => {
-          records.map(record => this.bundleResources.push(record));
+          this.bundleResources.push(...(records.filter((record) => {
+            // Check to make sure it's a bundle entry
+            return 'fullUrl' in record && 'resource' in record;
+          }) as fhirclient.FHIR.BundleEntry[]));
         }
       )
     );
