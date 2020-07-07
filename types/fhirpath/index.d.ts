@@ -1,11 +1,17 @@
 /**
  * Minimal type definitions for fhirpath
  */
-declare namespace fhirpath {
-  type FHIRPath = string;
-  type ApplyParsedPathResult = unknown;
+declare module 'fhirpath' {
+  /**
+   * FHIRPath is an opaque object.
+   */
+  export type FHIRPath = object;
+  // This is effectively "any object"
+  export type FHIRResource = { [key: string]: unknown };
+  // This is almost certainly overly restrictive
+  export type PathLookupResult = FHIRResource | string;
 
-  function parse(path: FHIRPath): ApplyParsedPathResult;
-  function compile(path: FHIRPath, model: object): (resource, context) => ApplyParsedPathResult;
-  function evaluate(resource: object | object[], path: string, context: object, model: object): ApplyParsedPathResult;
+  export function parse(path: string): FHIRPath;
+  export function compile(path: string, model: object): (resource: FHIRResource, context?: object) => PathLookupResult[];
+  export function evaluate(resource: FHIRResource | FHIRResource[], path: string, context?: object, model?: object): PathLookupResult[];
 }

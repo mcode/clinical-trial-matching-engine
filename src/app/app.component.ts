@@ -342,7 +342,7 @@ export class AppComponent {
             return false;
           }
         } else {
-          const value = study.lookup(filter.selectedItem);
+          const value = study.lookupString(filter.selectedItem);
           // If it doesn't match, then filter it out
           if (!filter.values.some(v => v === value))
             return false;

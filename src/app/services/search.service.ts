@@ -34,6 +34,7 @@ export class ResearchStudySearchEntry {
    * The embedded resource.
    */
   resource: fhirclient.FHIR.Resource;
+  private cachedSites: fhirpath.FHIRResource[] | null = null;
   constructor(public entry: fhirclient.FHIR.BundleEntry) {
     this.resource = this.entry.resource;
     console.log(this.entry);
@@ -42,10 +43,10 @@ export class ResearchStudySearchEntry {
   // These map existing TrialScope properties to their new FHIR types. They
   // will likely be removed in the future.
   get overallStatus(): string {
-    return this.lookup('status');
+    return this.lookupString('status');
   }
   get title(): string {
-    return this.lookup('title');
+    return this.lookupString('title');
   }
   get conditions(): string {
     return JSON.stringify(this.lookup('condition.text'));
@@ -57,7 +58,7 @@ export class ResearchStudySearchEntry {
     return this.detailedDescription;
   }
   get detailedDescription(): string {
-    return this.lookup('description');
+    return this.lookupString('description');
   }
   get criteria(): string {
     if (this.resource.enrollment) {
@@ -67,7 +68,7 @@ export class ResearchStudySearchEntry {
     }
   }
   get phase(): string {
-    return this.resource.phase && this.resource.phase.text ? this.resource.phase.text : '(unknown)';
+    return this.lookupString('phase.text');
   }
   get sponsor(): string {
     // FIXME: Needs to pull a mapped field
@@ -112,8 +113,21 @@ export class ResearchStudySearchEntry {
     return '';
   }
   get sites(): Facility[] {
-    // FIXME: Implement
-    return [];
+    const sites = this.getSites();
+    console.log(sites);
+    return sites.map((site => {
+      const result: Facility = { facility: typeof site.name === 'string' ? site.name : '(missing name)' };
+      if (Array.isArray(site.telecom)) {
+        for (const telecom of site.telecom) {
+          if (telecom.system === 'phone') {
+            result.contactPhone = telecom.value;
+          } else if (telecom.system === 'email') {
+            result.contactEmail = telecom.value;
+          }
+        }
+      }
+      return result;
+    }));
   }
 
   /**
@@ -122,8 +136,54 @@ export class ResearchStudySearchEntry {
    *
    * @param path the FHIR path
    */
-  lookup(path: FHIRPath): string | null {
-    return fhirpath.evaluate(this.resource, path);
+  lookup(path: FHIRPath, environment?: { [key: string]: string }): fhirpath.PathLookupResult[] {
+    return fhirpath.evaluate(this.resource, path, environment);
+  }
+
+  lookupString(path: FHIRPath, defaultValue: string | null = '(unknown)'): string {
+    const values = this.lookup(path);
+    if (values.length === 0) {
+      return defaultValue;
+    } else if (values.length === 1) {
+      return values[0].toString();
+    } else {
+      return values.join(', ');
+    }
+  }
+
+  /**
+   * This helper function gets all the embedded sites directly by following
+   * their references.
+   */
+  getSites(): fhirpath.FHIRResource[] {
+    // Looking up each site can be expensive (especially if a future version has
+    // to do network lookups or look inside the entire bundle) so cache them
+    if (this.cachedSites !== null) {
+      return this.cachedSites;
+    }
+    const sites = this.lookup('site');
+    const result = sites.map((site) => {
+      if (typeof site === 'object') {
+        // This is more necessary to placate TypeScript than anything else
+        const url = site.reference;
+        if (typeof url === 'string' && url.length > 1 && url.substr(0, 1) === '#') {
+          // For now, only handle local references
+          const id = url.substr(1);
+          return this.lookup('contained.where(id = %id)', { id: id });
+        }
+      }
+      return null;
+    });
+    // And reduce to a single array
+    return this.cachedSites = result.reduce<fhirpath.FHIRResource[]>((list, sites): fhirpath.FHIRResource[] => {
+      if (Array.isArray(sites)) {
+        // Make sure the results are all actual objects
+        list.push(...(sites.filter((site) => {
+          return typeof site === 'object';
+        }) as fhirpath.FHIRResource[]));
+      }
+      return list;
+    }, [] as fhirpath.FHIRResource[]);
   }
 }
 
@@ -157,9 +217,9 @@ export class SearchResultsBundle {
   buildFilters(path: string): Set<string> {
     const results = new Set<string>();
     for (const researchStudy of this.researchStudies) {
-      const value = researchStudy.lookup(path);
+      const value = researchStudy.lookupString(path);
       if (value !== null && value !== undefined)
-        results.add(value.toString());
+        results.add(value);
     }
     return results;
   }
