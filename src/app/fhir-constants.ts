@@ -74,51 +74,51 @@ export enum ResearchStudyStatus {
 /**
  * The official display values for each research study status values.
  */
-export enum ResearchStudyStatusDisplay {
+export const ResearchStudyStatusDisplay: Record<ResearchStudyStatus, string> = {
   /**
    * Active
    */
-  ACTIVE = 'Active',
+  active: 'Active',
   /**
    * Administratively Completed
    */
-  ADMINISTRATIVELY_COMPLETED = 'Administratively Completed',
+  'administratively-completed': 'Administratively Completed',
   /**
    * Approved
    */
-  APPROVED = 'Approved',
+  approved: 'Approved',
   /**
    * Closed to Accrual
    */
-  CLOSED_TO_ACCRUAL = 'Closed to Accrual',
+  'closed-to-accrual': 'Closed to Accrual',
   /**
    * Closed to Accrual and Intervention
    */
-  CLOSED_TO_ACCRUAL_AND_INTERVENTION = 'Closed to Accrual and Intervention',
+  'closed-to-accrual-and-intervention': 'Closed to Accrual and Intervention',
   /**
    * Completed
    */
-  COMPLETED = 'Completed',
+  completed: 'Completed',
   /**
    * Disapproved
    */
-  DISAPPROVED = 'Disapproved',
+  disapproved: 'Disapproved',
   /**
    * In Review
    */
-  IN_REVIEW = 'In Review',
+  'in-review': 'In Review',
   /**
    * Temporarily Closed to Accrual
    */
-  TEMPORARILY_CLOSED_TO_ACCRUAL = 'Temporarily Closed to Accrual',
+  'temporarily-closed-to-accrual': 'Temporarily Closed to Accrual',
   /**
    * Temporarily Closed to Accrual and Intervention
    */
-  TEMPORARILY_CLOSED_TO_ACCRUAL_AND_INTERVENTION = 'Temporarily Closed to Accrual and Intervention',
+  'temporarily-closed-to-accrual-and-intervention': 'Temporarily Closed to Accrual and Intervention',
   /**
    * Withdrawn
    */
-  WITHDRAWN = 'Withdrawn',
+  withdrawn: 'Withdrawn',
 }
 
 /**
@@ -185,31 +185,31 @@ export enum ResearchStudyPhase {
 /**
  * The official display values for the research study phases
  */
-export enum ResearchStudyPhaseDisplay {
+export const ResearchStudyPhaseDisplay: Record<ResearchStudyPhase, string> = {
   /**
    * N/A
    */
-  NA = 'N/A',
+  'n-a': 'N/A',
   /**
    * Early Phase 1
    */
-  EARLY_PHASE_1 = 'Early Phase 1',
+  'early-phase-1': 'Early Phase 1',
   /**
    * Phase 1
    */
-  PHASE_1 = 'Phase 1',
+  'phase-1': 'Phase 1',
   /**
    * Phase 1/Phase 2
    */
-  PHASE_1_PHASE_2 = 'Phase 1/Phase 2',
+  'phase-1-phase-2': 'Phase 1/Phase 2',
   /**
    * Phase 2
    */
-  PHASE_2 = 'Phase 2',
+  'phase-2': 'Phase 2',
   /**
    * Phase 2/Phase 3
    */
-  PHASE_2_PHASE_3 = 'Phase 2/Phase 3',
+  'phase-2-phase-3': 'Phase 2/Phase 3',
   /**
    * Phase 3
    * Includes trials conducted after preliminary evidence suggesting
@@ -217,9 +217,9 @@ export enum ResearchStudyPhaseDisplay {
    * additional information to evaluate the overall benefit-risk relationship of
    * the drug.
    */
-  PHASE_3 = 'Phase 3',
+  'phase-3': 'Phase 3',
   /**
    * Phase 4
    */
-  PHASE_4 = 'Phase 4'
+  'phase-4': 'Phase 4'
 }

@@ -7,7 +7,7 @@ import { UnpackMatchResults } from './export/parse-data';
 import { ExportTrials } from './export/export-data';
 import { createPatientBundle } from './bundle';
 import { SearchService, SearchResultsBundle, ResearchStudySearchEntry } from './services/search.service';
-import { ResearchStudyStatus, ResearchStudyPhase } from './fhir-constants';
+import { ResearchStudyStatus, ResearchStudyPhase, ResearchStudyStatusDisplay, ResearchStudyPhaseDisplay } from './fhir-constants';
 import { fhirclient } from 'fhirclient/lib/types';
 
 /**
@@ -55,6 +55,10 @@ interface SearchFields {
   recruitmentStatus: ResearchStudyStatus | null;
 }
 
+class DropDownValue {
+  constructor(public value: string, public display: string) { }
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -64,14 +68,14 @@ export class AppComponent {
   title = 'clinicalTrial';
   public self = this;
   public patient: Promise<Patient> | Patient;
-  /*
-  variable for phase Drop Down
-  * */
-  public phaseDropDown = [];
-  /*
- variable for recruitment Drop Down
- * */
-  public recDropDown = [];
+  /**
+   * Trial phase drop-down values.
+   */
+  public phaseDropDown: DropDownValue[] = [];
+  /**
+   * Recruitment phase drop-down values.
+   */
+  public recDropDown: DropDownValue[] = [];
   /**
    * Whether or not the search form (not results) page is visible
    */
@@ -149,8 +153,12 @@ export class AppComponent {
   public bundleResources: fhirclient.FHIR.BundleEntry[] = [];
 
   constructor(private spinner: NgxSpinnerService, private searchService: SearchService, private fhirService: ClientService) {
-    this.phaseDropDown = Object.keys(ResearchStudyPhase);
-    this.recDropDown = Object.keys(ResearchStudyStatus);
+    this.phaseDropDown = Object.values(ResearchStudyPhase).map((value) => {
+      return new DropDownValue(value, ResearchStudyPhaseDisplay[value]);
+    });
+    this.recDropDown = Object.values(ResearchStudyStatus).map((value) => {
+      return new DropDownValue(value, ResearchStudyStatusDisplay[value]);
+    });
 
     this.patient = fhirService.getPatient().then(patient => {
       // Wrap the patient in a class that handles extracting values
@@ -458,14 +466,6 @@ export class AppComponent {
     //this.countPages();
   }
 
-  public replace(value, val): string {
-    const newVal = value.replace(/[\[\]_'""]+/g, ' ');
-    if (val === 'drop') {
-      return newVal.charAt(0).toUpperCase() + newVal.slice(1).toLowerCase();
-    } else {
-      return newVal;
-    }
-  }
   public records = false;
   public showRecord(): void {
     this.records = !this.records
