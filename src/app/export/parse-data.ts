@@ -1,8 +1,9 @@
-import { Trial } from '../trialscope';
+import { ResearchStudySearchEntry } from '../services/search.service';
 
-const clearPunctuation = (entry: string) => entry.replace(/"/g, '');
+const clearPunctuation = (entry: string): string => entry.replace(/"/g, '');
 
-export const UnpackMatchResults = (result: Partial<Trial>[]) => {
+export const UnpackMatchResults = (result: ResearchStudySearchEntry[]): object[] => {
+  // FIXME: None of the following will still work
 
   const data: object[] = [];
   // let resultType = Object.keys(result["data"]).includes("baseMatches") ? "baseMatches" : "advancedMatches";

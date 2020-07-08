@@ -83,7 +83,7 @@ text-transform: uppercase;
 .Graph-section{
     background-image: url('../assets/images/strip_top.png');
     position: absolute;
-    z-index: 99999;
+    z-index: auto;
     left: 0;
     right: 0;
     width: 100%;
@@ -276,8 +276,8 @@ padding: 5px;
 }
 .recButton{
 width: 90%;
-height: 41px;
-border-radius: 20.5px;
+height: 41px; 
+border-radius: 20.5px; 
 background: #30b400;
 color:white;
 border: 1px solid #30b400;
@@ -303,7 +303,7 @@ border: 5px solid #525151;
 .cardtext{
 font-family: Roboto light;
 font-weight: 300;
-font-size: 18px;
+font-size: 1.5vw;
 text-align: left;
 color: #9f9c9c;
 line-height: 25px;
@@ -639,8 +639,10 @@ line-height: 25px;
   
   .outerDiv{
     text-align: center;
-    width: 321px;
-    height: 217px;
+    /*width: 321px; 
+    height: 217px; */
+    width: 25%;
+    
     background: rgba(255, 255, 255, 0.94);
   }
   
@@ -673,17 +675,35 @@ line-height: 25px;
       color : #ffffff !important;
   }
   
-  .cardtext {
-    font-family: Roboto light;
-    font-weight: 300;
-    font-size: 18px;
-    text-align: left;
-    color: #9f9c9c;
-    line-height: 25px;
-  }
   
   .detailCardText {
-    font-size: 30px;
+    display: flex;
+    font-size: 2vw;
     color: #FFFFFF;
+  }
+  
+
+  .mi-margin-2020{
+   
+    margin: 2%;
+  }
+  .flexborder {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    flex-flow: row wrap;
+  
+    background: #525151;
+    
+  }
+  .varfont{
+
+    font-size: 0.9em;
+  }
+  .contact-text{
+    color : #0079E0;
+    font-size: 0.8em;
+
   }
   
