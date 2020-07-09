@@ -279,8 +279,8 @@ export class AppComponent {
     const conditionsArray = this.searchResults.buildFilters('condition.text');
     const conditionsSet = new Set<string>();
     conditionsArray.forEach(conditions => {
-      if (Array.isArray(conditions)) {
-        conditions.forEach(cond => conditionsSet.add(cond));
+      if (Array.isArray(conditions.split(","))) {
+        conditions.split(",").forEach(cond => conditionsSet.add(cond));
       } else {
         console.error('Unexpected object for conditions');
         console.error(conditions);
