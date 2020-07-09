@@ -19,7 +19,7 @@ export type ResearchStudy = fhirclient.FHIR.Resource;
 /**
  * TrialScope facility. Will be removed eventually.
  */
-interface Facility {
+export interface Facility {
   facility: string;
   contactPhone?: string;
   contactEmail?: string;

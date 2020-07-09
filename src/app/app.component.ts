@@ -3,7 +3,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 
 import { ClientService } from './smartonfhir/client.service';
 import Patient from './patient';
-import { UnpackMatchResults } from './export/parse-data';
+import { UnpackResearchStudyResults } from './export/parse-data';
 import { ExportTrials } from './export/export-data';
 import { createPatientBundle } from './bundle';
 import { SearchService, SearchResultsBundle, ResearchStudySearchEntry } from './services/search.service';
@@ -435,11 +435,11 @@ export class AppComponent {
     Function to export Array of saved trials
   * */
   public exportSavedTrials(): void {
-    let data;
+    let data = [];
     if (this.savedClinicalTrials.length > 0) {
-      //data = UnpackMatchResults(this.savedClinicalTrials);
+      data = UnpackResearchStudyResults(this.savedClinicalTrials);
     } else {
-      //data = UnpackMatchResults(JSON.parse(JSON.stringify(this.clinicalTraildata)).data.baseMatches.edges);
+      data = UnpackResearchStudyResults(this.searchResults.researchStudies);
     }
     ExportTrials(data, 'clinicalTrials');
   }

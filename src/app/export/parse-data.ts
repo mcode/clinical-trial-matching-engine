@@ -1,45 +1,41 @@
-import { ResearchStudySearchEntry } from '../services/search.service';
+import { ResearchStudySearchEntry, Facility } from '../services/search.service';
 
-const clearPunctuation = (entry: string): string => entry.replace(/"/g, '');
-
-export const UnpackMatchResults = (result: ResearchStudySearchEntry[]): object[] => {
-  // FIXME: None of the following will still work
+export const UnpackResearchStudyResults= (result: ResearchStudySearchEntry[]): object[] => {
 
   const data: object[] = [];
-  // let resultType = Object.keys(result["data"]).includes("baseMatches") ? "baseMatches" : "advancedMatches";
-  // Don't know if it's a base match or an advanced match (no match quality)
 
   data.push({'Match Count': result.length});
 
   result.forEach(trial => {
     const mainRow = {};
-    let sites: object = {};
-    const blackList = ['advancedMatchConditions', 'armGroups', 'interventions'];
+    const sites: Facility[] = trial.sites;
 
-    // if (resultType === "advancedMatches") {
-    //   let quality = match.matchQuality;
-    //   mainRow = {"Match Quality" : quality};
-    // }
-
-    Object.keys(trial).forEach( field => {
-      if (field === 'conditions') {
-        let value = trial[field];
-        value = clearPunctuation(value);
-        mainRow[field] = value;
-      } else if (field === 'meshTerms') {
-        const termsList = trial[field].join(', ');
-        mainRow[field] = termsList;
-      } else if (field === 'sites') {
-        sites = trial[field];
-      } else if (!blackList.includes(field)) {
-        mainRow[field] = trial[field];
-      }
-    });
+    mainRow["nctId"] = trial.nctId;
+    mainRow["Title"] = trial.title;
+    mainRow["OverallStatus"] = trial.overallStatus;
+    mainRow["Phase"] = trial.phase;
+    mainRow["Conditions"] = trial.conditions;
+    mainRow["StudyType"] = trial.studyType;
+    mainRow["Description"] = trial.description;
+    mainRow["DetailedDescription"] = trial.detailedDescription;
+    mainRow["Criteria"] = trial.criteria;
+    mainRow["Sponsor"] = trial.sponsor;
+    mainRow["OverallContact"] = trial.overallContact;
+    mainRow["OverallContactPhone"] = trial.overallContactPhone;
+    mainRow["OverallContactEmail"] = trial.overallContactEmail;
 
     data.push(mainRow);
 
     Object.keys(sites).forEach( index => {
-      data.push(sites[index]);
+      let siteRow = {};
+      siteRow["Facility"] = sites[index]["facility"];
+      if (sites[index]["contactPhone"]) {
+        siteRow["Phone"] = sites[index]["contactPhone"];
+      }
+      if (sites[index]["contactEmail"]) {
+        siteRow["Email"] = sites[index]["contactEmail"];
+      }
+      data.push(siteRow);
     });
 
   });
