@@ -35,6 +35,8 @@ export class ResearchStudySearchEntry {
    */
   resource: fhirclient.FHIR.Resource;
   private cachedSites: fhirpath.FHIRResource[] | null = null;
+  private containedResources: Map<string, fhirpath.FHIRResource> | null = null;
+
   constructor(public entry: fhirclient.FHIR.BundleEntry) {
     this.resource = this.entry.resource;
     console.log(this.entry);
@@ -132,14 +134,27 @@ export class ResearchStudySearchEntry {
 
   /**
    * Lookup a value by FHIR path within the resource (NOT the bundle entry) for
-   * this result.
+   * this search result.
    *
    * @param path the FHIR path
+   * @param environment the FHIR path environment (for embedding values into the path)
+   * @returns an array of found values (empty if nothing found)
    */
   lookup(path: FHIRPath, environment?: { [key: string]: string }): fhirpath.PathLookupResult[] {
     return fhirpath.evaluate(this.resource, path, environment);
   }
 
+  /**
+   * Looks up a value by FHIR path within the resource (NOT the bundle entry)
+   * for this search result.
+   *
+   * @param path the FHIR path
+   * @param defaultValue
+   *     the default value if not found, defaults to the string '(unknown)'
+   * @returns
+   *     either the found value or the given default value. If multiple values
+   *     are found, this simply joins them with a comma.
+   */
   lookupString(path: FHIRPath, defaultValue: string | null = '(unknown)'): string {
     const values = this.lookup(path);
     if (values.length === 0) {
@@ -149,6 +164,27 @@ export class ResearchStudySearchEntry {
     } else {
       return values.join(', ');
     }
+  }
+
+  /**
+   * Looks up a contained resource within the resource for the search result.
+   * @param id the ID of the resource
+   * @returns
+   *    the resource of that ID or undefined if no resource exists with that ID
+   */
+  lookupContainedResource(id: string): fhirpath.FHIRResource | undefined {
+    if (this.containedResources === null) {
+      // If we haven't built our ID map, do it now
+      this.containedResources = new Map<string, fhirpath.FHIRResource>();
+      this.lookup('contained').forEach((resource): void => {
+        if (typeof resource === 'object') {
+          if (typeof resource.id === 'string') {
+            this.containedResources.set(resource.id, resource);
+          }
+        }
+      });
+    }
+    return this.containedResources.get(id);
   }
 
   /**
@@ -162,28 +198,20 @@ export class ResearchStudySearchEntry {
       return this.cachedSites;
     }
     const sites = this.lookup('site');
-    const result = sites.map((site) => {
+    const result: Array<fhirpath.FHIRResource | undefined> = sites.map((site): fhirpath.FHIRResource | undefined => {
       if (typeof site === 'object') {
         // This is more necessary to placate TypeScript than anything else
         const url = site.reference;
         if (typeof url === 'string' && url.length > 1 && url.substr(0, 1) === '#') {
           // For now, only handle local references
           const id = url.substr(1);
-          return this.lookup('contained.where(id = %id)', { id: id });
+          return this.lookupContainedResource(id);
         }
       }
-      return null;
+      return undefined;
     });
-    // And reduce to a single array
-    return this.cachedSites = result.reduce<fhirpath.FHIRResource[]>((list, sites): fhirpath.FHIRResource[] => {
-      if (Array.isArray(sites)) {
-        // Make sure the results are all actual objects
-        list.push(...(sites.filter((site) => {
-          return typeof site === 'object';
-        }) as fhirpath.FHIRResource[]));
-      }
-      return list;
-    }, [] as fhirpath.FHIRResource[]);
+    // And filter out any missing embedded sites
+    return this.cachedSites = result.filter((site) => typeof site === 'object');
   }
 }
 
