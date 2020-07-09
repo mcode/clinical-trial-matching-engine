@@ -27,7 +27,7 @@ export const UnpackResearchStudyResults= (result: ResearchStudySearchEntry[]): o
     data.push(mainRow);
 
     Object.keys(sites).forEach( index => {
-      let siteRow = {};
+      const siteRow = {};
       siteRow["Facility"] = sites[index]["facility"];
       if (sites[index]["contactPhone"]) {
         siteRow["Phone"] = sites[index]["contactPhone"];
