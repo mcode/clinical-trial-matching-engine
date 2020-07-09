@@ -276,18 +276,7 @@ export class AppComponent {
    * Create the filters
    */
   private createFilters(): void {
-    const conditionsArray = this.searchResults.buildFilters('condition.text');
-    const conditionsSet = new Set<string>();
-    conditionsArray.forEach(conditions => {
-      if (Array.isArray(conditions.split(","))) {
-        conditions.split(",").forEach(cond => conditionsSet.add(cond));
-      } else {
-        console.error('Unexpected object for conditions');
-        console.error(conditions);
-      }
-    });
     this.filtersArray = [
-      new FilterData('My Conditions', 'conditions', conditionsSet),
       new FilterData('Recruitment', 'status', this.searchResults.buildFilters('status')),
       new FilterData('Phase', 'phase.text', this.searchResults.buildFilters('phase.text')),
       new FilterData('Study Type', 'category.text', this.searchResults.buildFilters('category.text'))
@@ -335,47 +324,16 @@ export class AppComponent {
     }
     this.filteredResults = this.searchResults.researchStudies.filter(study => {
       for (const filter of activeFilters) {
-        if (filter.selectedItem === 'conditions') {
-          // This one is special
-          try {
-            const conditions = JSON.parse(study.conditions);
-            if (Array.isArray(conditions)) {
-              if (!conditions.some(v => filter.values.includes(v)))
-                return false;
-            } else {
-              console.error('Skipping trial with invalid conditions (not an array)');
-              return false;
-            }
-          } catch (ex) {
-            console.error('Skipping trial with unparseable conditions');
-            console.error(ex);
-            return false;
-          }
-        } else {
-          const value = study.lookupString(filter.selectedItem);
-          // If it doesn't match, then filter it out
-          if (!filter.values.some(v => v === value))
-            return false;
-        }
+        const value = study.lookupString(filter.selectedItem);
+        // If it doesn't match, then filter it out
+        if (!filter.values.some(v => v === value))
+          return false;
       }
       // If all filters matched, return true
       return true;
     });
     this.createPages(this.filteredResults.length);
     this.showPage(0);
-  }
-  /*
-    Function for check selected condition exist or not
-    * */
-  public checkValue(value, arr): string {
-    let status = 'Not exist';
-    for (const name of arr) {
-      if (name === value) {
-        status = 'Exist';
-        break;
-      }
-    }
-    return status;
   }
   /*
     Function for get event of selected Filter
