@@ -1,6 +1,7 @@
 import { ResearchStudySearchEntry } from '../services/search.service';
 import * as fhirpath from 'fhirpath';
 
+// This function converts the saved ResearchStudy resource into a data format that can be export to a .xlsx file
 export const UnpackResearchStudyResults= (result: ResearchStudySearchEntry[]): object[] => {
 
   const data: object[] = [];
