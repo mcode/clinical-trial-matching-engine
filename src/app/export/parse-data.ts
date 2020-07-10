@@ -1,4 +1,5 @@
-import { ResearchStudySearchEntry, Facility } from '../services/search.service';
+import { ResearchStudySearchEntry } from '../services/search.service';
+import * as fhirpath from 'fhirpath';
 
 export const UnpackResearchStudyResults= (result: ResearchStudySearchEntry[]): object[] => {
 
@@ -8,7 +9,7 @@ export const UnpackResearchStudyResults= (result: ResearchStudySearchEntry[]): o
 
   result.forEach(trial => {
     const mainRow = {};
-    const sites: Facility[] = trial.sites;
+    const sites = trial.getSites();
 
     mainRow["nctId"] = trial.nctId;
     mainRow["Title"] = trial.title;
@@ -28,12 +29,15 @@ export const UnpackResearchStudyResults= (result: ResearchStudySearchEntry[]): o
 
     Object.keys(sites).forEach( index => {
       const siteRow = {};
-      siteRow["Facility"] = sites[index]["facility"];
-      if (sites[index]["contactPhone"]) {
-        siteRow["Phone"] = sites[index]["contactPhone"];
-      }
-      if (sites[index]["contactEmail"]) {
-        siteRow["Email"] = sites[index]["contactEmail"];
+      siteRow["Facility"] = sites[index]["name"];
+      if (Array.isArray(sites[index]["telecom"])) {
+        for (const telecom of sites[index].telecom) {
+          if (telecom.system === 'phone') {
+            siteRow["Phone"] = telecom.value;
+          } else if (telecom.system === 'email') {
+            siteRow["Email"] = telecom.value;
+          }
+        }
       }
       data.push(siteRow);
     });
