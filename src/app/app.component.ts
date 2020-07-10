@@ -239,7 +239,6 @@ export class AppComponent {
    */
   public viewPage(page: SearchPage): void {
     this.selectedPage = page;
-    console.log(`Showing page ${page}`);
     if (this.filteredResults === null) {
       this.selectedPageTrials = this.searchResults.researchStudies.slice(this.selectedPage.firstIndex, this.selectedPage.lastIndex);
     } else {
@@ -256,7 +255,6 @@ export class AppComponent {
    *          for, otherwise defaults to the current result count
    */
   private createPages(totalResults = this.resultCount): void {
-    console.log(`Creating pages for ${totalResults} results`);
     // Always create at least one page, even if it's empty
     this.pages = [new SearchPage(0, 0, Math.min(totalResults, this.itemsPerPage))];
     let pageIndex = 1, startIndex = this.itemsPerPage, lastIndex = this.itemsPerPage * 2;

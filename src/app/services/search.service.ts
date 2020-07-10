@@ -17,7 +17,8 @@ export type FHIRPath = string;
 export type ResearchStudy = fhirclient.FHIR.Resource;
 
 /**
- * TrialScope facility. Will be removed eventually.
+ * Very basic facility mapping. Will be removed in favor of direct access to
+ * the FHIR Location objects via getSites().
  */
 export interface Facility {
   facility: string;
@@ -42,8 +43,8 @@ export class ResearchStudySearchEntry {
     console.log(this.entry);
   }
 
-  // These map existing TrialScope properties to their new FHIR types. They
-  // will likely be removed in the future.
+  // These provide "simple" access to various FHIR fields. They are generally
+  // deprecated in favor of using lookupString to get the field directly.
   get overallStatus(): string {
     return this.lookupString('status');
   }
@@ -73,8 +74,24 @@ export class ResearchStudySearchEntry {
     return this.lookupString('phase.text');
   }
   get sponsor(): string {
-    // FIXME: Needs to pull a mapped field
-    return 'sponsor';
+    const sponsors = this.lookup('sponsor');
+    if (sponsors.length < 1) {
+      return '(None)';
+    }
+    // Use the first sponsor reference
+    const ref = sponsors.find((s) => typeof s === 'object' && 'reference' in s) as fhirpath.FHIRResource | undefined;
+    if (ref && typeof ref.reference === 'string') {
+      const sponsor = this.lookupResource(ref.reference);
+      if (sponsor) {
+        if (typeof sponsor.name === 'string') {
+          return sponsor.name;
+        } else {
+          return '(Invalid sponsor object)';
+        }
+      }
+    }
+    // This covers both the reference being bad and the sponsor missing
+    return '(Not found)';
   }
   get overallContact(): fhirclient.FHIR.RelatedPerson | null {
     return this.resource.contact && this.resource.contact.length > 0 ? this.resource.contact[0] : null;
@@ -114,9 +131,13 @@ export class ResearchStudySearchEntry {
     }
     return '';
   }
+  /**
+   * @deprecated. Use #getSites to get the sites. The use a method also makes it
+   * clearer that this is not a simple property but involves a fair amount of
+   * computing to generate. In the future, getSites may become async anyway.
+   */
   get sites(): Facility[] {
     const sites = this.getSites();
-    console.log(sites);
     return sites.map((site => {
       const result: Facility = { facility: typeof site.name === 'string' ? site.name : '(missing name)' };
       if (Array.isArray(site.telecom)) {
@@ -185,6 +206,21 @@ export class ResearchStudySearchEntry {
       });
     }
     return this.containedResources.get(id);
+  }
+
+  /**
+   * Looks up a resource based on the URL.
+   * Note: At present, this ONLY works with contained resources referenced by
+   * relative URLs such as "#contained-id".
+   * Note: this will likely eventually be made to be async.
+   * @param url the URL to pull the resource from
+   */
+  lookupResource(url: string): fhirpath.FHIRResource | undefined {
+    if (url.length > 0 && url.startsWith('#')) {
+      return this.lookupContainedResource(url.substr(1));
+    } else {
+      return undefined;
+    }
   }
 
   /**
