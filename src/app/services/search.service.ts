@@ -82,7 +82,7 @@ export class ResearchStudySearchEntry {
   get overallContactPhone(): string {
     // Use the first contact?
     const contact = this.overallContact;
-    if (contact.telecom && contact.telecom.length > 0) {
+    if (contact && contact.telecom && contact.telecom.length > 0) {
       const result = contact.telecom.find((telecom) => telecom.system === 'phone');
       if (result) {
         return result.value;
@@ -92,7 +92,7 @@ export class ResearchStudySearchEntry {
   }
   get overallContactEmail(): string {
     const contact = this.overallContact;
-    if (contact.telecom && contact.telecom.length > 0) {
+    if (contact && contact.telecom && contact.telecom.length > 0) {
       const result = contact.telecom.find((telecom) => telecom.system === 'email');
       if (result) {
         return result.value;
