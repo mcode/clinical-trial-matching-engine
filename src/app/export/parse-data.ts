@@ -22,7 +22,7 @@ export const UnpackResearchStudyResults= (result: ResearchStudySearchEntry[]): o
     mainRow["DetailedDescription"] = trial.detailedDescription;
     mainRow["Criteria"] = trial.criteria;
     mainRow["Sponsor"] = trial.sponsor;
-    mainRow["OverallContact"] = trial.overallContact;
+    mainRow["OverallContact"] = trial.overallContact ? trial.overallContact.name : '(none)';
     mainRow["OverallContactPhone"] = trial.overallContactPhone;
     mainRow["OverallContactEmail"] = trial.overallContactEmail;
 

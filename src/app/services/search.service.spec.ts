@@ -18,6 +18,26 @@ describe('ResearchStudySearchEntry', () => {
   const testEntry = {
     fullUrl: 'http://localhost/',
     resource: {
+      resourceType: 'ResearchStudy',
+      id: '1',
+      contact: [
+        {
+          resourceType: 'RelatedPerson',
+          name: 'Example Contact',
+          telecom: [
+            {
+              system: 'phone',
+              value: '781-555-0100',
+              use: 'work'
+            },
+            {
+              system: 'email',
+              value: 'email@example.com',
+              use: 'work'
+            }
+          ]
+        }
+      ],
       contained: [
         {
           resourceType: 'Organization',
@@ -77,5 +97,10 @@ describe('ResearchStudySearchEntry', () => {
     expect(sites[0].facility).toEqual('First Location');
     expect(sites[1].facility).toEqual('Second Location');
     expect(sites[1].contactEmail).toEqual('email@example.com');
+  });
+
+  it('converts values as expected', () => {
+    const result = new ResearchStudySearchEntry(testEntry);
+    expect(result.overallContact as object).toEqual(testEntry.resource.contact[0]);
   });
 });
