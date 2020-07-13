@@ -9,7 +9,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClientService } from './smartonfhir/client.service';
-import { TrialScopeService } from './services/trial-scope.service';
 import { TrialCardComponent } from './trial-card/trial-card.component';
 /*Commenting out test cases since Travis doesn't like fhirService
 describe('AppComponent', () => {
@@ -33,8 +32,7 @@ describe('AppComponent', () => {
         TrialCardComponent
       ],
       providers: [
-        ClientService,
-        TrialScopeService
+        ClientService
       ]
     }).compileComponents();
   }));
