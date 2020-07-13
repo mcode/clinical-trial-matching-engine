@@ -93,29 +93,14 @@ export class ResearchStudySearchEntry {
     // This covers both the reference being bad and the sponsor missing
     return '(Not found)';
   }
-  get overallContact(): fhirclient.FHIR.RelatedPerson | null {
-    return this.resource.contact && this.resource.contact.length > 0 ? this.resource.contact[0] : null;
+  get overallContact(): string | null {
+    return this.lookupString('contact.name', null);
   }
   get overallContactPhone(): string {
-    // Use the first contact?
-    const contact = this.overallContact;
-    if (contact && contact.telecom && contact.telecom.length > 0) {
-      const result = contact.telecom.find((telecom) => telecom.system === 'phone');
-      if (result) {
-        return result.value;
-      }
-    }
-    return '';
+    return this.lookupString("contact.telecom.where(system = 'phone').value", '');
   }
   get overallContactEmail(): string {
-    const contact = this.overallContact;
-    if (contact && contact.telecom && contact.telecom.length > 0) {
-      const result = contact.telecom.find((telecom) => telecom.system === 'email');
-      if (result) {
-        return result.value;
-      }
-    }
-    return '';
+    return this.lookupString("contact.telecom.where(system = 'email').value", '');
   }
   /**
    * @deprecated This will be REMOVED as the NCT ID is not the proper ID to

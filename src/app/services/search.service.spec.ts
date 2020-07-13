@@ -22,7 +22,6 @@ describe('ResearchStudySearchEntry', () => {
       id: '1',
       contact: [
         {
-          resourceType: 'RelatedPerson',
           name: 'Example Contact',
           telecom: [
             {
@@ -101,6 +100,6 @@ describe('ResearchStudySearchEntry', () => {
 
   it('converts values as expected', () => {
     const result = new ResearchStudySearchEntry(testEntry);
-    expect(result.overallContact as object).toEqual(testEntry.resource.contact[0]);
+    expect(result.overallContact).toEqual('Example Contact');
   });
 });
