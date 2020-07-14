@@ -3,7 +3,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 
 import { ClientService } from './smartonfhir/client.service';
 import Patient from './patient';
-import { UnpackMatchResults } from './export/parse-data';
+import { UnpackResearchStudyResults } from './export/parse-data';
 import { ExportTrials } from './export/export-data';
 import { createPatientBundle } from './bundle';
 import { SearchService, SearchResultsBundle, ResearchStudySearchEntry } from './services/search.service';
@@ -239,7 +239,6 @@ export class AppComponent {
    */
   public viewPage(page: SearchPage): void {
     this.selectedPage = page;
-    console.log(`Showing page ${page}`);
     if (this.filteredResults === null) {
       this.selectedPageTrials = this.searchResults.researchStudies.slice(this.selectedPage.firstIndex, this.selectedPage.lastIndex);
     } else {
@@ -256,7 +255,6 @@ export class AppComponent {
    *          for, otherwise defaults to the current result count
    */
   private createPages(totalResults = this.resultCount): void {
-    console.log(`Creating pages for ${totalResults} results`);
     // Always create at least one page, even if it's empty
     this.pages = [new SearchPage(0, 0, Math.min(totalResults, this.itemsPerPage))];
     let pageIndex = 1, startIndex = this.itemsPerPage, lastIndex = this.itemsPerPage * 2;
@@ -276,18 +274,7 @@ export class AppComponent {
    * Create the filters
    */
   private createFilters(): void {
-    const conditionsArray = this.searchResults.buildFilters('condition.text');
-    const conditionsSet = new Set<string>();
-    conditionsArray.forEach(conditions => {
-      if (Array.isArray(conditions)) {
-        conditions.forEach(cond => conditionsSet.add(cond));
-      } else {
-        console.error('Unexpected object for conditions');
-        console.error(conditions);
-      }
-    });
     this.filtersArray = [
-      new FilterData('My Conditions', 'conditions', conditionsSet),
       new FilterData('Recruitment', 'status', this.searchResults.buildFilters('status')),
       new FilterData('Phase', 'phase.text', this.searchResults.buildFilters('phase.text')),
       new FilterData('Study Type', 'category.text', this.searchResults.buildFilters('category.text'))
@@ -335,47 +322,16 @@ export class AppComponent {
     }
     this.filteredResults = this.searchResults.researchStudies.filter(study => {
       for (const filter of activeFilters) {
-        if (filter.selectedItem === 'conditions') {
-          // This one is special
-          try {
-            const conditions = JSON.parse(study.conditions);
-            if (Array.isArray(conditions)) {
-              if (!conditions.some(v => filter.values.includes(v)))
-                return false;
-            } else {
-              console.error('Skipping trial with invalid conditions (not an array)');
-              return false;
-            }
-          } catch (ex) {
-            console.error('Skipping trial with unparseable conditions');
-            console.error(ex);
-            return false;
-          }
-        } else {
-          const value = study.lookupString(filter.selectedItem);
-          // If it doesn't match, then filter it out
-          if (!filter.values.some(v => v === value))
-            return false;
-        }
+        const value = study.lookupString(filter.selectedItem);
+        // If it doesn't match, then filter it out
+        if (!filter.values.some(v => v === value))
+          return false;
       }
       // If all filters matched, return true
       return true;
     });
     this.createPages(this.filteredResults.length);
     this.showPage(0);
-  }
-  /*
-    Function for check selected condition exist or not
-    * */
-  public checkValue(value, arr): string {
-    let status = 'Not exist';
-    for (const name of arr) {
-      if (name === value) {
-        status = 'Exist';
-        break;
-      }
-    }
-    return status;
   }
   /*
     Function for get event of selected Filter
@@ -435,11 +391,11 @@ export class AppComponent {
     Function to export Array of saved trials
   * */
   public exportSavedTrials(): void {
-    let data;
+    let data = [];
     if (this.savedClinicalTrials.length > 0) {
-      //data = UnpackMatchResults(this.savedClinicalTrials);
+      data = UnpackResearchStudyResults(this.savedClinicalTrials);
     } else {
-      //data = UnpackMatchResults(JSON.parse(JSON.stringify(this.clinicalTraildata)).data.baseMatches.edges);
+      data = UnpackResearchStudyResults(this.searchResults.researchStudies);
     }
     ExportTrials(data, 'clinicalTrials');
   }

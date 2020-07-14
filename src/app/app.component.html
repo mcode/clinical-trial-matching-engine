@@ -71,13 +71,13 @@
           </div>
           <div class="block">
             <select class="select" [(ngModel)]="searchReqObject.phase" (keyup.enter)="searchClinicalTrials(null);">
-              <option value="null">Any Phase</option>
+              <option [ngValue]="null">Any Phase</option>
               <option *ngFor="let phase of phaseDropDown" [value]="phase.value">{{phase.display}}</option>
             </select>
           </div>
           <div class="block">
             <select class="select" [(ngModel)]="searchReqObject.recruitmentStatus" (keyup.enter)="searchClinicalTrials(null);">
-              <option value="null">All</option>
+              <option [ngValue]="null">All</option>
               <option *ngFor="let rec of recDropDown" [value]="rec.value">{{rec.display}}</option>
             </select>
           </div>
