@@ -43,7 +43,7 @@
                 </span>
               </div>
             </div>
-            <div class="col33 mi-margin-10 outerDiv">
+            <div *ngIf="clinicalTrial.matchLikelihood!==null" class="col33 mi-margin-10 outerDiv">
               <div class="innerDiv">
                 <svg class="mi-margin-left-p" xmlns="http://www.w3.org/2000/svg" width="103" height="103"
                   viewBox="0 0 103 103">
@@ -52,8 +52,8 @@
                     <circle cx="51.5" cy="51.5" r="46.5" fill="none" />
                   </g>
                 </svg>
-                <p style="margin-left: 11%;margin-top: 10%;">
-                  Match likelihood: High Likelihood
+                <p  style="margin-left: 11%;margin-top: 10%;">
+                  Match likelihood: {{clinicalTrial.matchLikelihood}}
                 </p>
               </div>
             </div>

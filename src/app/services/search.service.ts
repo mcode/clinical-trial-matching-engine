@@ -116,6 +116,14 @@ export class ResearchStudySearchEntry {
     }
     return '';
   }
+  /** TO-DO 
+   * Extract matchLikelihood from server response
+   * 
+   */
+  get matchLikelihood() : string | null {
+    return null;
+
+  }
   /**
    * @deprecated. Use #getSites to get the sites. The use a method also makes it
    * clearer that this is not a simple property but involves a fair amount of
