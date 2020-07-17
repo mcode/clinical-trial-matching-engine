@@ -120,7 +120,7 @@ export class ResearchStudySearchEntry {
    * Extract matchLikelihood from server response
    * 
    */
-  get matchLikelihood() : string | null {
+  get matchLikelihood(): string | null {
     return null;
 
   }
