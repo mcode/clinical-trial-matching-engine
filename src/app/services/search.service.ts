@@ -26,6 +26,15 @@ export interface Facility {
   contactEmail?: string;
 }
 
+interface Search {
+  mode: string;
+  score: number;
+}
+
+interface BundleEntry extends fhirclient.FHIR.BundleEntry {
+    search?: Search;
+}
+
 /**
  * Wrapper class for a research study. Provides hooks to deal with looking up
  * fields that may be missing in the actual FHIR result.
@@ -35,11 +44,13 @@ export class ResearchStudySearchEntry {
    * The embedded resource.
    */
   resource: fhirclient.FHIR.Resource;
+  search?: Search;
   private cachedSites: fhirpath.FHIRResource[] | null = null;
   private containedResources: Map<string, fhirpath.FHIRResource> | null = null;
 
-  constructor(public entry: fhirclient.FHIR.BundleEntry) {
+  constructor(public entry: BundleEntry) {
     this.resource = this.entry.resource;
+    this.search = this.entry.search;
     console.log(this.entry);
   }
 
@@ -116,12 +127,13 @@ export class ResearchStudySearchEntry {
     }
     return '';
   }
-  /** TO-DO 
+  /** TO-DO
    * Extract matchLikelihood from server response
-   * 
+   *
    */
   get matchLikelihood(): string | null {
-    return null;
+    const matchValue = {0: "No Match", 0.5: "Possible Match", 1: "Likely Match"};
+    return this.search ? matchValue[this.search.score] : null;
 
   }
   /**
