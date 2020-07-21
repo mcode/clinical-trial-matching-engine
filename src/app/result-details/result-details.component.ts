@@ -47,10 +47,10 @@ export class ResultDetailsComponent {
   /**
    * Function to get the correct color of the match type
    */
-  public getColor() {
-    if (this.clinicalTrial.matchLikelihood === 'No Match') {
+  public getColor(likelihood: string): string {
+    if (likelihood === 'No Match') {
       return 'black';
-    } else if (this.clinicalTrial.matchLikelihood === 'Possible Match') {
+    } else if (likelihood === 'Possible Match') {
       return '#E6BE03';
     } else {
       return 'green';

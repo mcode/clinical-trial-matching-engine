@@ -47,13 +47,13 @@
               <div class="innerDiv">
                 <svg class="mi-margin-left-p" xmlns="http://www.w3.org/2000/svg" width="103" height="103"
                   viewBox="0 0 103 103">
-                  <g id="Ellipse_1" data-name="Ellipse 1" fill="none" [ngStyle]="{'stroke': getColor()}" stroke-width="10">
+                  <g id="Ellipse_1" data-name="Ellipse 1" fill="none" [ngStyle]="{'stroke': getColor(clinicalTrial.matchLikelihood)}" stroke-width="10">
                     <circle cx="51.5" cy="51.5" r="51.5" stroke="none" />
                     <circle cx="51.5" cy="51.5" r="46.5" fill="none" />
                   </g>
                 </svg>
                 <p style="margin-left: 11%;margin-top: 10%;">
-                  Match likelihood: <span [ngStyle]="{'color': getColor()}" >{{clinicalTrial.matchLikelihood}}</span>
+                  Match likelihood: <span [ngStyle]="{'color': getColor(clinicalTrial.matchLikelihood)}" >{{clinicalTrial.matchLikelihood}}</span>
                 </p>
               </div>
             </div>
