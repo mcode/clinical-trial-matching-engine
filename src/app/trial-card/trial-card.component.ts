@@ -20,7 +20,18 @@ export class TrialCardComponent {
     return value.replace(/[\[\]_'""]+/g, ' ');
   }
 
-
+  /**
+   * Function to get the correct color of the match type
+   */
+  public getColor() {
+    if (this.clinicalTrial.matchLikelihood === 'No Match') {
+      return 'black';
+    } else if (this.clinicalTrial.matchLikelihood === 'Possible Match') {
+      return '#E6BE03';
+    } else {
+      return 'green';
+    }
+  }
 
   //ngOnInit() {}
 
