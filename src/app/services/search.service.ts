@@ -128,8 +128,17 @@ export class ResearchStudySearchEntry {
     return '';
   }
   get matchLikelihood(): string | null {
-    const matchValue = {0: "No Match", 0.5: "Possible Match", 1: "Likely Match"};
-    return this.search ? matchValue[this.search.score] : null;
+    let matchStr = null;
+    if (this.search) {
+      if (this.search.score < 0.33) {
+        matchStr = "No Match";
+      } else if (this.search.score < 0.67) {
+        matchStr = "Possible Match";
+      } else {
+        matchStr = "Likely Match";
+      }
+    }
+    return matchStr;
   }
   /**
    * @deprecated. Use #getSites to get the sites. The use a method also makes it
