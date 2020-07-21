@@ -127,14 +127,9 @@ export class ResearchStudySearchEntry {
     }
     return '';
   }
-  /** TO-DO
-   * Extract matchLikelihood from server response
-   *
-   */
   get matchLikelihood(): string | null {
     const matchValue = {0: "No Match", 0.5: "Possible Match", 1: "Likely Match"};
     return this.search ? matchValue[this.search.score] : null;
-
   }
   /**
    * @deprecated. Use #getSites to get the sites. The use a method also makes it
