@@ -26,6 +26,15 @@ export interface Facility {
   contactEmail?: string;
 }
 
+interface Search {
+  mode: string;
+  score: number;
+}
+
+interface BundleEntry extends fhirclient.FHIR.BundleEntry {
+    search?: Search;
+}
+
 /**
  * Wrapper class for a research study. Provides hooks to deal with looking up
  * fields that may be missing in the actual FHIR result.
@@ -35,11 +44,13 @@ export class ResearchStudySearchEntry {
    * The embedded resource.
    */
   resource: fhirclient.FHIR.Resource;
+  search?: Search;
   private cachedSites: fhirpath.FHIRResource[] | null = null;
   private containedResources: Map<string, fhirpath.FHIRResource> | null = null;
 
-  constructor(public entry: fhirclient.FHIR.BundleEntry) {
+  constructor(public entry: BundleEntry) {
     this.resource = this.entry.resource;
+    this.search = this.entry.search;
     console.log(this.entry);
   }
 
@@ -115,6 +126,19 @@ export class ResearchStudySearchEntry {
       }
     }
     return '';
+  }
+  get matchLikelihood(): string | null {
+    let matchStr = null;
+    if (this.search) {
+      if (this.search.score < 0.33) {
+        matchStr = "No Match";
+      } else if (this.search.score < 0.67) {
+        matchStr = "Possible Match";
+      } else {
+        matchStr = "Likely Match";
+      }
+    }
+    return matchStr;
   }
   /**
    * @deprecated. Use #getSites to get the sites. The use a method also makes it

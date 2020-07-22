@@ -18,10 +18,10 @@
 </div>
 <div class="col20">
     <div class="containingDIV padding-top-10" style="margin-top: 7%;">
-        <div>
+        <div *ngIf="clinicalTrial.matchLikelihood!==null">
             <h2 class="color1 padding-bottom-10 opacity-60 letter-spacing text-transform-uppercase">Match
                 likelihood:</h2>
-            <h2 class="color5">High Likelihood</h2>
+            <h2 [ngStyle]="{'color': getColor(clinicalTrial.matchLikelihood)}">{{clinicalTrial.matchLikelihood}}</h2>
         </div>
     </div>
 </div>

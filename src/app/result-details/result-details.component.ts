@@ -43,4 +43,17 @@ export class ResultDetailsComponent {
       }
     }
   }
+
+  /**
+   * Function to get the correct color of the match type
+   */
+  public getColor(likelihood: string): string {
+    if (likelihood === 'No Match') {
+      return 'black';
+    } else if (likelihood === 'Possible Match') {
+      return '#E6BE03';
+    } else {
+      return 'green';
+    }
+  }
 }
