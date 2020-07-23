@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-trial-card',
@@ -12,7 +12,7 @@ export class TrialCardComponent {
   //constructor() { }
 
   public toggleTrialSaved(): void {
-    this.trialSaved = !this.trialSaved
+    this.trialSaved = !this.trialSaved;
     this.trialSaveChanged.emit(this.trialSaved);
   }
 
@@ -34,5 +34,4 @@ export class TrialCardComponent {
   }
 
   //ngOnInit() {}
-
 }

@@ -12,7 +12,8 @@ module.exports = {
       files: ['*.ts'],
       extends: [
         'plugin:@typescript-eslint/recommended',
-        'plugin:@typescript-eslint/recommended-requiring-type-checking'
+        'plugin:@typescript-eslint/recommended-requiring-type-checking',
+        'plugin:prettier/recommended'
       ],
       parser: '@typescript-eslint/parser',
       parserOptions: {
@@ -47,6 +48,15 @@ module.exports = {
       },
       plugins: ['@angular-eslint/template'],
       processor: '@angular-eslint/template/extract-inline-html',
+    },
+    {
+      // Not actually sure this is correct, but pretty sure it's only loaded
+      // from within Node
+      files: ['e2e/protractor.conf.js'],
+      env: {
+        browser: false,
+        protractor: true
+      }
     }
   ]
 };

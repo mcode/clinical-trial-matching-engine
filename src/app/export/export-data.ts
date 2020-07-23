@@ -8,6 +8,6 @@ export const ExportTrials = (csvData, fileName: string): void => {
   const ws = XLSX.utils.json_to_sheet(csvData);
   const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
   const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-  const data = new Blob([excelBuffer], {type: fileType});
+  const data = new Blob([excelBuffer], { type: fileType });
   FileSaver.saveAs(data, fileName + fileExtension);
 };

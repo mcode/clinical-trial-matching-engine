@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 /**
  * Shows the details page for the results.
@@ -18,7 +18,7 @@ export class ResultDetailsComponent {
   //ngOnInit() {}
 
   public toggleTrialSaved(): void {
-    this.trialSaved = !this.trialSaved
+    this.trialSaved = !this.trialSaved;
     this.trialSaveChanged.emit(this.trialSaved);
   }
 

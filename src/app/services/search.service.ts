@@ -32,7 +32,7 @@ interface Search {
 }
 
 interface BundleEntry extends fhirclient.FHIR.BundleEntry {
-    search?: Search;
+  search?: Search;
 }
 
 /**
@@ -120,7 +120,9 @@ export class ResearchStudySearchEntry {
    */
   get nctId(): string {
     if (this.resource.identifier && this.resource.identifier.length > 0) {
-      const identifier = this.resource.identifier.find((id) => id.use === 'official' && id.system === 'http://clinicaltrials.gov');
+      const identifier = this.resource.identifier.find(
+        (id) => id.use === 'official' && id.system === 'http://clinicaltrials.gov'
+      );
       if (identifier) {
         return identifier.value;
       }
@@ -131,11 +133,11 @@ export class ResearchStudySearchEntry {
     let matchStr = null;
     if (this.search) {
       if (this.search.score < 0.33) {
-        matchStr = "No Match";
+        matchStr = 'No Match';
       } else if (this.search.score < 0.67) {
-        matchStr = "Possible Match";
+        matchStr = 'Possible Match';
       } else {
-        matchStr = "Likely Match";
+        matchStr = 'Likely Match';
       }
     }
     return matchStr;
@@ -147,7 +149,7 @@ export class ResearchStudySearchEntry {
    */
   get sites(): Facility[] {
     const sites = this.getSites();
-    return sites.map((site => {
+    return sites.map((site) => {
       const result: Facility = { facility: typeof site.name === 'string' ? site.name : '(missing name)' };
       if (Array.isArray(site.telecom)) {
         for (const telecom of site.telecom) {
@@ -159,7 +161,7 @@ export class ResearchStudySearchEntry {
         }
       }
       return result;
-    }));
+    });
   }
 
   /**
@@ -256,7 +258,7 @@ export class ResearchStudySearchEntry {
       return undefined;
     });
     // And filter out any missing embedded sites
-    return this.cachedSites = result.filter((site) => typeof site === 'object');
+    return (this.cachedSites = result.filter((site) => typeof site === 'object'));
   }
 }
 
@@ -270,9 +272,11 @@ export class SearchResultsBundle {
 
   constructor(public bundle: fhirclient.FHIR.Bundle) {
     if (bundle.entry) {
-      this.researchStudies = bundle.entry.filter((entry) => {
-        return entry.resource.resourceType === 'ResearchStudy'
-      }).map((entry) => new ResearchStudySearchEntry(entry));
+      this.researchStudies = bundle.entry
+        .filter((entry) => {
+          return entry.resource.resourceType === 'ResearchStudy';
+        })
+        .map((entry) => new ResearchStudySearchEntry(entry));
     } else {
       this.researchStudies = [];
     }
@@ -291,8 +295,7 @@ export class SearchResultsBundle {
     const results = new Set<string>();
     for (const researchStudy of this.researchStudies) {
       const value = researchStudy.lookupString(path);
-      if (value !== null && value !== undefined)
-        results.add(value);
+      if (value !== null && value !== undefined) results.add(value);
     }
     return results;
   }
@@ -308,7 +311,7 @@ interface ClinicalTrialQuery {
   providedIn: 'root'
 })
 export class SearchService {
-  constructor(private client: HttpClient, private config: AppConfigService) { }
+  constructor(private client: HttpClient, private config: AppConfigService) {}
 
   searchClinicalTrials(patientBundle: PatientBundle, offset?: number, count = 10): Observable<SearchResultsBundle> {
     const query: ClinicalTrialQuery = { patientData: patientBundle, count: count };

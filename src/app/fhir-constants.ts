@@ -68,7 +68,7 @@ export enum ResearchStudyStatus {
    * Withdrawn
    * Protocol was withdrawn by the lead organization.
    */
-  WITHDRAWN = 'withdrawn',
+  WITHDRAWN = 'withdrawn'
 }
 
 /**
@@ -118,8 +118,8 @@ export const ResearchStudyStatusDisplay: Record<ResearchStudyStatus, string> = {
   /**
    * Withdrawn
    */
-  withdrawn: 'Withdrawn',
-}
+  withdrawn: 'Withdrawn'
+};
 
 /**
  * Research study phase, from
@@ -222,4 +222,4 @@ export const ResearchStudyPhaseDisplay: Record<ResearchStudyPhase, string> = {
    * Phase 4
    */
   'phase-4': 'Phase 4'
-}
+};
