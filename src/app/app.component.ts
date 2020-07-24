@@ -7,15 +7,19 @@ import { UnpackResearchStudyResults } from './export/parse-data';
 import { ExportTrials } from './export/export-data';
 import { createPatientBundle } from './bundle';
 import { SearchService, SearchResultsBundle, ResearchStudySearchEntry } from './services/search.service';
-import { ResearchStudyStatus, ResearchStudyPhase, ResearchStudyStatusDisplay, ResearchStudyPhaseDisplay } from './fhir-constants';
+import {
+  ResearchStudyStatus,
+  ResearchStudyPhase,
+  ResearchStudyStatusDisplay,
+  ResearchStudyPhaseDisplay
+} from './fhir-constants';
 import { fhirclient } from 'fhirclient/lib/types';
 
 /**
  * Provides basic information about a given page.
  */
 class SearchPage {
-  constructor(public index: number, public firstIndex: number, public lastIndex: number) {
-  }
+  constructor(public index: number, public firstIndex: number, public lastIndex: number) {}
   toString(): string {
     return `[Page ${this.index} (${this.firstIndex}-${this.lastIndex})]`;
   }
@@ -25,8 +29,7 @@ class SearchPage {
  * Internal class for filter data
  */
 class FilterValue {
-  constructor(public val: string, public selectedItems = false) {
-  }
+  constructor(public val: string, public selectedItems = false) {}
 }
 
 /**
@@ -56,7 +59,7 @@ interface SearchFields {
 }
 
 class DropDownValue {
-  constructor(public value: string, public display: string) { }
+  constructor(public value: string, public display: string) {}
 }
 
 @Component({
@@ -145,14 +148,18 @@ export class AppComponent {
     zipCode: null,
     travelRadius: null,
     phase: null,
-    recruitmentStatus: null,
+    recruitmentStatus: null
   };
   /**
    * Patient bundle resources from the FHIR client.
    */
   public bundleResources: fhirclient.FHIR.BundleEntry[] = [];
 
-  constructor(private spinner: NgxSpinnerService, private searchService: SearchService, private fhirService: ClientService) {
+  constructor(
+    private spinner: NgxSpinnerService,
+    private searchService: SearchService,
+    private fhirService: ClientService
+  ) {
     this.phaseDropDown = Object.values(ResearchStudyPhase).map((value) => {
       return new DropDownValue(value, ResearchStudyPhaseDisplay[value]);
     });
@@ -160,7 +167,7 @@ export class AppComponent {
       return new DropDownValue(value, ResearchStudyStatusDisplay[value]);
     });
 
-    this.patient = fhirService.getPatient().then(patient => {
+    this.patient = fhirService.getPatient().then((patient) => {
       // Wrap the patient in a class that handles extracting values
       const p = new Patient(patient);
       // Also take this opportunity to set the zip code, if there is one
@@ -174,15 +181,15 @@ export class AppComponent {
     });
 
     // Gathering resources for patient bundle
-    this.fhirService.resourceTypes.map(resourceType =>
-      this.fhirService.getResources(resourceType, this.fhirService.resourceParams[resourceType]).then(
-        records => {
-          this.bundleResources.push(...(records.filter((record) => {
+    this.fhirService.resourceTypes.map((resourceType) =>
+      this.fhirService.getResources(resourceType, this.fhirService.resourceParams[resourceType]).then((records) => {
+        this.bundleResources.push(
+          ...(records.filter((record) => {
             // Check to make sure it's a bundle entry
             return 'fullUrl' in record && 'resource' in record;
-          }) as fhirclient.FHIR.BundleEntry[]));
-        }
-      )
+          }) as fhirclient.FHIR.BundleEntry[])
+        );
+      })
     );
   }
 
@@ -206,19 +213,20 @@ export class AppComponent {
     }
     // patient bundle includes all search paramters except conditions
     const patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
-    this.searchService.searchClinicalTrials(patientBundle).subscribe(response => {
-      // Store the results
+    this.searchService.searchClinicalTrials(patientBundle).subscribe(
+      (response) => {
+        // Store the results
 
-      this.searchResults = response;
-      console.log(response)
-      // Create our pages array
-      this.createPages();
-      // Create our filters
-      this.createFilters();
-      // Display the results
-      this.showPage(0);
-    },
-      err => {
+        this.searchResults = response;
+        console.log(response);
+        // Create our pages array
+        this.createPages();
+        // Create our filters
+        this.createFilters();
+        // Display the results
+        this.showPage(0);
+      },
+      (err) => {
         console.error(err);
       }
     );
@@ -240,7 +248,10 @@ export class AppComponent {
   public viewPage(page: SearchPage): void {
     this.selectedPage = page;
     if (this.filteredResults === null) {
-      this.selectedPageTrials = this.searchResults.researchStudies.slice(this.selectedPage.firstIndex, this.selectedPage.lastIndex);
+      this.selectedPageTrials = this.searchResults.researchStudies.slice(
+        this.selectedPage.firstIndex,
+        this.selectedPage.lastIndex
+      );
     } else {
       this.selectedPageTrials = this.filteredResults.slice(page.firstIndex, page.lastIndex);
     }
@@ -257,7 +268,9 @@ export class AppComponent {
   private createPages(totalResults = this.resultCount): void {
     // Always create at least one page, even if it's empty
     this.pages = [new SearchPage(0, 0, Math.min(totalResults, this.itemsPerPage))];
-    let pageIndex = 1, startIndex = this.itemsPerPage, lastIndex = this.itemsPerPage * 2;
+    let pageIndex = 1,
+      startIndex = this.itemsPerPage,
+      lastIndex = this.itemsPerPage * 2;
     // Create all full pages past the first page
     for (; lastIndex < totalResults; pageIndex++, startIndex = lastIndex, lastIndex += this.itemsPerPage) {
       // Push a complete page
@@ -305,11 +318,11 @@ export class AppComponent {
     const activeFilters: { selectedItem: string; values: string[] }[] = [];
     for (const filter of this.filtersArray) {
       // See if there are any active filters in this filter
-      const values = filter.data.filter(value => value.selectedItems === true);
+      const values = filter.data.filter((value) => value.selectedItems === true);
       if (values.length > 0) {
         activeFilters.push({
           selectedItem: filter.selectedVal,
-          values: values.map(v => v.val)
+          values: values.map((v) => v.val)
         });
       }
     }
@@ -320,12 +333,11 @@ export class AppComponent {
       this.showPage(0);
       return;
     }
-    this.filteredResults = this.searchResults.researchStudies.filter(study => {
+    this.filteredResults = this.searchResults.researchStudies.filter((study) => {
       for (const filter of activeFilters) {
         const value = study.lookupString(filter.selectedItem);
         // If it doesn't match, then filter it out
-        if (!filter.values.some(v => v === value))
-          return false;
+        if (!filter.values.some((v) => v === value)) return false;
       }
       // If all filters matched, return true
       return true;
@@ -347,7 +359,7 @@ export class AppComponent {
      Function for clear Filter
   * */
   public clearFilter(i): void {
-    this.filtersArray[i].data.forEach(element => {
+    this.filtersArray[i].data.forEach((element) => {
       element.selectedItems = false;
     });
     this.applyFilter();
@@ -381,7 +393,7 @@ export class AppComponent {
     } else {
       if (this.savedClinicalTrialsNctIds.has(trial.nctId)) {
         // Need to remove it
-        const index = this.savedClinicalTrials.findIndex(t => t.nctId === trial.nctId);
+        const index = this.savedClinicalTrials.findIndex((t) => t.nctId === trial.nctId);
         this.savedClinicalTrials.splice(index, 1);
         this.savedClinicalTrialsNctIds.delete(trial.nctId);
       }
@@ -420,13 +432,12 @@ export class AppComponent {
   }
 
   onChange(val): void {
-    console.log('onChange: ' + val)
+    console.log('onChange: ' + val);
     //this.countPages();
   }
 
   public records = false;
   public showRecord(): void {
-    this.records = !this.records
+    this.records = !this.records;
   }
-
 }

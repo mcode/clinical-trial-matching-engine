@@ -1,5 +1,5 @@
 import { UnpackResearchStudyResults } from './parse-data';
-import { ResearchStudySearchEntry, Facility } from '../services/search.service';
+import { ResearchStudySearchEntry } from '../services/search.service';
 
 describe('UnpackResearchStudyResults', () => {
   it('works on an empty array', () => {
@@ -52,9 +52,7 @@ describe('UnpackResearchStudyResults', () => {
             ],
             text: 'Active'
           },
-          category: [
-            { text: 'Example Category' }
-          ],
+          category: [{ text: 'Example Category' }],
           contact: [
             {
               name: 'Example Contact',

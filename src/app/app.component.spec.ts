@@ -1,4 +1,4 @@
-import { ResultDetailsComponent } from './result-details/result-details.component';
+/*import { ResultDetailsComponent } from './result-details/result-details.component';
 import { RecordDataComponent } from './record-data/record-data.component';
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -9,7 +9,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClientService } from './smartonfhir/client.service';
-import { TrialCardComponent } from './trial-card/trial-card.component';
+import { TrialCardComponent } from './trial-card/trial-card.component';*/
 /*Commenting out test cases since Travis doesn't like fhirService
 describe('AppComponent', () => {
 

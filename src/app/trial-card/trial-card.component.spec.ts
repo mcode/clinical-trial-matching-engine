@@ -2,10 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TrialCardComponent } from './trial-card.component';
 
-
-import { Component } from "@angular/core";
-import { ViewChild } from "@angular/core";
-declare function require(moduleName: string): any;
+import { Component } from '@angular/core';
+import { ViewChild } from '@angular/core';
+//declare function require(moduleName: string): any;
 import data from '../result-details/sample_trial.json';
 
 describe('TrialCardComponent', () => {
@@ -18,17 +17,15 @@ describe('TrialCardComponent', () => {
     public trial: TrialCardComponent;
   }
 
-
   let testHostComponent: TestHostComponent;
   let testHostFixture: ComponentFixture<TestHostComponent>;
 
-  const sampleTrial: any = data
+  const sampleTrial: object = data;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TrialCardComponent, TestHostComponent]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -51,5 +48,4 @@ describe('TrialCardComponent', () => {
 
     expect(testHostComponent.trial.trialSaved).toBeFalsy();
   });
-
 });

@@ -1,8 +1,6 @@
-import { AppComponent } from './../app.component';
 import { Condition } from './../condition';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import Patient from '../patient';
-
 
 @Component({
   selector: 'app-record-data',
@@ -15,13 +13,11 @@ export class RecordDataComponent {
   @Input() conditions: Condition[];
   @Output() getDisplayChange = new EventEmitter<boolean>();
 
-
   //constructor() { }
 
-  setStatus(status: boolean) {
+  setStatus(status: boolean): void {
     this.displayOn = status;
     this.getDisplayChange.emit(status);
   }
   // ngOnInit() {}
-
 }

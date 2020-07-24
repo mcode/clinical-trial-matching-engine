@@ -16,8 +16,7 @@ export class AppConfigService {
    * used.
    */
   getServiceURL(): string {
-    if ('serviceURL' in environment)
-      return environment.serviceURL;
+    if ('serviceURL' in environment) return environment.serviceURL;
     return window.location.toString();
   }
 }

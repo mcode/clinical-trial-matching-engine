@@ -9,8 +9,7 @@ describe('RecordDataComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RecordDataComponent]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -25,11 +24,5 @@ describe('RecordDataComponent', () => {
 
   it('displayOn should be false', () => {
     expect(component.displayOn).toBeFalsy();
-
   });
-
-
-
-
-
 });

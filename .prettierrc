@@ -1,0 +1,7 @@
+singleQuote: true
+
+# Because this is being used as a linter, make longer lines OK
+printWidth: 120
+
+# Would prefer to indicate that trailing commas should be left as-is
+trailingComma: none

@@ -11,21 +11,24 @@ import { ClientService } from './smartonfhir/client.service';
 import { RecordDataComponent } from './record-data/record-data.component';
 import { ResultDetailsComponent } from './result-details/result-details.component';
 import { TrialCardComponent } from './trial-card/trial-card.component';
+import Client from 'fhirclient/lib/Client';
 
 const fhirInitializeFn = (fhirService: ClientService) => {
   // Grab the client during bootstrap - this prevents the flash of a partially
   // loaded client if SMART on FHIR needs to do an OAuth authentication prior to
   // continuing to bootstrap the Angular app
-  return () => fhirService.getClient();
+  return (): Promise<Client> => fhirService.getClient();
 };
 
 @NgModule({
+  // prettier-ignore
   declarations: [
     AppComponent,
     RecordDataComponent,
     ResultDetailsComponent,
     TrialCardComponent
   ],
+  // prettier-ignore
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -45,4 +48,4 @@ const fhirInitializeFn = (fhirService: ClientService) => {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
