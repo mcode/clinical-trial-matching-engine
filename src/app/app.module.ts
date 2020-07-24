@@ -21,8 +21,22 @@ const fhirInitializeFn = (fhirService: ClientService) => {
 };
 
 @NgModule({
-  declarations: [AppComponent, RecordDataComponent, ResultDetailsComponent, TrialCardComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, NgxSpinnerModule, BrowserAnimationsModule],
+  // prettier-ignore
+  declarations: [
+    AppComponent,
+    RecordDataComponent,
+    ResultDetailsComponent,
+    TrialCardComponent
+  ],
+  // prettier-ignore
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    NgxSpinnerModule,
+    BrowserAnimationsModule
+  ],
   providers: [
     ClientService,
     {
