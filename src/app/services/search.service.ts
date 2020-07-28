@@ -98,7 +98,7 @@ export class ResearchStudySearchEntry {
         return this.resource.enrollment.map((enrollment) => enrollment.display).join(', ');
       }
     } else {
-      return 'N/A';
+      return '';
     }
   }
   get phase(): string {

@@ -136,11 +136,13 @@
       NA
     </p>
   </div>
+  <div  *ngIf= "clinicalTrial.criteria!==''" >
   <button class="accordion" (click)="showHideAccordian($event)">Eligibility criteria</button>
-  <div class="panel">
+  <div  class="panel">
     <p id="eligibilityCriteria" class="accordionDetails">
       {{clinicalTrial.criteria}}
     </p>
+  </div>
   </div>
   <button class="accordion" (click)="showHideAccordian($event)">Arms & Interventions</button>
   <div class="panel">
