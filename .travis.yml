@@ -4,12 +4,10 @@ language: node_js
 node_js:
   - "12"
 
-install:
-  - npm install -g codecov
-
 cache: npm
 
 script:
+  - npm install -g codecov
   - ng lint
   - ng test --watch false --browsers ChromeHeadless
 
