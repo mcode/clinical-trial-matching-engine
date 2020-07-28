@@ -76,15 +76,15 @@ export class ResearchStudySearchEntry {
   }
   get criteria(): string {
     if (this.resource.enrollment) {
-      const group_ids = this.resource.enrollment.map((enrollment) => (<string>enrollment.reference).substr(1));
+      const groupIds = this.resource.enrollment.map((enrollment) => (enrollment.reference as string).substr(1));
       const characteristics = [];
       for (const ref of this.resource.contained) {
-        if (ref.resourceType == 'Group' && ref.id in group_ids) {
+        if (ref.resourceType == 'Group' && ref.id in groupIds) {
           if (ref.characteristic) {
             //characteristic is an array
 
             //how criteria is stored in characteristic currently unkown
-            let traits = ref.characteristics.map((trait) => trait.valueCodeableConcept.text).join(', ');
+            const traits = ref.characteristics.map((trait) => trait.valueCodeableConcept.text).join(', ');
             characteristics.push(traits);
           }
         }
