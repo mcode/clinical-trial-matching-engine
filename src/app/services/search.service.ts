@@ -75,26 +75,24 @@ export class ResearchStudySearchEntry {
     return this.lookupString('description');
   }
   get criteria(): string {
-    if (this.resource.enrollment) { 
-
-      const group_ids = this.resource.enrollment.map((enrollment) => (<string>enrollment.reference).substr(1))
-      const characteristics = []
-      for (const ref of this.resource.contained){
-        if (ref.resourceType =='Group' && (ref.id in group_ids)){
-          if(ref.characteristic) { //characteristic is an array 
+    if (this.resource.enrollment) {
+      const group_ids = this.resource.enrollment.map((enrollment) => (<string>enrollment.reference).substr(1));
+      const characteristics = [];
+      for (const ref of this.resource.contained) {
+        if (ref.resourceType == 'Group' && ref.id in group_ids) {
+          if (ref.characteristic) {
+            //characteristic is an array
 
             //how criteria is stored in characteristic currently unkown
-            let traits = ref.characteristics.map(trait => trait.valueCodeableConcept.text).join(', ')
-            characteristics.push(traits)
+            let traits = ref.characteristics.map((trait) => trait.valueCodeableConcept.text).join(', ');
+            characteristics.push(traits);
           }
-        } 
-
+        }
       }
       console.log(characteristics);
-      if (characteristics.length!==0){
-        return characteristics.join(',\n')
-      }
-      else{
+      if (characteristics.length !== 0) {
+        return characteristics.join(',\n');
+      } else {
         return this.resource.enrollment.map((enrollment) => enrollment.display).join(', ');
       }
     } else {
