@@ -90,7 +90,8 @@ export class ResearchStudySearchEntry {
         } 
 
       }
-      if (characteristics !==[]){
+      console.log(characteristics);
+      if (characteristics.length!==0){
         return characteristics.join(',\n')
       }
       else{
