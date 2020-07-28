@@ -4,8 +4,14 @@ language: node_js
 node_js:
   - "12"
 
+install:
+  - npm install -g codecov
+
 cache: npm
 
 script:
   - ng lint
   - ng test --watch false --browsers ChromeHeadless
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
