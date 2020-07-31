@@ -9,7 +9,7 @@ cache: npm
 script:
   - npm install -g codecov
   - ng lint
-  - ng test --watch false --browsers ChromeHeadless
+  - ng test --watch false --browsers ChromeHeadless --codeCoverage true
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - codecov
