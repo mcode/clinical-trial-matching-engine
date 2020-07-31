@@ -86,11 +86,10 @@ export class ResearchStudySearchEntry {
             //how criteria is stored in characteristic currently unkown
             let exclusion = 'Exclusion \n';
             let inclusion = 'Inclusion \n';
-            for (const trait of ref.characteristic){
+            for (const trait of ref.characteristic) {
               if (trait.exclude) {
                 exclusion += `${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
-              }
-              else {
+              } else {
                 inclusion += `${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
               }
             }
