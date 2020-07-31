@@ -4,7 +4,6 @@
     "outDir": "./out-tsc/spec",
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "sourceMap": true,
     "types": [
       "jasmine",
       "node",
