@@ -84,12 +84,21 @@ export class ResearchStudySearchEntry {
             //characteristic is an array
 
             //how criteria is stored in characteristic currently unkown
-            const traits = ref.characteristics.map((trait) => trait.valueCodeableConcept.text).join(', ');
+            let exclusion = 'Exclusion \n';
+            let inclusion = 'Inclusion \n';
+            for (const trait of ref.characteristic){
+              if (trait.exclude) {
+                exclusion += `${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
+              }
+              else {
+                inclusion += `${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
+              }
+            }
+            const traits = `${inclusion} \n ${exclusion}`;
             characteristics.push(traits);
           }
         }
       }
-      console.log(characteristics);
       if (characteristics.length !== 0) {
         return characteristics.join(',\n');
       } else {
