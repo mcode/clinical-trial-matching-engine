@@ -79,18 +79,18 @@ export class ResearchStudySearchEntry {
       const groupIds = this.resource.enrollment.map((enrollment) => (enrollment.reference as string).substr(1));
       const characteristics = [];
       for (const ref of this.resource.contained) {
-        if (ref.resourceType == 'Group' && ref.id in groupIds) {
+        if (ref.resourceType == 'Group' && groupIds.includes(ref.id)) {
           if (ref.characteristic) {
             //characteristic is an array
 
             //how criteria is stored in characteristic currently unkown
-            let exclusion = 'Exclusion \n';
-            let inclusion = 'Inclusion \n';
+            let exclusion = 'Exclusion: \n';
+            let inclusion = 'Inclusion: \n';
             for (const trait of ref.characteristic) {
               if (trait.exclude) {
-                exclusion += `${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
+                exclusion += `   ${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
               } else {
-                inclusion += `${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
+                inclusion += `   ${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
               }
             }
             const traits = `${inclusion} \n ${exclusion}`;
