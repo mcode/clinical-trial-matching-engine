@@ -76,7 +76,33 @@ export class ResearchStudySearchEntry {
   }
   get criteria(): string {
     if (this.resource.enrollment) {
-      return this.resource.enrollment.map((enrollment) => enrollment.display).join(', ');
+      const groupIds = this.resource.enrollment.map((enrollment) => (enrollment.reference as string).substr(1));
+      const characteristics = [];
+      for (const ref of this.resource.contained) {
+        if (ref.resourceType == 'Group' && groupIds.includes(ref.id)) {
+          if (ref.characteristic) {
+            //characteristic is an array
+
+            //how criteria is stored in characteristic currently unkown
+            let exclusion = 'Exclusion: \n';
+            let inclusion = 'Inclusion: \n';
+            for (const trait of ref.characteristic) {
+              if (trait.exclude) {
+                exclusion += `   ${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
+              } else {
+                inclusion += `   ${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
+              }
+            }
+            const traits = `${inclusion} \n ${exclusion}`;
+            characteristics.push(traits);
+          }
+        }
+      }
+      if (characteristics.length !== 0) {
+        return characteristics.join(',\n');
+      } else {
+        return this.resource.enrollment.map((enrollment) => enrollment.display).join(', ');
+      }
     } else {
       return '';
     }
