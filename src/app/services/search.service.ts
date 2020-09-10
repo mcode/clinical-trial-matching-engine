@@ -5,7 +5,8 @@ import { map } from 'rxjs/operators';
 import { AppConfigService } from './app-config.service';
 import { fhirclient } from 'fhirclient/lib/types';
 import * as fhirpath from 'fhirpath';
-
+import { getDistance, convertDistance, getPreciseDistance, orderByDistance } from 'geolib';
+import { GeolibInputCoordinates } from 'geolib/es/types';
 // Type alias for the patient bundle which presumably won't always be a string
 type PatientBundle = string;
 
@@ -25,7 +26,16 @@ export interface Facility {
   contactPhone?: string;
   contactEmail?: string;
 }
-
+interface BaseResource {
+  resourceType: string;
+  id?: string;
+}
+ interface Location extends BaseResource {
+  resourceType: 'Location';
+  name?: string;
+  telecom?: unknown;
+  position?: { longitude?: number; latitude?: number };
+}
 interface Search {
   mode: string;
   score: number;
@@ -163,11 +173,35 @@ export class ResearchStudySearchEntry {
       } else if (this.search.score < 0.67) {
         matchStr = 'Possible Match';
       } else {
-        matchStr = 'Likely Match';
+        matchStr = 'Likely Match gg';
       }
     }
+   // console.log(this.getSites());
     return matchStr;
   }
+
+  get closest(): string {
+    const allsites : fhirpath.FHIRResource [] = this.getSites();
+    let points : GeolibInputCoordinates [] = [];
+     for (const resource of allsites){
+      if(resource.resourceType === 'Location'){
+          const loc = (resource as unknown) as Location;
+          if(loc.position){
+              const coordinate =  {"latitude": loc.position.latitude, "longitude": loc.position.longitude} as GeolibInputCoordinates;
+              points.push(coordinate);
+
+
+          }
+      }
+
+    } 
+    const origin = {latitude: "42.27799", longitude: "-73.33204"} as GeolibInputCoordinates;
+    const ordered = orderByDistance(origin, points);
+    const closest = ordered.map((point) => convertDistance(getDistance(origin, point), 'mi'));
+
+    return `Nearest site as close as ${closest[0]} miles`;
+  }
+
   /**
    * @deprecated. Use #getSites to get the sites. The use a method also makes it
    * clearer that this is not a simple property but involves a fair amount of
