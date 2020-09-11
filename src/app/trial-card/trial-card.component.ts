@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import Patient from '../patient';
 
 @Component({
   selector: 'app-trial-card',
@@ -6,6 +7,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['../app.component.css'] //refer to app component styling for the time being
 })
 export class TrialCardComponent {
+  @Input() patient: Patient;
   @Input() clinicalTrial: object;
   @Input() trialSaved;
   @Output() trialSaveChanged = new EventEmitter<boolean>();

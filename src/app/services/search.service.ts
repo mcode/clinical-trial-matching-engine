@@ -1,3 +1,4 @@
+import { UnpackResearchStudyResults } from './../export/parse-data';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -5,6 +6,8 @@ import { map } from 'rxjs/operators';
 import { AppConfigService } from './app-config.service';
 import { fhirclient } from 'fhirclient/lib/types';
 import * as fhirpath from 'fhirpath';
+import fs from 'fs';
+import csv from 'csv-parser';
 import { getDistance, convertDistance, getPreciseDistance, orderByDistance } from 'geolib';
 import { GeolibInputCoordinates } from 'geolib/es/types';
 // Type alias for the patient bundle which presumably won't always be a string
@@ -57,6 +60,7 @@ export class ResearchStudySearchEntry {
   search?: Search;
   private cachedSites: fhirpath.FHIRResource[] | null = null;
   private containedResources: Map<string, fhirpath.FHIRResource> | null = null;
+  public dict? : Map<string, { latitude: number; longitude: number }>;
 
   constructor(public entry: BundleEntry) {
     this.resource = this.entry.resource;
@@ -173,14 +177,37 @@ export class ResearchStudySearchEntry {
       } else if (this.search.score < 0.67) {
         matchStr = 'Possible Match';
       } else {
-        matchStr = 'Likely Match gg';
+        matchStr = 'Likely Match';
       }
     }
    // console.log(this.getSites());
     return matchStr;
   }
 
-  get closest(): string {
+
+
+  getZipCoord(zipCode:string): Promise<{ latitude: number; longitude: number }> {
+    return new Promise<{ latitude: number; longitude: number }>((resolve, reject) => {
+        try {
+          if(!this.dict){
+            let results: Map<string, { latitude: number; longitude: number }> = new Map<string, { latitude: number; longitude: number }>();
+            fs.createReadStream('src/assets/uszips2.csv')
+                .pipe(csv())
+                .on('data', (data:any) => results.set(data.zip, JSON.parse(data.json)))
+                .on('end', () => {
+                   
+                   this.dict=results;
+                   
+                });
+            }
+             resolve(this.dict.get(zipCode));
+        }
+        catch (error) {
+            reject(error);
+        }
+    });
+}
+   async getClosest(zip: string): Promise<string | null> {
     const allsites : fhirpath.FHIRResource [] = this.getSites();
     let points : GeolibInputCoordinates [] = [];
      for (const resource of allsites){
@@ -194,12 +221,15 @@ export class ResearchStudySearchEntry {
           }
       }
 
+      
     } 
-    const origin = {latitude: "42.27799", longitude: "-73.33204"} as GeolibInputCoordinates;
+    const origin = await this.getZipCoord(zip) as GeolibInputCoordinates;
+
+    //const origin = {latitude: "42.27799", longitude: "-73.33204"} as GeolibInputCoordinates;
     const ordered = orderByDistance(origin, points);
     const closest = ordered.map((point) => convertDistance(getDistance(origin, point), 'mi'));
-
-    return `Nearest site as close as ${closest[0]} miles`;
+    return zip;
+    //return `Nearest site as close as ${closest[0]} miles`;
   }
 
   /**

@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import Patient from '../patient';
 
 /**
  * Shows the details page for the results.
@@ -9,6 +10,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['../app.component.css'] //refer to app component styling for the time being
 })
 export class ResultDetailsComponent {
+  @Input() patient: Patient;
   @Input() clinicalTrial: object;
   @Input() trialSaved = false;
   @Output() trialSaveChanged = new EventEmitter<boolean>();
