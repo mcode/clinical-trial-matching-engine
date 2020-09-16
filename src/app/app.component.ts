@@ -184,7 +184,7 @@ export class AppComponent {
     });
 
     // Gathering resources for patient bundle
-    let resourceTypeCount: number = 0;
+    let resourceTypeCount = 0;
     this.fhirService.resourceTypes.map((resourceType) => {
       this.fhirService.getResources(resourceType, this.fhirService.resourceParams[resourceType]).then((records) => {
         this.bundleResources.push(
