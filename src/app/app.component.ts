@@ -167,6 +167,9 @@ export class AppComponent {
       return new DropDownValue(value, ResearchStudyStatusDisplay[value]);
     });
 
+    // show loading screen while we pull the FHIR record
+    this.spinner.show();
+
     this.patient = fhirService.getPatient().then((patient) => {
       // Wrap the patient in a class that handles extracting values
       const p = new Patient(patient);
@@ -181,16 +184,24 @@ export class AppComponent {
     });
 
     // Gathering resources for patient bundle
-    this.fhirService.resourceTypes.map((resourceType) =>
+    let resourceTypeCount: number = 0;
+    this.fhirService.resourceTypes.map((resourceType) => {
       this.fhirService.getResources(resourceType, this.fhirService.resourceParams[resourceType]).then((records) => {
+        console.log(records);
         this.bundleResources.push(
           ...(records.filter((record) => {
             // Check to make sure it's a bundle entry
             return 'fullUrl' in record && 'resource' in record;
           }) as fhirclient.FHIR.BundleEntry[])
         );
-      })
-    );
+        console.log(resourceType);
+        resourceTypeCount++;
+        if (this.fhirService.resourceTypes.length === resourceTypeCount) {
+          // remove loading screen when we've loaded our final resource type
+          this.spinner.hide();
+        }
+      });
+    });
   }
 
   /**
