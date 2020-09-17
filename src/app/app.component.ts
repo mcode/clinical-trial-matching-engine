@@ -167,6 +167,9 @@ export class AppComponent {
       return new DropDownValue(value, ResearchStudyStatusDisplay[value]);
     });
 
+    // show loading screen while we pull the FHIR record
+    this.spinner.show('load-record');
+
     this.patient = fhirService.getPatient().then((patient) => {
       // Wrap the patient in a class that handles extracting values
       const p = new Patient(patient);
@@ -181,7 +184,8 @@ export class AppComponent {
     });
 
     // Gathering resources for patient bundle
-    this.fhirService.resourceTypes.map((resourceType) =>
+    let resourceTypeCount = 0;
+    this.fhirService.resourceTypes.map((resourceType) => {
       this.fhirService.getResources(resourceType, this.fhirService.resourceParams[resourceType]).then((records) => {
         this.bundleResources.push(
           ...(records.filter((record) => {
@@ -189,8 +193,13 @@ export class AppComponent {
             return 'fullUrl' in record && 'resource' in record;
           }) as fhirclient.FHIR.BundleEntry[])
         );
-      })
-    );
+        resourceTypeCount++;
+        if (this.fhirService.resourceTypes.length === resourceTypeCount) {
+          // remove loading screen when we've loaded our final resource type
+          this.spinner.hide('load-record');
+        }
+      });
+    });
   }
 
   /**
@@ -205,7 +214,7 @@ export class AppComponent {
    */
   public searchClinicalTrials(): void {
     this.itemsPerPage = 10;
-    this.spinner.show();
+    this.spinner.show('load');
     // Blank out any existing results
     if (this.searchReqObject.zipCode == null) {
       alert('Enter Zipcode');
@@ -257,7 +266,7 @@ export class AppComponent {
     }
     this.searchtable = false;
     this.searchPage = true;
-    this.spinner.hide();
+    this.spinner.hide('load');
   }
   /**
    * Populates the pages array based on the current items per pages data.
