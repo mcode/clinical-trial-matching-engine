@@ -10,7 +10,7 @@ import Patient from '../patient';
   styleUrls: ['../app.component.css'] //refer to app component styling for the time being
 })
 export class ResultDetailsComponent {
-  @Input() patient: Patient;
+  @Input() reqs: object;
   @Input() clinicalTrial: object;
   @Input() trialSaved = false;
   @Output() trialSaveChanged = new EventEmitter<boolean>();

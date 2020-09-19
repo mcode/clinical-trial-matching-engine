@@ -14,7 +14,7 @@
             <path id="ic_directions_24px"
                 d="M38.466,19.193,21.812,2.539a1.843,1.843,0,0,0-2.609,0L2.549,19.193a1.843,1.843,0,0,0,0,2.609L19.2,38.456a1.843,1.843,0,0,0,2.609,0L38.466,21.8a1.843,1.843,0,0,0,0-2.609ZM24.2,25.133V20.507H16.8v5.551H13.1v-7.4a1.856,1.856,0,0,1,1.85-1.85H24.2V12.18l6.477,6.477Z"
                 transform="translate(-2.007 -1.997)" fill="#525151" />
-        </svg><span class="cardText2">{{clinicalTrial.getClosest((patient | async)?.getHomePostalCode())}} </span></div>
+        </svg><span class="cardText2">{{clinicalTrial.getClosest(reqs.zipCode)}} </span></div>
 </div>
 <div class="col20">
     <div class="containingDIV padding-top-10" style="margin-top: 7%;">

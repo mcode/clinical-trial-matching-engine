@@ -1,3 +1,4 @@
+import { DistanceService } from './distance.service';
 import { UnpackResearchStudyResults } from './../export/parse-data';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -6,9 +7,7 @@ import { map } from 'rxjs/operators';
 import { AppConfigService } from './app-config.service';
 import { fhirclient } from 'fhirclient/lib/types';
 import * as fhirpath from 'fhirpath';
-import fs from 'fs';
-import csv from 'csv-parser';
-import { getDistance, convertDistance, getPreciseDistance, orderByDistance } from 'geolib';
+import { getDistance, convertDistance, getPreciseDistance, orderByDistance, findNearest } from 'geolib';
 import { GeolibInputCoordinates } from 'geolib/es/types';
 // Type alias for the patient bundle which presumably won't always be a string
 type PatientBundle = string;
@@ -60,9 +59,9 @@ export class ResearchStudySearchEntry {
   search?: Search;
   private cachedSites: fhirpath.FHIRResource[] | null = null;
   private containedResources: Map<string, fhirpath.FHIRResource> | null = null;
-  public dict? : Map<string, { latitude: number; longitude: number }>;
 
-  constructor(public entry: BundleEntry) {
+
+  constructor(public entry: BundleEntry, private distService: DistanceService) {
     this.resource = this.entry.resource;
     this.search = this.entry.search;
     console.log(this.entry);
@@ -185,29 +184,7 @@ export class ResearchStudySearchEntry {
   }
 
 
-
-  getZipCoord(zipCode:string): Promise<{ latitude: number; longitude: number }> {
-    return new Promise<{ latitude: number; longitude: number }>((resolve, reject) => {
-        try {
-          if(!this.dict){
-            let results: Map<string, { latitude: number; longitude: number }> = new Map<string, { latitude: number; longitude: number }>();
-            fs.createReadStream('src/assets/uszips2.csv')
-                .pipe(csv())
-                .on('data', (data:any) => results.set(data.zip, JSON.parse(data.json)))
-                .on('end', () => {
-                   
-                   this.dict=results;
-                   
-                });
-            }
-             resolve(this.dict.get(zipCode));
-        }
-        catch (error) {
-            reject(error);
-        }
-    });
-}
-   async getClosest(zip: string): Promise<string | null> {
+  getClosest(zip: string):string {
     const allsites : fhirpath.FHIRResource [] = this.getSites();
     let points : GeolibInputCoordinates [] = [];
      for (const resource of allsites){
@@ -223,13 +200,20 @@ export class ResearchStudySearchEntry {
 
       
     } 
-    const origin = await this.getZipCoord(zip) as GeolibInputCoordinates;
-
-    //const origin = {latitude: "42.27799", longitude: "-73.33204"} as GeolibInputCoordinates;
-    const ordered = orderByDistance(origin, points);
-    const closest = ordered.map((point) => convertDistance(getDistance(origin, point), 'mi'));
-    return zip;
-    //return `Nearest site as close as ${closest[0]} miles`;
+   
+    let origin=this.distService.getCoord(zip);// as GeolibInputCoordinates;
+  
+    console.log(zip);
+   
+   const coordinates = origin.match(/-?\d*\.?\d+/g).map(Number);
+   
+   origin = {latitude: coordinates[0], longitude: coordinates[1]} as GeolibInputCoordinates;
+   
+    const closest = findNearest(origin, points);
+   
+   const dist = Math.round(100*convertDistance(getPreciseDistance(origin, closest), 'mi'))/100;
+    //return zip;
+    return `Nearest site as close as ${dist} miles`;
   }
 
   /**
@@ -360,13 +344,13 @@ export class ResearchStudySearchEntry {
 export class SearchResultsBundle {
   researchStudies: ResearchStudySearchEntry[];
 
-  constructor(public bundle: fhirclient.FHIR.Bundle) {
+  constructor(public bundle: fhirclient.FHIR.Bundle, private distService: DistanceService) {
     if (bundle.entry) {
       this.researchStudies = bundle.entry
         .filter((entry) => {
           return entry.resource.resourceType === 'ResearchStudy';
         })
-        .map((entry) => new ResearchStudySearchEntry(entry));
+        .map((entry) => new ResearchStudySearchEntry(entry, distService));
     } else {
       this.researchStudies = [];
     }
@@ -401,7 +385,9 @@ interface ClinicalTrialQuery {
   providedIn: 'root'
 })
 export class SearchService {
-  constructor(private client: HttpClient, private config: AppConfigService) {}
+  constructor(private client: HttpClient, private config: AppConfigService, private distService: DistanceService) {
+  
+  }
 
   searchClinicalTrials(patientBundle: PatientBundle, offset?: number, count = 10): Observable<SearchResultsBundle> {
     const query: ClinicalTrialQuery = { patientData: patientBundle, count: count };
@@ -410,7 +396,7 @@ export class SearchService {
     }
     return this.client.post<fhirclient.FHIR.Bundle>(this.config.getServiceURL() + '/getClinicalTrial', query).pipe(
       map((bundle: fhirclient.FHIR.Bundle) => {
-        return new SearchResultsBundle(bundle);
+        return new SearchResultsBundle(bundle, this.distService);
       })
     );
   }
