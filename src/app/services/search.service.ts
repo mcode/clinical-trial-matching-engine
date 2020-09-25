@@ -32,7 +32,7 @@ interface BaseResource {
   resourceType: string;
   id?: string;
 }
- interface Location extends BaseResource {
+interface Location extends BaseResource {
   resourceType: 'Location';
   name?: string;
   telecom?: unknown;
@@ -59,7 +59,6 @@ export class ResearchStudySearchEntry {
   search?: Search;
   private cachedSites: fhirpath.FHIRResource[] | null = null;
   private containedResources: Map<string, fhirpath.FHIRResource> | null = null;
-
 
   constructor(public entry: BundleEntry, private distService: DistanceService) {
     this.resource = this.entry.resource;
@@ -179,39 +178,37 @@ export class ResearchStudySearchEntry {
         matchStr = 'Likely Match';
       }
     }
-   // console.log(this.getSites());
+    // console.log(this.getSites());
     return matchStr;
   }
 
-
-  getClosest(zip: string):string {
-    const allsites : fhirpath.FHIRResource [] = this.getSites();
-    let points : GeolibInputCoordinates [] = [];
-     for (const resource of allsites){
-      if(resource.resourceType === 'Location'){
-          const loc = (resource as unknown) as Location;
-          if(loc.position){
-              const coordinate =  {"latitude": loc.position.latitude, "longitude": loc.position.longitude} as GeolibInputCoordinates;
-              points.push(coordinate);
-
-
-          }
+  getClosest(zip: string): string {
+    const allsites: fhirpath.FHIRResource[] = this.getSites();
+    const points: GeolibInputCoordinates[] = [];
+    for (const resource of allsites) {
+      if (resource.resourceType === 'Location') {
+        const loc = (resource as unknown) as Location;
+        if (loc.position) {
+          const coordinate = {
+            latitude: loc.position.latitude,
+            longitude: loc.position.longitude
+          } as GeolibInputCoordinates;
+          points.push(coordinate);
+        }
       }
+    }
 
-      
-    } 
-   
-    let origin=this.distService.getCoord(zip);// as GeolibInputCoordinates;
-  
+    let origin = this.distService.getCoord(zip); // as GeolibInputCoordinates;
+
     console.log(zip);
-   
-   const coordinates = origin.match(/-?\d*\.?\d+/g).map(Number);
-   
-   origin = {latitude: coordinates[0], longitude: coordinates[1]} as GeolibInputCoordinates;
-   
+
+    const coordinates = origin.match(/-?\d*\.?\d+/g).map(Number);
+
+    origin = { latitude: coordinates[0], longitude: coordinates[1] } as GeolibInputCoordinates;
+
     const closest = findNearest(origin, points);
-   
-   const dist = Math.round(100*convertDistance(getPreciseDistance(origin, closest), 'mi'))/100;
+
+    const dist = Math.round(100 * convertDistance(getPreciseDistance(origin, closest), 'mi')) / 100;
     //return zip;
     return `Nearest site as close as ${dist} miles`;
   }
@@ -385,9 +382,7 @@ interface ClinicalTrialQuery {
   providedIn: 'root'
 })
 export class SearchService {
-  constructor(private client: HttpClient, private config: AppConfigService, private distService: DistanceService) {
-  
-  }
+  constructor(private client: HttpClient, private config: AppConfigService, private distService: DistanceService) {}
 
   searchClinicalTrials(patientBundle: PatientBundle, offset?: number, count = 10): Observable<SearchResultsBundle> {
     const query: ClinicalTrialQuery = { patientData: patientBundle, count: count };
