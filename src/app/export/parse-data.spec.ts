@@ -12,7 +12,7 @@ describe('UnpackResearchStudyResults', () => {
       providers: [DistanceService]
     })
   );
-  const distServ = TestBed.get(DistanceService);
+
   it('works on an empty array', () => {
     const actual = UnpackResearchStudyResults([]);
     expect(Array.isArray(actual)).toBe(true);
@@ -22,6 +22,7 @@ describe('UnpackResearchStudyResults', () => {
   });
 
   it('works on an almost empty ResearchStudy', () => {
+    const distServ = TestBed.get(DistanceService);
     const actual = UnpackResearchStudyResults([
       new ResearchStudySearchEntry(
         {
@@ -40,6 +41,7 @@ describe('UnpackResearchStudyResults', () => {
   });
 
   it('exports sites', () => {
+    const distServ = TestBed.get(DistanceService);
     const actual = UnpackResearchStudyResults([
       new ResearchStudySearchEntry(
         {

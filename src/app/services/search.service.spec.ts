@@ -18,7 +18,15 @@ describe('SearchService', () => {
 });
 
 describe('ResearchStudySearchEntry', () => {
-  const distServ = TestBed.get(DistanceService);
+  let distServ: DistanceService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [SearchService, DistanceService]
+    });
+    distServ = TestBed.get(DistanceService);
+  });
+
   const testEntry = {
     fullUrl: 'http://localhost/',
     resource: {
