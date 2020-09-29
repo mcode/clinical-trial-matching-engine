@@ -1,3 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ResearchStudySearchEntry } from './../services/search.service';
+import { DistanceService } from './../services/distance.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TrialCardComponent } from './trial-card.component';
@@ -20,11 +23,13 @@ describe('TrialCardComponent', () => {
   let testHostComponent: TestHostComponent;
   let testHostFixture: ComponentFixture<TestHostComponent>;
 
-  const sampleTrial: object = data;
+  const sampleTrial = data;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TrialCardComponent, TestHostComponent]
+      declarations: [TrialCardComponent, TestHostComponent],
+      imports: [HttpClientTestingModule],
+      providers: [DistanceService]
     }).compileComponents();
   }));
 
@@ -33,8 +38,9 @@ describe('TrialCardComponent', () => {
     testHostComponent = testHostFixture.componentInstance;
   });
 
-  xit('should create', () => {
-    testHostComponent.trial.clinicalTrial = sampleTrial;
+  it('should create', () => {
+    const distServ = TestBed.get(DistanceService) as DistanceService;
+    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ);
     testHostComponent.trial.trialSaved = false;
     testHostComponent.trial.reqs = {
       zipCode: '01234',
@@ -46,8 +52,9 @@ describe('TrialCardComponent', () => {
     expect(testHostComponent.trial).toBeTruthy();
   });
   //trialsaved should be false on startup
-  xit('trial saved should be false', () => {
-    testHostComponent.trial.clinicalTrial = sampleTrial;
+  it('trial saved should be false', () => {
+    const distServ = TestBed.get(DistanceService) as DistanceService;
+    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ);
     testHostComponent.trial.trialSaved = false;
     testHostComponent.trial.reqs = {
       zipCode: '01234',

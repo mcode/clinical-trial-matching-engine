@@ -198,13 +198,17 @@ export class ResearchStudySearchEntry {
       }
     }
 
-    let origin = this.distService.getCoord(zip); // as GeolibInputCoordinates;
+    const sOrigin = this.distService.getCoord(zip) as string; // as GeolibInputCoordinates;
+
+    if (!sOrigin) {
+      return 'NaN';
+    }
 
     console.log(zip);
 
-    const coordinates = origin.match(/-?\d*\.?\d+/g).map(Number);
+    const coordinates = sOrigin.match(/-?\d*\.?\d+/g).map(Number);
 
-    origin = { latitude: coordinates[0], longitude: coordinates[1] } as GeolibInputCoordinates;
+    const origin = { latitude: coordinates[0], longitude: coordinates[1] } as GeolibInputCoordinates;
 
     const closest = findNearest(origin, points);
 

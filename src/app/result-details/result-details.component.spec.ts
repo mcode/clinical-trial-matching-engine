@@ -1,3 +1,6 @@
+import { DistanceService } from './../services/distance.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ResearchStudySearchEntry, SearchService } from './../services/search.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ResultDetailsComponent } from './result-details.component';
@@ -17,11 +20,13 @@ describe('ResultDetailsComponent', () => {
   let testHostComponent: TestHostComponent;
   let testHostFixture: ComponentFixture<TestHostComponent>;
 
-  const sampleTrial: object = data;
+  const sampleTrial = data;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ResultDetailsComponent, TestHostComponent]
+      declarations: [ResultDetailsComponent, TestHostComponent],
+      imports: [HttpClientTestingModule],
+      providers: [DistanceService]
     }).compileComponents();
   }));
 
@@ -30,8 +35,9 @@ describe('ResultDetailsComponent', () => {
     testHostComponent = testHostFixture.componentInstance;
   });
 
-  xit('should create the detail results', () => {
-    testHostComponent.resultDetails.clinicalTrial = sampleTrial;
+  it('should create the detail results', () => {
+    const distServ = TestBed.get(DistanceService) as DistanceService;
+    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ);
     testHostComponent.resultDetails.reqs = {
       zipCode: '01234',
       travelRadius: null,
@@ -43,7 +49,7 @@ describe('ResultDetailsComponent', () => {
     expect(testHostComponent.resultDetails).toBeTruthy();
   });
   //on testing startup no trial should be saved
-  xit('trialSaved should be false', () => {
+  it('trialSaved should be false', () => {
     expect(testHostComponent.resultDetails.trialSaved).toBeFalsy();
   });
 });

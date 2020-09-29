@@ -1,3 +1,4 @@
+import { ResearchStudySearchEntry } from './../services/search.service';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import Patient from '../patient';
 
@@ -11,7 +12,7 @@ import Patient from '../patient';
 })
 export class ResultDetailsComponent {
   @Input() reqs: object;
-  @Input() clinicalTrial: object;
+  @Input() clinicalTrial: ResearchStudySearchEntry;
   @Input() trialSaved = false;
   @Output() trialSaveChanged = new EventEmitter<boolean>();
 

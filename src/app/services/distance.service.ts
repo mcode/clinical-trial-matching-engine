@@ -10,7 +10,7 @@ export class DistanceService {
   constructor(private http: HttpClient) {
     this.makeDict();
   }
-  makeDict() {
+  public makeDict() {
     this.getInfo().subscribe((data) => {
       const list = data.split('\n');
       list.shift();
