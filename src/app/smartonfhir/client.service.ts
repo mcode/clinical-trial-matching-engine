@@ -23,8 +23,6 @@ export class ClientService {
   private pendingClient: Promise<Client> | null = null;
   public resourceTypes = [
     'Patient',
-    'Immunization',
-    'AllergyIntolerance',
     'Condition',
     'MedicationStatement',
     'Observation',
@@ -32,12 +30,10 @@ export class ClientService {
   ];
   public resourceParams = {
     Patient: {},
-    Immunization: {},
-    AllergyIntolerance: {},
-    Condition: { 'clinical-status': 'active' },
-    MedicationStatement: {},
-    Observation: {},
-    Procedure: {}
+    Condition: { 'clinical-status': 'active', '_profile': 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition,http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-secondary-cancer-condition' },
+    MedicationStatement: {'_profile': 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-cancer-related-medication-statement,'}, // {'_profile:below': 'http://hl7.org/fhir/us/mcode'} this should work but it doesn't and I don't know why - maybe the fhir server does implement below as a search modifier
+    Observation: {'_profile': 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-tnm-clinical-stage-group,http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-tnm-pathological-stage-group,http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-tumor-marker'},
+    Procedure: {'_profile': 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-cancer-related-radiation-procedure,http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-cancer-related-surgical-procedure'}
   };
   /**
    * Gets a Promise that resolves to the client when the client is ready. If
@@ -176,6 +172,7 @@ export class ClientService {
       }
       query += '?' + params.join('&');
     }
+    //console.log(query);
     // Resources should all be BundleEntries
     return this.getAllRecords(query);
   }

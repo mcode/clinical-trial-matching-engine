@@ -193,6 +193,8 @@ export class AppComponent {
             return 'fullUrl' in record && 'resource' in record;
           }) as fhirclient.FHIR.BundleEntry[])
         );
+        //console.log(resourceType);
+        //console.log(records);
         resourceTypeCount++;
         if (this.fhirService.resourceTypes.length === resourceTypeCount) {
           // remove loading screen when we've loaded our final resource type
