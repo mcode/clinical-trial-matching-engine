@@ -28,11 +28,14 @@ export class ClientService {
     'Observation',
     'Procedure'
   ];
+  // Setting filters to pull only resources of relevant mcode profiles
+  // {'_profile:below': 'http://hl7.org/fhir/us/mcode'} this should work for all the resource types but it doesn't and I don't know why, so we're listing profiles - maybe the moonshot fhir server doesn't implement 'below' as a search modifier
+  // Note: did not include all observation mcode profiles
   public resourceParams = {
     Patient: {},
-    Condition: { 'clinical-status': 'active', '_profile': 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition,http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-secondary-cancer-condition' },
-    MedicationStatement: {'_profile': 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-cancer-related-medication-statement,'}, // {'_profile:below': 'http://hl7.org/fhir/us/mcode'} this should work but it doesn't and I don't know why - maybe the fhir server does implement below as a search modifier
-    Observation: {'_profile': 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-tnm-clinical-stage-group,http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-tnm-pathological-stage-group,http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-tumor-marker'},
+    Condition: { 'clinical-status': 'active', '_profile': 'http://hl7.org/fhir/us/mcode/StructureDefinition/obf-ComorbidCondition,http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition,http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-secondary-cancer-condition' },
+    MedicationStatement: {'_profile': 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-cancer-related-medication-statement,'},
+    Observation: {'_profile': ' http://hl7.org/fhir/us/mcode/StructureDefinition/onco-core-CancerDiseaseStatus,http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-tnm-clinical-stage-group,http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-tnm-pathological-stage-group,http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-tumor-marker'},
     Procedure: {'_profile': 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-cancer-related-radiation-procedure,http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-cancer-related-surgical-procedure'}
   };
   /**
