@@ -1,6 +1,5 @@
 import { ResearchStudySearchEntry } from './../services/search.service';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import Patient from '../patient';
 
 @Component({
   selector: 'app-trial-card',

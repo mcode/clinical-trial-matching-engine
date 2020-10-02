@@ -1,5 +1,4 @@
 import { DistanceService } from './distance.service';
-import { UnpackResearchStudyResults } from './../export/parse-data';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -7,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { AppConfigService } from './app-config.service';
 import { fhirclient } from 'fhirclient/lib/types';
 import * as fhirpath from 'fhirpath';
-import { getDistance, convertDistance, getPreciseDistance, orderByDistance, findNearest } from 'geolib';
+import { convertDistance, getPreciseDistance, findNearest } from 'geolib';
 import { GeolibInputCoordinates } from 'geolib/es/types';
 // Type alias for the patient bundle which presumably won't always be a string
 type PatientBundle = string;
@@ -178,7 +177,6 @@ export class ResearchStudySearchEntry {
         matchStr = 'Likely Match';
       }
     }
-    // console.log(this.getSites());
     return matchStr;
   }
 
@@ -214,7 +212,7 @@ export class ResearchStudySearchEntry {
 
     const dist = Math.round(100 * convertDistance(getPreciseDistance(origin, closest), 'mi')) / 100;
     //return zip;
-    return `Nearest site as close as ${dist} miles`;
+    return `${dist}`;
   }
 
   /**

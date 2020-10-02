@@ -1,5 +1,4 @@
 import { DistanceService } from './../services/distance.service';
-import { SearchService } from './../services/search.service';
 import { TestBed } from '@angular/core/testing';
 import { UnpackResearchStudyResults } from './parse-data';
 import { ResearchStudySearchEntry } from '../services/search.service';
