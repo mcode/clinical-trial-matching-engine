@@ -182,24 +182,28 @@ export class ResearchStudySearchEntry {
 
   getClosest(zip: string): string {
     const allsites: fhirpath.FHIRResource[] = this.getSites();
+    if (!allsites) return null;
+
     const points: GeolibInputCoordinates[] = [];
     for (const resource of allsites) {
       if (resource.resourceType === 'Location') {
         const loc = (resource as unknown) as Location;
         if (loc.position) {
-          const coordinate = {
-            latitude: loc.position.latitude,
-            longitude: loc.position.longitude
-          } as GeolibInputCoordinates;
-          points.push(coordinate);
+          if (loc.position.latitude && loc.position.longitude) {
+            const coordinate = {
+              latitude: loc.position.latitude,
+              longitude: loc.position.longitude
+            } as GeolibInputCoordinates;
+            points.push(coordinate);
+          }
         }
       }
     }
 
     const sOrigin = this.distService.getCoord(zip) as string; // as GeolibInputCoordinates;
 
-    if (!sOrigin) {
-      return 'NaN';
+    if (!sOrigin || !points || points.length == 0) {
+      return null;
     }
 
     console.log(zip);
@@ -212,7 +216,7 @@ export class ResearchStudySearchEntry {
 
     const dist = Math.round(100 * convertDistance(getPreciseDistance(origin, closest), 'mi')) / 100;
     //return zip;
-    return `${dist}`;
+    return `${dist} miles`;
   }
 
   /**
