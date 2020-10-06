@@ -199,23 +199,15 @@ export class ResearchStudySearchEntry {
         }
       }
     }
-
     const sOrigin = this.distService.getCoord(zip) as string; // as GeolibInputCoordinates;
-
     if (!sOrigin || !points || points.length == 0) {
       return null;
     }
 
-    console.log(zip);
-
     const coordinates = sOrigin.match(/-?\d*\.?\d+/g).map(Number);
-
     const origin = { latitude: coordinates[0], longitude: coordinates[1] } as GeolibInputCoordinates;
-
     const closest = findNearest(origin, points);
-
     const dist = Math.round(100 * convertDistance(getPreciseDistance(origin, closest), 'mi')) / 100;
-    //return zip;
     return `${dist} miles`;
   }
 
