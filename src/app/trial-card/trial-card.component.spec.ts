@@ -43,7 +43,7 @@ describe('TrialCardComponent', () => {
     testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ);
     testHostComponent.trial.trialSaved = false;
     testHostComponent.trial.reqs = {
-      zipCode: '01234',
+      zipCode: '01886',
       travelRadius: null,
       phase: null,
       recruitmentStatus: null

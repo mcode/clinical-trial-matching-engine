@@ -39,7 +39,7 @@ describe('ResultDetailsComponent', () => {
     const distServ = TestBed.get(DistanceService) as DistanceService;
     testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ);
     testHostComponent.resultDetails.reqs = {
-      zipCode: '01234',
+      zipCode: '01886',
       travelRadius: null,
       phase: null,
       recruitmentStatus: null
