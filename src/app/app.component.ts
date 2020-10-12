@@ -185,21 +185,42 @@ export class AppComponent {
 
     // Gathering resources for patient bundle
     let resourceTypeCount = 0;
-    this.fhirService.resourceTypes.map((resourceType) => {
-      this.fhirService.getResources(resourceType, this.fhirService.resourceParams[resourceType]).then((records) => {
-        this.bundleResources.push(
-          ...(records.filter((record) => {
-            // Check to make sure it's a bundle entry
-            return 'fullUrl' in record && 'resource' in record;
-          }) as fhirclient.FHIR.BundleEntry[])
-        );
-        resourceTypeCount++;
-        if (this.fhirService.resourceTypes.length === resourceTypeCount) {
-          // remove loading screen when we've loaded our final resource type
-          this.spinner.hide('load-record');
+    this.fhirService
+      .getResources('Condition', {
+        _profile: 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition'
+      })
+      .then((condition) => {
+        if (condition.length > 0) {
+          // get onset date of primary cancer condition
+          const dateString = condition[0]['resource']['onsetDateTime'];
+          if (dateString) {
+            const newDate = new Date(dateString);
+            newDate.setFullYear(newDate.getFullYear() - 2);
+            const newStringDate = newDate.toISOString();
+            // set search params for resource types: date more recent than 2 years before the primary cancer condition onset
+            this.fhirService.resourceParams['Observation'] = { date: 'ge' + newStringDate };
+            this.fhirService.resourceParams['Procedure'] = { date: 'ge' + newStringDate };
+            this.fhirService.resourceParams['MedicationStatement'] = { effective: 'ge' + newStringDate };
+          }
         }
+        this.fhirService.resourceTypes.map((resourceType) => {
+          this.fhirService.getResources(resourceType, this.fhirService.resourceParams[resourceType]).then((records) => {
+            this.bundleResources.push(
+              ...(records.filter((record) => {
+                // Check to make sure it's a bundle entry
+                return 'fullUrl' in record && 'resource' in record;
+              }) as fhirclient.FHIR.BundleEntry[])
+            );
+            //console.log(resourceType);
+            //console.log(records);
+            resourceTypeCount++;
+            if (this.fhirService.resourceTypes.length === resourceTypeCount) {
+              // remove loading screen when we've loaded our final resource type
+              this.spinner.hide('load-record');
+            }
+          });
+        });
       });
-    });
   }
 
   /**
