@@ -12,4 +12,16 @@ describe('DistanceService', () => {
     const service: DistanceService = TestBed.get(DistanceService);
     expect(service).toBeTruthy();
   });
+
+  it('should get a point for a zip code', () => {
+    const service: DistanceService = TestBed.get(DistanceService);
+    // Test with leading 0
+    let point = service.getCoord('01730');
+    expect(point.latitude).toBeCloseTo(42.49697, 5);
+    expect(point.longitude).toBeCloseTo(-71.27834, 5);
+    // Test with all numbers
+    point = service.getCoord('22102');
+    expect(point.latitude).toBeCloseTo(38.94813, 5);
+    expect(point.longitude).toBeCloseTo(-77.22787, 5);
+  });
 });

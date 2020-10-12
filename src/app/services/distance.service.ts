@@ -1,27 +1,19 @@
 import { GeolibInputCoordinates } from 'geolib/es/types';
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import data from '../../assets/uszips.json';
 import { findNearest, convertDistance, getPreciseDistance } from 'geolib';
+
+interface Point {
+  latitude: number;
+  longitude: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class DistanceService {
-  public dict = {}; // : {string : { latitude: number; longitude: number} };
-
-  constructor(private http: HttpClient) {
-    this.makeDict();
-  }
-  makeDict(): void {
-    for (const elem of data) {
-      this.dict[elem.zip] = elem.json;
-    }
-  }
-  getCoord(zip: string) {
-    if (this.dict === {}) {
-      this.makeDict();
-    }
-    return this.dict[zip];
+  getCoord(zip: string): Point {
+    return data[zip];
   }
 
   getDist(origin: GeolibInputCoordinates, points: GeolibInputCoordinates[]): number {
