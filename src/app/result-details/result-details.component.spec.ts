@@ -1,6 +1,6 @@
 import { DistanceService } from './../services/distance.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ResearchStudySearchEntry, SearchService } from './../services/search.service';
+import { ResearchStudySearchEntry } from './../services/search.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ResultDetailsComponent } from './result-details.component';
