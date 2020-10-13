@@ -1,3 +1,4 @@
+import { DistanceService } from './distance.service';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResearchStudySearchEntry, SearchService } from './search.service';
@@ -6,7 +7,7 @@ describe('SearchService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [SearchService]
+      providers: [SearchService, DistanceService]
     })
   );
 
@@ -17,6 +18,15 @@ describe('SearchService', () => {
 });
 
 describe('ResearchStudySearchEntry', () => {
+  let distServ: DistanceService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [SearchService, DistanceService]
+    });
+    distServ = TestBed.get(DistanceService);
+  });
+
   const testEntry = {
     fullUrl: 'http://localhost/',
     resource: {
@@ -76,13 +86,13 @@ describe('ResearchStudySearchEntry', () => {
     }
   };
   it('finds contained resources by id', () => {
-    const result = new ResearchStudySearchEntry(testEntry);
+    const result = new ResearchStudySearchEntry(testEntry, distServ);
     const location = result.lookupContainedResource('location-1');
     expect(location).toBe(testEntry.resource.contained[1]);
   });
 
   it('getSites finds all sites', () => {
-    const result = new ResearchStudySearchEntry(testEntry);
+    const result = new ResearchStudySearchEntry(testEntry, distServ);
     const sites = result.getSites();
     expect(Array.isArray(sites)).toBe(true);
     expect(sites.length).toBe(2);
@@ -91,7 +101,7 @@ describe('ResearchStudySearchEntry', () => {
   });
 
   it('maps values as expected', () => {
-    const result = new ResearchStudySearchEntry(testEntry);
+    const result = new ResearchStudySearchEntry(testEntry, distServ);
     const sites = result.sites;
     expect(Array.isArray(sites)).toBe(true);
     expect(sites.length).toBe(2);
@@ -101,7 +111,7 @@ describe('ResearchStudySearchEntry', () => {
   });
 
   it('converts values as expected', () => {
-    const result = new ResearchStudySearchEntry(testEntry);
+    const result = new ResearchStudySearchEntry(testEntry, distServ);
     expect(result.overallContact).toEqual('Example Contact');
   });
 });

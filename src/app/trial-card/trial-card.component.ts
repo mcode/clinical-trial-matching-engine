@@ -1,3 +1,4 @@
+import { ResearchStudySearchEntry } from './../services/search.service';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -6,7 +7,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['../app.component.css'] //refer to app component styling for the time being
 })
 export class TrialCardComponent {
-  @Input() clinicalTrial: object;
+  @Input() reqs: object;
+  @Input() clinicalTrial: ResearchStudySearchEntry;
   @Input() trialSaved;
   @Output() trialSaveChanged = new EventEmitter<boolean>();
   //constructor() { }

@@ -1,3 +1,4 @@
+import { DistanceService } from './distance.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -5,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { AppConfigService } from './app-config.service';
 import { fhirclient } from 'fhirclient/lib/types';
 import * as fhirpath from 'fhirpath';
-
+import { GeolibInputCoordinates } from 'geolib/es/types';
 // Type alias for the patient bundle which presumably won't always be a string
 type PatientBundle = string;
 
@@ -25,7 +26,16 @@ export interface Facility {
   contactPhone?: string;
   contactEmail?: string;
 }
-
+interface BaseResource {
+  resourceType: string;
+  id?: string;
+}
+interface Location extends BaseResource {
+  resourceType: 'Location';
+  name?: string;
+  telecom?: unknown;
+  position?: { longitude?: number; latitude?: number };
+}
 interface Search {
   mode: string;
   score: number;
@@ -48,7 +58,7 @@ export class ResearchStudySearchEntry {
   private cachedSites: fhirpath.FHIRResource[] | null = null;
   private containedResources: Map<string, fhirpath.FHIRResource> | null = null;
 
-  constructor(public entry: BundleEntry) {
+  constructor(public entry: BundleEntry, private distService: DistanceService) {
     this.resource = this.entry.resource;
     this.search = this.entry.search;
     console.log(this.entry);
@@ -168,6 +178,34 @@ export class ResearchStudySearchEntry {
     }
     return matchStr;
   }
+
+  getClosest(zip: string): string {
+    const allsites: fhirpath.FHIRResource[] = this.getSites();
+    if (!allsites) return null;
+
+    const points: GeolibInputCoordinates[] = [];
+    for (const resource of allsites) {
+      if (resource.resourceType === 'Location') {
+        const loc = (resource as unknown) as Location;
+        if (loc.position) {
+          if (loc.position.latitude && loc.position.longitude) {
+            const coordinate = {
+              latitude: loc.position.latitude,
+              longitude: loc.position.longitude
+            } as GeolibInputCoordinates;
+            points.push(coordinate);
+          }
+        }
+      }
+    }
+    const origin = this.distService.getCoord(zip) as GeolibInputCoordinates;
+    if (!origin || !points || points.length == 0) {
+      return null;
+    }
+    const dist = this.distService.getDist(origin, points);
+    return `${dist} miles`;
+  }
+
   /**
    * @deprecated. Use #getSites to get the sites. The use a method also makes it
    * clearer that this is not a simple property but involves a fair amount of
@@ -296,13 +334,13 @@ export class ResearchStudySearchEntry {
 export class SearchResultsBundle {
   researchStudies: ResearchStudySearchEntry[];
 
-  constructor(public bundle: fhirclient.FHIR.Bundle) {
+  constructor(public bundle: fhirclient.FHIR.Bundle, private distService: DistanceService) {
     if (bundle.entry) {
       this.researchStudies = bundle.entry
         .filter((entry) => {
           return entry.resource.resourceType === 'ResearchStudy';
         })
-        .map((entry) => new ResearchStudySearchEntry(entry));
+        .map((entry) => new ResearchStudySearchEntry(entry, distService));
     } else {
       this.researchStudies = [];
     }
@@ -337,7 +375,7 @@ interface ClinicalTrialQuery {
   providedIn: 'root'
 })
 export class SearchService {
-  constructor(private client: HttpClient, private config: AppConfigService) {}
+  constructor(private client: HttpClient, private config: AppConfigService, private distService: DistanceService) {}
 
   searchClinicalTrials(patientBundle: PatientBundle, offset?: number, count = 10): Observable<SearchResultsBundle> {
     const query: ClinicalTrialQuery = { patientData: patientBundle, count: count };
@@ -346,7 +384,7 @@ export class SearchService {
     }
     return this.client.post<fhirclient.FHIR.Bundle>(this.config.getServiceURL() + '/getClinicalTrial', query).pipe(
       map((bundle: fhirclient.FHIR.Bundle) => {
-        return new SearchResultsBundle(bundle);
+        return new SearchResultsBundle(bundle, this.distService);
       })
     );
   }

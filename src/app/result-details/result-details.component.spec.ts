@@ -1,3 +1,6 @@
+import { DistanceService } from './../services/distance.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ResearchStudySearchEntry } from './../services/search.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ResultDetailsComponent } from './result-details.component';
@@ -17,11 +20,13 @@ describe('ResultDetailsComponent', () => {
   let testHostComponent: TestHostComponent;
   let testHostFixture: ComponentFixture<TestHostComponent>;
 
-  const sampleTrial: object = data;
+  const sampleTrial = data;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ResultDetailsComponent, TestHostComponent]
+      declarations: [ResultDetailsComponent, TestHostComponent],
+      imports: [HttpClientTestingModule],
+      providers: [DistanceService]
     }).compileComponents();
   }));
 
@@ -31,7 +36,14 @@ describe('ResultDetailsComponent', () => {
   });
 
   it('should create the detail results', () => {
-    testHostComponent.resultDetails.clinicalTrial = sampleTrial;
+    const distServ = TestBed.get(DistanceService) as DistanceService;
+    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ);
+    testHostComponent.resultDetails.reqs = {
+      zipCode: '01886',
+      travelRadius: null,
+      phase: null,
+      recruitmentStatus: null
+    };
     testHostFixture.detectChanges();
 
     expect(testHostComponent.resultDetails).toBeTruthy();

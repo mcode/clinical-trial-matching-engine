@@ -157,7 +157,7 @@
           <div *ngFor="let trial of selectedPageTrials; let k=index">
             <div (click)="showDetails(k)">
               <!-- Card Component-->
-              <app-trial-card class="row containingDIV cards" [clinicalTrial]="trial"
+              <app-trial-card class="row containingDIV cards" [clinicalTrial]="trial" [reqs]="searchReqObject"
                 [trialSaved]="savedClinicalTrialsNctIds.has(trial.nctId)"
                 (trialSaveChanged)="setTrialSaved(trial, $event)">
               </app-trial-card>
@@ -176,7 +176,7 @@
         </div>
       </div>
       <app-result-details *ngIf="!detailsPage" [clinicalTrial]="detailedTrial"
-        [trialSaved]="savedClinicalTrialsNctIds.has(detailedTrial.nctId)"
+        [trialSaved]="savedClinicalTrialsNctIds.has(detailedTrial.nctId)" [reqs]="searchReqObject"
         (trialSaveChanged)="setTrialSaved(detailedTrial, $event)">
         <div class="mi-margin-10 col100 containingDIV" (click)="backToSearch();">
           <svg xmlns="http://www.w3.org/2000/svg" width="40.641" height="40.641" viewBox="0 0 40.641 40.641">
