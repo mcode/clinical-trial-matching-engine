@@ -21,19 +21,9 @@ export class ClientService {
   client: Client;
   patient: Patient;
   private pendingClient: Promise<Client> | null = null;
-  public resourceTypes = [
-    'Patient',
-    'Immunization',
-    'AllergyIntolerance',
-    'Condition',
-    'MedicationStatement',
-    'Observation',
-    'Procedure'
-  ];
+  public resourceTypes = ['Patient', 'Condition', 'MedicationStatement', 'Observation', 'Procedure'];
   public resourceParams = {
     Patient: {},
-    Immunization: {},
-    AllergyIntolerance: {},
     Condition: { 'clinical-status': 'active' },
     MedicationStatement: {},
     Observation: {},
