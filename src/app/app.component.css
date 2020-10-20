@@ -625,6 +625,7 @@ line-height: 25px;
 .emailIcon {
   background-image: url(/assets/images/email.svg);
 }
+
 /* FIXME: These styles feel overly-specific. */
 .mi-margin-2{
     margin: 2%;
