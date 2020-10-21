@@ -14,6 +14,7 @@ import {
   ResearchStudyPhaseDisplay
 } from './fhir-constants';
 import { fhirclient } from 'fhirclient/lib/types';
+import { TrialCardComponent } from './trial-card/trial-card.component';
 
 /**
  * Provides basic information about a given page.
@@ -325,10 +326,14 @@ export class AppComponent {
    * Display details of a given trial.
    */
   public showDetails(i: number): void {
-    this.detailedTrial = this.selectedPageTrials[i];
-    this.searchtable = true;
-    this.searchPage = true;
-    this.detailsPage = false;
+    if(TrialCardComponent.showDetailsFlag){
+      this.detailedTrial = this.selectedPageTrials[i];
+      this.searchtable = true;
+      this.searchPage = true;
+      this.detailsPage = false;
+    }
+    // Reset the showDetailsFlag to true in case it has been turned off by the Save Study button.
+    TrialCardComponent.showDetailsFlag = true;
   }
   /*
   Function for back search result page

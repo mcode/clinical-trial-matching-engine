@@ -13,7 +13,11 @@ export class TrialCardComponent {
   @Output() trialSaveChanged = new EventEmitter<boolean>();
   //constructor() { }
 
+  public static showDetailsFlag: boolean = true;
+
   public toggleTrialSaved(): void {
+    // Save Study Button in Trial Card reaches here, set the showDetailsFlag to false to prevent details from openeing.
+    TrialCardComponent.showDetailsFlag = false;
     this.trialSaved = !this.trialSaved;
     this.trialSaveChanged.emit(this.trialSaved);
   }

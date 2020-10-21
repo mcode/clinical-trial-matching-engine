@@ -116,6 +116,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "clinicalTrial"
+    }
+  },
+  "defaultProject": "clinicalTrial",
+  "cli": {
+    "analytics": false
+  }
 }
