@@ -326,7 +326,7 @@ export class AppComponent {
    * Display details of a given trial.
    */
   public showDetails(i: number): void {
-    if(TrialCardComponent.showDetailsFlag){
+    if (TrialCardComponent.showDetailsFlag) {
       this.detailedTrial = this.selectedPageTrials[i];
       this.searchtable = true;
       this.searchPage = true;
