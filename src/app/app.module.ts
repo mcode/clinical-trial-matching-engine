@@ -12,6 +12,7 @@ import { RecordDataComponent } from './record-data/record-data.component';
 import { ResultDetailsComponent } from './result-details/result-details.component';
 import { TrialCardComponent } from './trial-card/trial-card.component';
 import Client from 'fhirclient/lib/Client';
+import { ToastrModule } from 'ngx-toastr';
 
 const fhirInitializeFn = (fhirService: ClientService) => {
   // Grab the client during bootstrap - this prevents the flash of a partially
@@ -35,7 +36,8 @@ const fhirInitializeFn = (fhirService: ClientService) => {
     HttpClientModule,
     FormsModule,
     NgxSpinnerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     ClientService,

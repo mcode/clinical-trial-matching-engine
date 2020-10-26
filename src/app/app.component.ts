@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 import { ClientService } from './smartonfhir/client.service';
 import Patient from './patient';
@@ -159,7 +160,8 @@ export class AppComponent {
   constructor(
     private spinner: NgxSpinnerService,
     private searchService: SearchService,
-    private fhirService: ClientService
+    private fhirService: ClientService,
+    private toastr: ToastrService
   ) {
     this.phaseDropDown = Object.values(ResearchStudyPhase).map((value) => {
       return new DropDownValue(value, ResearchStudyPhaseDisplay[value]);
@@ -256,7 +258,12 @@ export class AppComponent {
         this.showPage(0);
       },
       (err) => {
+        console.error('catching error in component');
         console.error(err);
+        console.error('error printed above');
+        // error alert to user
+        this.toastr.error(err.message, 'Error:')
+        this.spinner.hide('load');
       }
     );
   }
