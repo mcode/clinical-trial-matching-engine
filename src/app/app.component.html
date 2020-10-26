@@ -95,7 +95,7 @@
           </div>
         </div>
         <!--Patient Records-->
-        <app-record-data [(displayOn)]="records" [conditions]="conditions" [patient]="patient">
+        <app-record-data [(displayOn)]="this.records" [bundleResources]="this.bundleResources" [patient]="this.patient" vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>
         </app-record-data>
 
       </div>

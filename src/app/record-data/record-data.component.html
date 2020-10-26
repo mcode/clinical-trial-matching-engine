@@ -1,7 +1,8 @@
-<div *ngIf='displayOn'>
+<div *ngIf='displayOn' vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>
     <!-- Modal content -->
-    <div class="modal-content">
-        <span class="close" (click)="setStatus(false);">&times;</span>
+    <div class="modal-content" vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>
+        <span class="close" (click)="setStatus(false);" vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>&times;</span>
+        <div class="set-resources"> {{setResources()}} </div>
         <h2 class="cardText2 mi-margin-20">Patient Record</h2>
         <span class="color14 mi-margin-20">If something doesn’t look right on your record, please contact your
             healthcare provider.</span>
@@ -13,7 +14,15 @@
         <div class="mi-margin-20">
             <span class="color14 upperCase">Conditions:</span>
             <ul>
-                <li *ngFor="let condition of conditions">{{condition.getDisplayText()}}</li>
+                <li *ngFor="let condition of conditions">{{condition.code.text}}</li>
+            </ul>
+            <span class="color14 upperCase">Observations:</span>
+            <ul>
+                <li *ngFor="let observation of observations">{{observation.code.text}}</li>
+            </ul>
+            <span class="color14 upperCase">Procedures:</span>
+            <ul>
+                <li *ngFor="let procedures of procedures">{{procedures.code.text}}</li>
             </ul>
         </div>
     </div>

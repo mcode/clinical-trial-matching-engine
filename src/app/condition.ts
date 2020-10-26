@@ -24,8 +24,11 @@ export function pullCodesFromConditions(resources: fhirclient.FHIR.Resource[], c
  * codes and display text.
  */
 export class Condition {
-  constructor(public resource: fhirclient.FHIR.Resource) {
-    console.log(this.resource);
+
+  public resource: fhirclient.FHIR.Resource;
+
+  constructor(resource: fhirclient.FHIR.Resource) {
+    this.resource = resource;
   }
 
   /**
