@@ -173,21 +173,27 @@ export class AppComponent {
     // show loading screen while we pull the FHIR record
     this.spinner.show('load-record');
 
-    this.patient = fhirService.getPatient().then((patient) => {
-      // Wrap the patient in a class that handles extracting values
-      const p = new Patient(patient);
-      // Also take this opportunity to set the zip code, if there is one
-      const zipCode = p.getHomePostalCode();
-      if (zipCode) {
-        if (!this.searchReqObject.zipCode) {
-          this.searchReqObject.zipCode = zipCode;
+    this.patient = fhirService
+      .getPatient()
+      .then((patient) => {
+        // Wrap the patient in a class that handles extracting values
+        const p = new Patient(patient);
+        // Also take this opportunity to set the zip code, if there is one
+        const zipCode = p.getHomePostalCode();
+        if (zipCode) {
+          if (!this.searchReqObject.zipCode) {
+            this.searchReqObject.zipCode = zipCode;
+          }
         }
-      }
-      return p;
-    });
+        return p;
+      })
+      .catch((err) => {
+        console.log(err);
+        this.toastr.error(err.message, 'Error Loading Patient Data:');
+        return new Patient({ resourceType: 'Patient' });
+      });
 
     // Gathering resources for patient bundle
-    let resourceTypeCount = 0;
     this.fhirService
       .getResources('Condition', {
         _profile: 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition'
@@ -206,21 +212,34 @@ export class AppComponent {
             this.fhirService.resourceParams['MedicationStatement'] = { effective: 'ge' + newStringDate };
           }
         }
-        this.fhirService.resourceTypes.map((resourceType) => {
-          this.fhirService.getResources(resourceType, this.fhirService.resourceParams[resourceType]).then((records) => {
-            this.bundleResources.push(
-              ...(records.filter((record) => {
-                // Check to make sure it's a bundle entry
-                return 'fullUrl' in record && 'resource' in record;
-              }) as fhirclient.FHIR.BundleEntry[])
-            );
-            resourceTypeCount++;
-            if (this.fhirService.resourceTypes.length === resourceTypeCount) {
-              // remove loading screen when we've loaded our final resource type
-              this.spinner.hide('load-record');
-            }
-          });
+        this.fhirService.resourceTypes.map((resourceType, index) => {
+          this.fhirService
+            .getResources(resourceType, this.fhirService.resourceParams[resourceType])
+            .then((records) => {
+              this.bundleResources.push(
+                ...(records.filter((record) => {
+                  // Check to make sure it's a bundle entry
+                  return 'fullUrl' in record && 'resource' in record;
+                }) as fhirclient.FHIR.BundleEntry[])
+              );
+              if (index + 1 === this.fhirService.resourceTypes.length) {
+                // remove loading screen when we've loaded our final resource type
+                this.spinner.hide('load-record');
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              this.toastr.error(err.message, 'Error Loading Patient Data: ' + resourceType);
+              if (index + 1 === this.fhirService.resourceTypes.length) {
+                this.spinner.hide('load-record');
+              }
+            });
         });
+      })
+      .catch((err) => {
+        console.log(err);
+        this.toastr.error(err.message, 'Error Loading Patient Data:');
+        this.spinner.hide('load-record');
       });
   }
 
@@ -239,7 +258,8 @@ export class AppComponent {
     this.spinner.show('load');
     // Blank out any existing results
     if (this.searchReqObject.zipCode == null) {
-      alert('Enter Zipcode');
+      this.toastr.warning('Enter Zip Code');
+      this.spinner.hide('load');
       return;
     }
     // patient bundle includes all search paramters except conditions
@@ -258,11 +278,9 @@ export class AppComponent {
         this.showPage(0);
       },
       (err) => {
-        console.error('catching error in component');
         console.error(err);
-        console.error('error printed above');
         // error alert to user
-        this.toastr.error(err.message, 'Error:')
+        this.toastr.error(err.message, 'Error Loading Clinical Trials:');
         this.spinner.hide('load');
       }
     );
