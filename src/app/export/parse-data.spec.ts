@@ -30,7 +30,8 @@ describe('UnpackResearchStudyResults', () => {
             resourceType: 'ResearchStudy'
           }
         },
-        distServ
+        distServ,
+        '01886'
       )
     ]);
     expect(Array.isArray(actual)).toBe(true);
@@ -112,7 +113,8 @@ describe('UnpackResearchStudyResults', () => {
             ]
           }
         },
-        distServ
+        distServ,
+        '01886'
       )
     ]);
     expect(Array.isArray(actual)).toBe(true);

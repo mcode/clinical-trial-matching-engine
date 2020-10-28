@@ -134,6 +134,14 @@
                 class="color1 filterText">{{savedClinicalTrialsNctIds.size > 0 ? 'Export Saved Trials' : 'Export All Trials'}}</span>
             </div>
           </div>
+          <mat-form-field appearance="fill">
+            <mat-select [(ngModel)]="sortType" (ngModelChange)="applyFilter()">
+              <mat-option value="likelihood">Match Likelihood</mat-option>
+              <mat-option value="distance">Distance</mat-option>
+            </mat-select>
+            <mat-hint>Sort by</mat-hint>
+          </mat-form-field>
+        
           <div class="padding-left-20 padding-top-15">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 37 37">
               <path id="ic_directions_24px"
