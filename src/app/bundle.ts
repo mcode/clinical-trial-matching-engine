@@ -1,4 +1,5 @@
 import { fhirclient } from 'fhirclient/lib/types';
+import patient from '../assets/patient1.json';
 
 /**
  * Values that can be placed into parameters
@@ -19,14 +20,36 @@ export function createPatientBundle(
     if (value === null) continue;
     paramResource.parameter.push({ name: p, valueString: value });
   }
-  const patientBundle: PatientBundle = {
-    resourceType: 'Bundle',
-    type: 'collection',
-    entry: [{ resource: paramResource }]
-  };
-  entries.forEach((resource) => {
-    patientBundle.entry.push({ fullUrl: resource.fullUrl, resource: resource.resource });
-  });
+  // need to remove final comma
+  paramResource = paramResource.slice(0, -1);
+  paramResource += `
+                     ]
+                    }
+                  },`;
+  let patientBundle =
+    `{
+                          "resourceType": "Bundle",
+                          "type": "collection",
+                          "entry": [
+                            {
+                              "resource": ` + paramResource;
+  // for (const resource in entries)
+  // entries.forEach((resource) => {
+  //   // for each instead
+  //   patientBundle += `
+  //   ${JSON.stringify({ fullUrl: resource.fullUrl, resource: resource.resource })},`;
+  // });
+
+  patient.entry.forEach((resource) => {
+    patientBundle += `${JSON.stringify(resource)},`;
+  })
+
+  patientBundle = patientBundle.slice(0, -1);
+  patientBundle += `
+                      ]
+                     }`;
+  
+  console.log(patientBundle);
   return patientBundle;
 }
 
