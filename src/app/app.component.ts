@@ -257,11 +257,7 @@ export class AppComponent {
     this.itemsPerPage = 10;
     this.spinner.show('load');
     // Blank out any existing results
-    if (
-      this.searchReqObject.zipCode == null ||
-      isNaN(Number(this.searchReqObject.zipCode)) ||
-      this.searchReqObject.zipCode.length != 5
-    ) {
+    if (this.searchReqObject.zipCode == null || !/^[0-9]{5}$/.exec(this.searchReqObject.zipCode)) {
       this.toastr.warning('Enter Valid Zip Code');
       this.spinner.hide('load');
       return;
