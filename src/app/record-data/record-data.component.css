@@ -177,8 +177,8 @@
     margin: auto;
     padding: 20px;
     border: 1px solid #707070;
-    width: 80%;
-    height: 120%;
+    width: 80vw;
+    height: 70vh;
     overflow: auto;
     top: 50%;
     left: 45%;
