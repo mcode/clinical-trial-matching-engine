@@ -28,7 +28,7 @@
   .color9{
       color : #898686;
   }
-  
+
   .color9space{
       color : #898686;
       white-space: pre;
@@ -57,7 +57,7 @@
       font-size: 45px;
       text-align: left;
       color: #707070;
-  
+
   }
   .header2{
       font-family: Roboto;
@@ -67,7 +67,7 @@
       line-height: 120px;
       text-align: left;
       color: #525151;
-  
+
       }
       .subText{
           height: 63px;
@@ -78,14 +78,14 @@
       height: 63px;
       background: #fff;
       border: 1px solid #d8d6d6;
-  
+
   }
   .block2{
       width: 6%;
       height: 63px;
       background: #66d5e3;
       border: 1px solid #66d5e3;
-  
+
   }
   ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
       font-family: Roboto;
@@ -155,7 +155,7 @@
   .upperCase{
     text-transform: uppercase;
   }
- 
+
  /* The Close Button */
   .close {
     color: #aaaaaa;
@@ -178,6 +178,8 @@
     padding: 20px;
     border: 1px solid #707070;
     width: 80%;
+    height: 120%;
+    overflow: auto;
     top: 50%;
     left: 45%;
     position: absolute;
