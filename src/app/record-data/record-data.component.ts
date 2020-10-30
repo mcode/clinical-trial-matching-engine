@@ -18,13 +18,17 @@ export class RecordDataComponent {
   procedures: fhirclient.FHIR.Resource[];
   otherResources: fhirclient.FHIR.Resource[];
 
-  constructor(private cdRef:ChangeDetectorRef){} 
-  ngAfterViewInit() {
+  constructor(private cdRef:ChangeDetectorRef){
+  } 
+
+  ngAfterContentChecked() {
      this.cdRef.detectChanges();
   }
+
   setResources(){
     // Initialize.
     if(this.otherResources == undefined || this.otherResources == null){
+      this.otherResources = [] as fhirclient.FHIR.Resource[];
       this.conditions = [] as fhirclient.FHIR.Resource[];
       this.observations = [] as fhirclient.FHIR.Resource[];
       this.procedures = [] as fhirclient.FHIR.Resource[];
@@ -43,12 +47,12 @@ export class RecordDataComponent {
             this.procedures.push(resource);
             break;
           default:
+            this.otherResources.push(resource);
             break;
         }
       }
       console.log("resources set");
     }
-
   }
 
   setStatus(status: boolean): void {

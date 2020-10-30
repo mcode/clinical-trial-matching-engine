@@ -1,7 +1,7 @@
-<div *ngIf='displayOn' vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>
+<div *ngIf='displayOn' [style.display]='none' max-height='90vh' vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>
     <!-- Modal content -->
-    <div class="modal-content" vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>
-        <span class="close" (click)="setStatus(false);" vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>&times;</span>
+    <div class="modal-content" max-height='90vh' vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>
+        <span class="close" (click)="setStatus(false);" max-height='90vh' vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>&times;</span>
         <div class="set-resources"> {{setResources()}} </div>
         <h2 class="cardText2 mi-margin-20">Patient Record</h2>
         <span class="color14 mi-margin-20">If something doesn’t look right on your record, please contact your
@@ -15,10 +15,6 @@
             <span class="color14 upperCase">Conditions:</span>
             <ul>
                 <li *ngFor="let condition of conditions">{{condition.code.text}}</li>
-            </ul>
-            <span class="color14 upperCase">Observations:</span>
-            <ul>
-                <li *ngFor="let observation of observations">{{observation.code.text}}</li>
             </ul>
             <span class="color14 upperCase">Procedures:</span>
             <ul>

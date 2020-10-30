@@ -239,7 +239,6 @@ export class AppComponent {
       alert('Enter Zipcode');
       return;
     }
-    // patient bundle includes all search paramters except conditions
     const patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
     this.searchService.searchClinicalTrials(patientBundle).subscribe(
       (response) => {
