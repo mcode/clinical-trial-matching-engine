@@ -16,6 +16,7 @@ export class RecordDataComponent {
   conditions: fhirclient.FHIR.Resource[];
   observations: fhirclient.FHIR.Resource[];
   procedures: fhirclient.FHIR.Resource[];
+  medications: fhirclient.FHIR.Resource[];
   otherResources: fhirclient.FHIR.Resource[];
 
   constructor(private cdRef: ChangeDetectorRef) {}
@@ -31,6 +32,7 @@ export class RecordDataComponent {
       this.conditions = [] as fhirclient.FHIR.Resource[];
       this.observations = [] as fhirclient.FHIR.Resource[];
       this.procedures = [] as fhirclient.FHIR.Resource[];
+      this.medications = [] as fhirclient.FHIR.Resource[];
       const allResources: fhirclient.FHIR.Resource[] = this.bundleResources.map((br) => br.resource);
 
       // Pull the resource types and add to resource lists.
@@ -45,8 +47,14 @@ export class RecordDataComponent {
           case 'Procedure':
             this.procedures.push(resource);
             break;
+          case 'MedicationStatement':
+            console.log(resource);
+            this.medications.push(resource);
+            break;
           default:
-            this.otherResources.push(resource);
+            if (resource.code != null && resource.code != undefined) {
+              this.otherResources.push(resource);
+            }
             break;
         }
       }
