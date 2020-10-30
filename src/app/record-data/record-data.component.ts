@@ -18,16 +18,15 @@ export class RecordDataComponent {
   procedures: fhirclient.FHIR.Resource[];
   otherResources: fhirclient.FHIR.Resource[];
 
-  constructor(private cdRef:ChangeDetectorRef){
-  } 
+  constructor(private cdRef: ChangeDetectorRef) {}
 
-  ngAfterContentChecked() {
-     this.cdRef.detectChanges();
+  ngAfterContentChecked(): void {
+    this.cdRef.detectChanges();
   }
 
-  setResources(){
+  setResources(): void {
     // Initialize.
-    if(this.otherResources == undefined || this.otherResources == null){
+    if (this.otherResources == undefined || this.otherResources == null) {
       this.otherResources = [] as fhirclient.FHIR.Resource[];
       this.conditions = [] as fhirclient.FHIR.Resource[];
       this.observations = [] as fhirclient.FHIR.Resource[];
@@ -35,8 +34,8 @@ export class RecordDataComponent {
       const allResources: fhirclient.FHIR.Resource[] = this.bundleResources.map((br) => br.resource);
 
       // Pull the resource types and add to resource lists.
-      for(const resource of allResources){
-        switch(resource.resourceType){
+      for (const resource of allResources) {
+        switch (resource.resourceType) {
           case 'Observation':
             this.observations.push(resource);
             break;
@@ -51,7 +50,7 @@ export class RecordDataComponent {
             break;
         }
       }
-      console.log("resources set");
+      console.log('resources set');
     }
   }
 
