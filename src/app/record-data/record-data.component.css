@@ -158,6 +158,13 @@
 
  /* The Close Button */
   .close {
+    position: 'sticky';
+    top: 10;
+    min-width: 1px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: block;
     color: #aaaaaa;
     float: right;
     font-size: 28px;
@@ -180,6 +187,19 @@
     width: 80vw;
     height: 70vh;
     overflow: auto;
+    top: 50%;
+    left: 45%;
+    position: absolute;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+
+  /* Modal Outside Border for Closing */
+  .modal-close-outside {
+    background-color: #ffffff00;
+    margin: auto;
+    width: 100%;
+    height: 100vh;
     top: 50%;
     left: 45%;
     position: absolute;

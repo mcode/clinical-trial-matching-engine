@@ -217,6 +217,7 @@ text-transform: uppercase;
     height: 120px;
     background-size: 100%;
     background-repeat: no-repeat;
+    z-index: -1;
 }
 .mi-margin-10{
     margin: 10px;
@@ -548,6 +549,7 @@ line-height: 25px;
   .selectItemPerPage{
     background: transparent;
     border: none;
+    z-index: -2;
   }
  .innerDiv{
     display: inline-block;
