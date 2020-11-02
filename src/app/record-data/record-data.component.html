@@ -28,7 +28,7 @@
             </ul>
             <span class="color14 upperCase">Observations:</span>
             <ul>
-                <li *ngFor="let observation of observations">Date: {{observation.effectiveDateTime.substr(0,10)}} | Resource Text: {{observation.code.text}}</li>
+                <li *ngFor="let observation of observations">Date: {{observation.effectiveDateTime.substr(0,10)}} | Resource Text: {{observation.code.text}} {{observation.valueQuantity != null ? '| Value: ' + observation.valueQuantity.value + ' ' + observation.valueQuantity.unit : ''}}</li>
             </ul>
             <span class="color14 upperCase">Other Resources:</span>
             <ul>
