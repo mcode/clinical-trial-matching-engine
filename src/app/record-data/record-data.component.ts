@@ -39,20 +39,20 @@ export class RecordDataComponent {
       for (const resource of allResources) {
         switch (resource.resourceType) {
           case 'Observation':
-            this.observations.push(resource);
+            this.observations.unshift(resource);
             break;
           case 'Condition':
-            this.conditions.push(resource);
+            this.conditions.unshift(resource);
             break;
           case 'Procedure':
-            this.procedures.push(resource);
+            this.procedures.unshift(resource);
             break;
           case 'MedicationStatement':
-            this.medications.push(resource);
+            this.medications.unshift(resource);
             break;
           default:
             if (resource.code != null && resource.code != undefined) {
-              this.otherResources.push(resource);
+              this.otherResources.unshift(resource);
             }
             break;
         }
