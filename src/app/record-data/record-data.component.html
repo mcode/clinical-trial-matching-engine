@@ -16,23 +16,23 @@
         <div class="mi-margin-20">
             <span class="color14 upperCase">Conditions:</span>
             <ul>
-                <li *ngFor="let condition of conditions">Date: {{condition.recordedDate.substr(0,10)}} | Resource Text: {{condition.code.text}} </li>
+                <li *ngFor="let condition of conditions">{{condition.recordedDate.substr(0,10)}} : {{condition.code.text}} </li>
             </ul>
             <span class="color14 upperCase">Procedures:</span>
             <ul>
-                <li *ngFor="let procedure of procedures">Date: {{procedure.performedPeriod.start.substr(0,10)}} | Resource Text: {{procedure.code.text}}</li>
+                <li *ngFor="let procedure of procedures">{{procedure.performedPeriod.start.substr(0,10)}} : {{procedure.code.text}}</li>
             </ul>
             <span class="color14 upperCase">Medications:</span>
             <ul>
-                <li *ngFor="let medication of medications">Date: {{medication.effectiveDateTime.substr(0,10)}} | Resource Text: {{medication.medicationCodeableConcept.text}}</li>
+                <li *ngFor="let medication of medications">{{medication.effectiveDateTime.substr(0,10)}} : {{medication.medicationCodeableConcept.text}}</li>
             </ul>
             <span class="color14 upperCase">Observations:</span>
             <ul>
-                <li *ngFor="let observation of observations">Date: {{observation.effectiveDateTime.substr(0,10)}} | Resource Text: {{observation.code.text}} {{observation.valueQuantity != null ? '| Value: ' + observation.valueQuantity.value + ' ' + observation.valueQuantity.unit : ''}}</li>
+                <li *ngFor="let observation of observations">{{observation.effectiveDateTime.substr(0,10)}} : {{observation.code.text}} {{observation.valueQuantity != null ? ' : ' + observation.valueQuantity.value + ' ' + observation.valueQuantity.unit : ''}}</li>
             </ul>
             <span class="color14 upperCase">Other Resources:</span>
             <ul>
-                <li *ngFor="let resource of otherResources">Resource Text: {{resource.code.text}}</li>
+                <li *ngFor="let resource of otherResources">{{resource.code.text}}</li>
             </ul>
         </div>
     </div>
