@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 import { ClientService } from './smartonfhir/client.service';
 import Patient from './patient';
@@ -14,6 +15,7 @@ import {
   ResearchStudyPhaseDisplay
 } from './fhir-constants';
 import { fhirclient } from 'fhirclient/lib/types';
+import { TrialCardComponent } from './trial-card/trial-card.component';
 
 /**
  * Provides basic information about a given page.
@@ -150,6 +152,12 @@ export class AppComponent {
     phase: null,
     recruitmentStatus: null
   };
+
+  /**
+   * Store sorting preference
+   */
+  public sortType = 'likelihood';
+
   /**
    * Patient bundle resources from the FHIR client.
    */
@@ -158,7 +166,8 @@ export class AppComponent {
   constructor(
     private spinner: NgxSpinnerService,
     private searchService: SearchService,
-    private fhirService: ClientService
+    private fhirService: ClientService,
+    private toastr: ToastrService
   ) {
     this.phaseDropDown = Object.values(ResearchStudyPhase).map((value) => {
       return new DropDownValue(value, ResearchStudyPhaseDisplay[value]);
@@ -170,21 +179,27 @@ export class AppComponent {
     // show loading screen while we pull the FHIR record
     this.spinner.show('load-record');
 
-    this.patient = fhirService.getPatient().then((patient) => {
-      // Wrap the patient in a class that handles extracting values
-      const p = new Patient(patient);
-      // Also take this opportunity to set the zip code, if there is one
-      const zipCode = p.getHomePostalCode();
-      if (zipCode) {
-        if (!this.searchReqObject.zipCode) {
-          this.searchReqObject.zipCode = zipCode;
+    this.patient = fhirService
+      .getPatient()
+      .then((patient) => {
+        // Wrap the patient in a class that handles extracting values
+        const p = new Patient(patient);
+        // Also take this opportunity to set the zip code, if there is one
+        const zipCode = p.getHomePostalCode();
+        if (zipCode) {
+          if (!this.searchReqObject.zipCode) {
+            this.searchReqObject.zipCode = zipCode;
+          }
         }
-      }
-      return p;
-    });
+        return p;
+      })
+      .catch((err) => {
+        console.log(err);
+        this.toastr.error(err.message, 'Error Loading Patient Data:');
+        return new Patient({ resourceType: 'Patient' });
+      });
 
     // Gathering resources for patient bundle
-    let resourceTypeCount = 0;
     this.fhirService
       .getResources('Condition', {
         _profile: 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition'
@@ -203,21 +218,34 @@ export class AppComponent {
             this.fhirService.resourceParams['MedicationStatement'] = { effective: 'ge' + newStringDate };
           }
         }
-        this.fhirService.resourceTypes.map((resourceType) => {
-          this.fhirService.getResources(resourceType, this.fhirService.resourceParams[resourceType]).then((records) => {
-            this.bundleResources.push(
-              ...(records.filter((record) => {
-                // Check to make sure it's a bundle entry
-                return 'fullUrl' in record && 'resource' in record;
-              }) as fhirclient.FHIR.BundleEntry[])
-            );
-            resourceTypeCount++;
-            if (this.fhirService.resourceTypes.length === resourceTypeCount) {
-              // remove loading screen when we've loaded our final resource type
-              this.spinner.hide('load-record');
-            }
-          });
+        this.fhirService.resourceTypes.map((resourceType, index) => {
+          this.fhirService
+            .getResources(resourceType, this.fhirService.resourceParams[resourceType])
+            .then((records) => {
+              this.bundleResources.push(
+                ...(records.filter((record) => {
+                  // Check to make sure it's a bundle entry
+                  return 'fullUrl' in record && 'resource' in record;
+                }) as fhirclient.FHIR.BundleEntry[])
+              );
+              if (index + 1 === this.fhirService.resourceTypes.length) {
+                // remove loading screen when we've loaded our final resource type
+                this.spinner.hide('load-record');
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              this.toastr.error(err.message, 'Error Loading Patient Data: ' + resourceType);
+              if (index + 1 === this.fhirService.resourceTypes.length) {
+                this.spinner.hide('load-record');
+              }
+            });
         });
+      })
+      .catch((err) => {
+        console.log(err);
+        this.toastr.error(err.message, 'Error Loading Patient Data:');
+        this.spinner.hide('load-record');
       });
   }
 
@@ -235,8 +263,17 @@ export class AppComponent {
     this.itemsPerPage = 10;
     this.spinner.show('load');
     // Blank out any existing results
-    if (this.searchReqObject.zipCode == null) {
-      alert('Enter Zipcode');
+    if (this.searchReqObject.zipCode == null || !/^[0-9]{5}$/.exec(this.searchReqObject.zipCode)) {
+      this.toastr.warning('Enter Valid Zip Code');
+      this.spinner.hide('load');
+      return;
+    }
+    if (
+      (isNaN(Number(this.searchReqObject.travelRadius)) || Number(this.searchReqObject.travelRadius) <= 0) &&
+      !(this.searchReqObject.travelRadius == null || this.searchReqObject.travelRadius == '')
+    ) {
+      this.toastr.warning('Enter Valid Travel Radius');
+      this.spinner.hide('load');
       return;
     }
     const patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
@@ -255,6 +292,9 @@ export class AppComponent {
       },
       (err) => {
         console.error(err);
+        // error alert to user
+        this.toastr.error(err.message, 'Error Loading Clinical Trials:');
+        this.spinner.hide('load');
       }
     );
   }
@@ -324,10 +364,14 @@ export class AppComponent {
    * Display details of a given trial.
    */
   public showDetails(i: number): void {
-    this.detailedTrial = this.selectedPageTrials[i];
-    this.searchtable = true;
-    this.searchPage = true;
-    this.detailsPage = false;
+    if (TrialCardComponent.showDetailsFlag) {
+      this.detailedTrial = this.selectedPageTrials[i];
+      this.searchtable = true;
+      this.searchPage = true;
+      this.detailsPage = false;
+    }
+    // Reset the showDetailsFlag to true in case it has been turned off by the Save Study button.
+    TrialCardComponent.showDetailsFlag = true;
   }
   /*
   Function for back search result page
@@ -338,10 +382,30 @@ export class AppComponent {
     this.detailsPage = true;
   }
 
+  /*
+    Function for get event of selected Filter
+    * */
+  public checkBoxClick(i, j): void {
+    if (!this.filtersArray[i].data[j].selectedItems) {
+      this.filtersArray[i].data[j].selectedItems = true;
+    } else {
+      this.filtersArray[i].data[j].selectedItems = false;
+    }
+  }
+
   /**
    * Apply user-selected filters
    */
   public applyFilter(): void {
+    let comparisonFunction = undefined;
+    if (this.sortType == 'likelihood') {
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      comparisonFunction = this.compareByMatch;
+    } else {
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      comparisonFunction = this.compareByDist;
+    }
+
     const activeFilters: { selectedItem: string; values: string[] }[] = [];
     for (const filter of this.filtersArray) {
       // See if there are any active filters in this filter
@@ -356,6 +420,7 @@ export class AppComponent {
     if (activeFilters.length === 0) {
       // No filters active, don't filter
       this.filteredResults = null;
+      this.searchResults.researchStudies.sort(comparisonFunction);
       this.createPages();
       this.showPage(0);
       return;
@@ -369,19 +434,13 @@ export class AppComponent {
       // If all filters matched, return true
       return true;
     });
+
+    this.filteredResults.sort(comparisonFunction);
+
     this.createPages(this.filteredResults.length);
     this.showPage(0);
   }
-  /*
-    Function for get event of selected Filter
-    * */
-  public checkBoxClick(i, j): void {
-    if (!this.filtersArray[i].data[j].selectedItems) {
-      this.filtersArray[i].data[j].selectedItems = true;
-    } else {
-      this.filtersArray[i].data[j].selectedItems = false;
-    }
-  }
+
   /*
      Function for clear Filter
   * */
@@ -391,6 +450,7 @@ export class AppComponent {
     });
     this.applyFilter();
   }
+
   /*
      Function for go to home page
   * */
@@ -461,6 +521,12 @@ export class AppComponent {
   onChange(val): void {
     console.log('onChange: ' + val);
     //this.countPages();
+  }
+  public compareByDist(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry) {
+    return trial1.dist - trial2.dist;
+  }
+  public compareByMatch(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry) {
+    return trial2.search.score - trial1.search.score;
   }
 
   public records = false;

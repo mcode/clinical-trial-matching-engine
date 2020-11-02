@@ -261,7 +261,7 @@ Font Sizes
     font-size: 20px;
 }
 .filters{
-width: 149px;
+width: 160px;
 border-radius: 5px;
 text-align: center;
 background: #fff;
@@ -629,6 +629,7 @@ line-height: 25px;
 .emailIcon {
   background-image: url(/assets/images/email.svg);
 }
+
 /* FIXME: These styles feel overly-specific. */
 .mi-margin-2{
     margin: 2%;
@@ -672,7 +673,8 @@ line-height: 25px;
     padding: 0 18px;
     display: none;
     background-color: white;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 
   .color8 {

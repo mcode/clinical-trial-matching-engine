@@ -40,7 +40,7 @@ describe('TrialCardComponent', () => {
 
   it('should create', () => {
     const distServ = TestBed.get(DistanceService) as DistanceService;
-    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ);
+    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
     testHostComponent.trial.trialSaved = false;
     testHostComponent.trial.reqs = {
       zipCode: '01886',
@@ -54,10 +54,10 @@ describe('TrialCardComponent', () => {
   //trialsaved should be false on startup
   it('trial saved should be false', () => {
     const distServ = TestBed.get(DistanceService) as DistanceService;
-    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ);
+    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
     testHostComponent.trial.trialSaved = false;
     testHostComponent.trial.reqs = {
-      zipCode: '01234',
+      zipCode: '01886',
       travelRadius: null,
       phase: null,
       recruitmentStatus: null
