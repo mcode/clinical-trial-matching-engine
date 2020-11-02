@@ -152,6 +152,12 @@ export class AppComponent {
     phase: null,
     recruitmentStatus: null
   };
+
+  /**
+   * Store sorting preference
+   */
+  public sortType = 'likelihood';
+
   /**
    * Patient bundle resources from the FHIR client.
    */
@@ -377,10 +383,30 @@ export class AppComponent {
     this.detailsPage = true;
   }
 
+  /*
+    Function for get event of selected Filter
+    * */
+  public checkBoxClick(i, j): void {
+    if (!this.filtersArray[i].data[j].selectedItems) {
+      this.filtersArray[i].data[j].selectedItems = true;
+    } else {
+      this.filtersArray[i].data[j].selectedItems = false;
+    }
+  }
+
   /**
    * Apply user-selected filters
    */
   public applyFilter(): void {
+    let comparisonFunction = undefined;
+    if (this.sortType == 'likelihood') {
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      comparisonFunction = this.compareByMatch;
+    } else {
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      comparisonFunction = this.compareByDist;
+    }
+
     const activeFilters: { selectedItem: string; values: string[] }[] = [];
     for (const filter of this.filtersArray) {
       // See if there are any active filters in this filter
@@ -395,6 +421,7 @@ export class AppComponent {
     if (activeFilters.length === 0) {
       // No filters active, don't filter
       this.filteredResults = null;
+      this.searchResults.researchStudies.sort(comparisonFunction);
       this.createPages();
       this.showPage(0);
       return;
@@ -408,19 +435,13 @@ export class AppComponent {
       // If all filters matched, return true
       return true;
     });
+
+    this.filteredResults.sort(comparisonFunction);
+
     this.createPages(this.filteredResults.length);
     this.showPage(0);
   }
-  /*
-    Function for get event of selected Filter
-    * */
-  public checkBoxClick(i, j): void {
-    if (!this.filtersArray[i].data[j].selectedItems) {
-      this.filtersArray[i].data[j].selectedItems = true;
-    } else {
-      this.filtersArray[i].data[j].selectedItems = false;
-    }
-  }
+
   /*
      Function for clear Filter
   * */
@@ -430,6 +451,7 @@ export class AppComponent {
     });
     this.applyFilter();
   }
+
   /*
      Function for go to home page
   * */
@@ -500,6 +522,12 @@ export class AppComponent {
   onChange(val): void {
     console.log('onChange: ' + val);
     //this.countPages();
+  }
+  public compareByDist(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry) {
+    return trial1.dist - trial2.dist;
+  }
+  public compareByMatch(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry) {
+    return trial2.search.score - trial1.search.score;
   }
 
   public records = false;
