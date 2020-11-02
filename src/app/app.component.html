@@ -133,16 +133,15 @@
               style=" position: relative;display: inline-block;"> <span
                 class="color1 filterText">{{savedClinicalTrialsNctIds.size > 0 ? 'Export Saved Trials' : 'Export All Trials'}}</span>
             </div>
+            <div>
+              <form>
+                <select class="filters mi-margin-10 color1" [(ngModel)]="sortType" (ngModelChange)="applyFilter()" [ngModelOptions]="{standalone: true}">
+                  <option value="likelihood">Match Likelihood</option>
+                  <option value="distance">Distance</option>
+                </select>
+              </form>
+            </div>
           </div>
-        <div class="containingDIV">
-          <form >
-            <select  [(ngModel)]="sortType" (ngModelChange)="applyFilter()" [ngModelOptions]="{standalone: true}">
-              <option value="likelihood">Match Likelihood</option>
-              <option value="distance">Distance</option>
-            </select>
-        
-          </form>
-        </div>
           <div class="padding-left-20 padding-top-15">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 37 37">
               <path id="ic_directions_24px"
