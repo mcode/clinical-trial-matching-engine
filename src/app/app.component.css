@@ -276,8 +276,8 @@ padding: 5px;
 }
 .recButton{
 width: 90%;
-height: 41px; 
-border-radius: 20.5px; 
+height: 41px;
+border-radius: 20.5px;
 background: #30b400;
 color:white;
 border: 1px solid #30b400;
@@ -633,20 +633,20 @@ line-height: 25px;
   .mi-margin-30{
     margin: 30px;
   }
-  
+
   .containingDIV {
     display: flex;
   }
-  
+
   .outerDiv{
     text-align: center;
-    /*width: 321px; 
+    /*width: 321px;
     height: 217px; */
     width: 25%;
-    
+
     background: rgba(255, 255, 255, 0.94);
   }
-  
+
   .accordion {
     color: #B7B7B7;
     cursor: pointer;
@@ -658,34 +658,35 @@ line-height: 25px;
     font-size: 15px;
     transition: 0.4s;
   }
-  
+
   .accordionDetails {
     font-size: 20px;
     color : #898686;
     white-space: pre;
   }
-  
+
   .panel {
     padding: 0 18px;
     display: none;
     background-color: white;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
-  
+
   .color8 {
       color : #ffffff !important;
   }
-  
-  
+
+
   .detailCardText {
     display: flex;
     font-size: 2vw;
     color: #FFFFFF;
   }
-  
+
 
   .mi-margin-2020{
-   
+
     margin: 2%;
   }
   .flexborder {
@@ -694,9 +695,9 @@ line-height: 25px;
     width: 100%;
     position: relative;
     flex-flow: row wrap;
-  
+
     background: #525151;
-    
+
   }
   .varfont{
 
@@ -707,4 +708,3 @@ line-height: 25px;
     font-size: 0.8em;
 
   }
-  
