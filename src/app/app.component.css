@@ -710,3 +710,11 @@ line-height: 25px;
     font-size: 0.8em;
 
   }
+
+  .view-record-text{
+    color : #0079E0;
+  }
+
+  .view-record-text:hover{
+    color : #ff00b3;
+  }
