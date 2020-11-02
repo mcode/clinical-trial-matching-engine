@@ -48,7 +48,6 @@ export class RecordDataComponent {
             this.procedures.push(resource);
             break;
           case 'MedicationStatement':
-            console.log(resource);
             this.medications.push(resource);
             break;
           default:
@@ -58,7 +57,6 @@ export class RecordDataComponent {
             break;
         }
       }
-      console.log('resources set');
     }
   }
 
