@@ -13,6 +13,7 @@ import { ResultDetailsComponent } from './result-details/result-details.componen
 import { TrialCardComponent } from './trial-card/trial-card.component';
 import Client from 'fhirclient/lib/Client';
 import { MatFormFieldModule, MatSelectModule } from '@angular/material';
+import { ToastrModule } from 'ngx-toastr';
 
 const fhirInitializeFn = (fhirService: ClientService) => {
   // Grab the client during bootstrap - this prevents the flash of a partially
@@ -45,6 +46,7 @@ export class MaterialModule {}
     NgxSpinnerModule,
     BrowserAnimationsModule,
     MaterialModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     ClientService,

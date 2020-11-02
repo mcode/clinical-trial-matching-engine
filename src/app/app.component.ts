@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 import { ClientService } from './smartonfhir/client.service';
 import Patient from './patient';
@@ -14,6 +15,7 @@ import {
   ResearchStudyPhaseDisplay
 } from './fhir-constants';
 import { fhirclient } from 'fhirclient/lib/types';
+import { TrialCardComponent } from './trial-card/trial-card.component';
 
 /**
  * Provides basic information about a given page.
@@ -164,7 +166,8 @@ export class AppComponent {
   constructor(
     private spinner: NgxSpinnerService,
     private searchService: SearchService,
-    private fhirService: ClientService
+    private fhirService: ClientService,
+    private toastr: ToastrService
   ) {
     this.phaseDropDown = Object.values(ResearchStudyPhase).map((value) => {
       return new DropDownValue(value, ResearchStudyPhaseDisplay[value]);
@@ -176,21 +179,27 @@ export class AppComponent {
     // show loading screen while we pull the FHIR record
     this.spinner.show('load-record');
 
-    this.patient = fhirService.getPatient().then((patient) => {
-      // Wrap the patient in a class that handles extracting values
-      const p = new Patient(patient);
-      // Also take this opportunity to set the zip code, if there is one
-      const zipCode = p.getHomePostalCode();
-      if (zipCode) {
-        if (!this.searchReqObject.zipCode) {
-          this.searchReqObject.zipCode = zipCode;
+    this.patient = fhirService
+      .getPatient()
+      .then((patient) => {
+        // Wrap the patient in a class that handles extracting values
+        const p = new Patient(patient);
+        // Also take this opportunity to set the zip code, if there is one
+        const zipCode = p.getHomePostalCode();
+        if (zipCode) {
+          if (!this.searchReqObject.zipCode) {
+            this.searchReqObject.zipCode = zipCode;
+          }
         }
-      }
-      return p;
-    });
+        return p;
+      })
+      .catch((err) => {
+        console.log(err);
+        this.toastr.error(err.message, 'Error Loading Patient Data:');
+        return new Patient({ resourceType: 'Patient' });
+      });
 
     // Gathering resources for patient bundle
-    let resourceTypeCount = 0;
     this.fhirService
       .getResources('Condition', {
         _profile: 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition'
@@ -209,21 +218,34 @@ export class AppComponent {
             this.fhirService.resourceParams['MedicationStatement'] = { effective: 'ge' + newStringDate };
           }
         }
-        this.fhirService.resourceTypes.map((resourceType) => {
-          this.fhirService.getResources(resourceType, this.fhirService.resourceParams[resourceType]).then((records) => {
-            this.bundleResources.push(
-              ...(records.filter((record) => {
-                // Check to make sure it's a bundle entry
-                return 'fullUrl' in record && 'resource' in record;
-              }) as fhirclient.FHIR.BundleEntry[])
-            );
-            resourceTypeCount++;
-            if (this.fhirService.resourceTypes.length === resourceTypeCount) {
-              // remove loading screen when we've loaded our final resource type
-              this.spinner.hide('load-record');
-            }
-          });
+        this.fhirService.resourceTypes.map((resourceType, index) => {
+          this.fhirService
+            .getResources(resourceType, this.fhirService.resourceParams[resourceType])
+            .then((records) => {
+              this.bundleResources.push(
+                ...(records.filter((record) => {
+                  // Check to make sure it's a bundle entry
+                  return 'fullUrl' in record && 'resource' in record;
+                }) as fhirclient.FHIR.BundleEntry[])
+              );
+              if (index + 1 === this.fhirService.resourceTypes.length) {
+                // remove loading screen when we've loaded our final resource type
+                this.spinner.hide('load-record');
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              this.toastr.error(err.message, 'Error Loading Patient Data: ' + resourceType);
+              if (index + 1 === this.fhirService.resourceTypes.length) {
+                this.spinner.hide('load-record');
+              }
+            });
         });
+      })
+      .catch((err) => {
+        console.log(err);
+        this.toastr.error(err.message, 'Error Loading Patient Data:');
+        this.spinner.hide('load-record');
       });
   }
 
@@ -241,8 +263,17 @@ export class AppComponent {
     this.itemsPerPage = 10;
     this.spinner.show('load');
     // Blank out any existing results
-    if (this.searchReqObject.zipCode == null) {
-      alert('Enter Zipcode');
+    if (this.searchReqObject.zipCode == null || !/^[0-9]{5}$/.exec(this.searchReqObject.zipCode)) {
+      this.toastr.warning('Enter Valid Zip Code');
+      this.spinner.hide('load');
+      return;
+    }
+    if (
+      (isNaN(Number(this.searchReqObject.travelRadius)) || Number(this.searchReqObject.travelRadius) <= 0) &&
+      !(this.searchReqObject.travelRadius == null || this.searchReqObject.travelRadius == '')
+    ) {
+      this.toastr.warning('Enter Valid Travel Radius');
+      this.spinner.hide('load');
       return;
     }
     // patient bundle includes all search paramters except conditions
@@ -262,6 +293,9 @@ export class AppComponent {
       },
       (err) => {
         console.error(err);
+        // error alert to user
+        this.toastr.error(err.message, 'Error Loading Clinical Trials:');
+        this.spinner.hide('load');
       }
     );
   }
@@ -331,10 +365,14 @@ export class AppComponent {
    * Display details of a given trial.
    */
   public showDetails(i: number): void {
-    this.detailedTrial = this.selectedPageTrials[i];
-    this.searchtable = true;
-    this.searchPage = true;
-    this.detailsPage = false;
+    if (TrialCardComponent.showDetailsFlag) {
+      this.detailedTrial = this.selectedPageTrials[i];
+      this.searchtable = true;
+      this.searchPage = true;
+      this.detailsPage = false;
+    }
+    // Reset the showDetailsFlag to true in case it has been turned off by the Save Study button.
+    TrialCardComponent.showDetailsFlag = true;
   }
   /*
   Function for back search result page

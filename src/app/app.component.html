@@ -159,8 +159,8 @@
             <span class="cardText2 font-size-20">{{searchReqObject.travelRadius}} Miles</span>
           </div>
         </div>
-        <span class="color11 ">Showing {{selectedPage.firstIndex + 1}}-{{selectedPage.lastIndex}} of
-          {{resultCount}}</span>
+        <span class="color11 ">{{resultCount == 0 ? 'Showing 0 of 0' : 'Showing ' + (selectedPage.firstIndex + 1) + '-' + selectedPage.lastIndex + ' of ' +
+          resultCount}}</span>
         <div style="padding-bottom: 20px; height: 60vh;overflow-y: scroll;margin-top: 10px;" class="mitTable">
           <div *ngFor="let trial of selectedPageTrials; let k=index">
             <div (click)="showDetails(k)">
