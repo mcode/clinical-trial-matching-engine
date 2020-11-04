@@ -276,7 +276,6 @@ export class AppComponent {
       this.spinner.hide('load');
       return;
     }
-    // patient bundle includes all search paramters except conditions
     const patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
     this.searchService.searchClinicalTrials(patientBundle).subscribe(
       (response) => {

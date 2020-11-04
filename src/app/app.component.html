@@ -38,7 +38,7 @@
       <div class="center" *ngIf='!searchPage'>
         <h1 class="color1 header">Welcome {{(patient | async)?.getUsualName()}},</h1>
         <h1 class="color2 header2">Let’s find some clinical trials</h1>
-        <h1 class="color1 subText"> We found your <span class="color12" (click)="showRecord();">record</span>. Just fill
+        <h1 class="color1 subText"> We found your <span class="view-record-text" (click)="showRecord();">record</span>. Just fill
           in some preferences and
           we’ll do the rest</h1>
         <div class="containingDIV col100" style="padding-right: 10%;">
@@ -95,7 +95,7 @@
           </div>
         </div>
         <!--Patient Records-->
-        <app-record-data [(displayOn)]="records" [conditions]="conditions" [patient]="patient">
+        <app-record-data [(displayOn)]="this.records" [bundleResources]="this.bundleResources" [patient]="this.patient" max-height='90vh' height='90%' vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>
         </app-record-data>
 
       </div>
