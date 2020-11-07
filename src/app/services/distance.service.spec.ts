@@ -1,3 +1,4 @@
+import { GeolibInputCoordinates } from 'geolib/es/types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
@@ -24,4 +25,15 @@ describe('DistanceService', () => {
     expect(point.latitude).toBeCloseTo(38.94813, 5);
     expect(point.longitude).toBeCloseTo(-77.22787, 5);
   });
+  it('should calculate the distance', () => {
+    const service: DistanceService = TestBed.get(DistanceService);
+
+    let origin = service.getCoord('01730') as GeolibInputCoordinates;
+
+    let dest = service.getCoord('22102') as GeolibInputCoordinates;
+
+    const dist = service.getDist(origin,[dest]);
+    expect(dist).toBeCloseTo(396.71, 5);
+  });
+
 });
