@@ -12,30 +12,32 @@ export function createPatientBundle(
   parameters: { [key: string]: Stringable },
   entries: fhirclient.FHIR.BundleEntry[]
 ): string {
-
-  let paramResource: ParameterResource = {resourceType: "Parameters", id: "0", parameter: []};
+  const paramResource: ParameterResource = { resourceType: 'Parameters', id: '0', parameter: [] };
   for (const p in parameters) {
     // Ignore null values, they indicate a parameter that should be ignored.
     const value = parameters[p];
     if (value === null) continue;
-    paramResource.parameter.push({name: p, valueString: value});
+    paramResource.parameter.push({ name: p, valueString: value });
   }
-  let patientBundle: PatientBundle = {resourceType: 'Bundle', type: 'collection', entry: [{resource: paramResource}]};
+  const patientBundle: PatientBundle = {
+    resourceType: 'Bundle',
+    type: 'collection',
+    entry: [{ resource: paramResource }]
+  };
   entries.forEach((resource) => {
-    patientBundle.entry.push({fullUrl: resource.fullUrl, resource: resource.resource});
+    patientBundle.entry.push({ fullUrl: resource.fullUrl, resource: resource.resource });
   });
-  console.log(JSON.stringify(patientBundle));
   return JSON.stringify(patientBundle);
 }
 
 export interface ParameterResource {
   resourceType?: string;
   id?: string;
-  parameter?: {name: string, valueString: Stringable}[];
+  parameter?: { name: string; valueString: Stringable }[];
 }
 
 export interface PatientBundle {
   resourceType?: string;
   type?: string;
-  entry?: {resource: ParameterResource }[] | {fullUrl:string, resource: fhirclient.FHIR.Resource}[];
+  entry?: { resource: ParameterResource }[] | { fullUrl: string; resource: fhirclient.FHIR.Resource }[];
 }
