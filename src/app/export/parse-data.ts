@@ -28,7 +28,7 @@ export const UnpackResearchStudyResults = (result: ResearchStudySearchEntry[]): 
     mainRow['OverallContactEmail'] = trial.overallContactEmail;
 
     data.push(mainRow);
-
+    /*
     Object.keys(sites).forEach((index) => {
       const siteRow = {};
       siteRow['Facility'] = sites[index]['name'];
@@ -43,6 +43,7 @@ export const UnpackResearchStudyResults = (result: ResearchStudySearchEntry[]): 
       }
       data.push(siteRow);
     });
+    */
   });
 
   return data;
