@@ -28,12 +28,11 @@ describe('DistanceService', () => {
   it('should calculate the distance', () => {
     const service: DistanceService = TestBed.get(DistanceService);
 
-    let origin = service.getCoord('01730') as GeolibInputCoordinates;
+    const origin = service.getCoord('01730') as GeolibInputCoordinates;
 
-    let dest = service.getCoord('22102') as GeolibInputCoordinates;
+    const dest = service.getCoord('22102') as GeolibInputCoordinates;
 
-    const dist = service.getDist(origin,[dest]);
+    const dist = service.getDist(origin, [dest]);
     expect(dist).toBeCloseTo(396.71, 5);
   });
-
 });
