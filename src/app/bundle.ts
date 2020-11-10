@@ -11,7 +11,7 @@ type Stringable = string | number | boolean | null;
 export function createPatientBundle(
   parameters: { [key: string]: Stringable },
   entries: fhirclient.FHIR.BundleEntry[]
-): string {
+): PatientBundle {
   const paramResource: ParameterResource = { resourceType: 'Parameters', id: '0', parameter: [] };
   for (const p in parameters) {
     // Ignore null values, they indicate a parameter that should be ignored.
@@ -27,7 +27,7 @@ export function createPatientBundle(
   entries.forEach((resource) => {
     patientBundle.entry.push({ fullUrl: resource.fullUrl, resource: resource.resource });
   });
-  return JSON.stringify(patientBundle);
+  return patientBundle;
 }
 
 export interface ParameterResource {
