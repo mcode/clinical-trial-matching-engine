@@ -1,4 +1,4 @@
-/*import { ResultDetailsComponent } from './result-details/result-details.component';
+import { ResultDetailsComponent } from './result-details/result-details.component';
 import { RecordDataComponent } from './record-data/record-data.component';
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -9,12 +9,10 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClientService } from './smartonfhir/client.service';
-import { TrialCardComponent } from './trial-card/trial-card.component';*/
-/*Commenting out test cases since Travis doesn't like fhirService
+import { TrialCardComponent } from './trial-card/trial-card.component';
+import { ToastrModule } from 'ngx-toastr';
+//Commenting out test cases since Travis doesn't like fhirService
 describe('AppComponent', () => {
-
-
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -22,18 +20,11 @@ describe('AppComponent', () => {
         FormsModule,
         RouterTestingModule,
         HttpClientTestingModule,
-        BrowserAnimationsModule
-
+        BrowserAnimationsModule,
+        ToastrModule.forRoot()
       ],
-      declarations: [
-        AppComponent,
-        RecordDataComponent,
-        ResultDetailsComponent,
-        TrialCardComponent
-      ],
-      providers: [
-        ClientService
-      ]
+      declarations: [AppComponent, RecordDataComponent, ResultDetailsComponent, TrialCardComponent],
+      providers: [ClientService]
     }).compileComponents();
   }));
 
@@ -43,7 +34,7 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should have as title \'clinicalTrial\'', () => {
+  it("should have as title 'clinicalTrial'", () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('clinicalTrial');
@@ -55,6 +46,4 @@ describe('AppComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain('CLINICAL TRIAL');
   });
-
 });
-*/
