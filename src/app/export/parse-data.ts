@@ -11,6 +11,9 @@ export const UnpackResearchStudyResults = (result: ResearchStudySearchEntry[]): 
     const sites = trial.getSites();
 
     mainRow['nctId'] = trial.nctId;
+    if (trial.search) {
+      mainRow['MatchLikelihood'] = trial.matchLikelihood;
+    }
     mainRow['Title'] = trial.title;
     mainRow['OverallStatus'] = trial.overallStatus;
     mainRow['Phase'] = trial.phase;
