@@ -169,7 +169,7 @@ export class ResearchStudySearchEntry {
   }
   get matchLikelihood(): string | null {
     let matchStr = null;
-    if (this.search && this.search.score) {
+    if (this.search && this.search.score != null) {
       if (this.search.score < 0.33) {
         matchStr = 'No Match';
       } else if (this.search.score < 0.67) {
