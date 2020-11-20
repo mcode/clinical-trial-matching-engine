@@ -148,4 +148,8 @@ describe('ResearchStudySearchEntry', () => {
     const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
     expect(result.criteria).toBe('');
   });
+  it('gets nctId as blank string when missing', () => {
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    expect(result.nctId).toBe('');
+  });
 });
