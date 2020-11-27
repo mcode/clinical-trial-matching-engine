@@ -7,8 +7,7 @@ import { AppConfigService } from './app-config.service';
 import { fhirclient } from 'fhirclient/lib/types';
 import * as fhirpath from 'fhirpath';
 import { GeolibInputCoordinates } from 'geolib/es/types';
-// Type alias for the patient bundle which presumably won't always be a string
-type PatientBundle = string;
+import { PatientBundle } from '../bundle';
 
 /**
  * Marks a path.
@@ -169,7 +168,7 @@ export class ResearchStudySearchEntry {
   }
   get matchLikelihood(): string | null {
     let matchStr = null;
-    if (this.search) {
+    if (this.search && this.search.score != null) {
       if (this.search.score < 0.33) {
         matchStr = 'No Match';
       } else if (this.search.score < 0.67) {
@@ -387,7 +386,7 @@ export class SearchService {
 
   searchClinicalTrials(patientBundle: PatientBundle, offset?: number, count = 10): Observable<SearchResultsBundle> {
     const query: ClinicalTrialQuery = { patientData: patientBundle, count: count };
-    const zipCode = JSON.parse(patientBundle).entry[0].resource.parameter[0].valueString;
+    const zipCode = patientBundle.entry[0].resource.parameter[0].valueString;
     if (offset > 0) {
       query.offset = offset;
     }
