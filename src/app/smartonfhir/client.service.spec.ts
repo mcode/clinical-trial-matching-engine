@@ -23,14 +23,22 @@ describe('ClientService', () => {
   });
   it('should get all records', () => {
     const service: ClientService = TestBed.get(ClientService);
-    expect(service.getRecords('')).toBeDefined();
+    expect(service.getAllRecords('')).toBeDefined();
   });
   it('should get conditions', () => {
     const service: ClientService = TestBed.get(ClientService);
     expect(service.getConditions()).toBeDefined();
   });
+  it('should get conditions w/ parameter', () => {
+    const service: ClientService = TestBed.get(ClientService);
+    expect(service.getConditions({"id": "example"})).toBeDefined();
+  });
   it('should get resources', () => {
     const service: ClientService = TestBed.get(ClientService);
     expect(service.getResources('')).toBeDefined();
+  });
+  it('should get resources w parameters', () => {
+    const service: ClientService = TestBed.get(ClientService);
+    expect(service.getResources('',{"id": "example"})).toBeDefined();
   });
 });
