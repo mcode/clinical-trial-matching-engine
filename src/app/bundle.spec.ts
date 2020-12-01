@@ -6,6 +6,6 @@ describe('bundle tests', () => {
   beforeEach(() => TestBed.configureTestingModule({ imports: [HttpClientTestingModule], providers: [] }));
 
   it('should create the patient bundle', () => {
-    expect(createPatientBundle({ id: 'example' }, [{fullUrl: "sample",resource: {}}])).toBeDefined();
+    expect(createPatientBundle({ id: 'example' }, [{ fullUrl: 'sample', resource: {} }])).toBeDefined();
   });
 });
