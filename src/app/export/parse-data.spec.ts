@@ -109,6 +109,39 @@ describe('UnpackResearchStudyResults', () => {
                 resourceType: 'Organization',
                 id: 'org1',
                 name: 'Example Sponsor Organization'
+              }, {
+                resourceType: 'Location',
+                id: 'location-1',
+                name: 'First Location',
+                telecom: [
+                  {
+                    system: 'phone',
+                    value: '123456789',
+                    use: 'work'
+                  }
+                ]
+              },
+              {
+                resourceType: 'Location',
+                id: 'location-2',
+                name: 'Second Location',
+                telecom: [
+                  {
+                    system: 'email',
+                    value: 'email@example.com',
+                    use: 'work'
+                  }
+                ]
+              }
+            ],
+            site: [
+              {
+                reference: '#location-1',
+                type: 'Location'
+              },
+              {
+                reference: '#location-2',
+                type: 'Location'
               }
             ]
           }
@@ -118,7 +151,7 @@ describe('UnpackResearchStudyResults', () => {
       )
     ]);
     expect(Array.isArray(actual)).toBe(true);
-    expect(actual.length).toEqual(2);
+    expect(actual.length).toEqual(4);
     expect('Match Count' in actual[0]).toBe(true);
     expect(actual[0]['Match Count']).toEqual(1);
     const row = actual[1];
