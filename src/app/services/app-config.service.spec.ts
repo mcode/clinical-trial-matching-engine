@@ -9,4 +9,8 @@ describe('AppConfigService', () => {
     const service: AppConfigService = TestBed.get(AppConfigService);
     expect(service).toBeTruthy();
   });
+  it('should get service url', () => {
+    const service: AppConfigService = TestBed.get(AppConfigService);
+    expect(service.getServiceURL()).toBe('http://localhost:3000');
+  });
 });
