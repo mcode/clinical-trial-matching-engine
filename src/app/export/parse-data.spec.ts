@@ -109,7 +109,8 @@ describe('UnpackResearchStudyResults', () => {
                 resourceType: 'Organization',
                 id: 'org1',
                 name: 'Example Sponsor Organization'
-              }, {
+              },
+              {
                 resourceType: 'Location',
                 id: 'location-1',
                 name: 'First Location',
