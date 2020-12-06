@@ -85,6 +85,78 @@ describe('ResearchStudySearchEntry', () => {
       ]
     }
   };
+  const testEntry2 = {
+    fullUrl: 'http://localhost/',
+    resource: {
+      resourceType: 'ResearchStudy',
+      id: '1',
+      contact: [
+        {
+          name: 'Example Contact',
+          telecom: [
+            {
+              system: 'phone',
+              value: '781-555-0100',
+              use: 'work'
+            },
+            {
+              system: 'email',
+              value: 'email@example.com',
+              use: 'work'
+            }
+          ]
+        }
+      ],
+      enrollment: [
+        {
+          reference: '#group-1'
+        }
+      ],
+      contained: [
+        {
+          resourceType: 'Organization',
+          id: 'org1',
+          name: 'First Organization'
+        },
+        {
+          resourceType: 'Location',
+          id: 'location-1',
+          name: 'First Location'
+        },
+        {
+          resourceType: 'Group',
+          id: 'group-1',
+          name: 'First Group',
+          characteristic: [
+            { exclude: true, code: { text: 'example exc' }, valueCodeableConcept: { text: 'exclude' } },
+            { exclude: false, code: { text: 'example inc' }, valueCodeableConcept: { text: 'include' } }
+          ]
+        },
+        {
+          resourceType: 'Location',
+          id: 'location-2',
+          name: 'Second Location',
+          telecom: [
+            {
+              system: 'email',
+              value: 'email@example.com',
+              use: 'work'
+            }
+          ]
+        }
+      ],
+      site: [
+        {
+          reference: '#location-1',
+          type: 'Location'
+        },
+        {
+          reference: '#location-2',
+          type: 'Location'
+        }
+      ]
+    }
+  };
   it('finds contained resources by id', () => {
     const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
     const location = result.lookupContainedResource('location-1');
@@ -128,6 +200,16 @@ describe('ResearchStudySearchEntry', () => {
     const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
     expect(result.matchLikelihood).toBeNull();
   });
+  it('gets match likelihood as expected', () => {
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    result.search = { mode: 'example', score: 0.3 };
+    result.search.score = 0.23;
+    expect(result.matchLikelihood).toBe('No Match');
+    result.search.score = 0.56;
+    expect(result.matchLikelihood).toBe('Possible Match');
+    result.search.score = 0.96;
+    expect(result.matchLikelihood).toBe('Likely Match');
+  });
   it('gets description as unknown when missing', () => {
     const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
     expect(result.description).toBe('(unknown)');
@@ -152,4 +234,12 @@ describe('ResearchStudySearchEntry', () => {
     const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
     expect(result.nctId).toBe('');
   });
+  it('gets criteria', () => {
+    const result = new ResearchStudySearchEntry(testEntry2, distServ, '01886');
+    expect(result.criteria).toBeDefined();
+  });
+  /*  it('builds filters', () => {
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    expect(result.build).toBe('');
+  }); */
 });

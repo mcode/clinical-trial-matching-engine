@@ -13,7 +13,6 @@ describe('export data', () => {
     })
   );
   it('should export data', () => {
-    console.log('fffff');
     const distServ: DistanceService = TestBed.get(DistanceService);
     const actual = UnpackResearchStudyResults([
       new ResearchStudySearchEntry(
@@ -124,7 +123,6 @@ describe('export data', () => {
         '01886'
       )
     ]);
-    console.log(ExportTrials([actual], 'sampleTrial'));
     expect(ExportTrials([actual], 'sampleTrial')).toBeUndefined();
   });
 });
