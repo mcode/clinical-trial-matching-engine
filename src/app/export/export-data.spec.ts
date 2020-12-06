@@ -13,116 +13,117 @@ describe('export data', () => {
     })
   );
   it('should export data', () => {
-    console.log("fffff");
-    let distServ : DistanceService = TestBed.get(DistanceService);
+    console.log('fffff');
+    const distServ: DistanceService = TestBed.get(DistanceService);
     const actual = UnpackResearchStudyResults([
-        new ResearchStudySearchEntry(
-          {
-            fullUrl: 'http://www.example.com/',
-            resource: {
-              resourceType: 'ResearchStudy',
-              id: 'ID',
-              title: 'Example Research Study',
-              description: 'A test research study object for testing this feature.',
-              identifier: [
+      new ResearchStudySearchEntry(
+        {
+          fullUrl: 'http://www.example.com/',
+          resource: {
+            resourceType: 'ResearchStudy',
+            id: 'ID',
+            title: 'Example Research Study',
+            description: 'A test research study object for testing this feature.',
+            identifier: [
+              {
+                use: 'official',
+                system: 'http://clinicaltrials.gov',
+                value: 'EXAMPLE'
+              }
+            ],
+            status: 'active',
+            phase: {
+              coding: [
                 {
-                  use: 'official',
-                  system: 'http://clinicaltrials.gov',
-                  value: 'EXAMPLE'
+                  system: 'http://terminology.hl7.org/CodeSystem/research-study-phase',
+                  code: 'active',
+                  display: 'Active'
                 }
               ],
-              status: 'active',
-              phase: {
-                coding: [
+              text: 'Active'
+            },
+            category: [{ text: 'Example Category' }],
+            contact: [
+              {
+                name: 'Example Contact',
+                telecom: [
                   {
-                    system: 'http://terminology.hl7.org/CodeSystem/research-study-phase',
-                    code: 'active',
-                    display: 'Active'
+                    system: 'phone',
+                    value: '781-555-0100',
+                    use: 'work'
+                  },
+                  {
+                    system: 'email',
+                    value: 'email@example.com',
+                    use: 'work'
                   }
-                ],
-                text: 'Active'
+                ]
+              }
+            ],
+            enrollment: [
+              {
+                reference: '#group1',
+                type: 'Group',
+                display: 'Example Criteria'
+              }
+            ],
+            sponsor: {
+              reference: '#org1',
+              type: 'Organization'
+            },
+            contained: [
+              {
+                resourceType: 'Group',
+                id: 'group1',
+                type: 'person',
+                actual: false
               },
-              category: [{ text: 'Example Category' }],
-              contact: [
-                {
-                  name: 'Example Contact',
-                  telecom: [
-                    {
-                      system: 'phone',
-                      value: '781-555-0100',
-                      use: 'work'
-                    },
-                    {
-                      system: 'email',
-                      value: 'email@example.com',
-                      use: 'work'
-                    }
-                  ]
-                }
-              ],
-              enrollment: [
-                {
-                  reference: '#group1',
-                  type: 'Group',
-                  display: 'Example Criteria'
-                }
-              ],
-              sponsor: {
-                reference: '#org1',
-                type: 'Organization'
+              {
+                resourceType: 'Organization',
+                id: 'org1',
+                name: 'Example Sponsor Organization'
               },
-              contained: [
-                {
-                  resourceType: 'Group',
-                  id: 'group1',
-                  type: 'person',
-                  actual: false
-                },
-                {
-                  resourceType: 'Organization',
-                  id: 'org1',
-                  name: 'Example Sponsor Organization'
-                },
-                {
-                  resourceType: 'Location',
-                  id: 'location-1',
-                  name: 'First Location',
-                  telecom: [
-                    {
-                      system: 'phone',
-                      value: '123456789',
-                      use: 'work'
-                    }
-                  ]
-                },
-                {
-                  resourceType: 'Location',
-                  id: 'location-2',
-                  name: 'Second Location',
-                  telecom: [
-                    {
-                      system: 'email',
-                      value: 'email@example.com',
-                      use: 'work'
-                    }
-                  ]
-                }
-              ],
-              site: [
-                {
-                  reference: '#location-1',
-                  type: 'Location'
-                },
-                {
-                  reference: '#location-2',
-                  type: 'Location'
-                }
-              ]
-            }
-          },
-          distServ,
-          '01886'
-        )]);
+              {
+                resourceType: 'Location',
+                id: 'location-1',
+                name: 'First Location',
+                telecom: [
+                  {
+                    system: 'phone',
+                    value: '123456789',
+                    use: 'work'
+                  }
+                ]
+              },
+              {
+                resourceType: 'Location',
+                id: 'location-2',
+                name: 'Second Location',
+                telecom: [
+                  {
+                    system: 'email',
+                    value: 'email@example.com',
+                    use: 'work'
+                  }
+                ]
+              }
+            ],
+            site: [
+              {
+                reference: '#location-1',
+                type: 'Location'
+              },
+              {
+                reference: '#location-2',
+                type: 'Location'
+              }
+            ]
+          }
+        },
+        distServ,
+        '01886'
+      )
+    ]);
     console.log(ExportTrials([actual], 'sampleTrial'));
     expect(ExportTrials([actual], 'sampleTrial')).toBeUndefined();
   });
