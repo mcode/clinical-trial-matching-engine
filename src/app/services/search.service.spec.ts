@@ -1,13 +1,14 @@
+import { AppConfigService } from './app-config.service';
 import { DistanceService } from './distance.service';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ResearchStudySearchEntry, SearchService } from './search.service';
+import { ResearchStudySearchEntry, SearchService, SearchResultsBundle } from './search.service';
 
 describe('SearchService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [SearchService, DistanceService]
+      providers: [SearchService, AppConfigService, DistanceService]
     })
   );
 
@@ -121,7 +122,11 @@ describe('ResearchStudySearchEntry', () => {
         {
           resourceType: 'Location',
           id: 'location-1',
-          name: 'First Location'
+          name: 'First Location',
+          position: {
+            latitude: 13.5,
+            longitude: 37.7
+          }
         },
         {
           resourceType: 'Group',
@@ -136,6 +141,10 @@ describe('ResearchStudySearchEntry', () => {
           resourceType: 'Location',
           id: 'location-2',
           name: 'Second Location',
+          position: {
+            latitude: 33.5,
+            longitude: 27.7
+          },
           telecom: [
             {
               system: 'email',
@@ -233,6 +242,14 @@ describe('ResearchStudySearchEntry', () => {
   it('gets nctId as blank string when missing', () => {
     const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
     expect(result.nctId).toBe('');
+  });
+  it('gets distance as undefined when no distance', () => {
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    expect(result.distance).toBeUndefined();
+  });
+  it('calculates/outputs closest distance properly', () => {
+    const result = new ResearchStudySearchEntry(testEntry2, distServ, '01886');
+    expect(result.getClosest('01886')).toBeDefined();
   });
   it('gets criteria', () => {
     const result = new ResearchStudySearchEntry(testEntry2, distServ, '01886');
