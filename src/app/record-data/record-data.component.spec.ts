@@ -18,11 +18,48 @@ describe('RecordDataComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create component and set resources', () => {
+    component.bundleResources = [
+      {
+        fullUrl: 'example',
+        resource: {
+          resourceType: 'Observation'
+        }
+      },
+      {
+        fullUrl: 'example2',
+        resource: {
+          resourceType: 'Condition'
+        }
+      },
+      {
+        fullUrl: 'example3',
+        resource: {
+          resourceType: 'MedicationStatement'
+        }
+      },
+      {
+        fullUrl: 'example4',
+        resource: {
+          resourceType: 'Procedure'
+        }
+      },
+      {
+        fullUrl: 'example5',
+        resource: {
+          resourceType: 'Random'
+        }
+      }
+    ];
+    component.setResources();
     expect(component).toBeTruthy();
   });
 
   it('displayOn should be false', () => {
     expect(component.displayOn).toBeFalsy();
+  });
+  it('should set display status', () => {
+    component.setStatus(true);
+    expect(component.displayOn).toBeTruthy();
   });
 });
