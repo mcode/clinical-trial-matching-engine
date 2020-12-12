@@ -39,7 +39,53 @@ const patientData = {
 };
 const patientData2 = {
   resourceType: 'Patient' as 'Patient',
+  name: [
+    {
+      use: 'random',
+      text: 'ex3',
+      family: 'last',
+      given: 'first'
+    },
+    {
+      use: 'random2',
+      text: 'ex4',
+      family: 'last',
+      given: 'first'
+    }
+  ],
+  address: [
+    {
+      use: 'official',
+      postalCode: '01234'
+    }
+  ]
+};
+const patientData3 = {
+  resourceType: 'Patient' as 'Patient',
   name: null,
+  address: [
+    {
+      use: 'official',
+      postalCode: '01234'
+    }
+  ]
+};
+const patientData4 = {
+  resourceType: 'Patient' as 'Patient',
+  name: [
+    {
+      use: 'random',
+      text: 'ex3',
+      family: 'last',
+      given: 'first'
+    },
+    {
+      use: 'nickname',
+      text: 'ex4',
+      family: 'last',
+      given: 'first'
+    }
+  ],
   address: [
     {
       use: 'official',
@@ -63,7 +109,7 @@ describe('Patient Tests', () => {
     expect(patient.getUsualName()).toBeNull();
   });
   it('should get preferred name as null ', () => {
-    const patient: Patient = new Patient(patientData2);
+    const patient: Patient = new Patient(patientData3);
 
     expect(patient.getPreferredName()).toBeNull();
   });
@@ -94,7 +140,12 @@ describe('Patient Tests', () => {
   });
 
   it('should get name in preffered order ', () => {
-    const patient: Patient = new Patient(patientData);
+    const patient: Patient = new Patient(patientData2);
+
+    expect(patient.getPreferredName()).toBeDefined();
+  });
+  it('should get preffered name with unknown uses', () => {
+    const patient: Patient = new Patient(patientData4);
 
     expect(patient.getPreferredName()).toBeDefined();
   });
