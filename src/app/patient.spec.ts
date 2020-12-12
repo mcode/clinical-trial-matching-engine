@@ -11,24 +11,24 @@ const patientData = {
       family: 'last',
       given: 'first'
     },
-      {
-        use: 'official',
-        text: 'ex2',
-        family: 'last',
-        given: 'first'
-      },
-      {
-        use: 'random',
-        text: 'ex3',
-        family: 'last',
-        given: 'first'
-      },
-      {
-        use: 'random2',
-        text: 'ex4',
-        family: 'last',
-        given: 'first'
-      }
+    {
+      use: 'official',
+      text: 'ex2',
+      family: 'last',
+      given: 'first'
+    },
+    {
+      use: 'random',
+      text: 'ex3',
+      family: 'last',
+      given: 'first'
+    },
+    {
+      use: 'random2',
+      text: 'ex4',
+      family: 'last',
+      given: 'first'
+    }
   ],
   address: [
     {
