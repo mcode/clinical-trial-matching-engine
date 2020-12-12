@@ -10,7 +10,25 @@ const patientData = {
       text: 'ex',
       family: 'last',
       given: 'first'
-    }
+    },
+      {
+        use: 'official',
+        text: 'ex2',
+        family: 'last',
+        given: 'first'
+      },
+      {
+        use: 'random',
+        text: 'ex3',
+        family: 'last',
+        given: 'first'
+      },
+      {
+        use: 'random2',
+        text: 'ex4',
+        family: 'last',
+        given: 'first'
+      }
   ],
   address: [
     {
@@ -73,5 +91,11 @@ describe('Patient Tests', () => {
     const patient: Patient = new Patient(patientData);
 
     expect(patient.getHomePostalCode()).toBeDefined();
+  });
+
+  it('should get name in preffered order ', () => {
+    const patient: Patient = new Patient(patientData);
+
+    expect(patient.getPreferredName()).toBeDefined();
   });
 });
