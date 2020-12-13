@@ -64,6 +64,7 @@ describe('ResultDetailsComponent', () => {
     testHostFixture.detectChanges();
     testHostComponent.resultDetails.toggleTrialSaved();
     expect(testHostComponent.resultDetails.trialSaved).toBeTruthy();
+  });
   it('should get Color', () => {
     const distServ = TestBed.get(DistanceService) as DistanceService;
     testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
