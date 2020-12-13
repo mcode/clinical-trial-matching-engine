@@ -52,4 +52,31 @@ describe('ResultDetailsComponent', () => {
   it('trialSaved should be false', () => {
     expect(testHostComponent.resultDetails.trialSaved).toBeFalsy();
   });
+  it('should toggle trial saved', () => {
+    const distServ = TestBed.get(DistanceService) as DistanceService;
+    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
+    testHostComponent.resultDetails.reqs = {
+      zipCode: '01886',
+      travelRadius: null,
+      phase: null,
+      recruitmentStatus: null
+    };
+    testHostFixture.detectChanges();
+    testHostComponent.resultDetails.toggleTrialSaved();
+    expect(testHostComponent.resultDetails.trialSaved).toBeTruthy();
+  it('should get Color', () => {
+    const distServ = TestBed.get(DistanceService) as DistanceService;
+    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
+    testHostComponent.resultDetails.reqs = {
+      zipCode: '01886',
+      travelRadius: null,
+      phase: null,
+      recruitmentStatus: null
+    };
+    testHostFixture.detectChanges();
+
+    expect(testHostComponent.resultDetails.getColor('No Match')).toBe('black');
+    expect(testHostComponent.resultDetails.getColor('Possible Match')).toBe('#E6BE03');
+    expect(testHostComponent.resultDetails.getColor('likely Match')).toBe('green');
+  });
 });
