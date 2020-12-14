@@ -255,8 +255,22 @@ describe('ResearchStudySearchEntry', () => {
     const result = new ResearchStudySearchEntry(testEntry2, distServ, '01886');
     expect(result.criteria).toBeDefined();
   });
-  /*  it('builds filters', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
-    expect(result.build).toBe('');
-  }); */
+  it('makes search results bundle', () => {
+    const bundleData = {
+      type: 'document' as 'document',
+      link: [],
+      entry: [testEntry2]
+    };
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886');
+    expect(bundle).toBeDefined();
+  });
+  it('builds filters', () => {
+    const bundleData = {
+      type: 'document' as 'document',
+      link: [],
+      entry: [testEntry2]
+    };
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886');
+    expect(bundle.buildFilters('id')).toBeDefined();
+  });
 });
