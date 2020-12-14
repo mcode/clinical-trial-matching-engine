@@ -62,13 +62,7 @@ const patientData2 = {
 };
 const patientData3 = {
   resourceType: 'Patient' as 'Patient',
-  name: null,
-  address: [
-    {
-      use: 'official',
-      postalCode: '01234'
-    }
-  ]
+  name: null
 };
 const patientData4 = {
   resourceType: 'Patient' as 'Patient',
@@ -108,6 +102,16 @@ describe('Patient Tests', () => {
 
     expect(patient.getUsualName()).toBeNull();
   });
+  it('should get usual name as null when name is null', () => {
+    const patient: Patient = new Patient(patientData3);
+
+    expect(patient.getUsualName()).toBeNull();
+  });
+  it('should get usual name ', () => {
+    const patient: Patient = new Patient(patientData2);
+
+    expect(patient.getUsualName()).toBeNull();
+  });
   it('should get preferred name as null ', () => {
     const patient: Patient = new Patient(patientData3);
 
@@ -133,10 +137,15 @@ describe('Patient Tests', () => {
 
     expect(patient.getHomeAddress()).toBeDefined();
   });
-  it('should get home postal code ', () => {
-    const patient: Patient = new Patient(patientData);
+  it('should get home address as null when none', () => {
+    const patient: Patient = new Patient(patientData3);
 
-    expect(patient.getHomePostalCode()).toBeDefined();
+    expect(patient.getHomeAddress()).toBeDefined();
+  });
+  it('should get home postal code ', () => {
+    const patient: Patient = new Patient(patientData3);
+
+    expect(patient.getHomePostalCode()).toBeNull();
   });
 
   it('should get name in preffered order ', () => {
