@@ -46,4 +46,9 @@ describe('AppComponent', () => {
     const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('clinicalTrial');
   });
+  it('should get count', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app.resultCount).toEqual(0);
+  });
 });
