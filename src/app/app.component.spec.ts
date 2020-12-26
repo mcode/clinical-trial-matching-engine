@@ -13,6 +13,7 @@ import { ClientService } from './smartonfhir/client.service';
 import { TrialCardComponent } from './trial-card/trial-card.component';
 import { ToastrModule } from 'ngx-toastr';
 import { ResearchStudySearchEntry, SearchResultsBundle } from './services/search.service';
+import { sample } from 'rxjs/operators';
 
 //Commenting out test cases since Travis doesn't like fhirService
 describe('AppComponent', () => {
@@ -144,6 +145,23 @@ describe('AppComponent', () => {
     const app = fixture.debugElement.componentInstance;
     app.createPages(12);
     expect(app.pages).toBeDefined();
+  });
+  it('should set flags for viewing a page', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    app.createPages(12);
+    const samplepage = app.pages[0];
+    const bundleData = {
+      type: 'document' as 'document',
+      link: [],
+      entry: [testEntry]
+    };
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886');
+    app.searchResults = bundle;
+    app.viewPage(samplepage);
+    expect(app.searchPage).toBeTruthy();
+
+    expect(app.searchtable).toBeFalsy();
   });
   it('should create filters', () => {
     const fixture = TestBed.createComponent(AppComponent);
