@@ -145,7 +145,7 @@ describe('AppComponent', () => {
     app.createPages(12);
     expect(app.pages).toBeDefined();
   });
-  it('should set markers for search page', () => {
+  it('should create filters', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     const bundleData = {
