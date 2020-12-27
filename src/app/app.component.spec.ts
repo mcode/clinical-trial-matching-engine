@@ -176,4 +176,28 @@ describe('AppComponent', () => {
     app.createFilters();
     expect(app.filtersArray).toBeDefined();
   });
+  it('should show a page', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    app.createPages(12);
+    const samplepage = app.pages[0];
+    const bundleData = {
+      type: 'document' as 'document',
+      link: [],
+      entry: [testEntry]
+    };
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886');
+    app.searchResults = bundle;
+    app.showPage(0);
+    expect(app.searchPage).toBeTruthy();
+
+    expect(app.searchtable).toBeFalsy();
+  });
+  it('should log error if no searchResults and showing page', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    app.createPages(12);
+    const samplepage = app.pages[0];
+    app.showPage(0);
+  });
 });
