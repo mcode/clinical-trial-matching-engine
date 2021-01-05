@@ -176,6 +176,49 @@ describe('AppComponent', () => {
     app.createFilters();
     expect(app.filtersArray).toBeDefined();
   });
+  it('should apply filters', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    const bundleData = {
+      type: 'document' as 'document',
+      link: [],
+      entry: [testEntry]
+    };
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886');
+    app.searchResults = bundle;
+    app.createFilters();
+    app.sortType = 'likelihood';
+    app.applyFilter();
+    expect(app.filtersArray).toBeDefined();
+  });
+  it('should update items per page', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    app.updateItemsPerPage('40');
+    expect(app.itemsPerPage).toBe(40);
+  });
+  it('should clear filters', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    const bundleData = {
+      type: 'document' as 'document',
+      link: [],
+      entry: [testEntry]
+    };
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886');
+    app.searchResults = bundle;
+    app.createFilters();
+    app.clearFilter(0);
+
+    expect(app.filtersArray[0]).toBeDefined();
+  });
+  it('should go back to home page', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    app.backToHomePage();
+    expect(app.searchtable).toBeTruthy();
+    expect(app.searchPage).toBeFalsy();
+  });
   it('should show a page', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
