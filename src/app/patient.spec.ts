@@ -8,26 +8,26 @@ const patientData = {
     {
       use: 'usual',
       text: 'ex',
-      family: 'last',
-      given: 'first'
+      family: ['last'],
+      given: ['Usual']
     },
     {
       use: 'official',
       text: 'ex2',
-      family: 'last',
-      given: 'first'
+      family: ['last'],
+      given: ['official']
     },
     {
       use: 'random',
       text: 'ex3',
-      family: 'last',
-      given: 'first'
+      family: ['last'],
+      given: ['random']
     },
     {
       use: 'random2',
       text: 'ex4',
-      family: 'last',
-      given: 'first'
+      family: ['last'],
+      given: ['random2']
     }
   ],
   address: [
@@ -43,14 +43,14 @@ const patientData2 = {
     {
       use: 'random',
       text: 'ex3',
-      family: 'last',
-      given: 'first'
+      family: ['last'],
+      given: ['Random1']
     },
     {
       use: 'random2',
       text: 'ex4',
-      family: 'last',
-      given: 'first'
+      family: ['last'],
+      given: ['random2']
     }
   ],
   address: [
@@ -60,24 +60,25 @@ const patientData2 = {
     }
   ]
 };
+
 const patientData3 = {
-  resourceType: 'Patient' as 'Patient',
-  name: null
+  resourceType: 'Patient' as 'Patient'
 };
+
 const patientData4 = {
   resourceType: 'Patient' as 'Patient',
   name: [
     {
       use: 'random',
       text: 'ex3',
-      family: 'last',
-      given: 'first'
+      family: ['last'],
+      given: ['random']
     },
     {
       use: 'nickname',
       text: 'ex4',
-      family: 'last',
-      given: 'first'
+      family: ['last'],
+      given: ['Nickname']
     }
   ],
   address: [
@@ -91,71 +92,57 @@ const patientData4 = {
 describe('Patient Tests', () => {
   beforeEach(() => TestBed.configureTestingModule({ imports: [HttpClientTestingModule] }));
 
-  it('should get usual name ', () => {
-    const patient: Patient = new Patient(patientData);
+  describe('#getUsualName()', () => {
+    it('gets the usual name with multiple names', () => {
+      expect(new Patient(patientData).getUsualName()).toEqual('Usual');
+    });
 
-    expect(patient.getUsualName()).toBeNull();
+    it('gets the first name in the record if there is no use: "usual" name', () => {
+      expect(new Patient(patientData2).getUsualName()).toEqual('Random1');
+    });
+
+    it('returns null if there is no name in the patient record', () => {
+      expect(new Patient(patientData3).getUsualName()).toBeNull();
+    });
   });
 
-  it('should get usual name as null ', () => {
-    const patient: Patient = new Patient(patientData2);
+  describe('#getPreferredName()', () => {
+    it('returns null if there is no name in the patient record', () => {
+      expect(new Patient(patientData3).getPreferredName()).toBeNull();
+    });
+    it('returns the use: "usual" name', () => {
+      expect(new Patient(patientData).getPreferredName()).toEqual(patientData.name[0]);
+    });
 
-    expect(patient.getUsualName()).toBeNull();
+    it('returns the "best" name based on use', () => {
+      expect(new Patient(patientData4).getPreferredName()).toEqual(patientData4.name[1]);
+    });
   });
-  it('should get usual name as null when name is null', () => {
-    const patient: Patient = new Patient(patientData3);
 
-    expect(patient.getUsualName()).toBeNull();
+  describe('#getGender()', () => {
+    it('should get gender as undefined when not specified ', () => {
+      const patient: Patient = new Patient(patientData);
+      expect(patient.getGender()).toBeUndefined();
+    });
   });
-  it('should get usual name ', () => {
-    const patient: Patient = new Patient(patientData2);
 
-    expect(patient.getUsualName()).toBeNull();
-  });
-  it('should get preferred name as null ', () => {
-    const patient: Patient = new Patient(patientData3);
-
-    expect(patient.getPreferredName()).toBeNull();
-  });
-  it('should get preferred name ', () => {
-    const patient: Patient = new Patient(patientData);
-
-    expect(patient.getPreferredName()).toBeDefined();
-  });
-  it('should get gender as undefined when not specified ', () => {
-    const patient: Patient = new Patient(patientData);
-
-    expect(patient.getGender()).toBeUndefined();
-  });
   it('should get age as undefined when not specified ', () => {
     const patient: Patient = new Patient(patientData);
-
     expect(patient.getAge()).toBeNaN();
   });
+
   it('should get home address ', () => {
     const patient: Patient = new Patient(patientData);
-
     expect(patient.getHomeAddress()).toBeDefined();
   });
+
   it('should get home address as null when none', () => {
     const patient: Patient = new Patient(patientData3);
-
     expect(patient.getHomeAddress()).toBeDefined();
   });
+
   it('should get home postal code ', () => {
     const patient: Patient = new Patient(patientData3);
-
     expect(patient.getHomePostalCode()).toBeNull();
-  });
-
-  it('should get name in preffered order ', () => {
-    const patient: Patient = new Patient(patientData2);
-
-    expect(patient.getPreferredName()).toBeDefined();
-  });
-  it('should get preffered name with unknown uses', () => {
-    const patient: Patient = new Patient(patientData4);
-
-    expect(patient.getPreferredName()).toBeDefined();
   });
 });

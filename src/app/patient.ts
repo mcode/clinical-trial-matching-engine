@@ -11,10 +11,10 @@ interface FHIRAddress {
 }
 
 interface FHIRHumanName {
-  use: string;
-  text: string;
-  family: string;
-  given: string;
+  use?: string;
+  text?: string;
+  family?: string[];
+  given?: string[];
 }
 
 interface FHIRPatient extends fhirclient.FHIR.Patient {
@@ -76,6 +76,13 @@ export default class Patient {
       return null;
     }
   }
+  /**
+   * Gets the "best" name, if possible. If no name exists on the record, returns
+   * null. This returns names based on the use field in the order of usual,
+   * nickname, official. If there are no names with those defined uses, it
+   * returns the first name with a defined "use" field, otherwise, it returns
+   * the first name.
+   */
   getPreferredName(): FHIRHumanName {
     if (Array.isArray(this.resource.name) && this.resource.name.length > 0) {
       // Pick out the "best" name if we can
