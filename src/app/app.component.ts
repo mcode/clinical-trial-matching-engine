@@ -522,10 +522,10 @@ export class AppComponent {
     console.log('onChange: ' + val);
     //this.countPages();
   }
-  public compareByDist(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry) {
+  public compareByDist(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
     return trial1.dist - trial2.dist;
   }
-  public compareByMatch(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry) {
+  public compareByMatch(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
     return trial2.search.score - trial1.search.score;
   }
 

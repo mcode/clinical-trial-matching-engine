@@ -4,6 +4,7 @@ import { DistanceService } from './../services/distance.service';
 import { ExportTrials } from './export-data';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import * as FileSaver from 'file-saver';
 
 describe('export data', () => {
   beforeEach(() =>
@@ -12,6 +13,7 @@ describe('export data', () => {
       providers: [DistanceService]
     })
   );
+
   it('should export data', () => {
     const distServ: DistanceService = TestBed.get(DistanceService);
     const actual = UnpackResearchStudyResults([
@@ -123,6 +125,14 @@ describe('export data', () => {
         '01886'
       )
     ]);
-    expect(ExportTrials([actual], 'sampleTrial')).toBeUndefined();
+    const spy = spyOn(FileSaver, 'saveAs');
+    // Do the export
+    ExportTrials([actual], 'sampleTrial');
+    // TODO: What should it have been called with?
+    expect(spy.calls.count()).toEqual(1);
+    const calledWith = spy.calls.argsFor(0);
+    // Can't really check what the blob is, but expect it to be one
+    expect(calledWith[0] instanceof Blob).toBe(true);
+    expect(calledWith[1]).toEqual('sampleTrial.xlsx');
   });
 });
