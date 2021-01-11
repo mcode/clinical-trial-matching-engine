@@ -5,7 +5,7 @@
         {{clinicalTrial.title}}</h2>
     <div class="containingDIV padding-top-10">
         <h3 class="cardtext color13">Conditions:</h3>
-        <span class="cardtext color13 mi-margin-left-10"> {{replace(clinicalTrial.conditions,'search')}}</span>
+        <span class="cardtext color13 mi-margin-left-10"> {{replace(clinicalTrial.conditions)}}</span>
     </div>
 </div>
 <div class="col10">
@@ -28,7 +28,7 @@
 <div class="col20 padding-10" style="text-align: center; background-color:#DFEEF0; vertical-align: middle; position: relative;" preserveAspectRatio="xMidYMid">
     <button class="btn" style="border: none; display: block; margin: 0; width: 90%; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);" >
         <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 222 40" display="block" margin="auto" preserveAspectRatio="xMidYMid"
-            (click)="toggleTrialSaved(clinicalTrial)">
+            (click)="toggleTrialSaved()">
             <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)" x="50%" y="50%">
                 <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
                     <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)" stroke="#707070"

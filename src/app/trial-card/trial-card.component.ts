@@ -7,7 +7,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['../app.component.css'] //refer to app component styling for the time being
 })
 export class TrialCardComponent {
-  @Input() reqs: object;
+  @Input() reqs: { zipCode: string };
   @Input() clinicalTrial: ResearchStudySearchEntry;
   @Input() trialSaved;
   @Output() trialSaveChanged = new EventEmitter<boolean>();
