@@ -186,7 +186,6 @@ describe('UnpackResearchStudyResults', () => {
 
     // check additional rows
     const row2 = actual[2];
-    console.log(row2);
     expect('nctId' in row2).toBe(false);
     expect('Title' in row2).toBe(false);
     expect('OverallStatus' in row2).toBe(false);
@@ -197,7 +196,6 @@ describe('UnpackResearchStudyResults', () => {
     expect(row2['Facility']).toEqual('First Location');
 
     const row3 = actual[3];
-    console.log(row3);
     expect('Facility' in row3).toBe(true);
     expect(row3['Facility']).toEqual('Second Location');
     expect('Email' in row3).toBe(true);

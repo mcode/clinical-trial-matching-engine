@@ -11,6 +11,6 @@ describe('AppConfigService', () => {
   });
   it('should get service url', () => {
     const service: AppConfigService = TestBed.get(AppConfigService);
-    expect(service.getServiceURL()).toBe('http://localhost:3000');
+    expect(service.getServiceURL()).toMatch('^https?:');
   });
 });
