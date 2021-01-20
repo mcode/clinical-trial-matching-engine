@@ -183,5 +183,24 @@ describe('UnpackResearchStudyResults', () => {
     expect(row['OverallContactPhone']).toEqual('781-555-0100');
     expect('OverallContactEmail' in row).toBe(true);
     expect(row['OverallContactEmail']).toEqual('email@example.com');
+
+    // check additional rows
+    const row2 = actual[2];
+    console.log(row2);
+    expect('nctId' in row2).toBe(false);
+    expect('Title' in row2).toBe(false);
+    expect('OverallStatus' in row2).toBe(false);
+    expect('Phase' in row2).toBe(false);
+    expect('Phone' in row2).toBe(true);
+    expect(row2['Phone']).toEqual('123456789');
+    expect('Facility' in row2).toBe(true);
+    expect(row2['Facility']).toEqual('First Location');
+
+    const row3 = actual[3];
+    console.log(row3);
+    expect('Facility' in row3).toBe(true);
+    expect(row3['Facility']).toEqual('Second Location');
+    expect('Email' in row3).toBe(true);
+    expect(row3['Email']).toEqual('email@example.com');
   });
 });
