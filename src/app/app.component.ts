@@ -299,6 +299,16 @@ export class AppComponent {
     );
   }
   /**
+   * Get next 5 pages from current page index if they exist
+   */
+  public getNearest() {
+    // find current page of items
+    const starting = this.selectedPage.index;
+    return this.pages.slice(starting,starting+5);
+  }
+
+
+  /**
    * Show the given page.
    * @param page the 0-based page number to show
    */

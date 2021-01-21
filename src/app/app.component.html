@@ -174,13 +174,15 @@
         </div>
         <div class="containingDIV float-right">
           <p class="mi-margin-10 color7">Items per page</p>
-          <select class="selectItemPerPage color7" (change)="updateItemsPerPage($event.target.value)">
+          <select (change)="updateItemsPerPage($event.target.value)">
             <option value="10">10</option>
             <option value="20">20</option>
             <option value="30">30</option>
           </select>
-          <span *ngFor="let page of pages" class="mi-margin-10 color7" (click)="viewPage(page)"
-            [ngClass]="selectedPage.index == page.index ? 'selectedPage':''">{{page.index + 1}}</span>
+          <span class="mi-margin-10 color7" (click)="showPage(0)">First </span>
+          <span *ngFor="let page of getNearest()" class="mi-margin-10 color7" (click)="viewPage(page)"
+            [ngClass]="selectedPage.index == page.index ? 'selectedPage':''">{{page.index + 1 }}</span>
+          <span class="mi-margin-10 color7" (click)="showPage(pages.length-1)">Last </span>
         </div>
       </div>
       <app-result-details *ngIf="!detailsPage" [clinicalTrial]="detailedTrial"
