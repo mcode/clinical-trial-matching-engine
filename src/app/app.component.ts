@@ -304,9 +304,18 @@ export class AppComponent {
   public getNearest() {
     // find current page of items
     const starting = this.selectedPage.index;
-    return this.pages.slice(starting,starting+5);
+    if (starting == 0) {
+      return this.pages.slice(starting, starting + 5);
+    } else if (starting == this.pages.length - 1) {
+      return this.pages.slice(Math.max(0, starting - 4), starting + 1);
+    } else if (starting == 1) {
+      return this.pages.slice(0, 5);
+    } else if (starting == this.pages.length - 2) {
+      return this.pages.slice(Math.max(0, starting - 3), starting + 2);
+    } else {
+      return this.pages.slice(Math.max(0, starting - 2), starting + 3);
+    }
   }
-
 
   /**
    * Show the given page.
