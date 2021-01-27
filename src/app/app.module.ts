@@ -13,6 +13,7 @@ import { ResultDetailsComponent } from './result-details/result-details.componen
 import { TrialCardComponent } from './trial-card/trial-card.component';
 import Client from 'fhirclient/lib/Client';
 import { MatFormFieldModule, MatSelectModule } from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToastrModule } from 'ngx-toastr';
 
 const fhirInitializeFn = (fhirService: ClientService) => {
@@ -46,6 +47,7 @@ export class MaterialModule {}
     NgxSpinnerModule,
     BrowserAnimationsModule,
     MaterialModule,
+    MatProgressSpinnerModule,
     ToastrModule.forRoot()
   ],
   providers: [
