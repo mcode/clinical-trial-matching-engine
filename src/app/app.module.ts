@@ -11,10 +11,12 @@ import { ClientService } from './smartonfhir/client.service';
 import { RecordDataComponent } from './record-data/record-data.component';
 import { ResultDetailsComponent } from './result-details/result-details.component';
 import { TrialCardComponent } from './trial-card/trial-card.component';
+import { CustomSpinnerComponent } from './custom-spinner/custom-spinner.component';
 import Client from 'fhirclient/lib/Client';
 import { MatFormFieldModule, MatSelectModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToastrModule } from 'ngx-toastr';
+
 
 const fhirInitializeFn = (fhirService: ClientService) => {
   // Grab the client during bootstrap - this prevents the flash of a partially
@@ -36,7 +38,8 @@ export class MaterialModule {}
     AppComponent,
     RecordDataComponent,
     ResultDetailsComponent,
-    TrialCardComponent
+    TrialCardComponent,
+    CustomSpinnerComponent
   ],
   // prettier-ignore
   imports: [
