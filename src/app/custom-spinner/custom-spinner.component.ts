@@ -9,5 +9,5 @@ import {ProgressSpinnerMode} from '@angular/material/progress-spinner';
 export class CustomSpinnerComponent {
   color: ThemePalette = 'primary';
   mode: ProgressSpinnerMode = 'indeterminate';
-  value = 50;
+  value = 0;
 }

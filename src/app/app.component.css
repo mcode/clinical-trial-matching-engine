@@ -681,6 +681,9 @@ line-height: 25px;
       color : #ffffff !important;
   }
 
+  .topVisible {
+      z-index: 9999;
+  }
 
   .detailCardText {
     display: flex;
