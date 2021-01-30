@@ -166,11 +166,7 @@ export class AppComponent {
    */
   public bundleResources: fhirclient.FHIR.BundleEntry[] = [];
 
-  constructor(
-    private searchService: SearchService,
-    private fhirService: ClientService,
-    private toastr: ToastrService
-  ) {
+  constructor(private searchService: SearchService, private fhirService: ClientService, private toastr: ToastrService) {
     this.phaseDropDown = Object.values(ResearchStudyPhase).map((value) => {
       return new DropDownValue(value, ResearchStudyPhaseDisplay[value]);
     });
@@ -239,7 +235,6 @@ export class AppComponent {
               this.toastr.error(err.message, 'Error Loading Patient Data: ' + resourceType);
               if (index + 1 === this.fhirService.resourceTypes.length) {
                 this.showOverlay = false;
-
               }
             });
         });
@@ -248,7 +243,6 @@ export class AppComponent {
         console.log(err);
         this.toastr.error(err.message, 'Error Loading Patient Data:');
         this.showOverlay = false;
-
       });
   }
 
