@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
 import { ClientService } from './smartonfhir/client.service';
@@ -152,6 +151,10 @@ export class AppComponent {
     phase: null,
     recruitmentStatus: null
   };
+  /**
+   * Control overlay display
+   */
+  public showOverlay;
 
   /**
    * Store sorting preference
@@ -164,7 +167,6 @@ export class AppComponent {
   public bundleResources: fhirclient.FHIR.BundleEntry[] = [];
 
   constructor(
-    private spinner: NgxSpinnerService,
     private searchService: SearchService,
     private fhirService: ClientService,
     private toastr: ToastrService
@@ -177,8 +179,7 @@ export class AppComponent {
     });
 
     // show loading screen while we pull the FHIR record
-    this.spinner.show('load-record');
-
+    this.showOverlay = true;
     this.patient = fhirService
       .getPatient()
       .then((patient) => {
@@ -230,14 +231,15 @@ export class AppComponent {
               );
               if (index + 1 === this.fhirService.resourceTypes.length) {
                 // remove loading screen when we've loaded our final resource type
-                this.spinner.hide('load-record');
+                this.showOverlay = false;
               }
             })
             .catch((err) => {
               console.log(err);
               this.toastr.error(err.message, 'Error Loading Patient Data: ' + resourceType);
               if (index + 1 === this.fhirService.resourceTypes.length) {
-                this.spinner.hide('load-record');
+                this.showOverlay = false;
+
               }
             });
         });
@@ -245,7 +247,8 @@ export class AppComponent {
       .catch((err) => {
         console.log(err);
         this.toastr.error(err.message, 'Error Loading Patient Data:');
-        this.spinner.hide('load-record');
+        this.showOverlay = false;
+
       });
   }
 
@@ -261,11 +264,11 @@ export class AppComponent {
    */
   public searchClinicalTrials(): void {
     this.itemsPerPage = 10;
-    this.spinner.show('load');
+    this.showOverlay = true;
     // Blank out any existing results
     if (this.searchReqObject.zipCode == null || !/^[0-9]{5}$/.exec(this.searchReqObject.zipCode)) {
       this.toastr.warning('Enter Valid Zip Code');
-      this.spinner.hide('load');
+      this.showOverlay = false;
       return;
     }
     if (
@@ -273,7 +276,7 @@ export class AppComponent {
       !(this.searchReqObject.travelRadius == null || this.searchReqObject.travelRadius == '')
     ) {
       this.toastr.warning('Enter Valid Travel Radius');
-      this.spinner.hide('load');
+      this.showOverlay = false;
       return;
     }
     const patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
@@ -294,7 +297,7 @@ export class AppComponent {
         console.error(err);
         // error alert to user
         this.toastr.error(err.message, 'Error Loading Clinical Trials:');
-        this.spinner.hide('load');
+        this.showOverlay = false;
       }
     );
   }
@@ -343,7 +346,7 @@ export class AppComponent {
     }
     this.searchtable = false;
     this.searchPage = true;
-    this.spinner.hide('load');
+    this.showOverlay = false;
   }
   /**
    * Populates the pages array based on the current items per pages data.

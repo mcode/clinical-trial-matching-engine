@@ -1,3 +1,4 @@
+import { ThemePalette } from '@angular/material/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -29,7 +30,7 @@ const fhirInitializeFn = (fhirService: ClientService) => {
  * NgModule with required Material modules
  */
 @NgModule({
-  exports: [MatFormFieldModule, MatSelectModule]
+  exports: [MatFormFieldModule, MatSelectModule, MatProgressSpinnerModule]
 })
 export class MaterialModule {}
 @NgModule({
@@ -50,7 +51,6 @@ export class MaterialModule {}
     NgxSpinnerModule,
     BrowserAnimationsModule,
     MaterialModule,
-    MatProgressSpinnerModule,
     ToastrModule.forRoot()
   ],
   providers: [

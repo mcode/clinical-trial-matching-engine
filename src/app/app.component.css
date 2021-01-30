@@ -682,7 +682,7 @@ line-height: 25px;
   }
 
   .topVisible {
-      z-index: 9999;
+      z-index: auto;
   }
 
   .detailCardText {
