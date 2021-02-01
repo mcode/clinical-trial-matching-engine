@@ -4,15 +4,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
-import { NgxSpinnerModule } from 'ngx-spinner';
 // animation module
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClientService } from './smartonfhir/client.service';
 import { RecordDataComponent } from './record-data/record-data.component';
 import { ResultDetailsComponent } from './result-details/result-details.component';
 import { TrialCardComponent } from './trial-card/trial-card.component';
+import { CustomSpinnerComponent } from './custom-spinner/custom-spinner.component';
 import Client from 'fhirclient/lib/Client';
 import { MatFormFieldModule, MatSelectModule } from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToastrModule } from 'ngx-toastr';
 
 const fhirInitializeFn = (fhirService: ClientService) => {
@@ -26,7 +27,7 @@ const fhirInitializeFn = (fhirService: ClientService) => {
  * NgModule with required Material modules
  */
 @NgModule({
-  exports: [MatFormFieldModule, MatSelectModule]
+  exports: [MatFormFieldModule, MatSelectModule, MatProgressSpinnerModule]
 })
 export class MaterialModule {}
 @NgModule({
@@ -35,7 +36,8 @@ export class MaterialModule {}
     AppComponent,
     RecordDataComponent,
     ResultDetailsComponent,
-    TrialCardComponent
+    TrialCardComponent,
+    CustomSpinnerComponent
   ],
   // prettier-ignore
   imports: [
@@ -43,7 +45,6 @@ export class MaterialModule {}
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    NgxSpinnerModule,
     BrowserAnimationsModule,
     MaterialModule,
     ToastrModule.forRoot()

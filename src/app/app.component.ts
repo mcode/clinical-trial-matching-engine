@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
 import { ClientService } from './smartonfhir/client.service';
@@ -152,6 +151,12 @@ export class AppComponent {
     phase: null,
     recruitmentStatus: null
   };
+  /**
+   * Control overlay display
+   */
+  public showOverlay: boolean;
+
+  public loadingText = 'Loading...';
 
   /**
    * Store sorting preference
@@ -163,12 +168,7 @@ export class AppComponent {
    */
   public bundleResources: fhirclient.FHIR.BundleEntry[] = [];
 
-  constructor(
-    private spinner: NgxSpinnerService,
-    private searchService: SearchService,
-    private fhirService: ClientService,
-    private toastr: ToastrService
-  ) {
+  constructor(private searchService: SearchService, private fhirService: ClientService, private toastr: ToastrService) {
     this.phaseDropDown = Object.values(ResearchStudyPhase).map((value) => {
       return new DropDownValue(value, ResearchStudyPhaseDisplay[value]);
     });
@@ -177,8 +177,7 @@ export class AppComponent {
     });
 
     // show loading screen while we pull the FHIR record
-    this.spinner.show('load-record');
-
+    this.showLoadingOverlay('Loading patient data...');
     this.patient = fhirService
       .getPatient()
       .then((patient) => {
@@ -230,14 +229,14 @@ export class AppComponent {
               );
               if (index + 1 === this.fhirService.resourceTypes.length) {
                 // remove loading screen when we've loaded our final resource type
-                this.spinner.hide('load-record');
+                this.hideLoadingOverlay();
               }
             })
             .catch((err) => {
               console.log(err);
               this.toastr.error(err.message, 'Error Loading Patient Data: ' + resourceType);
               if (index + 1 === this.fhirService.resourceTypes.length) {
-                this.spinner.hide('load-record');
+                this.hideLoadingOverlay();
               }
             });
         });
@@ -245,7 +244,7 @@ export class AppComponent {
       .catch((err) => {
         console.log(err);
         this.toastr.error(err.message, 'Error Loading Patient Data:');
-        this.spinner.hide('load-record');
+        this.hideLoadingOverlay();
       });
   }
 
@@ -261,11 +260,11 @@ export class AppComponent {
    */
   public searchClinicalTrials(): void {
     this.itemsPerPage = 10;
-    this.spinner.show('load');
+    this.showLoadingOverlay('Searching clinical trials...');
     // Blank out any existing results
     if (this.searchReqObject.zipCode == null || !/^[0-9]{5}$/.exec(this.searchReqObject.zipCode)) {
       this.toastr.warning('Enter Valid Zip Code');
-      this.spinner.hide('load');
+      this.hideLoadingOverlay();
       return;
     }
     if (
@@ -273,7 +272,7 @@ export class AppComponent {
       !(this.searchReqObject.travelRadius == null || this.searchReqObject.travelRadius == '')
     ) {
       this.toastr.warning('Enter Valid Travel Radius');
-      this.spinner.hide('load');
+      this.hideLoadingOverlay();
       return;
     }
     const patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
@@ -294,14 +293,14 @@ export class AppComponent {
         console.error(err);
         // error alert to user
         this.toastr.error(err.message, 'Error Loading Clinical Trials:');
-        this.spinner.hide('load');
+        this.hideLoadingOverlay();
       }
     );
   }
   /**
    * Get next 5 pages from current page index if they exist
    */
-  public getNearest() {
+  public getNearest(): SearchPage[] {
     // find current page of items
     const starting = this.selectedPage.index;
     if (starting == 0) {
@@ -343,7 +342,7 @@ export class AppComponent {
     }
     this.searchtable = false;
     this.searchPage = true;
-    this.spinner.hide('load');
+    this.hideLoadingOverlay();
   }
   /**
    * Populates the pages array based on the current items per pages data.
@@ -551,5 +550,14 @@ export class AppComponent {
   public records = false;
   public showRecord(): void {
     this.records = !this.records;
+  }
+
+  private hideLoadingOverlay(): void {
+    this.showOverlay = false;
+  }
+
+  private showLoadingOverlay(text = 'Loading...'): void {
+    this.loadingText = text;
+    this.showOverlay = true;
   }
 }
