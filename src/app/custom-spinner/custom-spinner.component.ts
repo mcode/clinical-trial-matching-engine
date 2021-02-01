@@ -11,4 +11,5 @@ export class CustomSpinnerComponent {
   @Input() strokeWidth = 10;
   @Input() overlay = false;
   @Input() color = 'primary';
+  @Input() loadingText = 'Loading...';
 }

@@ -154,7 +154,9 @@ export class AppComponent {
   /**
    * Control overlay display
    */
-  public showOverlay;
+  public showOverlay: boolean;
+
+  public loadingText = 'Loading...';
 
   /**
    * Store sorting preference
@@ -175,7 +177,7 @@ export class AppComponent {
     });
 
     // show loading screen while we pull the FHIR record
-    this.showOverlay = true;
+    this.showLoadingOverlay('Loading patient data...');
     this.patient = fhirService
       .getPatient()
       .then((patient) => {
@@ -227,14 +229,14 @@ export class AppComponent {
               );
               if (index + 1 === this.fhirService.resourceTypes.length) {
                 // remove loading screen when we've loaded our final resource type
-                this.showOverlay = false;
+                this.hideLoadingOverlay();
               }
             })
             .catch((err) => {
               console.log(err);
               this.toastr.error(err.message, 'Error Loading Patient Data: ' + resourceType);
               if (index + 1 === this.fhirService.resourceTypes.length) {
-                this.showOverlay = false;
+                this.hideLoadingOverlay();
               }
             });
         });
@@ -242,7 +244,7 @@ export class AppComponent {
       .catch((err) => {
         console.log(err);
         this.toastr.error(err.message, 'Error Loading Patient Data:');
-        this.showOverlay = false;
+        this.hideLoadingOverlay();
       });
   }
 
@@ -258,11 +260,11 @@ export class AppComponent {
    */
   public searchClinicalTrials(): void {
     this.itemsPerPage = 10;
-    this.showOverlay = true;
+    this.showLoadingOverlay('Searching clinical trials...');
     // Blank out any existing results
     if (this.searchReqObject.zipCode == null || !/^[0-9]{5}$/.exec(this.searchReqObject.zipCode)) {
       this.toastr.warning('Enter Valid Zip Code');
-      this.showOverlay = false;
+      this.hideLoadingOverlay();
       return;
     }
     if (
@@ -270,7 +272,7 @@ export class AppComponent {
       !(this.searchReqObject.travelRadius == null || this.searchReqObject.travelRadius == '')
     ) {
       this.toastr.warning('Enter Valid Travel Radius');
-      this.showOverlay = false;
+      this.hideLoadingOverlay();
       return;
     }
     const patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
@@ -291,14 +293,14 @@ export class AppComponent {
         console.error(err);
         // error alert to user
         this.toastr.error(err.message, 'Error Loading Clinical Trials:');
-        this.showOverlay = false;
+        this.hideLoadingOverlay();
       }
     );
   }
   /**
    * Get next 5 pages from current page index if they exist
    */
-  public getNearest() {
+  public getNearest(): SearchPage[] {
     // find current page of items
     const starting = this.selectedPage.index;
     if (starting == 0) {
@@ -340,7 +342,7 @@ export class AppComponent {
     }
     this.searchtable = false;
     this.searchPage = true;
-    this.showOverlay = false;
+    this.hideLoadingOverlay();
   }
   /**
    * Populates the pages array based on the current items per pages data.
@@ -548,5 +550,14 @@ export class AppComponent {
   public records = false;
   public showRecord(): void {
     this.records = !this.records;
+  }
+
+  private hideLoadingOverlay(): void {
+    this.showOverlay = false;
+  }
+
+  private showLoadingOverlay(text = 'Loading...'): void {
+    this.loadingText = text;
+    this.showOverlay = true;
   }
 }

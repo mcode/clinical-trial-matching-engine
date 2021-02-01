@@ -1,10 +1,11 @@
-<custom-spinner class="topVisible" *ngIf="showOverlay"></custom-spinner>
 <html lang="en">
 
 <head>
 </head>
 
 <body>
+  <custom-spinner class="topVisible" *ngIf="showOverlay" [loadingText]="loadingText"></custom-spinner>
+
   <header>
     <div class="row">
       <div class="col-sm-4">
