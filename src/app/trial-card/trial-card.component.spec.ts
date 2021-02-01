@@ -39,7 +39,7 @@ describe('TrialCardComponent', () => {
   });
 
   it('should create', () => {
-    const distServ = TestBed.get(DistanceService) as DistanceService;
+    const distServ = TestBed.inject(DistanceService) as DistanceService;
     testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
     testHostComponent.trial.trialSaved = false;
     testHostComponent.trial.reqs = {
@@ -53,7 +53,7 @@ describe('TrialCardComponent', () => {
   });
   //trialsaved should be false on startup
   it('trial saved should be false', () => {
-    const distServ = TestBed.get(DistanceService) as DistanceService;
+    const distServ = TestBed.inject(DistanceService) as DistanceService;
     testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
     testHostComponent.trial.trialSaved = false;
     testHostComponent.trial.reqs = {
@@ -69,7 +69,7 @@ describe('TrialCardComponent', () => {
     expect(testHostComponent.trial.trialSaved).toBeTruthy();
   });
   it('gets Color according to likelihood', () => {
-    const distServ = TestBed.get(DistanceService) as DistanceService;
+    const distServ = TestBed.inject(DistanceService) as DistanceService;
     testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
     testHostComponent.trial.trialSaved = false;
     testHostComponent.trial.reqs = {

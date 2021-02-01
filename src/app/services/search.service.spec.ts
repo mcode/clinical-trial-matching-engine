@@ -13,7 +13,7 @@ describe('SearchService', () => {
   );
 
   it('should be created', () => {
-    const service: SearchService = TestBed.get(SearchService);
+    const service: SearchService = TestBed.inject(SearchService);
     expect(service).toBeTruthy();
   });
 });
@@ -25,7 +25,7 @@ describe('ResearchStudySearchEntry', () => {
       imports: [HttpClientTestingModule],
       providers: [SearchService, DistanceService]
     });
-    distServ = TestBed.get(DistanceService);
+    distServ = TestBed.inject(DistanceService);
   });
 
   const testEntry = {

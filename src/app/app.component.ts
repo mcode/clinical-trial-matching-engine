@@ -43,7 +43,7 @@ class FilterData {
   }
 }
 
-interface SearchFields {
+export interface SearchFields {
   // This simply indicates that our fields are always string-able and is
   // necessary to pass the object to the patient bundle converter function.
   [key: string]: string | null;

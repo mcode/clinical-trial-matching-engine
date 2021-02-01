@@ -4,16 +4,13 @@ import { RecordDataComponent } from './record-data/record-data.component';
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { NgxSpinnerModule } from 'ngx-spinner';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClientService } from './smartonfhir/client.service';
 import { TrialCardComponent } from './trial-card/trial-card.component';
 import { ToastrModule } from 'ngx-toastr';
 import { ResearchStudySearchEntry, SearchResultsBundle } from './services/search.service';
-import { sample } from 'rxjs/operators';
 
 //Commenting out test cases since Travis doesn't like fhirService
 describe('AppComponent', () => {
@@ -22,7 +19,6 @@ describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        NgxSpinnerModule,
         FormsModule,
         RouterTestingModule,
         HttpClientTestingModule,
@@ -32,7 +28,7 @@ describe('AppComponent', () => {
       declarations: [AppComponent, RecordDataComponent, ResultDetailsComponent, TrialCardComponent],
       providers: [ClientService, DistanceService]
     }).compileComponents();
-    distServ = TestBed.get(DistanceService);
+    distServ = TestBed.inject(DistanceService);
   }));
   const testEntry = {
     fullUrl: 'http://localhost/',

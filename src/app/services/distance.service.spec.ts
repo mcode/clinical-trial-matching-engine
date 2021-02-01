@@ -10,12 +10,12 @@ describe('DistanceService', () => {
   );
 
   it('should be created', () => {
-    const service: DistanceService = TestBed.get(DistanceService);
+    const service: DistanceService = TestBed.inject(DistanceService);
     expect(service).toBeTruthy();
   });
 
   it('should get a point for a zip code', () => {
-    const service: DistanceService = TestBed.get(DistanceService);
+    const service: DistanceService = TestBed.inject(DistanceService);
     // Test with leading 0
     let point = service.getCoord('01730');
     expect(point.latitude).toBeCloseTo(42.49697, 5);
@@ -26,7 +26,7 @@ describe('DistanceService', () => {
     expect(point.longitude).toBeCloseTo(-77.22787, 5);
   });
   it('should calculate the distance', () => {
-    const service: DistanceService = TestBed.get(DistanceService);
+    const service: DistanceService = TestBed.inject(DistanceService);
 
     const origin = service.getCoord('01730') as GeolibInputCoordinates;
 

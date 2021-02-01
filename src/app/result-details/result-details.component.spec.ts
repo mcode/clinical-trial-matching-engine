@@ -36,7 +36,7 @@ describe('ResultDetailsComponent', () => {
   });
 
   it('should create the detail results', () => {
-    const distServ = TestBed.get(DistanceService) as DistanceService;
+    const distServ = TestBed.inject(DistanceService) as DistanceService;
     testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
     testHostComponent.resultDetails.reqs = {
       zipCode: '01886',
@@ -53,7 +53,7 @@ describe('ResultDetailsComponent', () => {
     expect(testHostComponent.resultDetails.trialSaved).toBeFalsy();
   });
   it('should toggle trial saved', () => {
-    const distServ = TestBed.get(DistanceService) as DistanceService;
+    const distServ = TestBed.inject(DistanceService) as DistanceService;
     testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
     testHostComponent.resultDetails.reqs = {
       zipCode: '01886',
@@ -66,7 +66,7 @@ describe('ResultDetailsComponent', () => {
     expect(testHostComponent.resultDetails.trialSaved).toBeTruthy();
   });
   it('should get Color', () => {
-    const distServ = TestBed.get(DistanceService) as DistanceService;
+    const distServ = TestBed.inject(DistanceService) as DistanceService;
     testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
     testHostComponent.resultDetails.reqs = {
       zipCode: '01886',
