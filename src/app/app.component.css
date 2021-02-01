@@ -681,10 +681,6 @@ line-height: 25px;
       color : #ffffff !important;
   }
 
-  .topVisible {
-      z-index: auto;
-  }
-
   .detailCardText {
     display: flex;
     font-size: 2vw;

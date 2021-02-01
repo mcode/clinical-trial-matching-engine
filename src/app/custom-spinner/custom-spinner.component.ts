@@ -1,6 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ThemePalette } from '@angular/material/core';
-import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { Component, Input } from '@angular/core';
 @Component({
   selector: 'custom-spinner',
   templateUrl: './custom-spinner.component.html',
