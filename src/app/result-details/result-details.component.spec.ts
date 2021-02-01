@@ -1,7 +1,7 @@
 import { DistanceService } from './../services/distance.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResearchStudySearchEntry } from './../services/search.service';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ResultDetailsComponent } from './result-details.component';
 
@@ -22,7 +22,7 @@ describe('ResultDetailsComponent', () => {
 
   const sampleTrial = data;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ResultDetailsComponent, TestHostComponent],
       imports: [HttpClientTestingModule],

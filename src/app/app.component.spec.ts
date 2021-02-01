@@ -1,7 +1,7 @@
 import { DistanceService } from './services/distance.service';
 import { ResultDetailsComponent } from './result-details/result-details.component';
 import { RecordDataComponent } from './record-data/record-data.component';
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
@@ -16,7 +16,7 @@ import { ResearchStudySearchEntry, SearchResultsBundle } from './services/search
 describe('AppComponent', () => {
   let distServ: DistanceService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,

@@ -1,6 +1,6 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { PatientBundle, createPatientBundle } from './bundle';
+import { createPatientBundle } from './bundle';
 
 describe('bundle tests', () => {
   beforeEach(() => TestBed.configureTestingModule({ imports: [HttpClientTestingModule], providers: [] }));

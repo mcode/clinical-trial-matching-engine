@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResearchStudySearchEntry } from './../services/search.service';
 import { DistanceService } from './../services/distance.service';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TrialCardComponent } from './trial-card.component';
 
@@ -25,7 +25,7 @@ describe('TrialCardComponent', () => {
 
   const sampleTrial = data;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TrialCardComponent, TestHostComponent],
       imports: [HttpClientTestingModule],
