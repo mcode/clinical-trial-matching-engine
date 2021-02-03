@@ -597,6 +597,12 @@ line-height: 25px;
     cursor: pointer;
   }
 
+.pointer:hover {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .facilityList {
   overflow-y: auto;
   max-height: 100px;
@@ -687,11 +693,10 @@ line-height: 25px;
     color: #FFFFFF;
   }
 
-
-  .mi-margin-2020{
-
+  .mi-margin-2020 {
     margin: 2%;
   }
+
   .flexborder {
     display: flex;
     justify-content: center;
@@ -702,20 +707,20 @@ line-height: 25px;
     background: #525151;
 
   }
-  .varfont{
-
+  .varfont {
     font-size: 0.9em;
   }
-  .contact-text{
+
+  .contact-text {
     color : #0079E0;
     font-size: 0.8em;
 
   }
 
-  .view-record-text{
+  .view-record-text {
     color : #0079E0;
   }
 
-  .view-record-text:hover{
+  .view-record-text:hover {
     color : #ff00b3;
   }
