@@ -15,7 +15,7 @@ describe('export data', () => {
   );
 
   it('should export data', () => {
-    const distServ: DistanceService = TestBed.get(DistanceService);
+    const distServ: DistanceService = TestBed.inject(DistanceService);
     const actual = UnpackResearchStudyResults([
       new ResearchStudySearchEntry(
         {

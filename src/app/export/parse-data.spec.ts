@@ -21,7 +21,7 @@ describe('UnpackResearchStudyResults', () => {
   });
 
   it('works on an almost empty ResearchStudy', () => {
-    const distServ = TestBed.get(DistanceService);
+    const distServ = TestBed.inject(DistanceService);
     const actual = UnpackResearchStudyResults([
       new ResearchStudySearchEntry(
         {
@@ -41,7 +41,7 @@ describe('UnpackResearchStudyResults', () => {
   });
 
   it('exports sites', () => {
-    const distServ = TestBed.get(DistanceService);
+    const distServ = TestBed.inject(DistanceService);
     const actual = UnpackResearchStudyResults([
       new ResearchStudySearchEntry(
         {

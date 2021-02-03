@@ -12,7 +12,8 @@ import { ResultDetailsComponent } from './result-details/result-details.componen
 import { TrialCardComponent } from './trial-card/trial-card.component';
 import { CustomSpinnerComponent } from './custom-spinner/custom-spinner.component';
 import Client from 'fhirclient/lib/Client';
-import { MatFormFieldModule, MatSelectModule } from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToastrModule } from 'ngx-toastr';
 
