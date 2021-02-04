@@ -1,15 +1,11 @@
-<ngx-spinner name = "load" bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
-  <p class="font20 color8">Loading...</p>
-</ngx-spinner>
-<ngx-spinner name = "load-record" bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
-  <p class="font20 color8">Loading Patient Record...</p>
-</ngx-spinner>
 <html lang="en">
 
 <head>
 </head>
 
 <body>
+  <custom-spinner class="topVisible" *ngIf="showOverlay" [loadingText]="loadingText"></custom-spinner>
+
   <header>
     <div class="row">
       <div class="col-sm-4">
@@ -108,7 +104,7 @@
             Matching Trials</span>
           <div>
             <div *ngFor="let filter of filtersArray;let i = index;" class="filters mi-margin-10"
-              style=" position: relative;display: inline-block;"> <span class="color1 filterText">
+              style=" position: relative;display: inline-block;"> <span class="color1 filterText pointer" >
                 {{filter.val}} </span>
               <div class="dropdown-content">
                 <div style=" height: 230px; overflow-y: scroll; ">
@@ -121,7 +117,7 @@
                 <div>
                   <div style="border-top: 0.5px solid #9D9D9D;margin-bottom: 10px;">
                     <div class="float-right mi-margin-10">
-                      <span (click)="clearFilter(i)" class="color11">CLEAR</span>
+                      <span (click)="clearFilter(i)" class="color11 pointer" >CLEAR</span>
                       <button (click)="applyFilter()" class="mi-margin-left-10 color8"
                         style="background-color: #52E0F2;width: 89px;">Apply</button>
                     </div>
@@ -131,11 +127,11 @@
             </div>
             <div class="filters mi-margin-10" (click)="exportSavedTrials()"
               style=" position: relative;display: inline-block;"> <span
-                class="color1 filterText">{{savedClinicalTrialsNctIds.size > 0 ? 'Export Saved Trials' : 'Export All Trials'}}</span>
+                class="color1 filterText pointer">{{savedClinicalTrialsNctIds.size > 0 ? 'Export Saved Trials' : 'Export All Trials'}}</span>
             </div>
             <div>
               <form>
-                <select class="filters mi-margin-10 color1" [(ngModel)]="sortType" (ngModelChange)="applyFilter()" [ngModelOptions]="{standalone: true}">
+                <select class="filters mi-margin-10 color1 pointer" [(ngModel)]="sortType" (ngModelChange)="applyFilter()" [ngModelOptions]="{standalone: true}">
                   <option value="likelihood">Match Likelihood</option>
                   <option value="distance">Distance</option>
                 </select>
@@ -165,7 +161,7 @@
           <div *ngFor="let trial of selectedPageTrials; let k=index">
             <div (click)="showDetails(k)">
               <!-- Card Component-->
-              <app-trial-card class="row containingDIV cards" [clinicalTrial]="trial" [reqs]="searchReqObject"
+              <app-trial-card class="row containingDIV cards pointer" [clinicalTrial]="trial" [reqs]="searchReqObject"
                 [trialSaved]="savedClinicalTrialsNctIds.has(trial.nctId)"
                 (trialSaveChanged)="setTrialSaved(trial, $event)">
               </app-trial-card>
@@ -174,19 +170,21 @@
         </div>
         <div class="containingDIV float-right">
           <p class="mi-margin-10 color7">Items per page</p>
-          <select class="selectItemPerPage color7" (change)="updateItemsPerPage($event.target.value)">
+          <select class="pointer" (change)="updateItemsPerPage($event.target.value)">
             <option value="10">10</option>
             <option value="20">20</option>
             <option value="30">30</option>
           </select>
-          <span *ngFor="let page of pages" class="mi-margin-10 color7" (click)="viewPage(page)"
-            [ngClass]="selectedPage.index == page.index ? 'selectedPage':''">{{page.index + 1}}</span>
+          <span class="mi-margin-10 color7 pointer" (click)="showPage(0)">First </span>
+          <span *ngFor="let page of getNearest()" class="mi-margin-10 color7 pointer" (click)="viewPage(page)"
+            [ngClass]="selectedPage.index == page.index ? 'selectedPage':''">{{page.index + 1 }}</span>
+          <span class="mi-margin-10 color7 pointer" (click)="showPage(pages.length-1)">Last </span>
         </div>
       </div>
       <app-result-details *ngIf="!detailsPage" [clinicalTrial]="detailedTrial"
         [trialSaved]="savedClinicalTrialsNctIds.has(detailedTrial.nctId)" [reqs]="searchReqObject"
         (trialSaveChanged)="setTrialSaved(detailedTrial, $event)">
-        <div class="mi-margin-10 col100 containingDIV" (click)="backToSearch();">
+        <div class="mi-margin-10 col100 containingDIV pointer" (click)="backToSearch();">
           <svg xmlns="http://www.w3.org/2000/svg" width="40.641" height="40.641" viewBox="0 0 40.641 40.641">
             <g id="arrow_upward-24px" transform="translate(0 40.641) rotate(-90)">
               <path id="Path_20" data-name="Path 20" d="M0,0H40.641V40.641H0Z" fill="none" />

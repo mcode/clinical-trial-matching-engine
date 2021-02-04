@@ -185,7 +185,7 @@ export class ResearchStudySearchEntry {
       return `${this.dist} miles`;
     }
     const allsites: fhirpath.FHIRResource[] = this.getSites();
-    if (!allsites) return null;
+    if (!allsites || !zip || zip == '') return null;
 
     const points: GeolibInputCoordinates[] = [];
     for (const resource of allsites) {

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
 import { ClientService } from './smartonfhir/client.service';
@@ -44,7 +43,7 @@ class FilterData {
   }
 }
 
-interface SearchFields {
+export interface SearchFields {
   // This simply indicates that our fields are always string-able and is
   // necessary to pass the object to the patient bundle converter function.
   [key: string]: string | null;
@@ -152,6 +151,12 @@ export class AppComponent {
     phase: null,
     recruitmentStatus: null
   };
+  /**
+   * Control overlay display
+   */
+  public showOverlay: boolean;
+
+  public loadingText = 'Loading...';
 
   /**
    * Store sorting preference
@@ -163,12 +168,7 @@ export class AppComponent {
    */
   public bundleResources: fhirclient.FHIR.BundleEntry[] = [];
 
-  constructor(
-    private spinner: NgxSpinnerService,
-    private searchService: SearchService,
-    private fhirService: ClientService,
-    private toastr: ToastrService
-  ) {
+  constructor(private searchService: SearchService, private fhirService: ClientService, private toastr: ToastrService) {
     this.phaseDropDown = Object.values(ResearchStudyPhase).map((value) => {
       return new DropDownValue(value, ResearchStudyPhaseDisplay[value]);
     });
@@ -177,8 +177,7 @@ export class AppComponent {
     });
 
     // show loading screen while we pull the FHIR record
-    this.spinner.show('load-record');
-
+    this.showLoadingOverlay('Loading patient data...');
     this.patient = fhirService
       .getPatient()
       .then((patient) => {
@@ -230,14 +229,14 @@ export class AppComponent {
               );
               if (index + 1 === this.fhirService.resourceTypes.length) {
                 // remove loading screen when we've loaded our final resource type
-                this.spinner.hide('load-record');
+                this.hideLoadingOverlay();
               }
             })
             .catch((err) => {
               console.log(err);
               this.toastr.error(err.message, 'Error Loading Patient Data: ' + resourceType);
               if (index + 1 === this.fhirService.resourceTypes.length) {
-                this.spinner.hide('load-record');
+                this.hideLoadingOverlay();
               }
             });
         });
@@ -245,7 +244,7 @@ export class AppComponent {
       .catch((err) => {
         console.log(err);
         this.toastr.error(err.message, 'Error Loading Patient Data:');
-        this.spinner.hide('load-record');
+        this.hideLoadingOverlay();
       });
   }
 
@@ -261,11 +260,11 @@ export class AppComponent {
    */
   public searchClinicalTrials(): void {
     this.itemsPerPage = 10;
-    this.spinner.show('load');
+    this.showLoadingOverlay('Searching clinical trials...');
     // Blank out any existing results
     if (this.searchReqObject.zipCode == null || !/^[0-9]{5}$/.exec(this.searchReqObject.zipCode)) {
       this.toastr.warning('Enter Valid Zip Code');
-      this.spinner.hide('load');
+      this.hideLoadingOverlay();
       return;
     }
     if (
@@ -273,7 +272,7 @@ export class AppComponent {
       !(this.searchReqObject.travelRadius == null || this.searchReqObject.travelRadius == '')
     ) {
       this.toastr.warning('Enter Valid Travel Radius');
-      this.spinner.hide('load');
+      this.hideLoadingOverlay();
       return;
     }
     const patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
@@ -294,10 +293,29 @@ export class AppComponent {
         console.error(err);
         // error alert to user
         this.toastr.error(err.message, 'Error Loading Clinical Trials:');
-        this.spinner.hide('load');
+        this.hideLoadingOverlay();
       }
     );
   }
+  /**
+   * Get next 5 pages from current page index if they exist
+   */
+  public getNearest(): SearchPage[] {
+    // find current page of items
+    const starting = this.selectedPage.index;
+    if (starting == 0) {
+      return this.pages.slice(starting, starting + 5);
+    } else if (starting == this.pages.length - 1) {
+      return this.pages.slice(Math.max(0, starting - 4), starting + 1);
+    } else if (starting == 1) {
+      return this.pages.slice(0, 5);
+    } else if (starting == this.pages.length - 2) {
+      return this.pages.slice(Math.max(0, starting - 3), starting + 2);
+    } else {
+      return this.pages.slice(Math.max(0, starting - 2), starting + 3);
+    }
+  }
+
   /**
    * Show the given page.
    * @param page the 0-based page number to show
@@ -324,7 +342,7 @@ export class AppComponent {
     }
     this.searchtable = false;
     this.searchPage = true;
-    this.spinner.hide('load');
+    this.hideLoadingOverlay();
   }
   /**
    * Populates the pages array based on the current items per pages data.
@@ -522,15 +540,24 @@ export class AppComponent {
     console.log('onChange: ' + val);
     //this.countPages();
   }
-  public compareByDist(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry) {
+  public compareByDist(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
     return trial1.dist - trial2.dist;
   }
-  public compareByMatch(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry) {
+  public compareByMatch(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
     return trial2.search.score - trial1.search.score;
   }
 
   public records = false;
   public showRecord(): void {
     this.records = !this.records;
+  }
+
+  private hideLoadingOverlay(): void {
+    this.showOverlay = false;
+  }
+
+  private showLoadingOverlay(text = 'Loading...'): void {
+    this.loadingText = text;
+    this.showOverlay = true;
   }
 }

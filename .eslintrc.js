@@ -10,9 +10,18 @@ module.exports = {
   overrides: [
     {
       files: ['*.ts'],
+      "parserOptions": {
+        "project": [
+          "tsconfig.app.json",
+          "tsconfig.spec.json",
+          "e2e/tsconfig.json"
+        ],
+        "createDefaultProgram": true
+      },
       extends: [
-        'plugin:@typescript-eslint/recommended',
-        'plugin:@typescript-eslint/recommended-requiring-type-checking',
+        "plugin:@angular-eslint/recommended",
+        // This is required if you use inline templates in Components
+        "plugin:@angular-eslint/template/process-inline-templates",
         'plugin:prettier/recommended'
       ],
       parser: '@typescript-eslint/parser',
@@ -28,34 +37,13 @@ module.exports = {
       ]
     },
     {
-      files: ['*.component.html'],
-        parser: '@angular-eslint/template-parser',
-        plugins: ['@angular-eslint/template'],
-        rules: {
-          // ORIGINAL tslint.json -> "template-banana-in-box": true,
-          '@angular-eslint/template/banana-in-a-box': 'error',
-
-          // ORIGINAL tslint.json -> "template-no-negated-async": true,
-          '@angular-eslint/template/no-negated-async': 'error',
-        }
-    },
-    {
-      files: ['*.component.ts'],
-      parser: '@typescript-eslint/parser',
-      parserOptions: {
-        ecmaVersion: 2020,
-        sourceType: 'module',
-      },
-      plugins: ['@angular-eslint/template'],
-      processor: '@angular-eslint/template/extract-inline-html',
-    },
-    {
-      // Not actually sure this is correct, but pretty sure it's only loaded
-      // from within Node
-      files: ['e2e/protractor.conf.js'],
-      env: {
-        browser: false,
-        protractor: true
+      "files": ["*.html"],
+      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "rules": {
+        /**
+         * Any template/HTML related rules you wish to use/reconfigure over and above the
+         * recommended set provided by the @angular-eslint project would go here.
+         */
       }
     }
   ]

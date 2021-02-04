@@ -21,7 +21,7 @@ describe('UnpackResearchStudyResults', () => {
   });
 
   it('works on an almost empty ResearchStudy', () => {
-    const distServ = TestBed.get(DistanceService);
+    const distServ = TestBed.inject(DistanceService);
     const actual = UnpackResearchStudyResults([
       new ResearchStudySearchEntry(
         {
@@ -41,7 +41,7 @@ describe('UnpackResearchStudyResults', () => {
   });
 
   it('exports sites', () => {
-    const distServ = TestBed.get(DistanceService);
+    const distServ = TestBed.inject(DistanceService);
     const actual = UnpackResearchStudyResults([
       new ResearchStudySearchEntry(
         {
@@ -109,6 +109,40 @@ describe('UnpackResearchStudyResults', () => {
                 resourceType: 'Organization',
                 id: 'org1',
                 name: 'Example Sponsor Organization'
+              },
+              {
+                resourceType: 'Location',
+                id: 'location-1',
+                name: 'First Location',
+                telecom: [
+                  {
+                    system: 'phone',
+                    value: '123456789',
+                    use: 'work'
+                  }
+                ]
+              },
+              {
+                resourceType: 'Location',
+                id: 'location-2',
+                name: 'Second Location',
+                telecom: [
+                  {
+                    system: 'email',
+                    value: 'email@example.com',
+                    use: 'work'
+                  }
+                ]
+              }
+            ],
+            site: [
+              {
+                reference: '#location-1',
+                type: 'Location'
+              },
+              {
+                reference: '#location-2',
+                type: 'Location'
               }
             ]
           }
@@ -118,7 +152,7 @@ describe('UnpackResearchStudyResults', () => {
       )
     ]);
     expect(Array.isArray(actual)).toBe(true);
-    expect(actual.length).toEqual(2);
+    expect(actual.length).toEqual(4);
     expect('Match Count' in actual[0]).toBe(true);
     expect(actual[0]['Match Count']).toEqual(1);
     const row = actual[1];
@@ -149,5 +183,22 @@ describe('UnpackResearchStudyResults', () => {
     expect(row['OverallContactPhone']).toEqual('781-555-0100');
     expect('OverallContactEmail' in row).toBe(true);
     expect(row['OverallContactEmail']).toEqual('email@example.com');
+
+    // check additional rows
+    const row2 = actual[2];
+    expect('nctId' in row2).toBe(false);
+    expect('Title' in row2).toBe(false);
+    expect('OverallStatus' in row2).toBe(false);
+    expect('Phase' in row2).toBe(false);
+    expect('Phone' in row2).toBe(true);
+    expect(row2['Phone']).toEqual('123456789');
+    expect('Facility' in row2).toBe(true);
+    expect(row2['Facility']).toEqual('First Location');
+
+    const row3 = actual[3];
+    expect('Facility' in row3).toBe(true);
+    expect(row3['Facility']).toEqual('Second Location');
+    expect('Email' in row3).toBe(true);
+    expect(row3['Email']).toEqual('email@example.com');
   });
 });

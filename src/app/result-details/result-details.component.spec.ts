@@ -1,7 +1,7 @@
 import { DistanceService } from './../services/distance.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResearchStudySearchEntry } from './../services/search.service';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ResultDetailsComponent } from './result-details.component';
 
@@ -22,7 +22,7 @@ describe('ResultDetailsComponent', () => {
 
   const sampleTrial = data;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ResultDetailsComponent, TestHostComponent],
       imports: [HttpClientTestingModule],
@@ -36,7 +36,7 @@ describe('ResultDetailsComponent', () => {
   });
 
   it('should create the detail results', () => {
-    const distServ = TestBed.get(DistanceService) as DistanceService;
+    const distServ = TestBed.inject(DistanceService) as DistanceService;
     testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
     testHostComponent.resultDetails.reqs = {
       zipCode: '01886',
@@ -51,5 +51,33 @@ describe('ResultDetailsComponent', () => {
   //on testing startup no trial should be saved
   it('trialSaved should be false', () => {
     expect(testHostComponent.resultDetails.trialSaved).toBeFalsy();
+  });
+  it('should toggle trial saved', () => {
+    const distServ = TestBed.inject(DistanceService) as DistanceService;
+    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
+    testHostComponent.resultDetails.reqs = {
+      zipCode: '01886',
+      travelRadius: null,
+      phase: null,
+      recruitmentStatus: null
+    };
+    testHostFixture.detectChanges();
+    testHostComponent.resultDetails.toggleTrialSaved();
+    expect(testHostComponent.resultDetails.trialSaved).toBeTruthy();
+  });
+  it('should get Color', () => {
+    const distServ = TestBed.inject(DistanceService) as DistanceService;
+    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
+    testHostComponent.resultDetails.reqs = {
+      zipCode: '01886',
+      travelRadius: null,
+      phase: null,
+      recruitmentStatus: null
+    };
+    testHostFixture.detectChanges();
+
+    expect(testHostComponent.resultDetails.getColor('No Match')).toBe('black');
+    expect(testHostComponent.resultDetails.getColor('Possible Match')).toBe('#E6BE03');
+    expect(testHostComponent.resultDetails.getColor('likely Match')).toBe('green');
   });
 });

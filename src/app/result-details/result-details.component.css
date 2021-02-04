@@ -59,3 +59,9 @@
   font-size: 30px;
   color: #FFFFFF;
 }
+
+.pointer:hover {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
