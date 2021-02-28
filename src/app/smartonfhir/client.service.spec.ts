@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import * as FHIR from 'fhirclient';
 import Client from 'fhirclient/lib/Client';
 import { fhirclient } from 'fhirclient/lib/types';
+import { promise } from 'protractor';
 
 import { ClientService } from './client.service';
 
@@ -10,16 +11,30 @@ describe('ClientService', () => {
   let mockClient: Client;
   let mockPatient: fhirclient.FHIR.Patient;
   let fhirInitSpy: jasmine.Spy;
+  let mockRequestResult: fhirclient.JsonObject;
+  let mockError: Error | null;
   beforeEach(() => {
     TestBed.configureTestingModule({});
     // getClient expects to invoke the FHIR OAUTH2 load but we don't want to
     // really create a client
-    // For now, mock an empty object as the patient
+    // Create a mock patient object
     mockPatient = ({} as unknown) as fhirclient.FHIR.Patient;
+    // Set defaults for the mock request
+    mockError = null;
+    mockRequestResult = {};
+    const request = (url: string): Promise<fhirclient.JsonObject> => {
+      if (mockError) {
+        return Promise.reject(mockError);
+      } else {
+        return Promise.resolve(mockRequestResult);
+      }
+    };
     mockClient = ({
       patient: {
-        read: () => Promise.resolve(mockPatient)
-      }
+        read: () => Promise.resolve(mockPatient),
+        request: request
+      },
+      request: request
     } as unknown) as Client;
     fhirInitSpy = spyOn(FHIR.oauth2, 'init').and.callFake(() => Promise.resolve(mockClient));
   });
