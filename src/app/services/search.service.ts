@@ -1,7 +1,8 @@
+import { SearchResultsBundle, ResearchStudySearchEntry } from './search.service';
 import { DistanceService } from './distance.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppConfigService } from './app-config.service';
 import { fhirclient } from 'fhirclient/lib/types';
@@ -58,7 +59,12 @@ export class ResearchStudySearchEntry {
   private cachedSites: fhirpath.FHIRResource[] | null = null;
   private containedResources: Map<string, fhirpath.FHIRResource> | null = null;
   dist: number | undefined;
-  constructor(public entry: BundleEntry, private distService: DistanceService, private zipCode: string, provider: string) {
+  constructor(
+    public entry: BundleEntry,
+    private distService: DistanceService,
+    private zipCode: string,
+    provider: string
+  ) {
     this.resource = this.entry.resource;
     this.search = this.entry.search;
     console.log(this.entry);
@@ -342,7 +348,12 @@ export class ResearchStudySearchEntry {
 export class SearchResultsBundle {
   researchStudies: ResearchStudySearchEntry[];
 
-  constructor(public bundle: fhirclient.FHIR.Bundle, private distService: DistanceService, private zip: string, source: string) {
+  constructor(
+    public bundle: fhirclient.FHIR.Bundle,
+    private distService: DistanceService,
+    private zip: string,
+    source: string
+  ) {
     if (bundle.entry) {
       this.researchStudies = bundle.entry
         .filter((entry) => {
@@ -353,9 +364,8 @@ export class SearchResultsBundle {
       this.researchStudies = [];
     }
   }
-  public setStudies(studies: ResearchStudySearchEntry[]){
+  public setStudies(studies: ResearchStudySearchEntry[]) {
     this.researchStudies = studies;
-
   }
 
   get totalCount(): number {
@@ -401,25 +411,34 @@ export class SearchService {
       })
     );
   }
-  searchAllTrials(patientBundle: PatientBundle, offset?: number, count = 10): Observable<SearchResultsBundle> {
+  searchAllTrials(patientBundle: PatientBundle, offset?: number, count = 10): Observable<SearchResultsBundle[]> {
     let services: string[] = ['http://localhost:3000', 'http://localhost:3001'];
     const query: ClinicalTrialQuery = { patientData: patientBundle, count: count };
     const zipCode = patientBundle.entry[0].resource.parameter[0].valueString;
     if (offset > 0) {
       query.offset = offset;
     }
+
     let bundles = services.map((url: string) => {
       return this.client.post<fhirclient.FHIR.Bundle>(url + '/getClinicalTrial', query).pipe(
         map((bundle: fhirclient.FHIR.Bundle) => {
           return new SearchResultsBundle(bundle, this.distService, zipCode, url);
         })
-
       );
-      });
-    let aggregateBundle = bundles[0];  
-    bundles = bundles.map((bundle: SearchResultsBundle) => {
+    });
+    return forkJoin(bundles);
+  }
+  mergeSearchBundles(bundles: SearchResultsBundle[]): SearchResultsBundle {
+    let mergedBundle = bundles[0];
+    let studies = bundles.map((bundle: SearchResultsBundle) => {
       return bundle.researchStudies;
     });
-    return null;
+
+    const allStudies: ResearchStudySearchEntry[] = studies.reduce(
+      (accumulator, value) => accumulator.concat(value),
+      []
+    );
+    mergedBundle.setStudies(allStudies);
+    return mergedBundle;
   }
 }
