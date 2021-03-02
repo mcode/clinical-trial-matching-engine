@@ -132,29 +132,18 @@ export class ClientService {
    * Gets all conditions from the client.
    */
   getConditions(parameters?: { [key: string]: Stringable }): Promise<fhirclient.FHIR.Resource[]> {
-    let query = 'Condition';
-    if (parameters) {
-      const params = [];
-      for (const p in parameters) {
-        params.push(
-          encodeURIComponent(p) + '=' + encodeURIComponent(parameters[p] === null ? 'null' : parameters[p].toString())
-        );
-      }
-      query += '?' + params.join('&');
-    }
-    // Resources should all be BundleEntries
-    return this.getAllRecords(query).then((resources) =>
+    return this.getResources('Condition', parameters).then((resources) =>
       resources.map((resource) => (resource as fhirclient.FHIR.BundleEntry).resource)
     );
   }
   /**
-   * Gets all resources of queryType from the client.
+   * Gets all resources of the given type from the client.
    */
   getResources(
-    queryType: string,
+    resourceType: string,
     parameters?: { [key: string]: Stringable }
   ): Promise<fhirclient.FHIR.BackboneElement[]> {
-    let query = queryType;
+    let query = resourceType;
     if (parameters) {
       const params = [];
       for (const p in parameters) {
