@@ -276,12 +276,12 @@ export class AppComponent {
       return;
     }
     const patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
-    this.searchService.searchClinicalTrials(patientBundle).subscribe(
+    this.searchService.searchAllTrials(patientBundle).subscribe(
       (response) => {
         // Store the results
-
-        this.searchResults = response;
-        console.log(response);
+        let mergedResponse=this.searchService.mergeSearchBundles(response);
+        this.searchResults = mergedResponse;
+        console.log(mergedResponse);
         // Create our pages array
         this.createPages();
         // Create our filters
