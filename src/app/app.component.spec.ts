@@ -16,20 +16,22 @@ import { ResearchStudySearchEntry, SearchResultsBundle } from './services/search
 describe('AppComponent', () => {
   let distServ: DistanceService;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        RouterTestingModule,
-        HttpClientTestingModule,
-        BrowserAnimationsModule,
-        ToastrModule.forRoot()
-      ],
-      declarations: [AppComponent, RecordDataComponent, ResultDetailsComponent, TrialCardComponent],
-      providers: [ClientService, DistanceService]
-    }).compileComponents();
-    distServ = TestBed.inject(DistanceService);
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          FormsModule,
+          RouterTestingModule,
+          HttpClientTestingModule,
+          BrowserAnimationsModule,
+          ToastrModule.forRoot()
+        ],
+        declarations: [AppComponent, RecordDataComponent, ResultDetailsComponent, TrialCardComponent],
+        providers: [ClientService, DistanceService]
+      }).compileComponents();
+      distServ = TestBed.inject(DistanceService);
+    })
+  );
   const testEntry = {
     fullUrl: 'http://localhost/',
     resource: {

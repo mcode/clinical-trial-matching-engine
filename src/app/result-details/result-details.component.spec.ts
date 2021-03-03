@@ -22,13 +22,15 @@ describe('ResultDetailsComponent', () => {
 
   const sampleTrial = data;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ResultDetailsComponent, TestHostComponent],
-      imports: [HttpClientTestingModule],
-      providers: [DistanceService]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ResultDetailsComponent, TestHostComponent],
+        imports: [HttpClientTestingModule],
+        providers: [DistanceService]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     testHostFixture = TestBed.createComponent(TestHostComponent);
