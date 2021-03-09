@@ -1,0 +1,5 @@
+<h3>Filter Patient Data Sent</h3>
+<p>Check off the set of data to <em>remove</em> before sending the patient bundle below.</p>
+<ul *ngFor="let filter of filters;">
+  <li><label [for]="filter.id"><input type="checkbox" [id]="filter.id" (click)="setFilter(filter.id, $event.target.checked)"> {{filter.name}}</label></li>
+</ul>

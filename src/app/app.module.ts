@@ -7,10 +7,11 @@ import { FormsModule } from '@angular/forms';
 // animation module
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClientService } from './smartonfhir/client.service';
+import { CustomSpinnerComponent } from './custom-spinner/custom-spinner.component';
+import { FilterDataComponent } from './filter-data/filter-data.component';
 import { RecordDataComponent } from './record-data/record-data.component';
 import { ResultDetailsComponent } from './result-details/result-details.component';
 import { TrialCardComponent } from './trial-card/trial-card.component';
-import { CustomSpinnerComponent } from './custom-spinner/custom-spinner.component';
 import Client from 'fhirclient/lib/Client';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -35,10 +36,11 @@ export class MaterialModule {}
   // prettier-ignore
   declarations: [
     AppComponent,
+    CustomSpinnerComponent,
+    FilterDataComponent,
     RecordDataComponent,
     ResultDetailsComponent,
-    TrialCardComponent,
-    CustomSpinnerComponent
+    TrialCardComponent
   ],
   // prettier-ignore
   imports: [
