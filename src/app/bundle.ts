@@ -20,47 +20,47 @@ export function createPatientBundle(
     if (value === null) continue;
     paramResource.parameter.push({ name: p, valueString: value });
   }
-  // need to remove final comma
-  paramResource = paramResource.slice(0, -1);
-  paramResource += `
-                     ]
-                    }
-                  },`;
-  let patientBundle =
-    `{
-                          "resourceType": "Bundle",
-                          "type": "collection",
-                          "entry": [
-                            {
-                              "resource": ` + paramResource;
-  // for (const resource in entries)
-  // entries.forEach((resource) => {
-  //   // for each instead
-  //   patientBundle += `
-  //   ${JSON.stringify({ fullUrl: resource.fullUrl, resource: resource.resource })},`;
-  // });
-
+  const patientBundle: PatientBundle = {
+    resourceType: 'Bundle',
+    type: 'collection',
+    entry: [{resource: paramResource}]
+  };
   patient.entry.forEach((resource) => {
-    patientBundle += `${JSON.stringify(resource)},`;
-  })
+    patientBundle.entry.push({ fullUrl: resource.fullUrl, resource: resource.resource });
+  });
 
-  patientBundle = patientBundle.slice(0, -1);
-  patientBundle += `
-                      ]
-                     }`;
+  // patient.entry.forEach((resource) => {
+  //   patientBundle += `${JSON.stringify(resource)},`;
+  // })
+
+  // patientBundle = patientBundle.slice(0, -1);
+  // patientBundle += `
+  //                     ]
+  //                    }`;
   
   console.log(patientBundle);
   return patientBundle;
 }
 
-export interface ParameterResource {
-  resourceType?: string;
-  id?: string;
+// export interface ParameterResource {
+//   resourceType?: string;
+//   id?: string;
+//   parameter?: { name: string; valueString: Stringable }[];
+// }
+
+// export interface PatientBundle {
+//   resourceType?: string;
+//   type?: string;
+//   entry?: { resource: ParameterResource }[] | { fullUrl: string; resource: fhirclient.FHIR.Resource }[];
+// }
+
+export interface ParameterResource extends fhirclient.FHIR.Resource {
+  resourceType: 'Parameters';
   parameter?: { name: string; valueString: Stringable }[];
 }
 
 export interface PatientBundle {
   resourceType?: string;
   type?: string;
-  entry?: { resource: ParameterResource }[] | { fullUrl: string; resource: fhirclient.FHIR.Resource }[];
+  entry?: { fullUrl?: string; resource: fhirclient.FHIR.Resource }[];
 }

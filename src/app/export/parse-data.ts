@@ -53,24 +53,21 @@ export const UnpackResearchStudyResults = (result: ResearchStudySearchEntry[]): 
       const mainRow = {};
       const sites = trial.getSites();
 
-    const mainRow = {};
-    const sites = trial.getSites();
-
-    mainRow['nctId'] = trial.nctId;
-    if (trial.search && trial.search.score != null) {
-      mainRow['MatchLikelihood'] = trial.matchLikelihood;
-    }
-    mainRow['Title'] = trial.title;
-    mainRow['OverallStatus'] = trial.overallStatus;
-    mainRow['Phase'] = trial.phase;
-    mainRow['Conditions'] = trial.conditions;
-    mainRow['StudyType'] = trial.studyType;
-    mainRow['Description'] = trial.description;
-    mainRow['DetailedDescription'] = trial.detailedDescription;
-    mainRow['Criteria'] = trial.criteria;
-    mainRow['Sponsor'] = trial.sponsor;
-    mainRow['OverallContact'] = trial.overallContact;
-    mainRow['OverallContactPhone'] = trial.overallContactPhone;
+      mainRow['nctId'] = trial.nctId;
+      if (trial.search && trial.search.score != null) {
+        mainRow['MatchLikelihood'] = trial.matchLikelihood;
+      }
+      mainRow['Title'] = trial.title;
+      mainRow['OverallStatus'] = trial.overallStatus;
+      mainRow['Phase'] = trial.phase;
+      mainRow['Conditions'] = trial.conditions;
+      mainRow['StudyType'] = trial.studyType;
+      mainRow['Description'] = trial.description;
+      mainRow['DetailedDescription'] = trial.detailedDescription;
+      mainRow['Criteria'] = trial.criteria;
+      mainRow['Sponsor'] = trial.sponsor;
+      mainRow['OverallContact'] = trial.overallContact;
+      mainRow['OverallContactPhone'] = trial.overallContactPhone;
 
       data.push(mainRow);
       /*
