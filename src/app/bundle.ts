@@ -53,14 +53,15 @@ export function createPatientBundle(
 //   type?: string;
 //   entry?: { resource: ParameterResource }[] | { fullUrl: string; resource: fhirclient.FHIR.Resource }[];
 // }
-
-export interface ParameterResource extends fhirclient.FHIR.Resource {
+export interface Resource extends Omit<fhirclient.FHIR.Resource, 'meta'> {
+  //meta?: Partial<fhirclient.FHIR.Meta>;
+}
+export interface ParameterResource extends Resource {
   resourceType: 'Parameters';
   parameter?: { name: string; valueString: Stringable }[];
 }
-
 export interface PatientBundle {
   resourceType?: string;
   type?: string;
-  entry?: { fullUrl?: string; resource: fhirclient.FHIR.Resource }[];
+  entry?: { fullUrl?: string; resource: Resource }[];
 }
