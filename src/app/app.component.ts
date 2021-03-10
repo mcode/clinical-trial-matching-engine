@@ -14,6 +14,7 @@ import {
   ResearchStudyPhaseDisplay
 } from './fhir-constants';
 import { fhirclient } from 'fhirclient/lib/types';
+import { BundleEntry } from './fhir-types';
 import { TrialCardComponent } from './trial-card/trial-card.component';
 
 /**
@@ -166,7 +167,9 @@ export class AppComponent {
   /**
    * Patient bundle resources from the FHIR client.
    */
-  public bundleResources: fhirclient.FHIR.BundleEntry[] = [];
+  public bundleResources: BundleEntry[] = [];
+
+  public records = false;
 
   constructor(private searchService: SearchService, private fhirService: ClientService, private toastr: ToastrService) {
     this.phaseDropDown = Object.values(ResearchStudyPhase).map((value) => {
@@ -225,7 +228,7 @@ export class AppComponent {
                 ...(records.filter((record) => {
                   // Check to make sure it's a bundle entry
                   return 'fullUrl' in record && 'resource' in record;
-                }) as fhirclient.FHIR.BundleEntry[])
+                }) as BundleEntry[])
               );
               if (index + 1 === this.fhirService.resourceTypes.length) {
                 // remove loading screen when we've loaded our final resource type
@@ -547,7 +550,6 @@ export class AppComponent {
     return trial2.search.score - trial1.search.score;
   }
 
-  public records = false;
   public showRecord(): void {
     this.records = !this.records;
   }

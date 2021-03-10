@@ -1,4 +1,5 @@
 import { fhirclient } from 'fhirclient/lib/types';
+import { Bundle, BundleEntry, Resource } from './fhir-types';
 
 /**
  * Values that can be placed into parameters
@@ -8,10 +9,7 @@ type Stringable = string | number | boolean | null;
 /**
  * Create collection bundle from parameters and entries
  */
-export function createPatientBundle(
-  parameters: { [key: string]: Stringable },
-  entries: fhirclient.FHIR.BundleEntry[]
-): PatientBundle {
+export function createPatientBundle(parameters: { [key: string]: Stringable }, entries: BundleEntry[]): PatientBundle {
   const paramResource: ParameterResource = { resourceType: 'Parameters', id: '0', parameter: [] };
   for (const p in parameters) {
     // Ignore null values, they indicate a parameter that should be ignored.
@@ -30,14 +28,9 @@ export function createPatientBundle(
   return patientBundle;
 }
 
-export interface ParameterResource {
-  resourceType?: string;
-  id?: string;
+export interface ParameterResource extends Resource {
+  resourceType: 'Parameters';
   parameter?: { name: string; valueString: Stringable }[];
 }
 
-export interface PatientBundle {
-  resourceType?: string;
-  type?: string;
-  entry?: { resource: ParameterResource }[] | { fullUrl: string; resource: fhirclient.FHIR.Resource }[];
-}
+export type PatientBundle = Bundle;
