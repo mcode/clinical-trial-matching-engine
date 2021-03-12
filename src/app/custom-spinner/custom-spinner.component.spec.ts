@@ -6,11 +6,13 @@ describe('CustomSpinnerComponent', () => {
   let component: CustomSpinnerComponent;
   let fixture: ComponentFixture<CustomSpinnerComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [CustomSpinnerComponent]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CustomSpinnerComponent]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomSpinnerComponent);

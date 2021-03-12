@@ -6,11 +6,13 @@ describe('RecordDataComponent', () => {
   let component: RecordDataComponent;
   let fixture: ComponentFixture<RecordDataComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [RecordDataComponent]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [RecordDataComponent]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RecordDataComponent);

@@ -99,64 +99,51 @@ export class ClientService {
    */
   getAllRecords(query: string): Promise<fhirclient.FHIR.BackboneElement[]> {
     return new Promise((resolve, reject) => {
-      this.getClient()
-        .then((client) => {
-          // Here is where the 'magic' happens
-          const results: fhirclient.FHIR.BackboneElement[] = [];
-          const handlePage = (bundle): void => {
-            if (bundle.entry) {
-              // Append these entries to the list - entry is conceptually optional,
-              // so make sure it exists before appending
-              // (Concat creates a new array, this pushes the results onto the end)
-              Array.prototype.push.apply(results, bundle.entry);
-            }
-            if (bundle.link) {
-              // Look through the links to see if there's a next page
-              for (const link of bundle.link) {
-                if (link.relation === 'next') {
-                  // Have a next page link - so follow it and only the first one.
-                  client.request(link.url).then(handlePage).catch(reject);
-                  return;
-                }
+      this.getClient().then((client) => {
+        // Here is where the 'magic' happens
+        const results: fhirclient.FHIR.BackboneElement[] = [];
+        const handlePage = (bundle): void => {
+          if (bundle.entry) {
+            // Append these entries to the list - entry is conceptually optional,
+            // so make sure it exists before appending
+            // (Concat creates a new array, this pushes the results onto the end)
+            Array.prototype.push.apply(results, bundle.entry);
+          }
+          if (bundle.link) {
+            // Look through the links to see if there's a next page
+            for (const link of bundle.link) {
+              if (link.relation === 'next') {
+                // Have a next page link - so follow it and only the first one.
+                client.request(link.url).then(handlePage, reject);
+                return;
               }
             }
-            // If we've fallen through, we have no links, so just resolve with
-            // whatever we have
-            resolve(results);
-            return;
-          };
-          client.patient.request(query).then(handlePage).catch(reject);
-        })
-        .catch(reject);
+          }
+          // If we've fallen through, we have no links, so just resolve with
+          // whatever we have
+          resolve(results);
+          return;
+        };
+        client.patient.request(query).then(handlePage, reject);
+      }, reject);
     });
   }
   /**
    * Gets all conditions from the client.
    */
   getConditions(parameters?: { [key: string]: Stringable }): Promise<fhirclient.FHIR.Resource[]> {
-    let query = 'Condition';
-    if (parameters) {
-      const params = [];
-      for (const p in parameters) {
-        params.push(
-          encodeURIComponent(p) + '=' + encodeURIComponent(parameters[p] === null ? 'null' : parameters[p].toString())
-        );
-      }
-      query += '?' + params.join('&');
-    }
-    // Resources should all be BundleEntries
-    return this.getAllRecords(query).then((resources) =>
+    return this.getResources('Condition', parameters).then((resources) =>
       resources.map((resource) => (resource as fhirclient.FHIR.BundleEntry).resource)
     );
   }
   /**
-   * Gets all resources of queryType from the client.
+   * Gets all resources of the given type from the client.
    */
   getResources(
-    queryType: string,
+    resourceType: string,
     parameters?: { [key: string]: Stringable }
   ): Promise<fhirclient.FHIR.BackboneElement[]> {
-    let query = queryType;
+    let query = resourceType;
     if (parameters) {
       const params = [];
       for (const p in parameters) {

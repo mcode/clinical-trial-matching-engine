@@ -1,5 +1,5 @@
-import { fhirclient } from 'fhirclient/lib/types';
 import patient from '../assets/patient1.json';
+import { Bundle, BundleEntry, Resource } from './fhir-types';
 
 /**
  * Values that can be placed into parameters
@@ -9,10 +9,7 @@ type Stringable = string | number | boolean | null;
 /**
  * Create collection bundle from parameters and entries
  */
-export function createPatientBundle(
-  parameters: { [key: string]: Stringable },
-  entries: fhirclient.FHIR.BundleEntry[]
-): PatientBundle {
+export function createPatientBundle(parameters: { [key: string]: Stringable }, entries: BundleEntry[]): PatientBundle {
   const paramResource: ParameterResource = { resourceType: 'Parameters', id: '0', parameter: [] };
   for (const p in parameters) {
     // Ignore null values, they indicate a parameter that should be ignored.
@@ -23,7 +20,7 @@ export function createPatientBundle(
   const patientBundle: PatientBundle = {
     resourceType: 'Bundle',
     type: 'collection',
-    entry: [{resource: paramResource}]
+    entry: [{ resource: paramResource }]
   };
   patient.entry.forEach((resource) => {
     patientBundle.entry.push({ fullUrl: resource.fullUrl, resource: resource.resource });
@@ -37,31 +34,14 @@ export function createPatientBundle(
   // patientBundle += `
   //                     ]
   //                    }`;
-  
+
   console.log(patientBundle);
   return patientBundle;
 }
 
-// export interface ParameterResource {
-//   resourceType?: string;
-//   id?: string;
-//   parameter?: { name: string; valueString: Stringable }[];
-// }
-
-// export interface PatientBundle {
-//   resourceType?: string;
-//   type?: string;
-//   entry?: { resource: ParameterResource }[] | { fullUrl: string; resource: fhirclient.FHIR.Resource }[];
-// }
-export interface Resource extends Omit<fhirclient.FHIR.Resource, 'meta'> {
-  //meta?: Partial<fhirclient.FHIR.Meta>;
-}
 export interface ParameterResource extends Resource {
   resourceType: 'Parameters';
   parameter?: { name: string; valueString: Stringable }[];
 }
-export interface PatientBundle {
-  resourceType?: string;
-  type?: string;
-  entry?: { fullUrl?: string; resource: Resource }[];
-}
+
+export type PatientBundle = Bundle;
