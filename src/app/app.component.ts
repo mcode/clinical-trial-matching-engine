@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 import { ClientService } from './smartonfhir/client.service';
@@ -16,6 +16,7 @@ import {
 import { fhirclient } from 'fhirclient/lib/types';
 import { BundleEntry } from './fhir-types';
 import { TrialCardComponent } from './trial-card/trial-card.component';
+import { FilterDataComponent } from './filter-data/filter-data.component';
 
 /**
  * Provides basic information about a given page.
@@ -169,6 +170,9 @@ export class AppComponent {
    */
   public bundleResources: BundleEntry[] = [];
 
+  @ViewChild(FilterDataComponent)
+  public dataElementFilters: FilterDataComponent;
+
   public records = false;
 
   constructor(private searchService: SearchService, private fhirService: ClientService, private toastr: ToastrService) {
@@ -278,7 +282,11 @@ export class AppComponent {
       this.hideLoadingOverlay();
       return;
     }
-    const patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
+    let patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
+    if (this.dataElementFilters.isFilterEnabled()) {
+      // createPatientBundle places some information by reference, so create a complete copy rather than destroying it
+      patientBundle = this.dataElementFilters.filterBundleCopy(patientBundle);
+    }
     this.searchService.searchClinicalTrials(patientBundle).subscribe(
       (response) => {
         // Store the results
