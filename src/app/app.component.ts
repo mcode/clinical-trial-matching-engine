@@ -279,7 +279,8 @@ export class AppComponent {
     this.searchService.searchAllTrials(patientBundle).subscribe(
       (response) => {
         // Store the results
-        let mergedResponse=this.searchService.mergeSearchBundles(response);
+        //let mergedResponse =response;
+        let mergedResponse = this.searchService.mergeSearchBundles(response);
         this.searchResults = mergedResponse;
         console.log(mergedResponse);
         // Create our pages array

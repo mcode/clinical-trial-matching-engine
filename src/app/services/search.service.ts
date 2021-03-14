@@ -1,4 +1,3 @@
-import { SearchResultsBundle, ResearchStudySearchEntry } from './search.service';
 import { DistanceService } from './distance.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -412,17 +411,18 @@ export class SearchService {
     );
   }
   searchAllTrials(patientBundle: PatientBundle, offset?: number, count = 10): Observable<SearchResultsBundle[]> {
-    let services: string[] = ['http://localhost:3000', 'http://localhost:3001'];
+    let services: { [key: string]: string } = this.config.getAllURLs();
+    let urls: string[] = Object.keys(services);
     const query: ClinicalTrialQuery = { patientData: patientBundle, count: count };
     const zipCode = patientBundle.entry[0].resource.parameter[0].valueString;
     if (offset > 0) {
       query.offset = offset;
     }
 
-    let bundles = services.map((url: string) => {
+    let bundles = urls.map((url: string) => {
       return this.client.post<fhirclient.FHIR.Bundle>(url + '/getClinicalTrial', query).pipe(
         map((bundle: fhirclient.FHIR.Bundle) => {
-          return new SearchResultsBundle(bundle, this.distService, zipCode, url);
+          return new SearchResultsBundle(bundle, this.distService, zipCode, services[url]);
         })
       );
     });

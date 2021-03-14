@@ -22,7 +22,11 @@
             <span class="cardtext color8">{{clinicalTrial.description}}
             </span>
           </div>
-
+          <div>
+            <h3 class="cardtext upperCase color7">Source:</h3>
+            <span class="cardtext color8">{{clinicalTrial.provider}}
+            </span>
+          </div>
           <div class="col100 containingDIV ">
             <div class="col33 mi-margin-10 outerDiv">
               <div class="innerDiv">
@@ -124,6 +128,7 @@
     </div>
   </div>
 </div>
+
 <div style="background-color: white;">
   <button class="accordion" (click)="showHideAccordian($event)">Description</button>
   <div class="panel">
