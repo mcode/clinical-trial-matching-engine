@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import Patient from '../patient';
-import { fhirclient } from 'fhirclient/lib/types';
+import { BundleEntry, Resource } from '../fhir-types';
 
 @Component({
   selector: 'app-record-data',
@@ -10,14 +10,14 @@ import { fhirclient } from 'fhirclient/lib/types';
 export class RecordDataComponent {
   @Input() patient: Patient;
   @Input() displayOn: boolean;
-  @Input() bundleResources: fhirclient.FHIR.BundleEntry[];
+  @Input() bundleResources: BundleEntry[];
   @Output() getDisplayChange = new EventEmitter<boolean>();
 
-  conditions: fhirclient.FHIR.Resource[];
-  observations: fhirclient.FHIR.Resource[];
-  procedures: fhirclient.FHIR.Resource[];
-  medications: fhirclient.FHIR.Resource[];
-  otherResources: fhirclient.FHIR.Resource[];
+  conditions: Resource[];
+  observations: Resource[];
+  procedures: Resource[];
+  medications: Resource[];
+  otherResources: Resource[];
 
   constructor(private cdRef: ChangeDetectorRef) {}
 
@@ -28,12 +28,12 @@ export class RecordDataComponent {
   setResources(): void {
     // Initialize.
     if (this.otherResources == undefined || this.otherResources == null) {
-      this.otherResources = [] as fhirclient.FHIR.Resource[];
-      this.conditions = [] as fhirclient.FHIR.Resource[];
-      this.observations = [] as fhirclient.FHIR.Resource[];
-      this.procedures = [] as fhirclient.FHIR.Resource[];
-      this.medications = [] as fhirclient.FHIR.Resource[];
-      const allResources: fhirclient.FHIR.Resource[] = this.bundleResources.map((br) => br.resource);
+      this.otherResources = [] as Resource[];
+      this.conditions = [] as Resource[];
+      this.observations = [] as Resource[];
+      this.procedures = [] as Resource[];
+      this.medications = [] as Resource[];
+      const allResources: Resource[] = this.bundleResources.map((br) => br.resource);
 
       // Pull the resource types and add to resource lists.
       for (const resource of allResources) {
