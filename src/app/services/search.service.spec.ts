@@ -211,7 +211,7 @@ describe('ResearchStudySearchEntry', () => {
   });
   it('gets match likelihood as expected', () => {
     const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
-    result.search = { mode: 'example', score: 0.3 };
+    result.search = { mode: 'match', score: 0.3 };
     result.search.score = 0.23;
     expect(result.matchLikelihood).toBe('No Match');
     result.search.score = 0.56;
@@ -257,6 +257,7 @@ describe('ResearchStudySearchEntry', () => {
   });
   it('makes search results bundle', () => {
     const bundleData = {
+      resourceType: 'Bundle' as 'Bundle',
       type: 'document' as 'document',
       link: [],
       entry: [testEntry2]
@@ -266,6 +267,7 @@ describe('ResearchStudySearchEntry', () => {
   });
   it('builds filters', () => {
     const bundleData = {
+      resourceType: 'Bundle' as 'Bundle',
       type: 'document' as 'document',
       link: [],
       entry: [testEntry2]
