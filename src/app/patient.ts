@@ -3,38 +3,31 @@
  * instead provides hooks sufficient to pull the data used.
  */
 
-import { fhirclient } from 'fhirclient/lib/types';
+import { Address, HumanName, Patient as FHIRPatient } from './fhir-types';
 
-interface FHIRAddress {
-  use: string;
-  postalCode: string;
-}
-
-interface FHIRHumanName {
-  use?: string;
-  text?: string;
-  family?: string[];
-  given?: string[];
-}
-
-interface FHIRPatient extends fhirclient.FHIR.Patient {
-  name?: FHIRHumanName[];
-  address?: FHIRAddress[];
-}
+export type NameUse = HumanName['use'];
 
 /** Maps name types to their "power" - higher is better (makes the comparison read better below) */
-const casualNamePreferences = {
+const casualNamePreferences: { [K in NameUse]?: number } = {
   usual: 3,
   nickname: 2,
   official: 1
 };
 
 interface ObjectWithUse {
-  use: string;
+  use?: string;
 }
 
 function objectComparator<T extends ObjectWithUse>(usePreferences: { [key: string]: number }): (a: T, b: T) => T {
   return (a, b): T => {
+    if (!('use' in a)) {
+      // If a has no use and b has a use, prefer b, otherwise return a as "first"
+      return 'use' in b ? b : a;
+    }
+    if (!('use' in b)) {
+      // If a has a use and b did not, use a
+      return a;
+    }
     if (a.use in usePreferences) {
       if (b.use in usePreferences) {
         return usePreferences[a.use] > usePreferences[b.use] ? a : b;
@@ -83,7 +76,7 @@ export default class Patient {
    * returns the first name with a defined "use" field, otherwise, it returns
    * the first name.
    */
-  getPreferredName(): FHIRHumanName {
+  getPreferredName(): HumanName {
     if (Array.isArray(this.resource.name) && this.resource.name.length > 0) {
       // Pick out the "best" name if we can
       return this.resource.name.reduce(objectComparator(casualNamePreferences));
@@ -91,7 +84,7 @@ export default class Patient {
       return null;
     }
   }
-  getGender(): string {
+  getGender(): FHIRPatient['gender'] {
     return this.resource.gender;
   }
   getAge(): number {
@@ -108,7 +101,7 @@ export default class Patient {
    * Gets the home address, if available, otherwise an office address, otherwise
    * the first address of any type listed in the patient record.
    */
-  getHomeAddress(): FHIRAddress | null {
+  getHomeAddress(): Address | null {
     if (Array.isArray(this.resource.address) && this.resource.address.length > 0) {
       return this.resource.address.reduce(
         objectComparator({

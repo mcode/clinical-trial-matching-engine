@@ -4,17 +4,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppConfigService } from './app-config.service';
-import { fhirclient } from 'fhirclient/lib/types';
 import * as fhirpath from 'fhirpath';
 import { GeolibInputCoordinates } from 'geolib/es/types';
 import { PatientBundle } from '../bundle';
+import { Bundle, BundleEntry, Group, ResearchStudy, Search } from '../fhir-types';
 
 /**
  * Marks a path.
  */
 export type FHIRPath = string;
-
-export type ResearchStudy = fhirclient.FHIR.Resource;
 
 /**
  * Very basic facility mapping. Will be removed in favor of direct access to
@@ -35,14 +33,6 @@ interface Location extends BaseResource {
   telecom?: unknown;
   position?: { longitude?: number; latitude?: number };
 }
-interface Search {
-  mode: string;
-  score: number;
-}
-
-interface BundleEntry extends fhirclient.FHIR.BundleEntry {
-  search?: Search;
-}
 
 /**
  * Wrapper class for a research study. Provides hooks to deal with looking up
@@ -52,13 +42,15 @@ export class ResearchStudySearchEntry {
   /**
    * The embedded resource.
    */
-  resource: fhirclient.FHIR.Resource;
+  resource: ResearchStudy;
   search?: Search;
   private cachedSites: fhirpath.FHIRResource[] | null = null;
   private containedResources: Map<string, fhirpath.FHIRResource> | null = null;
   dist: number | undefined;
   constructor(public entry: BundleEntry, private distService: DistanceService, private zipCode: string) {
-    this.resource = this.entry.resource;
+    if (this.entry.resource.resourceType !== 'ResearchStudy')
+      throw new Error('Invalid resource type "' + this.entry.resource.resourceType + '"');
+    this.resource = this.entry.resource as ResearchStudy;
     this.search = this.entry.search;
     console.log(this.entry);
 
@@ -87,21 +79,24 @@ export class ResearchStudySearchEntry {
   }
   get criteria(): string {
     if (this.resource.enrollment) {
-      const groupIds = this.resource.enrollment.map((enrollment) => (enrollment.reference as string).substr(1));
+      const groupIds = this.resource.enrollment.map((enrollment) => enrollment.reference.substr(1));
       const characteristics = [];
       for (const ref of this.resource.contained) {
         if (ref.resourceType == 'Group' && groupIds.includes(ref.id)) {
-          if (ref.characteristic) {
+          const groupRef = ref as Group;
+          if (groupRef.characteristic) {
             //characteristic is an array
 
             //how criteria is stored in characteristic currently unkown
             let exclusion = 'Exclusion: \n';
             let inclusion = 'Inclusion: \n';
-            for (const trait of ref.characteristic) {
-              if (trait.exclude) {
-                exclusion += `   ${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
-              } else {
-                inclusion += `   ${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
+            for (const trait of groupRef.characteristic) {
+              if (trait.valueCodeableConcept) {
+                if (trait.exclude) {
+                  exclusion += `   ${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
+                } else {
+                  inclusion += `   ${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
+                }
               }
             }
             const traits = `${inclusion} \n ${exclusion}`;
@@ -341,7 +336,7 @@ export class ResearchStudySearchEntry {
 export class SearchResultsBundle {
   researchStudies: ResearchStudySearchEntry[];
 
-  constructor(public bundle: fhirclient.FHIR.Bundle, private distService: DistanceService, private zip: string) {
+  constructor(public bundle: Bundle, private distService: DistanceService, private zip: string) {
     if (bundle.entry) {
       this.researchStudies = bundle.entry
         .filter((entry) => {
@@ -390,8 +385,8 @@ export class SearchService {
     if (offset > 0) {
       query.offset = offset;
     }
-    return this.client.post<fhirclient.FHIR.Bundle>(this.config.getServiceURL() + '/getClinicalTrial', query).pipe(
-      map((bundle: fhirclient.FHIR.Bundle) => {
+    return this.client.post<Bundle>(this.config.getServiceURL() + '/getClinicalTrial', query).pipe(
+      map((bundle: Bundle) => {
         return new SearchResultsBundle(bundle, this.distService, zipCode);
       })
     );

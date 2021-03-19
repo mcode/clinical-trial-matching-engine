@@ -22,7 +22,6 @@
     "@angular/platform-browser": "~11.2.3",
     "@angular/platform-browser-dynamic": "~11.2.3",
     "@angular/router": "~11.2.3",
-    "fhirclient": "^2.3.1",
     "fhirpath": "^2.3.0",
     "file-saver": "^2.0.2",
     "geolib": "^3.3.1",

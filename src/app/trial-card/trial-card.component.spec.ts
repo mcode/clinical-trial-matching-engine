@@ -25,13 +25,15 @@ describe('TrialCardComponent', () => {
 
   const sampleTrial = data;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [TrialCardComponent, TestHostComponent],
-      imports: [HttpClientTestingModule],
-      providers: [DistanceService]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [TrialCardComponent, TestHostComponent],
+        imports: [HttpClientTestingModule],
+        providers: [DistanceService]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     testHostFixture = TestBed.createComponent(TestHostComponent);

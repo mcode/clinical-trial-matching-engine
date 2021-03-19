@@ -150,6 +150,7 @@ describe('AppComponent', () => {
     app.createPages(12);
     const samplepage = app.pages[0];
     const bundleData = {
+      resourceType: 'Bundle' as 'Bundle',
       type: 'document' as 'document',
       link: [],
       entry: [testEntry]
@@ -165,6 +166,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     const bundleData = {
+      resourceType: 'Bundle' as 'Bundle',
       type: 'document' as 'document',
       link: [],
       entry: [testEntry]
@@ -178,6 +180,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     const bundleData = {
+      resourceType: 'Bundle' as 'Bundle',
       type: 'document' as 'document',
       link: [],
       entry: [testEntry]
@@ -199,6 +202,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     const bundleData = {
+      resourceType: 'Bundle' as 'Bundle',
       type: 'document' as 'document',
       link: [],
       entry: [testEntry]
@@ -223,6 +227,7 @@ describe('AppComponent', () => {
     app.createPages(12);
     const samplepage = app.pages[0];
     const bundleData = {
+      resourceType: 'Bundle' as 'Bundle',
       type: 'document' as 'document',
       link: [],
       entry: [testEntry]
