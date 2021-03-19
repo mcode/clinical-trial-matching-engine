@@ -8,13 +8,13 @@ import { SearchFields } from './../app.component';
   styleUrls: ['../app.component.css'] //refer to app component styling for the time being
 })
 export class TrialCardComponent {
+  public static showDetailsFlag = true;
+
   @Input() reqs: SearchFields;
   @Input() clinicalTrial: ResearchStudySearchEntry;
   @Input() trialSaved;
   @Output() trialSaveChanged = new EventEmitter<boolean>();
   //constructor() { }
-
-  public static showDetailsFlag = true;
 
   public toggleTrialSaved(): void {
     // Save Study Button in Trial Card reaches here, set the showDetailsFlag to false to prevent details from openeing.
