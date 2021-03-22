@@ -1,7 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 
-import { promise } from 'protractor';
-
 import { ClientService } from './client.service';
 
 describe('ClientService', () => {

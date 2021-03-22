@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef, AfterContentChecked } from '@angular/core';
 import Patient from '../patient';
 import { BundleEntry, Resource } from '../fhir-types';
 
@@ -7,7 +7,7 @@ import { BundleEntry, Resource } from '../fhir-types';
   templateUrl: './record-data.component.html',
   styleUrls: ['./record-data.component.css']
 })
-export class RecordDataComponent {
+export class RecordDataComponent implements AfterContentChecked {
   @Input() patient: Patient;
   @Input() displayOn: boolean;
   @Input() bundleResources: BundleEntry[];
