@@ -1,0 +1,9 @@
+<div>
+  <mat-form-field class="patient-bundle">
+    <mat-label>Patient Bundle JSON data</mat-label>
+    <textarea matInput [formControl]="patientBundleFormControl" placeholder='{ "resourceType": "Bundle" }' rows="20"></textarea>
+    <mat-error *ngIf="patientBundleFormControl.invalid">{{getErrorMessage()}}</mat-error>
+    <mat-hint align="start">Paste JSON for the patient here</mat-hint>
+  </mat-form-field>
+  <button mat-flat-button color="primary" [disabled]="patientBundleFormControl.invalid" (click)="uploadPatient()">Use this patient</button>
+</div>

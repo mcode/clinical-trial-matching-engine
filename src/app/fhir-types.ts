@@ -87,6 +87,12 @@ export interface Bundle extends Resource {
   entry?: BundleEntry[];
 }
 
+export function isBundle(o: unknown): o is Bundle {
+  if (typeof o !== 'object' || o === null) return false;
+  const bundle = o as Bundle;
+  return bundle.resourceType === 'Bundle' && typeof bundle.type === 'string';
+}
+
 export interface DomainResource extends Resource {
   contained?: Resource[];
 }
