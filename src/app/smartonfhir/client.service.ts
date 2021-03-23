@@ -23,6 +23,12 @@ export class ClientService {
       }
     ]
   };
+  // An empty patient bundle to use by default
+  private patientBundle: Bundle = {
+    resourceType: 'Bundle' as 'Bundle',
+    type: 'searchset',
+    entry: []
+  };
   constructor() {}
 
   /**
@@ -31,6 +37,10 @@ export class ClientService {
    */
   getPatient(): Promise<Patient> {
     return Promise.resolve(this.patient);
+  }
+
+  getPatientBundle(): Bundle {
+    return this.patientBundle;
   }
 
   /**

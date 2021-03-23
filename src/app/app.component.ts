@@ -164,11 +164,6 @@ export class AppComponent {
    */
   public sortType = 'likelihood';
 
-  /**
-   * Patient bundle resources from the FHIR client.
-   */
-  public bundleResources: BundleEntry[] = [];
-
   @ViewChild(FilterDataComponent)
   public dataElementFilters: FilterDataComponent;
 
@@ -234,7 +229,7 @@ export class AppComponent {
       this.hideLoadingOverlay();
       return;
     }
-    let patientBundle = createPatientBundle(this.searchReqObject, this.bundleResources);
+    let patientBundle = createPatientBundle(this.searchReqObject, this.fhirService.getPatientBundle().entry ?? []);
     if (this.dataElementFilters.isFilterEnabled()) {
       // createPatientBundle places some information by reference, so create a complete copy rather than destroying it
       patientBundle = this.dataElementFilters.filterBundleCopy(patientBundle);
