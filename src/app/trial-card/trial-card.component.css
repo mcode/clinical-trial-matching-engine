@@ -1,3 +1,72 @@
+.overall-status {
+  width: 15%;
+}
+.overall-status button {
+  width: 90%;
+  height: 41px;
+  border-radius: 20.5px;
+  background: #30b400;
+  color: white;
+  border: 1px solid #30b400;
+  text-transform: uppercase;
+}
+
+.summary {
+  width: 35%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
 .color13 {
   color: #525151;
+}
+.cardtext {
+  font-family: Roboto light;
+  font-weight: 300;
+  font-size: 1.5vw;
+  text-align: left;
+  color: #9f9c9c;
+  line-height: 25px;
+}
+.padding-top-10 {
+  padding-top: 10px;
+}
+.padding-bottom-10 {
+  padding-bottom: 10px;
+}
+.padding-top-15 {
+  padding-top: 15px;
+}
+.padding-bottom-15 {
+  padding-bottom: 15px;
+}
+.padding-left-20 {
+  padding-left: 20px;
+}
+.padding-10 {
+  padding: 10px;
+}
+.col15 {
+  width: 15%;
+}
+.col35 {
+  width: 35%;
+}
+.col20 {
+  width: 20%;
+}
+.col10 {
+  width: 10%;
+}
+
+.saved {
+  fill: #a3c5d2;
+}
+
+.unsaved {
+  fill: #efefef;
+}
+
+.containingDIV {
+  display: flex;
 }

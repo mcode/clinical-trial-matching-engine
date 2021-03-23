@@ -43,26 +43,8 @@ h1 {
   font-family: 'nunitoregular';
   color: #707070;
 }
-.no-padding {
-  padding: 0;
-}
-.no-margin {
-  margin: 0;
-}
-.margin-auto {
-  margin: 0 auto;
-}
-.text-align-right {
-  text-align: right;
-}
-.text-align-left {
-  text-align: left;
-}
 .float-right {
   float: right;
-}
-.float-left {
-  float: left;
 }
 .opacity-60 {
   opacity: 0.6;
@@ -75,12 +57,6 @@ h1 {
 }
 .font-size-20 {
   font-size: 20px !important;
-}
-.font-size-30 {
-  font-size: 30px !important;
-}
-.font-size-40 {
-  font-size: 40px !important;
 }
 .center {
   top: 50%;
@@ -206,26 +182,11 @@ h1 {
 .mi-margin-10 {
   margin: 10px;
 }
-.mi-margin-20 {
-  margin: 20px;
-}
 .mi-margin-5 {
   margin: 5%;
 }
-.mi-margin-top {
-  margin-top: 10%;
-}
-.mi-margin-top5 {
-  margin-top: 5%;
-}
 .mi-margin-left-10 {
   margin-left: 10px;
-}
-.mi-margin-bottom {
-  margin-bottom: 10px;
-}
-.mi-margin-left-p {
-  margin-left: 20% !important;
 }
 .matching {
   font-family: Roboto;
@@ -235,15 +196,6 @@ h1 {
   margin-top: 12px;
 }
 
-/*
-Font Sizes
-*/
-.font15 {
-  font-size: 15px;
-}
-.font20 {
-  font-size: 20px;
-}
 .filters {
   width: 160px;
   border-radius: 5px;
@@ -259,39 +211,6 @@ Font Sizes
   margin-bottom: 10px;
   background-color: white;
 }
-.recButton {
-  width: 90%;
-  height: 41px;
-  border-radius: 20.5px;
-  background: #30b400;
-  color: white;
-  border: 1px solid #30b400;
-  text-transform: uppercase;
-}
-.noRecButton {
-  width: 90%;
-  height: 46px;
-  border-radius: 23px;
-  background: transparent;
-  color: #30b400;
-  border: 1px solid #30b400;
-  text-transform: uppercase;
-}
-.noRecBtn {
-  width: 90%;
-  height: 46px;
-  border-radius: 23px;
-  background: transparent;
-  border: 5px solid #525151;
-}
-.cardtext {
-  font-family: Roboto light;
-  font-weight: 300;
-  font-size: 1.5vw;
-  text-align: left;
-  color: #9f9c9c;
-  line-height: 25px;
-}
 .cardText2 {
   font-family: Roboto;
   font-weight: 500;
@@ -299,119 +218,34 @@ Font Sizes
   text-align: left;
   color: #525151;
 }
-/*padding css */
-.padding-top-5 {
-  padding-top: 5px;
-}
-.padding-bottom-5 {
-  padding-bottom: 5px;
-}
-.padding-left-5 {
-  padding-left: 5px;
-}
-.padding-right-5 {
-  padding-right: 5px;
-}
 
 /**10***/
 
 .padding-top-10 {
   padding-top: 10px;
 }
-.padding-bottom-10 {
-  padding-bottom: 10px;
-}
 .padding-left-10 {
   padding-left: 10px;
-}
-.padding-right-10 {
-  padding-right: 10px;
 }
 
 .padding-top-15 {
   padding-top: 15px;
 }
-.padding-bottom-15 {
-  padding-bottom: 15px;
-}
-.padding-left-15 {
-  padding-left: 15px;
-}
-.padding-right-15 {
-  padding-right: 15px;
-}
 
-.padding-top-20 {
-  padding-top: 20px;
-}
 .padding-bottom-20 {
   padding-bottom: 20px;
 }
 .padding-left-20 {
   padding-left: 20px;
 }
-.padding-right-20 {
-  padding-right: 20px;
-}
 .padding-top-30 {
   padding-top: 30px;
-}
-.padding-bottom-30 {
-  padding-bottom: 30px;
-}
-.padding-left-30 {
-  padding-left: 30px;
-}
-.padding-right-30 {
-  padding-right: 20px;
-}
-.padding-10 {
-  padding: 10px;
 }
 .col100 {
   width: 100%;
 }
-.col50 {
-  width: 50%;
-}
-.col15 {
-  width: 15%;
-}
-.col35 {
-  width: 35%;
-}
-.col20 {
-  width: 20%;
-}
-.col10 {
-  width: 10%;
-}
-.col33 {
-  width: 33%;
-}
-.col70 {
-  width: 70%;
-}
-.col80 {
-  width: 80%;
-}
-.col90 {
-  width: 90%;
-}
-.col30 {
-  width: 30%;
-}
 * {
   box-sizing: border-box;
-}
-
-/* Create three equal columns that floats next to each other */
-.column {
-  float: left;
-  padding: 10px;
-  height: 142px; /* Should be removed. Only for demonstration */
-  background: #fff;
-  margin-bottom: 10px;
 }
 
 /* Clear floats after the columns */
@@ -419,9 +253,6 @@ Font Sizes
   content: '';
   display: table;
   clear: both;
-}
-.upperCase {
-  text-transform: uppercase;
 }
 
 .dropdown-content {
@@ -443,28 +274,6 @@ Font Sizes
   display: block;
 }
 
-/* The container */
-.container {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-/* Hide the browser's default checkbox */
-.container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
 /* Create a custom checkbox */
 .checkmark {
   position: absolute;
@@ -475,39 +284,11 @@ Font Sizes
   background-color: #eee;
 }
 
-/* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
-  background-color: #ccc;
-}
-
-/* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
-  background-color: #2196f3;
-}
-
 /* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
   content: '';
   position: absolute;
   display: none;
-}
-
-/* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
-  display: block;
-}
-
-/* Style the checkmark/indicator */
-.container .checkmark:after {
-  left: 9px;
-  top: 5px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
 }
 .selectedPage {
   color: #66d5e3;
@@ -526,55 +307,6 @@ Font Sizes
 ::-webkit-scrollbar-thumb {
   background: #66d5e3;
   border-radius: 5px;
-}
-.selectItemPerPage {
-  background: transparent;
-  border: none;
-  z-index: -2;
-}
-.innerDiv {
-  display: inline-block;
-  margin: 0 auto;
-  padding: 10%;
-}
-
-.saved {
-  fill: #a3c5d2;
-}
-
-.unsaved {
-  fill: #efefef;
-}
-
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #707070;
-  width: 80%;
-  height: 120%;
-  overflow: auto;
-  top: 50%;
-  left: 45%;
-  position: absolute;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
-/* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
 }
 
 .pointer:hover {
@@ -616,81 +348,6 @@ Font Sizes
 }
 .emailIcon {
   background-image: url(/assets/images/email.svg);
-}
-
-/* FIXME: These styles feel overly-specific. */
-.mi-margin-2 {
-  margin: 2%;
-}
-.mi-margin-30 {
-  margin: 30px;
-}
-
-.containingDIV {
-  display: flex;
-}
-
-.outerDiv {
-  text-align: center;
-  /*width: 321px;
-    height: 217px; */
-  width: 25%;
-
-  background: rgba(255, 255, 255, 0.94);
-}
-
-.accordion {
-  color: #b7b7b7;
-  cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-  transition: 0.4s;
-}
-
-.accordionDetails {
-  font-size: 20px;
-  color: #898686;
-  white-space: pre;
-}
-
-.panel {
-  padding: 0 18px;
-  display: none;
-  background-color: white;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-.detailCardText {
-  display: flex;
-  font-size: 2vw;
-  color: #ffffff;
-}
-
-.mi-margin-2020 {
-  margin: 2%;
-}
-
-.flexborder {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  position: relative;
-  flex-flow: row wrap;
-
-  background: #525151;
-}
-.varfont {
-  font-size: 0.9em;
-}
-
-.contact-text {
-  color: #0079e0;
-  font-size: 0.8em;
 }
 
 .view-record-text {

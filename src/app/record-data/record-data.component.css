@@ -39,10 +39,6 @@
   text-align: left;
   color: #525151;
 }
-.subText {
-  height: 63px;
-  background: transparent;
-}
 .block {
   width: 24%;
   height: 63px;
@@ -76,9 +72,6 @@
   background: transparent;
   height: 63px;
 }
-.containingDIV {
-  display: flex;
-}
 .footer {
   position: fixed;
   left: 0;
@@ -91,9 +84,6 @@
   background-size: 100%;
   background-repeat: no-repeat;
 }
-.mi-margin-30 {
-  margin: 30px;
-}
 .mi-margin-10 {
   margin: 10px;
 }
@@ -103,26 +93,18 @@
 .mi-margin-5 {
   margin: 5%;
 }
-.mi-margin-top {
-  margin-top: 10%;
-}
-.mi-margin-top5 {
-  margin-top: 5%;
-}
-.mi-margin-2 {
-  margin: 2%;
-}
 .mi-margin-left-10 {
   margin-left: 10px;
 }
-.mi-margin-bottom {
-  margin-bottom: 10px;
-}
-.mi-margin-left-p {
-  margin-left: 20% !important;
-}
 .upperCase {
   text-transform: uppercase;
+}
+.cardText2 {
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 21px;
+  text-align: left;
+  color: #525151;
 }
 
 /* The Close Button */
