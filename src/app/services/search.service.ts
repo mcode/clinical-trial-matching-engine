@@ -54,7 +54,6 @@ export class ResearchStudySearchEntry {
    */
   resource: fhirclient.FHIR.Resource;
   search?: Search;
-  provider: String;
   private cachedSites: fhirpath.FHIRResource[] | null = null;
   private containedResources: Map<string, fhirpath.FHIRResource> | null = null;
   dist: number | undefined;
@@ -62,12 +61,11 @@ export class ResearchStudySearchEntry {
     public entry: BundleEntry,
     private distService: DistanceService,
     private zipCode: string,
-    provider: string
+    public provider: string
   ) {
     this.resource = this.entry.resource;
     this.search = this.entry.search;
     console.log(this.entry);
-    this.provider = provider;
     this.getClosest(zipCode);
   }
 

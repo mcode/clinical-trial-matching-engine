@@ -21,6 +21,6 @@ export class AppConfigService {
   }
 
   getAllURLs(): { [key: string]: string } {
-    if ('allServers' in environment) return environment.allServers;
+    return environment.allServers;
   }
 }
