@@ -396,18 +396,6 @@ interface ClinicalTrialQuery {
 export class SearchService {
   constructor(private client: HttpClient, private config: AppConfigService, private distService: DistanceService) {}
 
-  searchClinicalTrials(patientBundle: PatientBundle, offset?: number, count = 10): Observable<SearchResultsBundle> {
-    const query: ClinicalTrialQuery = { patientData: patientBundle, count: count };
-    const zipCode = patientBundle.entry[0].resource.parameter[0].valueString;
-    if (offset > 0) {
-      query.offset = offset;
-    }
-    return this.client.post<fhirclient.FHIR.Bundle>(this.config.getServiceURL() + '/getClinicalTrial', query).pipe(
-      map((bundle: fhirclient.FHIR.Bundle) => {
-        return new SearchResultsBundle(bundle, this.distService, zipCode, this.config.getServiceURL());
-      })
-    );
-  }
   searchAllTrials(patientBundle: PatientBundle, offset?: number, count = 10): Observable<SearchResultsBundle[]> {
     let services: { [key: string]: string } = this.config.getAllURLs();
     let urls: string[] = Object.keys(services);
