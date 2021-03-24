@@ -6,19 +6,19 @@
       <div class="col80 containingDIV" style="float: left; width: 65%;">
         <div class=" row">
           <div class="padding-top-15 padding-bottom-15">
-            <h2 class="detailCardText upperCase">{{clinicalTrial.title}}
+            <h2 class="detailCardText">{{clinicalTrial.title}}
             </h2>
             <div class="containingDIV padding-top-10">
-              <h3 class="cardtext upperCase color7">Conditions:</h3>
+              <h3 class="cardtext color7">Conditions:</h3>
               <span class="cardtext color8 mi-margin-left-10">{{replace(clinicalTrial.conditions)}}</span>
             </div>
             <div class="containingDIV padding-top-10" *ngIf="clinicalTrial.nctId!=''">
-              <h3 class="cardtext upperCase color7">Trial Id:</h3>
+              <h3 class="cardtext color7">Trial Id:</h3>
               <span class="cardtext color8 mi-margin-left-10">{{clinicalTrial.nctId}}</span>
             </div>
           </div>
           <div>
-            <h3 class="cardtext upperCase color7">Brief summary</h3>
+            <h3 class="cardtext color7">Brief summary</h3>
             <span class="cardtext color8">{{clinicalTrial.description}}
             </span>
           </div>

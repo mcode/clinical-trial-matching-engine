@@ -13,6 +13,7 @@ import {
   ResearchStudyStatusDisplay,
   ResearchStudyPhaseDisplay
 } from './fhir-constants';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { BundleEntry } from './fhir-types';
 import { TrialCardComponent } from './trial-card/trial-card.component';
 import { FilterDataComponent } from './filter-data/filter-data.component';
@@ -157,7 +158,15 @@ export class AppComponent {
    */
   public showOverlay: boolean;
 
+  /**
+   * Text for the loading indicator
+   */
   public loadingText = 'Loading...';
+  /**
+   * Current mode, either indeterminite or determinite.
+   */
+  public loadingMode: ProgressSpinnerMode = 'indeterminate' as 'indeterminate';
+  public loadingPercentage = 0;
 
   /**
    * Store sorting preference
@@ -516,5 +525,12 @@ export class AppComponent {
   private showLoadingOverlay(text = 'Loading...'): void {
     this.loadingText = text;
     this.showOverlay = true;
+    this.loadingMode = 'indeterminate';
+  }
+
+  private setLoadingProgress(current: number, max: number): void {
+    this.loadingMode = 'determinate';
+    this.loadingPercentage = (current / max) * 100;
+    console.log('Current loading: ' + this.loadingPercentage);
   }
 }

@@ -5,7 +5,7 @@ import { SearchFields } from './../app.component';
 @Component({
   selector: 'app-trial-card',
   templateUrl: './trial-card.component.html',
-  styleUrls: ['../app.component.css'] //refer to app component styling for the time being
+  styleUrls: ['./trial-card.component.css']
 })
 export class TrialCardComponent {
   public static showDetailsFlag = true;

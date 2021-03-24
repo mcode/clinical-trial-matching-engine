@@ -1,9 +1,61 @@
-/* FIXME: These styles feel overly-specific. */
-.mi-margin-2{
-  margin: 2%;
+
+.recButton {
+  width: 90%;
+  height: 41px;
+  border-radius: 20.5px;
+  background: #30b400;
+  color: white;
+  border: 1px solid #30b400;
+  text-transform: uppercase;
 }
+
+/* FIXME: These styles feel overly-specific. */
 .mi-margin-30{
   margin: 30px;
+}
+
+.mi-margin-2020 {
+  margin: 2%;
+}
+
+.mi-margin-left-p {
+  margin-left: 20% !important;
+}
+
+.padding-top-10 {
+  padding-top: 10px;
+}
+.padding-top-15 {
+  padding-top: 15px;
+}
+.padding-bottom-15 {
+  padding-bottom: 15px;
+}
+.padding-10 {
+  padding: 10px;
+}
+
+.col100 {
+  width: 100%;
+}
+.col33 {
+  width: 33%;
+}
+.col80 {
+  width: 80%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.innerDiv {
+  display: inline-block;
+  margin: 0 auto;
+  padding: 10%;
 }
 
 .containingDIV {
@@ -42,8 +94,18 @@
   overflow: hidden;
 }
 
+.flexborder {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  flex-flow: row wrap;
+
+  background: #525151;
+}
+
 .color8 {
-    color : #ffffff !important;
+  color : #ffffff !important;
 }
 
 .cardtext {
@@ -55,9 +117,23 @@
   line-height: 25px;
 }
 
+h3.cardtext {
+  text-transform: uppercase;
+}
+
 .detailCardText {
   font-size: 30px;
   color: #FFFFFF;
+  text-transform: uppercase;
+}
+
+.varfont {
+  font-size: 0.9em;
+}
+
+.contact-text {
+  color: #0079e0;
+  font-size: 0.8em;
 }
 
 .pointer:hover {
