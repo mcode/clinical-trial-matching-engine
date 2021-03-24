@@ -13,7 +13,7 @@ import {
   ResearchStudyStatusDisplay,
   ResearchStudyPhaseDisplay
 } from './fhir-constants';
-import { fhirclient } from 'fhirclient/lib/types';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { BundleEntry } from './fhir-types';
 import { TrialCardComponent } from './trial-card/trial-card.component';
 
@@ -157,7 +157,15 @@ export class AppComponent {
    */
   public showOverlay: boolean;
 
+  /**
+   * Text for the loading indicator
+   */
   public loadingText = 'Loading...';
+  /**
+   * Current mode, either indeterminite or determinite.
+   */
+  public loadingMode: ProgressSpinnerMode = 'indeterminate' as 'indeterminate';
+  public loadingPercentage = 0;
 
   /**
    * Store sorting preference
@@ -207,6 +215,14 @@ export class AppComponent {
         _profile: 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition'
       })
       .then((condition) => {
+        const resourceTypes = ['Patient', 'Condition', 'MedicationStatement', 'Observation', 'Procedure'];
+        const resourceParams = {
+          Patient: {},
+          Condition: { 'clinical-status': 'active' },
+          MedicationStatement: {},
+          Observation: {},
+          Procedure: {}
+        };
         if (condition.length > 0) {
           // get onset date of primary cancer condition
           const dateString = condition[0]['resource']['onsetDateTime'];
@@ -215,33 +231,36 @@ export class AppComponent {
             newDate.setFullYear(newDate.getFullYear() - 2);
             const newStringDate = newDate.toISOString();
             // set search params for resource types: date more recent than 2 years before the primary cancer condition onset
-            this.fhirService.resourceParams['Observation'] = { date: 'ge' + newStringDate };
-            this.fhirService.resourceParams['Procedure'] = { date: 'ge' + newStringDate };
-            this.fhirService.resourceParams['MedicationStatement'] = { effective: 'ge' + newStringDate };
+            resourceParams['Observation'] = { date: 'ge' + newStringDate };
+            resourceParams['Procedure'] = { date: 'ge' + newStringDate };
+            resourceParams['MedicationStatement'] = { effective: 'ge' + newStringDate };
           }
         }
-        this.fhirService.resourceTypes.map((resourceType, index) => {
-          this.fhirService
-            .getResources(resourceType, this.fhirService.resourceParams[resourceType])
-            .then((records) => {
-              this.bundleResources.push(
-                ...(records.filter((record) => {
-                  // Check to make sure it's a bundle entry
-                  return 'fullUrl' in record && 'resource' in record;
-                }) as BundleEntry[])
-              );
-              if (index + 1 === this.fhirService.resourceTypes.length) {
-                // remove loading screen when we've loaded our final resource type
-                this.hideLoadingOverlay();
-              }
-            })
-            .catch((err) => {
-              console.log(err);
-              this.toastr.error(err.message, 'Error Loading Patient Data: ' + resourceType);
-              if (index + 1 === this.fhirService.resourceTypes.length) {
-                this.hideLoadingOverlay();
-              }
-            });
+        const totalLoading = resourceTypes.length;
+        let currentLoaded = 0;
+        // Intentionally leave it indeterminite at 0, otherwise it disappears
+        return Promise.all(
+          resourceTypes.map((resourceType) => {
+            return this.fhirService
+              .getResources(resourceType, resourceParams[resourceType])
+              .then((records) => {
+                currentLoaded++;
+                this.setLoadingProgress(currentLoaded, totalLoading);
+                this.bundleResources.push(
+                  ...(records.filter((record) => {
+                    // Check to make sure it's a bundle entry
+                    return 'fullUrl' in record && 'resource' in record;
+                  }) as BundleEntry[])
+                );
+              })
+              .catch((err) => {
+                console.log(err);
+                this.toastr.error(err.message, 'Error Loading Patient Data: ' + resourceType);
+              });
+          })
+        ).finally(() => {
+          // Always end
+          this.hideLoadingOverlay();
         });
       })
       .catch((err) => {
@@ -561,5 +580,12 @@ export class AppComponent {
   private showLoadingOverlay(text = 'Loading...'): void {
     this.loadingText = text;
     this.showOverlay = true;
+    this.loadingMode = 'indeterminate';
+  }
+
+  private setLoadingProgress(current: number, max: number): void {
+    this.loadingMode = 'determinate';
+    this.loadingPercentage = (current / max) * 100;
+    console.log('Current loading: ' + this.loadingPercentage);
   }
 }

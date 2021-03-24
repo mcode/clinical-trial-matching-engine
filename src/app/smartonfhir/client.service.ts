@@ -21,14 +21,6 @@ export class ClientService {
   client: Client;
   patient: Patient;
   private pendingClient: Promise<Client> | null = null;
-  public resourceTypes = ['Patient', 'Condition', 'MedicationStatement', 'Observation', 'Procedure'];
-  public resourceParams = {
-    Patient: {},
-    Condition: { 'clinical-status': 'active' },
-    MedicationStatement: {},
-    Observation: {},
-    Procedure: {}
-  };
   /**
    * Gets a Promise that resolves to the client when the client is ready. If
    * the client is already ready, this returns a resolved Promise.
