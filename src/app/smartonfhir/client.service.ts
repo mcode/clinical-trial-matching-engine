@@ -48,6 +48,7 @@ export class ClientService {
    * @param bundle the bundle to get patient data from
    */
   setPatientBundle(bundle: Bundle): void {
+    this.patientBundle = bundle;
     // Find the first entry that's a patient and use that.
     for (const entry of bundle.entry) {
       if (entry.resource && entry.resource.resourceType === 'Patient') {
