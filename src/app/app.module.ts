@@ -14,7 +14,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { CentralPageComponent } from './central-page/central-page.component';
 import { UploadPatientComponent } from './upload-patient/upload-patient.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AppMaterialModule } from './app-material.module';
+import { AppMaterialModule } from './shared/material.module';
+import { SearchFieldsComponent } from './search-fields/search-fields.component';
 
 @NgModule({
   // prettier-ignore
@@ -26,7 +27,8 @@ import { AppMaterialModule } from './app-material.module';
     ResultDetailsComponent,
     TrialCardComponent,
     UploadPatientComponent,
-    CentralPageComponent
+    CentralPageComponent,
+    SearchFieldsComponent
   ],
   // prettier-ignore
   imports: [

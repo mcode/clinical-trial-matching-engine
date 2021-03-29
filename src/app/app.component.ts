@@ -17,6 +17,7 @@ import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { BundleEntry } from './fhir-types';
 import { TrialCardComponent } from './trial-card/trial-card.component';
 import { FilterDataComponent } from './filter-data/filter-data.component';
+import { SearchFields as SearchValues } from './search-fields/search-fields.component';
 
 /**
  * Provides basic information about a given page.
@@ -221,7 +222,14 @@ export class AppComponent {
   /**
    * Execute a search on clinical trial data based on the current user.
    */
-  public searchClinicalTrials(): void {
+  public searchClinicalTrials(values: SearchValues): void {
+    // For now, just copy the values over
+    this.searchReqObject.zipCode = values.zipCode;
+    this.searchReqObject.travelRadius = values.travelDistance.toString();
+    this.searchReqObject.phase = values.trialPhase ? (values.trialPhase as ResearchStudyPhase) : null;
+    this.searchReqObject.recruitmentStatus = values.recruitmentStatus
+      ? (values.recruitmentStatus as ResearchStudyStatus)
+      : null;
     this.itemsPerPage = 10;
     this.showLoadingOverlay('Searching clinical trials...');
     // Blank out any existing results
