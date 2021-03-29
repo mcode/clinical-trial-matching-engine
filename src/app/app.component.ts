@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 import { ClientService } from './smartonfhir/client.service';
@@ -16,7 +16,7 @@ import {
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { BundleEntry } from './fhir-types';
 import { TrialCardComponent } from './trial-card/trial-card.component';
-import { SearchFields as SearchValues } from './search-fields/search-fields.component';
+import { SearchFieldsComponent, SearchFields as SearchValues } from './search-fields/search-fields.component';
 
 /**
  * Provides basic information about a given page.
@@ -153,6 +153,8 @@ export class AppComponent {
     phase: null,
     recruitmentStatus: null
   };
+  @ViewChild(SearchFieldsComponent)
+  private searchFieldsComponent: SearchFieldsComponent;
   /**
    * Control overlay display
    */
@@ -198,9 +200,7 @@ export class AppComponent {
         // Also take this opportunity to set the zip code, if there is one
         const zipCode = p.getHomePostalCode();
         if (zipCode) {
-          if (!this.searchReqObject.zipCode) {
-            this.searchReqObject.zipCode = zipCode;
-          }
+          this.searchFieldsComponent.zipCode.setValue(zipCode);
         }
         return p;
       })
