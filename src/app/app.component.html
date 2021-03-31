@@ -44,7 +44,7 @@
       We found your <span class="view-record-text" (click)="showRecord()">record</span>. Just fill in some preferences
       and we’ll do the rest
     </h1>
-    <app-search-fields [phases]="phaseDropDown" [recruitmentStatuses]="recDropDown" (searchClicked)="searchClinicalTrials($event)"></app-search-fields>
+    <app-search-fields (searchClicked)="searchClinicalTrials($event)"></app-search-fields>
     <!--Patient Records-->
     <app-record-data
       [(displayOn)]="this.records"

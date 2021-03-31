@@ -1,5 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import {
+  ResearchStudyPhase,
+  ResearchStudyPhaseDisplay,
+  ResearchStudyStatus,
+  ResearchStudyStatusDisplay
+} from '../fhir-constants';
 
 interface DropdownOption {
   display: string;
@@ -24,8 +30,8 @@ export interface SearchFields {
   styleUrls: ['./search-fields.component.css']
 })
 export class SearchFieldsComponent {
-  @Input() phases: Phase[];
-  @Input() recruitmentStatuses: RecruitmentStatus[];
+  phases: Phase[];
+  recruitmentStatuses: RecruitmentStatus[];
   @Output() searchClicked = new EventEmitter<SearchFields>();
 
   zipCode = new FormControl('', [Validators.required, Validators.pattern('[0-9]{5}')]);
@@ -33,7 +39,20 @@ export class SearchFieldsComponent {
   trialPhase = new FormControl('any');
   recruitmentStatus = new FormControl('all');
 
-  constructor() {}
+  constructor() {
+    this.phases = Object.values(ResearchStudyPhase).map((value) => {
+      return {
+        value: value,
+        display: ResearchStudyPhaseDisplay[value]
+      };
+    });
+    this.recruitmentStatuses = Object.values(ResearchStudyStatus).map((value) => {
+      return {
+        value: value,
+        display: ResearchStudyStatusDisplay[value]
+      };
+    });
+  }
 
   search() {
     const event: SearchFields = {

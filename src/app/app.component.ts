@@ -7,12 +7,7 @@ import { UnpackResearchStudyResults } from './export/parse-data';
 import { ExportTrials } from './export/export-data';
 import { createPatientBundle } from './bundle';
 import { SearchService, SearchResultsBundle, ResearchStudySearchEntry } from './services/search.service';
-import {
-  ResearchStudyStatus,
-  ResearchStudyPhase,
-  ResearchStudyStatusDisplay,
-  ResearchStudyPhaseDisplay
-} from './fhir-constants';
+import { ResearchStudyStatus, ResearchStudyPhase } from './fhir-constants';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { BundleEntry } from './fhir-types';
 import { TrialCardComponent } from './trial-card/trial-card.component';
@@ -61,10 +56,6 @@ export interface SearchFields {
   recruitmentStatus: ResearchStudyStatus | null;
 }
 
-class DropDownValue {
-  constructor(public value: string, public display: string) {}
-}
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -74,14 +65,6 @@ export class AppComponent {
   title = 'clinicalTrial';
   public self = this;
   public patient: Promise<Patient> | Patient;
-  /**
-   * Trial phase drop-down values.
-   */
-  public phaseDropDown: DropDownValue[] = [];
-  /**
-   * Recruitment phase drop-down values.
-   */
-  public recDropDown: DropDownValue[] = [];
   /**
    * Whether or not the search form (not results) page is visible
    */
@@ -183,13 +166,6 @@ export class AppComponent {
   public records = false;
 
   constructor(private searchService: SearchService, private fhirService: ClientService, private toastr: ToastrService) {
-    this.phaseDropDown = Object.values(ResearchStudyPhase).map((value) => {
-      return new DropDownValue(value, ResearchStudyPhaseDisplay[value]);
-    });
-    this.recDropDown = Object.values(ResearchStudyStatus).map((value) => {
-      return new DropDownValue(value, ResearchStudyStatusDisplay[value]);
-    });
-
     // show loading screen while we pull the FHIR record
     this.showLoadingOverlay('Loading patient data...');
     this.patient = fhirService
