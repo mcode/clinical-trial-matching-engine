@@ -1,4 +1,3 @@
-import { fhirclient } from 'fhirclient/lib/types';
 import { Bundle, BundleEntry, Resource } from './fhir-types';
 
 /**
