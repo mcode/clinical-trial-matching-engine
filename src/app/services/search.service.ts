@@ -377,7 +377,7 @@ interface ClinicalTrialQuery {
   providedIn: 'root'
 })
 export class SearchService {
-  constructor(private client: HttpClient, private config: AppConfigService, private distService: DistanceService) {}
+  constructor(private client: HttpClient, private config: AppConfigService, protected distService: DistanceService) {}
 
   searchClinicalTrials(patientBundle: PatientBundle, offset?: number, count = 10): Observable<SearchResultsBundle> {
     const query: ClinicalTrialQuery = { patientData: patientBundle, count: count };

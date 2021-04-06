@@ -9,7 +9,7 @@ type Patient = fhirclient.FHIR.Patient;
 /**
  * Values that can be placed into parameters
  */
-type Stringable = string | number | boolean | null;
+export type Stringable = string | number | boolean | null;
 
 /**
  * This provides a wrapper around the FHIR client.

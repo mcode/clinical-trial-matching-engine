@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false,
+  stubFHIR: true,
+  stubSearch: true,
   serviceURL: 'http://localhost:3000'
 };
 
