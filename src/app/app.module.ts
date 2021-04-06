@@ -14,6 +14,7 @@ import Client from 'fhirclient/lib/Client';
 import { ToastrModule } from 'ngx-toastr';
 import { AppMaterialModule } from './shared/material.module';
 import { SearchFieldsComponent } from './search-fields/search-fields.component';
+import { ResultsComponent } from './results/results.component';
 
 const fhirInitializeFn = (fhirService: ClientService) => {
   // Grab the client during bootstrap - this prevents the flash of a partially
@@ -29,7 +30,8 @@ const fhirInitializeFn = (fhirService: ClientService) => {
     ResultDetailsComponent,
     TrialCardComponent,
     CustomSpinnerComponent,
-    SearchFieldsComponent
+    SearchFieldsComponent,
+    ResultsComponent
   ],
   // prettier-ignore
   imports: [

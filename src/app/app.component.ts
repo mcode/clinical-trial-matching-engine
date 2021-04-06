@@ -12,16 +12,7 @@ import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { BundleEntry } from './fhir-types';
 import { TrialCardComponent } from './trial-card/trial-card.component';
 import { SearchFieldsComponent, SearchFields as SearchValues } from './search-fields/search-fields.component';
-
-/**
- * Provides basic information about a given page.
- */
-class SearchPage {
-  constructor(public index: number, public firstIndex: number, public lastIndex: number) {}
-  toString(): string {
-    return `[Page ${this.index} (${this.firstIndex}-${this.lastIndex})]`;
-  }
-}
+import { ResultsComponent } from './results/results.component';
 
 /**
  * Internal class for filter data
@@ -63,7 +54,6 @@ export interface SearchFields {
 })
 export class AppComponent {
   title = 'clinicalTrial';
-  public self = this;
   public patient: Promise<Patient> | Patient;
   /**
    * Whether or not the search form (not results) page is visible
@@ -112,21 +102,9 @@ export class AppComponent {
    */
   public detailedTrial: ResearchStudySearchEntry | null = null;
   /**
-   * The currently active page.
-   */
-  public selectedPage: SearchPage;
-  /**
-   * Array of page information.
-   */
-  public pages: SearchPage[];
-  /**
    * Trials on the current page.
    */
   public selectedPageTrials: ResearchStudySearchEntry[];
-  /**
-   * The number of items per page.
-   */
-  private itemsPerPage = 10;
   /**
    * The Angular form model for search options.
    */
@@ -138,6 +116,9 @@ export class AppComponent {
   };
   @ViewChild(SearchFieldsComponent)
   private searchFieldsComponent: SearchFieldsComponent;
+  @ViewChild(ResultsComponent)
+  private resultsComponent: ResultsComponent;
+
   /**
    * Control overlay display
    */
@@ -248,13 +229,6 @@ export class AppComponent {
   }
 
   /**
-   * Gets the total number of pages.
-   */
-  get pageCount(): number {
-    return this.pages.length;
-  }
-
-  /**
    * Execute a search on clinical trial data based on the current user.
    */
   public searchClinicalTrials(values: SearchValues): void {
@@ -265,7 +239,8 @@ export class AppComponent {
     this.searchReqObject.recruitmentStatus = values.recruitmentStatus
       ? (values.recruitmentStatus as ResearchStudyStatus)
       : null;
-    this.itemsPerPage = 10;
+    this.searchResults = null;
+    this.resultsComponent.updateItemsPerPage(10);
     this.showLoadingOverlay('Searching clinical trials...');
     // Blank out any existing results
     if (this.searchReqObject.zipCode == null || !/^[0-9]{5}$/.exec(this.searchReqObject.zipCode)) {
@@ -285,15 +260,8 @@ export class AppComponent {
     this.searchService.searchClinicalTrials(patientBundle).subscribe(
       (response) => {
         // Store the results
-
         this.searchResults = response;
         console.log(response);
-        // Create our pages array
-        this.createPages();
-        // Create our filters
-        this.createFilters();
-        // Display the results
-        this.showPage(0);
       },
       (err) => {
         console.error(err);
@@ -303,87 +271,7 @@ export class AppComponent {
       }
     );
   }
-  /**
-   * Get next 5 pages from current page index if they exist
-   */
-  public getNearest(): SearchPage[] {
-    // find current page of items
-    const starting = this.selectedPage.index;
-    if (starting == 0) {
-      return this.pages.slice(starting, starting + 5);
-    } else if (starting == this.pages.length - 1) {
-      return this.pages.slice(Math.max(0, starting - 4), starting + 1);
-    } else if (starting == 1) {
-      return this.pages.slice(0, 5);
-    } else if (starting == this.pages.length - 2) {
-      return this.pages.slice(Math.max(0, starting - 3), starting + 2);
-    } else {
-      return this.pages.slice(Math.max(0, starting - 2), starting + 3);
-    }
-  }
 
-  /**
-   * Show the given page.
-   * @param page the 0-based page number to show
-   */
-  public showPage(page: number): void {
-    if (this.searchResults === null) {
-      console.error(`Cannot show page ${page}: no results`);
-      return;
-    }
-    this.viewPage(this.pages[page]);
-  }
-  /**
-   * View a specific page from within the pages array.
-   */
-  public viewPage(page: SearchPage): void {
-    this.selectedPage = page;
-    if (this.filteredResults === null) {
-      this.selectedPageTrials = this.searchResults.researchStudies.slice(
-        this.selectedPage.firstIndex,
-        this.selectedPage.lastIndex
-      );
-    } else {
-      this.selectedPageTrials = this.filteredResults.slice(page.firstIndex, page.lastIndex);
-    }
-    this.searchtable = false;
-    this.searchPage = true;
-    this.hideLoadingOverlay();
-  }
-  /**
-   * Populates the pages array based on the current items per pages data.
-   * @param totalResults
-   *          if given, the total number of results to create pages
-   *          for, otherwise defaults to the current result count
-   */
-  private createPages(totalResults = this.resultCount): void {
-    // Always create at least one page, even if it's empty
-    this.pages = [new SearchPage(0, 0, Math.min(totalResults, this.itemsPerPage))];
-    let pageIndex = 1,
-      startIndex = this.itemsPerPage,
-      lastIndex = this.itemsPerPage * 2;
-    // Create all full pages past the first page
-    for (; lastIndex < totalResults; pageIndex++, startIndex = lastIndex, lastIndex += this.itemsPerPage) {
-      // Push a complete page
-      this.pages.push(new SearchPage(pageIndex, startIndex, lastIndex));
-    }
-    if (startIndex < totalResults) {
-      // Have a partial final page - in the case where there is a single page
-      // that contains less than itemsPerPage, this will be skipped, because
-      // startIndex will be itemsPerPage.
-      this.pages.push(new SearchPage(pageIndex, startIndex, totalResults));
-    }
-  }
-  /**
-   * Create the filters
-   */
-  private createFilters(): void {
-    this.filtersArray = [
-      new FilterData('Recruitment', 'status', this.searchResults.buildFilters('status')),
-      new FilterData('Phase', 'phase.text', this.searchResults.buildFilters('phase.text')),
-      new FilterData('Study Type', 'category.text', this.searchResults.buildFilters('category.text'))
-    ];
-  }
   /**
    * Display details of a given trial.
    */
@@ -415,64 +303,6 @@ export class AppComponent {
     } else {
       this.filtersArray[i].data[j].selectedItems = false;
     }
-  }
-
-  /**
-   * Apply user-selected filters
-   */
-  public applyFilter(): void {
-    let comparisonFunction = undefined;
-    if (this.sortType == 'likelihood') {
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      comparisonFunction = this.compareByMatch;
-    } else {
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      comparisonFunction = this.compareByDist;
-    }
-
-    const activeFilters: { selectedItem: string; values: string[] }[] = [];
-    for (const filter of this.filtersArray) {
-      // See if there are any active filters in this filter
-      const values = filter.data.filter((value) => value.selectedItems === true);
-      if (values.length > 0) {
-        activeFilters.push({
-          selectedItem: filter.selectedVal,
-          values: values.map((v) => v.val)
-        });
-      }
-    }
-    if (activeFilters.length === 0) {
-      // No filters active, don't filter
-      this.filteredResults = null;
-      this.searchResults.researchStudies.sort(comparisonFunction);
-      this.createPages();
-      this.showPage(0);
-      return;
-    }
-    this.filteredResults = this.searchResults.researchStudies.filter((study) => {
-      for (const filter of activeFilters) {
-        const value = study.lookupString(filter.selectedItem);
-        // If it doesn't match, then filter it out
-        if (!filter.values.some((v) => v === value)) return false;
-      }
-      // If all filters matched, return true
-      return true;
-    });
-
-    this.filteredResults.sort(comparisonFunction);
-
-    this.createPages(this.filteredResults.length);
-    this.showPage(0);
-  }
-
-  /*
-     Function for clear Filter
-  * */
-  public clearFilter(i): void {
-    this.filtersArray[i].data.forEach((element) => {
-      element.selectedItems = false;
-    });
-    this.applyFilter();
   }
 
   /*
@@ -523,29 +353,6 @@ export class AppComponent {
     ExportTrials(data, 'clinicalTrials');
   }
 
-  public updateItemsPerPage(items: string | number): void {
-    if (typeof items === 'string') {
-      items = parseInt(items);
-    }
-    // Clamp to 10-100 - this somewhat weird logic is to catch NaN
-    if (!(items > 10 && items < 100)) {
-      if (items > 100) {
-        items = 100;
-      } else {
-        items = 10;
-      }
-    }
-    this.itemsPerPage = items;
-    // Have to recreate our pages
-    this.createPages();
-    // FIXME: Try and show the same page
-    this.showPage(0);
-  }
-
-  onChange(val): void {
-    console.log('onChange: ' + val);
-    //this.countPages();
-  }
   public compareByDist(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
     return trial1.dist - trial2.dist;
   }
