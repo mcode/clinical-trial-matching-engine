@@ -82,4 +82,30 @@ export class UploadPatientComponent {
       console.log(ex);
     });
   }
+
+  updateFile(inputElement: HTMLInputElement): void {
+    console.log('updating file');
+    console.log(inputElement);
+    // There may be no file elements if nothing was selected
+    if (!inputElement.files || inputElement.files.length === 0) return;
+    // Set the patient data to be the file contents
+    // Disable the text area while the data is loading
+    // (Note: I've never had the JSON load slowly enough to make sure this in
+    // fact works.)
+    this.patientBundleFormControl.disable();
+    inputElement.files[0]
+      .text()
+      .then(
+        (json) => {
+          this.patientBundleFormControl.setValue(json);
+        },
+        (error) => {
+          console.log('Error loading text data');
+          console.log(error);
+        }
+      )
+      .finally(() => {
+        this.patientBundleFormControl.enable();
+      });
+  }
 }

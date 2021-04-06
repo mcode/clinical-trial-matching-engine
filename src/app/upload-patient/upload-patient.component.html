@@ -1,9 +1,18 @@
-<div>
+<div class="upload-patient">
+  <div class="patient-bundle-file mat-form-field">
+    <div class="mat-form-field-wrapper">
+      <label for="patient-bundle-file" class="mat-flat-button mat-button-base mat-primary">Upload Patient Bundle File</label>
+      <input id="patient-bundle-file" type="file" accept=".json,application/json,application/javascript,text/plain" (change)="updateFile($event.target)">
+      <div class="hint">Choose a file to use as the patient. The JSON will be shown below. Note that you may modify the
+        JSON below - the modified JSON will be used rather than the file's content. The file itself will not be
+        modified.</div>
+    </div>
+  </div>
   <mat-form-field class="patient-bundle">
     <mat-label>Patient Bundle JSON data</mat-label>
     <textarea matInput [formControl]="patientBundleFormControl" placeholder='{ "resourceType": "Bundle" }' rows="20"></textarea>
     <mat-error *ngIf="patientBundleFormControl.invalid">{{getErrorMessage()}}</mat-error>
     <mat-hint align="start">Paste JSON for the patient here</mat-hint>
   </mat-form-field>
-  <button mat-flat-button color="primary" [disabled]="patientBundleFormControl.invalid" (click)="uploadPatient()">Use this patient</button>
+  <button mat-flat-button color="primary" [disabled]="patientBundleFormControl.invalid || patientBundleFormControl.disabled" (click)="uploadPatient()">Use this patient</button>
 </div>

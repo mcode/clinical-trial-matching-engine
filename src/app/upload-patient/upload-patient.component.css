@@ -1,3 +1,23 @@
+/* The control */
+.upload-patient {
+  /* Because of the way this is used, there needs to be padding added. */
+  padding: 1em;
+  /* Set the font to use the same font as Material uses */
+  font-weight: 400;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  line-height: 1.125;
+}
+
+.patient-bundle-file .hint {
+  padding-top: 0.5em;
+}
+
 .patient-bundle {
   width: 100%;
 }
+/*
+ * Hide the input element: 0 is used per
+ * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#files to
+ * ensure screen readers do not skip the element.
+ */
+input[type=file] { opacity: 0; }
