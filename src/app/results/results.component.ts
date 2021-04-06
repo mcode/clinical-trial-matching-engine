@@ -9,6 +9,7 @@ import { SearchService, SearchResultsBundle, ResearchStudySearchEntry } from '..
 import { ResearchStudyStatus, ResearchStudyPhase } from '../fhir-constants';
 import { BundleEntry } from '../fhir-types';
 import { TrialCardComponent } from '../trial-card/trial-card.component';
+import { SearchFields } from '../app.component';
 
 /**
  * Provides basic information about a given page.
@@ -37,22 +38,6 @@ class FilterData {
   }
 }
 
-export interface SearchFields {
-  // This simply indicates that our fields are always string-able and is
-  // necessary to pass the object to the patient bundle converter function.
-  [key: string]: string | null;
-  zipCode: string | null;
-  travelRadius: string | null;
-  /**
-   * Recruitment phase (null means not specified/any)
-   */
-  phase: ResearchStudyPhase | null;
-  /**
-   * Recruitment status (null means not specified/any)
-   */
-  recruitmentStatus: ResearchStudyStatus | null;
-}
-
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
@@ -64,6 +49,7 @@ export class ResultsComponent {
    * Filter data.
    */
   public filtersArray: FilterData[] = [];
+  public searchParameters: SearchFields;
   /**
    * The most recent search results. If null, no search has been executed.
    */

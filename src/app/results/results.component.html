@@ -73,7 +73,7 @@
             fill="#525151"
           ></path>
         </svg>
-        <span class="cardText2 font-size-20">{{ searchReqObject.zipCode }}</span>
+        <span class="cardText2 font-size-20">{{ searchParameters.zipCode }}</span>
       </div>
       <div class="padding-left-20 padding-top-15">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 37 37">
@@ -84,7 +84,7 @@
             fill="#525151"
           ></path>
         </svg>
-        <span class="cardText2 font-size-20">{{ searchReqObject.travelRadius }} Miles</span>
+        <span class="cardText2 font-size-20">{{ searchParameters.travelRadius }} Miles</span>
       </div>
     </div>
     <span class="color11">{{
@@ -99,7 +99,7 @@
           <app-trial-card
             class="row containingDIV cards pointer"
             [clinicalTrial]="trial"
-            [reqs]="searchReqObject"
+            [reqs]="searchParameters"
             [trialSaved]="savedClinicalTrialsNctIds.has(trial.nctId)"
             (trialSaveChanged)="setTrialSaved(trial, $event)"
           >

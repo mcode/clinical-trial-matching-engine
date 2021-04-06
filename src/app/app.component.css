@@ -67,27 +67,15 @@ h1 {
   width: 100%;
 }
 
-.Graph-section {
+header {
   background-image: url('../assets/images/strip_top.png');
-  position: absolute;
-  z-index: auto;
-  left: 0;
-  right: 0;
-  width: 100%;
+  background-repeat: no-repeat;
   background-size: 100%;
   height: 130px;
-  margin: 0 8px;
-  background-repeat: no-repeat;
 }
-.Graph-section h1 {
-  color: #fff;
-  font-size: 18px;
-  padding: 10px;
-  margin-left: 5%;
-  margin-top: 2%;
-  text-align: left;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+header h1 {
+  /* There's a problem with this: if the page is too narrow, this ends up being white on white. */
+  padding: 16px 0 0 64px;
 }
 .color1 {
   color: #707070;
