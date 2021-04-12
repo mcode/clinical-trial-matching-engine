@@ -114,10 +114,6 @@ header h1 {
   text-align: left;
   color: #525151;
 }
-.subText {
-  height: 63px;
-  background: transparent;
-}
 /* ::placeholder {
   / * Chrome, Firefox, Opera, Safari 10.1+ * /
   font-family: Roboto;
@@ -258,47 +254,4 @@ header h1 {
   color: #000;
   text-decoration: none;
   cursor: pointer;
-}
-
-.facilityList {
-  overflow-y: auto;
-  max-height: 100px;
-  color: #898686;
-  padding: 10px;
-}
-
-.facilityList .phone,
-.facilityList .email {
-  font-size: 80%;
-  color: #0079e0;
-}
-
-.facility {
-  margin-bottom: 15px;
-}
-
-.phoneIcon,
-.emailIcon {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background-repeat: no-repeat;
-  text-indent: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.phoneIcon {
-  background-image: url(/assets/images/phone.svg);
-}
-.emailIcon {
-  background-image: url(/assets/images/email.svg);
-}
-
-.view-record-text {
-  color: #0079e0;
-}
-
-.view-record-text:hover {
-  color: #ff00b3;
 }

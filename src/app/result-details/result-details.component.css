@@ -141,3 +141,38 @@ h3.cardtext {
   text-decoration: none;
   cursor: pointer;
 }
+
+.facilityList {
+  overflow-y: auto;
+  max-height: 100px;
+  color: #898686;
+  padding: 10px;
+}
+
+.facilityList .phone,
+.facilityList .email {
+  font-size: 80%;
+  color: #0079e0;
+}
+
+.facility {
+  margin-bottom: 15px;
+}
+
+.phoneIcon,
+.emailIcon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.phoneIcon {
+  background-image: url(/assets/images/phone.svg);
+}
+.emailIcon {
+  background-image: url(/assets/images/email.svg);
+}
