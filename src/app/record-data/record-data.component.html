@@ -1,7 +1,7 @@
 <div *ngIf='displayOn' [style.display]='none' max-height='90vh' vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>
-    <!-- Modal Close Outside -->
-    <div class ="modal-close-outside" (click)="setStatus(false);"></div>
-    <!-- Modal content -->
+  <!-- Modal Close Outside -->
+  <div class ="modal-close-outside" (click)="setStatus(false);"></div>
+  <!-- Modal content -->
     <div class="modal-content" max-height='90vh' vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>
         <span class="close" (click)="setStatus(false);" max-height='90vh' vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>&times;</span>
         <div class="set-resources"> {{setResources()}} </div>
@@ -9,9 +9,9 @@
         <span class="color14 mi-margin-20">If something doesn’t look right on your record, please contact your
             healthcare provider.</span>
         <div class="mi-margin-20">
-            <div class="color15">{{(patient | async)?.getUsualName()}}</div>
-            <div class="color15">AGE: {{(patient | async)?.getAge()}}</div>
-            <div class="color15">Gender: {{(patient | async)?.getGender()}}</div>
+            <div class="color15">{{patient.getFullName()}}</div>
+            <div class="color15">AGE: {{patient.getAge()}}</div>
+            <div class="color15">Gender: {{patient.getGender()}}</div>
         </div>
         <div class="mi-margin-20">
             <span class="color14 upperCase">Conditions:</span>

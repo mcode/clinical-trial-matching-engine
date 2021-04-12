@@ -13,7 +13,14 @@ export class StubClientService extends ClientService {
     super();
     this.client = FHIR.client('https://www.example.com/disconnected');
     this.patient = {
-      resourceType: 'Patient' as 'Patient'
+      resourceType: 'Patient' as 'Patient',
+      name: [
+        {
+          use: 'official',
+          family: 'Patient',
+          given: ['Demo']
+        }
+      ]
     };
   }
   /**

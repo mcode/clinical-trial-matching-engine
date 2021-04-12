@@ -61,12 +61,31 @@ export default class Patient {
    */
   getUsualName(): string | null {
     const name = this.getPreferredName();
-    if (name == null) {
+    if (name === null) {
       return null;
     } else if (name.given && Array.isArray(name.given) && name.given.length > 0) {
       return name.given.join(' ');
     } else {
       return null;
+    }
+  }
+  /**
+   * Looks up the preferred full name, if one exists.
+   * @returns the preferred full name, if possible
+   */
+  getFullName(): string | null {
+    const name = this.getPreferredName();
+    if (name === null) {
+      return null;
+    } else {
+      const fullName = [];
+      if (name.given) {
+        fullName.push(...name.given);
+      }
+      if (name.family) {
+        fullName.push(name.family);
+      }
+      return fullName.length > 0 ? fullName.join(' ') : null;
     }
   }
   /**

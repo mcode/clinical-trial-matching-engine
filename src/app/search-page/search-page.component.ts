@@ -34,8 +34,8 @@ export interface SearchFields {
   styleUrls: ['./search-page.component.css']
 })
 export class SearchPageComponent {
-  title = 'clinicalTrial';
-  public patient: Promise<Patient> | Patient;
+  patient: Patient;
+  patientName: string | null;
   /**
    * Whether or not the search form (not results) page is visible
    */
@@ -120,17 +120,17 @@ export class SearchPageComponent {
   ) {
     // show loading screen while we pull the FHIR record
     this.showLoadingOverlay('Loading patient data...');
-    this.patient = fhirService
+    fhirService
       .getPatient()
       .then((patient) => {
         // Wrap the patient in a class that handles extracting values
-        const p = new Patient(patient);
+        this.patient = new Patient(patient);
+        this.patientName = this.patient.getUsualName();
         // Also take this opportunity to set the zip code, if there is one
-        const zipCode = p.getHomePostalCode();
+        const zipCode = this.patient.getHomePostalCode();
         if (zipCode) {
           this.searchFieldsComponent.zipCode.setValue(zipCode);
         }
-        return p;
       })
       .catch((err) => {
         console.log(err);
