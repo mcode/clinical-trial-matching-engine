@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 // Module that contains all the Material modules
 import { AppMaterialModule } from './shared/material.module';
+import { AppRoutingModule } from './app-routing.module';
 
 // FHIR stuff
 import { ClientService } from './smartonfhir/client.service';
@@ -23,9 +24,11 @@ import { RecordDataComponent } from './record-data/record-data.component';
 import { ResultDetailsComponent } from './result-details/result-details.component';
 import { ResultsComponent } from './results/results.component';
 import { SearchFieldsComponent } from './search-fields/search-fields.component';
+import { SearchPageComponent } from './search-page/search-page.component';
 import { TrialCardComponent } from './trial-card/trial-card.component';
 
 import { environment } from './../environments/environment';
+import { ResultsPageComponent } from './results-page/results-page.component';
 
 const fhirInitializeFn = (fhirService: ClientService) => {
   // Grab the client during bootstrap - this prevents the flash of a partially
@@ -52,12 +55,15 @@ const SEARCH_PROVIDER: Provider = {
     TrialCardComponent,
     CustomSpinnerComponent,
     SearchFieldsComponent,
-    ResultsComponent
+    ResultsComponent,
+    SearchPageComponent,
+    ResultsPageComponent
   ],
   // prettier-ignore
   imports: [
     BrowserModule,
     HttpClientModule,
+    AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
@@ -66,6 +72,7 @@ const SEARCH_PROVIDER: Provider = {
   ],
   providers: [
     FHIR_PROVIDER,
+    SEARCH_PROVIDER,
     {
       provide: APP_INITIALIZER,
       useFactory: fhirInitializeFn,

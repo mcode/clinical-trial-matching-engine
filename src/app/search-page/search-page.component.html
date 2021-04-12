@@ -1,0 +1,20 @@
+<h1 class="color1 header">Welcome {{ (patient | async)?.getUsualName() }},</h1>
+<h1 class="color2 header2">Let’s find some clinical trials</h1>
+<h1 class="color1 subText">
+  We found your <span class="view-record-text" (click)="showRecord()">record</span>. Just fill in some preferences
+  and we’ll do the rest
+</h1>
+<app-search-fields (searchClicked)="searchClinicalTrials($event)"></app-search-fields>
+<!--Patient Records-->
+<app-record-data
+  [(displayOn)]="this.records"
+  [bundleResources]="this.bundleResources"
+  [patient]="this.patient"
+  max-height="90vh"
+  height="90%"
+  vertical-align="top"
+  position="absolute"
+  overflow="scroll"
+  overflow-y="scroll"
+>
+</app-record-data>

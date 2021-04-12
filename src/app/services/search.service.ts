@@ -373,6 +373,9 @@ interface ClinicalTrialQuery {
   offset?: number;
 }
 
+/**
+ * Service for running the search.
+ */
 @Injectable({
   providedIn: 'root'
 })

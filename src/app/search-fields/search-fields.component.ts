@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import {
   ResearchStudyPhase,
@@ -6,6 +6,7 @@ import {
   ResearchStudyStatus,
   ResearchStudyStatusDisplay
 } from '../fhir-constants';
+import { TrialQuery } from '../services/search-results.service';
 
 interface DropdownOption {
   display: string;
@@ -17,13 +18,6 @@ interface DropdownOption {
 type Phase = DropdownOption;
 type RecruitmentStatus = DropdownOption;
 
-export interface SearchFields {
-  zipCode: string;
-  travelDistance: number;
-  trialPhase?: string;
-  recruitmentStatus?: string;
-}
-
 @Component({
   selector: 'app-search-fields',
   templateUrl: './search-fields.component.html',
@@ -32,7 +26,7 @@ export interface SearchFields {
 export class SearchFieldsComponent {
   phases: Phase[];
   recruitmentStatuses: RecruitmentStatus[];
-  @Output() searchClicked = new EventEmitter<SearchFields>();
+  @Output() searchClicked = new EventEmitter<TrialQuery>();
 
   zipCode = new FormControl('', [Validators.required, Validators.pattern('[0-9]{5}')]);
   travelDistance = new FormControl('', [Validators.required, Validators.min(0)]);
@@ -54,12 +48,12 @@ export class SearchFieldsComponent {
     });
   }
 
-  search() {
-    const event: SearchFields = {
+  search(): void {
+    const event: TrialQuery = {
       zipCode: this.zipCode.value,
-      travelDistance: this.travelDistance.value
+      travelRadius: this.travelDistance.value
     };
-    if (this.trialPhase.value !== 'any') event.trialPhase = this.trialPhase.value;
+    if (this.trialPhase.value !== 'any') event.phase = this.trialPhase.value;
     if (this.recruitmentStatus.value !== 'all') event.recruitmentStatus = this.recruitmentStatus.value;
     this.searchClicked.emit(event);
   }

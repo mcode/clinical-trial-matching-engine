@@ -1,6 +1,6 @@
 import { ResearchStudySearchEntry } from './../services/search.service';
+import { TrialQuery } from './../services/search-results.service';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { SearchFields } from './../app.component';
 
 @Component({
   selector: 'app-trial-card',
@@ -10,7 +10,7 @@ import { SearchFields } from './../app.component';
 export class TrialCardComponent {
   public static showDetailsFlag = true;
 
-  @Input() reqs: SearchFields;
+  @Input() reqs: TrialQuery;
   @Input() clinicalTrial: ResearchStudySearchEntry;
   @Input() trialSaved;
   @Output() trialSaveChanged = new EventEmitter<boolean>();

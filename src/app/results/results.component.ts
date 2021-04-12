@@ -1,15 +1,13 @@
-import { Component, ViewChild, Input } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { ClientService } from '../smartonfhir/client.service';
 import Patient from '../patient';
 import { UnpackResearchStudyResults } from '../export/parse-data';
 import { ExportTrials } from '../export/export-data';
-import { SearchService, SearchResultsBundle, ResearchStudySearchEntry } from '../services/search.service';
-import { ResearchStudyStatus, ResearchStudyPhase } from '../fhir-constants';
+import { SearchResultsBundle, ResearchStudySearchEntry } from '../services/search.service';
 import { BundleEntry } from '../fhir-types';
 import { TrialCardComponent } from '../trial-card/trial-card.component';
-import { SearchFields } from '../app.component';
+import { TrialQuery } from '../services/search-results.service';
 
 /**
  * Provides basic information about a given page.
@@ -43,13 +41,14 @@ class FilterData {
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css']
 })
-export class ResultsComponent {
+export class ResultsComponent implements OnInit {
   public patient: Promise<Patient> | Patient;
   /**
    * Filter data.
    */
   public filtersArray: FilterData[] = [];
-  public searchParameters: SearchFields;
+  @Input()
+  public searchParameters: TrialQuery;
   /**
    * The most recent search results. If null, no search has been executed.
    */
@@ -122,7 +121,14 @@ export class ResultsComponent {
 
   public records = false;
 
-  constructor() {}
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    if (this.searchResults === null) {
+      // If we have no search results, redirect back to the search page
+      this.router.navigateByUrl('/search');
+    }
+  }
 
   /**
    * Gets the total number of pages.
@@ -203,11 +209,15 @@ export class ResultsComponent {
    * Create the filters
    */
   private createFilters(): void {
-    this.filtersArray = [
-      new FilterData('Recruitment', 'status', this.searchResults.buildFilters('status')),
-      new FilterData('Phase', 'phase.text', this.searchResults.buildFilters('phase.text')),
-      new FilterData('Study Type', 'category.text', this.searchResults.buildFilters('category.text'))
-    ];
+    if (this.searchResults === null) {
+      this.filtersArray = [];
+    } else {
+      this.filtersArray = [
+        new FilterData('Recruitment', 'status', this.searchResults.buildFilters('status')),
+        new FilterData('Phase', 'phase.text', this.searchResults.buildFilters('phase.text')),
+        new FilterData('Study Type', 'category.text', this.searchResults.buildFilters('category.text'))
+      ];
+    }
   }
   /**
    * Display details of a given trial.

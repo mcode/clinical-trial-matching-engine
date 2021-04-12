@@ -1,6 +1,6 @@
 import { ResearchStudySearchEntry } from './../services/search.service';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { SearchFields } from './../app.component';
+import { TrialQuery } from './../services/search-results.service';
 
 /**
  * Shows the details page for the results.
@@ -11,7 +11,7 @@ import { SearchFields } from './../app.component';
   styleUrls: ['../app.component.css'] //refer to app component styling for the time being
 })
 export class ResultDetailsComponent {
-  @Input() reqs: SearchFields;
+  @Input() reqs: TrialQuery;
   @Input() clinicalTrial: ResearchStudySearchEntry;
   @Input() trialSaved = false;
   @Output() trialSaveChanged = new EventEmitter<boolean>();
