@@ -214,13 +214,6 @@ describe('AppComponent', () => {
 
     expect(app.filtersArray[0]).toBeDefined();
   });
-  it('should go back to home page', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    app.backToHomePage();
-    expect(app.searchtable).toBeTruthy();
-    expect(app.searchPage).toBeFalsy();
-  });
   it('should show a page', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;

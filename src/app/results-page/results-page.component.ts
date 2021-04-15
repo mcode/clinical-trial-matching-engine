@@ -118,12 +118,6 @@ export class ResultsPageComponent {
     this.detailsPage = true;
   }
 
-  /*
-     Function for go to home page
-  * */
-  public backToHomePage(): void {
-    this.detailsPage = true;
-  }
   /**
    * Save or remove a trial from the saved trials list.
    */

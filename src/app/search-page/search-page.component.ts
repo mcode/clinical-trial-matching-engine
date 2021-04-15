@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 import { ClientService } from '../smartonfhir/client.service';
@@ -33,21 +33,9 @@ export interface SearchFields {
   templateUrl: './search-page.component.html',
   styleUrls: ['./search-page.component.css']
 })
-export class SearchPageComponent {
+export class SearchPageComponent implements OnInit {
   patient: Patient;
   patientName: string | null;
-  /**
-   * Whether or not the search form (not results) page is visible
-   */
-  public searchPage = false;
-  /**
-   * Whether or not the search results page is visible
-   */
-  public searchtable = true;
-  /**
-   * Whether or not the details page is visible.
-   */
-  public detailsPage = true;
   /**
    * The most recent search results. If null, no search has been executed.
    */
@@ -118,9 +106,22 @@ export class SearchPageComponent {
     private fhirService: ClientService,
     private toastr: ToastrService
   ) {
-    // show loading screen while we pull the FHIR record
+    // Set up the loading screen when constructed
+    this.showLoadingOverlay('Loading...');
+  }
+
+  ngOnInit(): void {
+    // Immediately load the patient when the view is initialized
+    this.loadPatientData();
+  }
+
+  /**
+   * Loads patient data from the FHIR server.
+   */
+  loadPatientData(): void {
+    // Show the loading screen when the patient data is loaded
     this.showLoadingOverlay('Loading patient data...');
-    fhirService
+    this.fhirService
       .getPatient()
       .then((patient) => {
         // Wrap the patient in a class that handles extracting values
@@ -232,24 +233,6 @@ export class SearchPageComponent {
         this.hideLoadingOverlay();
       }
     );
-  }
-
-  /*
-  Function for back search result page
-  * */
-  public backToSearch(): void {
-    this.searchtable = false;
-    this.searchPage = true;
-    this.detailsPage = true;
-  }
-
-  /*
-     Function for go to home page
-  * */
-  public backToHomePage(): void {
-    this.searchtable = true;
-    this.searchPage = false;
-    this.detailsPage = true;
   }
 
   public compareByDist(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
