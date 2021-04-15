@@ -20,6 +20,12 @@ export class StubClientService extends ClientService {
           family: 'Patient',
           given: ['Demo']
         }
+      ],
+      address: [
+        {
+          use: 'home',
+          postalCode: '01730'
+        }
       ]
     };
   }
