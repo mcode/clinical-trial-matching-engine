@@ -1,3 +1,4 @@
+<custom-spinner class="topVisible" *ngIf="showOverlay" [mode]="loadingMode" [value]="loadingPercentage" [loadingText]="loadingText"></custom-spinner>
 <header>
   <h1 class="welcome-patient">Welcome{{ patientName ? ' ' + patientName : '' }},</h1>
   <h2 class="welcome-find">Let’s find some clinical trials</h2>

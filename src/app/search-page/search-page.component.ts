@@ -74,7 +74,7 @@ export class SearchPageComponent implements OnInit {
   private searchFieldsComponent: SearchFieldsComponent;
 
   /**
-   * Control overlay display
+   * Control loading overlay display
    */
   public showOverlay: boolean;
 

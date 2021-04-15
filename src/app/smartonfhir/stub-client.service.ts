@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import * as FHIR from 'fhirclient';
 import { ClientService, Stringable } from './client.service';
 import { fhirclient } from 'fhirclient/lib/types';
@@ -8,6 +9,9 @@ import { fhirclient } from 'fhirclient/lib/types';
  * the FHIR client is given a bogus URL, attempting to load things through it
  * directly WILL NOT WORK.
  */
+@Injectable({
+  providedIn: 'root'
+})
 export class StubClientService extends ClientService {
   constructor() {
     super();
