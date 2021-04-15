@@ -1,0 +1,116 @@
+.float-right {
+  float: right;
+}
+
+.font-size-20 {
+  font-size: 20px !important;
+}
+.color1 {
+  color: #707070;
+}
+.color3 {
+  color: #66d5e3;
+}
+.color4 {
+  color: #716f6f;
+}
+.color7 {
+  color: #a5a3a3;
+}
+.color8 {
+  color: #ffffff !important;
+}
+.color11 {
+  color: #9d9d9d;
+}
+
+.containingDIV {
+  display: flex;
+}
+
+.mi-margin-10 {
+  margin: 10px;
+}
+
+.matching {
+  font-family: Roboto;
+  font-weight: 900;
+  font-size: 25px;
+  text-align: left;
+  margin-top: 12px;
+}
+
+.filters {
+  width: 160px;
+  border-radius: 5px;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #707070;
+  padding: 5px;
+}
+
+.cards {
+  border-radius: 3px;
+  border: 1px solid #cbcbcb;
+  margin-bottom: 10px;
+  background-color: white;
+}
+
+.cardText2 {
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 21px;
+  text-align: left;
+  color: #525151;
+}
+
+.padding-top-10 {
+  padding-top: 10px;
+}
+
+.padding-top-15 {
+  padding-top: 15px;
+}
+
+.padding-bottom-20 {
+  padding-bottom: 20px;
+}
+
+.padding-left-20 {
+  padding-left: 20px;
+}
+/* Clear floats after the columns */
+.row:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 300px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  z-index: 1;
+  margin: 2px 0;
+  height: 300px;
+  text-align: left;
+}
+.dropdown-content ul {
+  margin: 15px 0;
+}
+.filters:hover .dropdown-content {
+  display: block;
+}
+
+.selectedPage {
+  color: #66d5e3;
+}
+
+.pointer:hover {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}

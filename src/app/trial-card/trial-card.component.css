@@ -8,6 +8,10 @@
   text-transform: uppercase;
 }
 
+.color1 {
+  color: #707070;
+}
+
 .mi-margin-left-10 {
   margin-left: 10px;
 }
@@ -48,9 +52,6 @@
 .padding-bottom-10 {
   padding-bottom: 10px;
 }
-.padding-top-15 {
-  padding-top: 15px;
-}
 .padding-bottom-15 {
   padding-bottom: 15px;
 }
@@ -59,6 +60,9 @@
 }
 .padding-10 {
   padding: 10px;
+}
+.padding-top-30 {
+  padding-top: 30px;
 }
 .col15 {
   width: 15%;
@@ -83,4 +87,12 @@
 
 .containingDIV {
   display: flex;
+}
+
+.cardText2 {
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 21px;
+  text-align: left;
+  color: #525151;
 }

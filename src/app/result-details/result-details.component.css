@@ -1,3 +1,13 @@
+.text-transform-uppercase {
+  text-transform: uppercase;
+}
+
+.color3 {
+  color: #66d5e3;
+}
+.color7 {
+  color: #a5a3a3;
+}
 
 .recButton {
   width: 90%;
@@ -10,6 +20,12 @@
 }
 
 /* FIXME: These styles feel overly-specific. */
+.mi-margin-10 {
+  margin: 10px;
+}
+.mi-margin-left-10 {
+  margin-left: 10px;
+}
 .mi-margin-30{
   margin: 30px;
 }
