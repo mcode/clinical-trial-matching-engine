@@ -6,7 +6,6 @@ import { UnpackResearchStudyResults } from '../export/parse-data';
 import { ExportTrials } from '../export/export-data';
 import { SearchResultsBundle, ResearchStudySearchEntry } from '../services/search.service';
 import { BundleEntry } from '../fhir-types';
-import { TrialCardComponent } from '../trial-card/trial-card.component';
 import { TrialQuery } from '../services/search-results.service';
 
 /**
@@ -223,11 +222,7 @@ export class ResultsComponent implements OnInit {
    * Display details of a given trial.
    */
   public showDetails(i: number): void {
-    if (TrialCardComponent.showDetailsFlag) {
-      this.detailedTrial = this.selectedPageTrials[i];
-    }
-    // Reset the showDetailsFlag to true in case it has been turned off by the Save Study button.
-    TrialCardComponent.showDetailsFlag = true;
+    this.router.navigate(['results', 'details', i.toString()]);
   }
 
   /*

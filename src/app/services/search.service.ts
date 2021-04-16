@@ -47,7 +47,12 @@ export class ResearchStudySearchEntry {
   private cachedSites: fhirpath.FHIRResource[] | null = null;
   private containedResources: Map<string, fhirpath.FHIRResource> | null = null;
   dist: number | undefined;
-  constructor(public entry: BundleEntry, private distService: DistanceService, private zipCode: string) {
+  constructor(
+    public entry: BundleEntry,
+    public readonly index: number,
+    private distService: DistanceService,
+    private zipCode: string
+  ) {
     if (this.entry.resource.resourceType !== 'ResearchStudy')
       throw new Error('Invalid resource type "' + this.entry.resource.resourceType + '"');
     this.resource = this.entry.resource as ResearchStudy;
@@ -342,7 +347,7 @@ export class SearchResultsBundle {
         .filter((entry) => {
           return entry.resource.resourceType === 'ResearchStudy';
         })
-        .map((entry) => new ResearchStudySearchEntry(entry, distService, zip));
+        .map((entry, index) => new ResearchStudySearchEntry(entry, index, distService, zip));
     } else {
       this.researchStudies = [];
     }

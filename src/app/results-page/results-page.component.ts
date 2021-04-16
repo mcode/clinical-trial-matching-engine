@@ -9,7 +9,6 @@ import { SearchResultsBundle, ResearchStudySearchEntry } from '../services/searc
 import { SearchResultsService, TrialQuery } from '../services/search-results.service';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { BundleEntry } from '../fhir-types';
-import { TrialCardComponent } from '../trial-card/trial-card.component';
 import { ResultsComponent } from '../results/results.component';
 
 @Component({
@@ -18,12 +17,7 @@ import { ResultsComponent } from '../results/results.component';
   styleUrls: ['./results-page.component.css']
 })
 export class ResultsPageComponent {
-  title = 'clinicalTrial';
   public patient: Promise<Patient> | Patient;
-  /**
-   * Whether or not the details page is visible.
-   */
-  public detailsPage = true;
   /**
    * The most recent search results. If null, no search has been executed.
    */
@@ -98,24 +92,6 @@ export class ResultsPageComponent {
     private toastr: ToastrService
   ) {
     this.searchResults = this.searchResultsService.getResults();
-  }
-
-  /**
-   * Display details of a given trial.
-   */
-  public showDetails(i: number): void {
-    if (TrialCardComponent.showDetailsFlag) {
-      this.detailedTrial = this.selectedPageTrials[i];
-      this.detailsPage = false;
-    }
-    // Reset the showDetailsFlag to true in case it has been turned off by the Save Study button.
-    TrialCardComponent.showDetailsFlag = true;
-  }
-  /*
-  Function for back search result page
-  * */
-  public backToSearch(): void {
-    this.detailsPage = true;
   }
 
   /**

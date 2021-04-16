@@ -8,8 +8,6 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./trial-card.component.css']
 })
 export class TrialCardComponent {
-  public static showDetailsFlag = true;
-
   @Input() reqs: TrialQuery;
   @Input() clinicalTrial: ResearchStudySearchEntry;
   @Input() trialSaved;
@@ -17,8 +15,6 @@ export class TrialCardComponent {
   //constructor() { }
 
   public toggleTrialSaved(): void {
-    // Save Study Button in Trial Card reaches here, set the showDetailsFlag to false to prevent details from openeing.
-    TrialCardComponent.showDetailsFlag = false;
     this.trialSaved = !this.trialSaved;
     this.trialSaveChanged.emit(this.trialSaved);
   }
@@ -39,6 +35,4 @@ export class TrialCardComponent {
       return 'green';
     }
   }
-
-  //ngOnInit() {}
 }

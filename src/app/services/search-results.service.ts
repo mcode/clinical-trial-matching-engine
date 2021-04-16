@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { PatientBundle } from '../bundle';
-import { SearchResultsBundle, SearchService } from './search.service';
+import { ResearchStudySearchEntry, SearchResultsBundle, SearchService } from './search.service';
 
 /**
  * This defines the fields that can be searched on as defined by the clinical
@@ -38,6 +38,15 @@ export class SearchResultsService {
    */
   getResults(): SearchResultsBundle {
     return this._results;
+  }
+
+  /**
+   * Gets a single result from within all results. If the result is entirely out of range, returns null.
+   * @param idx the index of the result to get
+   */
+  getResult(idx: number): ResearchStudySearchEntry | null {
+    if (this._results === null || idx < 0 || idx >= this._results.researchStudies.length) return null;
+    return this._results.researchStudies[idx];
   }
 
   search(query: TrialQuery, patientBundle: PatientBundle): Observable<SearchResultsBundle> {
