@@ -235,13 +235,6 @@ export class SearchPageComponent implements OnInit {
     );
   }
 
-  public compareByDist(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
-    return trial1.dist - trial2.dist;
-  }
-  public compareByMatch(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
-    return trial2.search.score - trial1.search.score;
-  }
-
   public showRecord(): void {
     this.records = !this.records;
   }

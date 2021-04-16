@@ -14,8 +14,7 @@ import { SearchResultsService, TrialQuery } from './../services/search-results.s
 export class ResultDetailsComponent implements OnInit {
   query: TrialQuery;
   clinicalTrial: ResearchStudySearchEntry;
-  @Input() trialSaved = false;
-  @Output() trialSaveChanged = new EventEmitter<boolean>();
+  trialSaved = false;
 
   constructor(private route: ActivatedRoute, private resultsService: SearchResultsService) {}
 
@@ -26,12 +25,12 @@ export class ResultDetailsComponent implements OnInit {
       // Basic test to ensure it's an integer
       const index = Number(id);
       this.clinicalTrial = this.resultsService.getResult(index);
+      this.trialSaved = this.resultsService.isTrialSaved(this.clinicalTrial);
     }
   }
 
   public toggleTrialSaved(): void {
-    this.trialSaved = !this.trialSaved;
-    this.trialSaveChanged.emit(this.trialSaved);
+    this.trialSaved = this.resultsService.toggleTrialSaved(this.clinicalTrial);
   }
 
   public replace(value: string): string {

@@ -2,11 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import Patient from '../patient';
-import { UnpackResearchStudyResults } from '../export/parse-data';
-import { ExportTrials } from '../export/export-data';
 import { SearchResultsBundle, ResearchStudySearchEntry } from '../services/search.service';
 import { BundleEntry } from '../fhir-types';
-import { TrialQuery } from '../services/search-results.service';
+import { SearchResultsService, TrialQuery } from '../services/search-results.service';
 
 /**
  * Provides basic information about a given page.
@@ -33,6 +31,14 @@ class FilterData {
   constructor(public val: string, public selectedVal: string | null = null, data: Iterable<string>) {
     this.data = Array.from(data, (value) => new FilterValue(value));
   }
+}
+
+function compareByDist(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
+  return trial1.dist - trial2.dist;
+}
+
+function compareByMatch(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
+  return trial2.search.score - trial1.search.score;
 }
 
 @Component({
@@ -120,7 +126,7 @@ export class ResultsComponent implements OnInit {
 
   public records = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private searchResultsService: SearchResultsService) {}
 
   ngOnInit(): void {
     if (this.searchResults === null) {
@@ -242,11 +248,9 @@ export class ResultsComponent implements OnInit {
   public applyFilter(): void {
     let comparisonFunction = undefined;
     if (this.sortType == 'likelihood') {
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      comparisonFunction = this.compareByMatch;
+      comparisonFunction = compareByMatch;
     } else {
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      comparisonFunction = this.compareByDist;
+      comparisonFunction = compareByDist;
     }
 
     const activeFilters: { selectedItem: string; values: string[] }[] = [];
@@ -298,7 +302,7 @@ export class ResultsComponent implements OnInit {
    * Save or remove a trial from the saved trials list.
    */
   public toggleTrialSaved(trial: ResearchStudySearchEntry): void {
-    this.setTrialSaved(trial, !this.savedClinicalTrialsNctIds.has(trial.nctId));
+    this.searchResultsService.toggleTrialSaved(trial);
   }
   /**
    * Sets whether or not a given trial is part of the saved set.
@@ -306,32 +310,14 @@ export class ResultsComponent implements OnInit {
    * @param saved the save state of the trial
    */
   public setTrialSaved(trial: ResearchStudySearchEntry, saved: boolean): void {
-    if (saved) {
-      if (!this.savedClinicalTrialsNctIds.has(trial.nctId)) {
-        // Need to add it
-        this.savedClinicalTrials.push(trial);
-        this.savedClinicalTrialsNctIds.add(trial.nctId);
-      }
-    } else {
-      if (this.savedClinicalTrialsNctIds.has(trial.nctId)) {
-        // Need to remove it
-        const index = this.savedClinicalTrials.findIndex((t) => t.nctId === trial.nctId);
-        this.savedClinicalTrials.splice(index, 1);
-        this.savedClinicalTrialsNctIds.delete(trial.nctId);
-      }
-    }
+    this.searchResultsService.setTrialSaved(trial, saved);
   }
-  /*
-    Function to export Array of saved trials
-  * */
+
+  /**
+   * Export the saved trials
+   */
   public exportSavedTrials(): void {
-    let data = [];
-    if (this.savedClinicalTrials.length > 0) {
-      data = UnpackResearchStudyResults(this.savedClinicalTrials);
-    } else {
-      data = UnpackResearchStudyResults(this.searchResults.researchStudies);
-    }
-    ExportTrials(data, 'clinicalTrials');
+    this.searchResultsService.exportSavedTrials();
   }
 
   public updateItemsPerPage(items: string | number): void {
@@ -351,13 +337,6 @@ export class ResultsComponent implements OnInit {
     this.createPages();
     // FIXME: Try and show the same page
     this.showPage(0);
-  }
-
-  public compareByDist(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
-    return trial1.dist - trial2.dist;
-  }
-  public compareByMatch(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
-    return trial2.search.score - trial1.search.score;
   }
 
   public showRecord(): void {

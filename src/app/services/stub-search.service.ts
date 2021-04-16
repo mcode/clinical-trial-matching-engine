@@ -37,28 +37,65 @@ export class StubSearchService extends SearchService {
               }
             }
           ],
+          contact: [
+            {
+              name: 'Example Contact',
+              telecom: [
+                {
+                  system: 'email',
+                  value: 'contact@example.com'
+                },
+                {
+                  system: 'phone',
+                  value: '781-555-0100'
+                }
+              ]
+            }
+          ],
+          sponsor: [
+            {
+              reference: '#organization1',
+              type: 'Organization'
+            }
+          ],
           site: [
             {
               reference: '#site1',
               type: 'Location'
             }
+          ],
+          contained: [
+            {
+              resourceType: 'Location',
+              id: 'site1',
+              name: 'Demo Site 1',
+              address: {
+                use: 'work',
+                type: 'physical',
+                // One town over from stubbed patient
+                postalCode: '01803'
+              },
+              telecom: [
+                {
+                  system: 'email',
+                  value: 'site@example.com'
+                },
+                {
+                  system: 'phone',
+                  value: '781-555-0200'
+                }
+              ]
+            },
+            {
+              resourceType: 'Organization',
+              id: 'organization1',
+              name: 'Demo Organization'
+            }
           ]
         },
         search: {
           score: 0.96
-        },
-        contained: [
-          {
-            resourceType: 'Location',
-            id: 'site1',
-            address: {
-              use: 'work',
-              type: 'physical',
-              // One town over from stubbed patient
-              postalCode: '01803'
-            }
-          }
-        ]
+        }
       },
       // This is an intentionally bare-bones result to test what happens with
       // almost nothing defined.
@@ -87,7 +124,11 @@ export class StubSearchService extends SearchService {
    */
   searchClinicalTrials(_patientBundle: PatientBundle, _offset?: number, _count = 10): Observable<SearchResultsBundle> {
     return new Observable<SearchResultsBundle>((observer) => {
-      observer.next(new SearchResultsBundle(this.demoResults, this.distService, '01730'));
+      observer.next(this.createSearchResultsBundle());
     });
+  }
+
+  createSearchResultsBundle(): SearchResultsBundle {
+    return new SearchResultsBundle(this.demoResults, this.distService, '01730');
   }
 }

@@ -47,11 +47,18 @@ export class ResearchStudySearchEntry {
   private cachedSites: fhirpath.FHIRResource[] | null = null;
   private containedResources: Map<string, fhirpath.FHIRResource> | null = null;
   dist: number | undefined;
+  /**
+   *
+   * @param entry the bundle entry
+   * @param index the index of the entry within the search results
+   * @param distService the distance service
+   * @param zipCode the ZIP code of the search, used to calculate distance
+   */
   constructor(
     public entry: BundleEntry,
     public readonly index: number,
     private distService: DistanceService,
-    private zipCode: string
+    zipCode: string
   ) {
     if (this.entry.resource.resourceType !== 'ResearchStudy')
       throw new Error('Invalid resource type "' + this.entry.resource.resourceType + '"');
@@ -151,11 +158,9 @@ export class ResearchStudySearchEntry {
     return this.lookupString("contact.telecom.where(system = 'email').value", '');
   }
   /**
-   * @deprecated This will be REMOVED as the NCT ID is not the proper ID to
-   * track for saved trials. Instead the URL of the ResearchStudy should be
-   * used.
+   * Returns the NCT ID for the trial, if it has one.
    */
-  get nctId(): string {
+  get nctId(): string | undefined {
     if (this.resource.identifier && this.resource.identifier.length > 0) {
       const identifier = this.resource.identifier.find(
         (id) => id.use === 'official' && id.system === 'http://clinicaltrials.gov'
@@ -164,7 +169,7 @@ export class ResearchStudySearchEntry {
         return identifier.value;
       }
     }
-    return '';
+    return undefined;
   }
   get matchLikelihood(): string | null {
     let matchStr = null;

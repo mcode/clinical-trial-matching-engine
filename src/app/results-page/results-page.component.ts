@@ -1,10 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
 
-import { ClientService } from '../smartonfhir/client.service';
 import Patient from '../patient';
-import { UnpackResearchStudyResults } from '../export/parse-data';
-import { ExportTrials } from '../export/export-data';
+
 import { SearchResultsBundle, ResearchStudySearchEntry } from '../services/search.service';
 import { SearchResultsService, TrialQuery } from '../services/search-results.service';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
@@ -39,14 +36,6 @@ export class ResultsPageComponent {
       return this.filteredResults.length;
     }
   }
-  /**
-   * Saved clinical trials.
-   */
-  public savedClinicalTrials: ResearchStudySearchEntry[] = [];
-  /**
-   * The set of saved clinical trial nctIds.
-   */
-  public savedClinicalTrialsNctIds = new Set<string>();
   /**
    * The trial whose details are being displayed.
    */
@@ -86,59 +75,8 @@ export class ResultsPageComponent {
 
   public records = false;
 
-  constructor(
-    private searchResultsService: SearchResultsService,
-    private fhirService: ClientService,
-    private toastr: ToastrService
-  ) {
+  constructor(private searchResultsService: SearchResultsService) {
     this.searchResults = this.searchResultsService.getResults();
-  }
-
-  /**
-   * Save or remove a trial from the saved trials list.
-   */
-  public toggleTrialSaved(trial: ResearchStudySearchEntry): void {
-    this.setTrialSaved(trial, !this.savedClinicalTrialsNctIds.has(trial.nctId));
-  }
-  /**
-   * Sets whether or not a given trial is part of the saved set.
-   * @param trial the trial to set whether or not it is saved
-   * @param saved the save state of the trial
-   */
-  public setTrialSaved(trial: ResearchStudySearchEntry, saved: boolean): void {
-    if (saved) {
-      if (!this.savedClinicalTrialsNctIds.has(trial.nctId)) {
-        // Need to add it
-        this.savedClinicalTrials.push(trial);
-        this.savedClinicalTrialsNctIds.add(trial.nctId);
-      }
-    } else {
-      if (this.savedClinicalTrialsNctIds.has(trial.nctId)) {
-        // Need to remove it
-        const index = this.savedClinicalTrials.findIndex((t) => t.nctId === trial.nctId);
-        this.savedClinicalTrials.splice(index, 1);
-        this.savedClinicalTrialsNctIds.delete(trial.nctId);
-      }
-    }
-  }
-  /*
-    Function to export Array of saved trials
-  * */
-  public exportSavedTrials(): void {
-    let data = [];
-    if (this.savedClinicalTrials.length > 0) {
-      data = UnpackResearchStudyResults(this.savedClinicalTrials);
-    } else {
-      data = UnpackResearchStudyResults(this.searchResults.researchStudies);
-    }
-    ExportTrials(data, 'clinicalTrials');
-  }
-
-  public compareByDist(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
-    return trial1.dist - trial2.dist;
-  }
-  public compareByMatch(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
-    return trial2.search.score - trial1.search.score;
   }
 
   public showRecord(): void {
