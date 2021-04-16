@@ -9,7 +9,7 @@ import { SearchResultsService, TrialQuery } from './../services/search-results.s
 @Component({
   selector: 'app-result-details',
   templateUrl: './result-details.component.html',
-  styleUrls: ['../app.component.css'] //refer to app component styling for the time being
+  styleUrls: ['./result-details.component.css']
 })
 export class ResultDetailsComponent implements OnInit {
   query: TrialQuery;

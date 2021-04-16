@@ -1,5 +1,40 @@
-.text-transform-uppercase {
+/* This is the large gray box at the top of the details */
+.infobox {
+  background: #525151;
+  color: #FFF;
+  display: flex;
+  margin: 0 16px;
+  font-family: Roboto;
+}
+
+.infobox .details-column {
+  width: 80%;
+}
+
+.infobox .details-column dt {
+  color: #a5a3a3;
   text-transform: uppercase;
+}
+
+.infobox .contacts-column {
+  width: 20%;
+  background-color: bisque;
+  color: #898686;
+  padding: 16px;
+}
+
+.contacts-column h1, .contacts-column h2 {
+  font-size: inherit;
+  text-transform: uppercase;
+}
+
+.contacts-column .sponsor h2 {
+  display: inline;
+}
+
+/* Add a space after it for padding */
+.contacts-column .sponsor h2::after {
+  content: " ";
 }
 
 .color3 {
@@ -9,81 +44,12 @@
   color: #a5a3a3;
 }
 
-.recButton {
-  width: 90%;
-  height: 41px;
-  border-radius: 20.5px;
-  background: #30b400;
-  color: white;
-  border: 1px solid #30b400;
-  text-transform: uppercase;
-}
 
 /* FIXME: These styles feel overly-specific. */
 .mi-margin-10 {
   margin: 10px;
 }
-.mi-margin-left-10 {
-  margin-left: 10px;
-}
-.mi-margin-30{
-  margin: 30px;
-}
 
-.mi-margin-2020 {
-  margin: 2%;
-}
-
-.mi-margin-left-p {
-  margin-left: 20% !important;
-}
-
-.padding-top-10 {
-  padding-top: 10px;
-}
-.padding-top-15 {
-  padding-top: 15px;
-}
-.padding-bottom-15 {
-  padding-bottom: 15px;
-}
-.padding-10 {
-  padding: 10px;
-}
-
-.col100 {
-  width: 100%;
-}
-.col33 {
-  width: 33%;
-}
-.col80 {
-  width: 80%;
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: '';
-  display: table;
-  clear: both;
-}
-
-.innerDiv {
-  display: inline-block;
-  margin: 0 auto;
-  padding: 10%;
-}
-
-.containingDIV {
-  display: flex;
-}
-
-.outerDiv{
-  text-align: center;
-  width: 321px;
-  height: 217px;
-  background: rgba(255, 255, 255, 0.94);
-}
 
 .accordion {
   color: #B7B7B7;
@@ -110,52 +76,39 @@
   overflow: hidden;
 }
 
-.flexborder {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  position: relative;
-  flex-flow: row wrap;
-
-  background: #525151;
-}
-
-.color8 {
-  color : #ffffff !important;
-}
-
-.cardtext {
-  font-family: Roboto light;
-  font-weight: 300;
-  font-size: 18px;
-  text-align: left;
-  color: #9f9c9c;
-  line-height: 25px;
-}
-
-h3.cardtext {
-  text-transform: uppercase;
-}
-
-.detailCardText {
-  font-size: 30px;
-  color: #FFFFFF;
-  text-transform: uppercase;
-}
-
-.varfont {
-  font-size: 0.9em;
-}
-
-.contact-text {
-  color: #0079e0;
-  font-size: 0.8em;
-}
-
 .pointer:hover {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+
+.status-icons {
+  display: flex;
+}
+
+.status-icons > div {
+  flex-grow: 1;
+  background-color: white;
+  color: black;
+  margin: 1em;
+  padding: 1em;
+}
+
+.status-icons div.icon {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+.status-icons .overall-status div.icon {
+  width: 90%;
+  height: 41px;
+  line-height: 41px;
+  border-radius: 20.5px;
+  background: #30b400;
+  color: white;
+  border: 1px solid #30b400;
+  text-transform: uppercase;
 }
 
 .facilityList {
@@ -175,6 +128,12 @@ h3.cardtext {
   margin-bottom: 15px;
 }
 
+.phone, .email {
+  font-size: 80%;
+  color: #0079e0;
+  line-height: 200%;
+}
+
 .phoneIcon,
 .emailIcon {
   display: inline-block;
@@ -184,6 +143,7 @@ h3.cardtext {
   text-indent: 100%;
   white-space: nowrap;
   overflow: hidden;
+  vertical-align: middle;
 }
 
 .phoneIcon {
