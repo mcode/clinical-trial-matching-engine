@@ -1,35 +1,33 @@
-<div class="overall-status">
-  <button>{{clinicalTrial.overallStatus}}</button>
-</div>
+<!-- At some point the containing icon will likely be updated to include a class based on the actual status -->
+<div class="overall-status"><div>{{clinicalTrial.overallStatus}}</div></div>
 <div class="summary">
-  <h2 class="cardtext">{{clinicalTrial.title}}</h2>
-  <div class="containingDIV padding-top-10">
-    <h3 class="cardtext color13">Conditions:</h3>
-    <span class="cardtext color13 mi-margin-left-10"> {{replace(clinicalTrial.conditions)}}</span>
+  <h2>{{clinicalTrial.title}}</h2>
+  <div class="conditions">
+    <h3>Conditions:</h3>
+    <p class="mi-margin-left-10">{{replace(clinicalTrial.conditions)}}</p>
   </div>
 </div>
-<div class="col10">
-  <div *ngIf="clinicalTrial.getClosest(reqs.zipCode)!=null" class="padding-top-30 padding-left-20">
+<div class="distance">
+  <div *ngIf="trialSiteDistance !== null">
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 37 37">
       <path id="ic_directions_24px"
             d="M38.466,19.193,21.812,2.539a1.843,1.843,0,0,0-2.609,0L2.549,19.193a1.843,1.843,0,0,0,0,2.609L19.2,38.456a1.843,1.843,0,0,0,2.609,0L38.466,21.8a1.843,1.843,0,0,0,0-2.609ZM24.2,25.133V20.507H16.8v5.551H13.1v-7.4a1.856,1.856,0,0,1,1.85-1.85H24.2V12.18l6.477,6.477Z"
             transform="translate(-2.007 -1.997)" fill="#525151"></path>
     </svg>
-    <span class="cardText2">{{clinicalTrial.getClosest(reqs.zipCode)}}</span>
+    <span>{{trialSiteDistance}}</span>
   </div>
 </div>
-<div class="col20">
-  <div class="containingDIV padding-top-10" style="margin-top: 7%;">
-    <div *ngIf="clinicalTrial.matchLikelihood!==null">
-      <h2 class="color1 padding-bottom-10 opacity-60 letter-spacing text-transform-uppercase">Match likelihood:</h2>
-      <h2 [ngStyle]="{'color': getColor(clinicalTrial.matchLikelihood)}">{{clinicalTrial.matchLikelihood}}</h2>
-    </div>
+<div class="match-likelihood">
+  <div *ngIf="clinicalTrial.matchLikelihood !== null">
+      <h3>Match likelihood:</h3>
+      <div [ngStyle]="{'color': likelihoodColor()}">{{clinicalTrial.matchLikelihood}}</div>
   </div>
 </div>
-<div class="col20 padding-10" style="text-align: center; background-color:#DFEEF0; vertical-align: middle; position: relative;" preserveAspectRatio="xMidYMid">
-  <button class="btn" style="border: none; display: block; margin: 0; width: 90%; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);" >
+<div class="save-trial">
+  <button class="btn" style="border: none; display: block; margin: 0; width: 90%; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);"
+    (click)="toggleTrialSaved();$event.stopPropagation();">
      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 222 40"
-          display="block" margin="auto" preserveAspectRatio="xMidYMid" (click)="toggleTrialSaved()">
+          display="block" margin="auto" preserveAspectRatio="xMidYMid">
       <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)" x="50%" y="50%">
         <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
           <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)" stroke="#707070" stroke-width="1">

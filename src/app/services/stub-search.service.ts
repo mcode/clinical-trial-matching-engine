@@ -34,7 +34,8 @@ export class StubSearchService extends SearchService {
                 system: 'http://snomed.info/sct',
                 code: '408643008',
                 display: 'Infiltrating duct carcinoma of breast (disorder)'
-              }
+              },
+              text: 'Infiltrating duct carcinoma of breast (disorder)'
             }
           ],
           contact: [
@@ -97,6 +98,17 @@ export class StubSearchService extends SearchService {
           score: 0.96
         }
       },
+      {
+        fullUrl: 'https://www.example.com/result/2',
+        resource: {
+          resourceType: 'ResearchStudy',
+          status: 'active',
+          title: 'Likely Match'
+        },
+        search: {
+          score: 0.334
+        }
+      },
       // This is an intentionally bare-bones result to test what happens with
       // almost nothing defined.
       {
@@ -106,7 +118,7 @@ export class StubSearchService extends SearchService {
           status: 'active'
         },
         search: {
-          score: 0.334
+          score: 0.1
         }
       }
     ]

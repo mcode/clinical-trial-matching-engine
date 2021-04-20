@@ -1,18 +1,29 @@
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ResearchStudySearchEntry } from './../services/search.service';
 import { TrialQuery } from './../services/search-results.service';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-trial-card',
   templateUrl: './trial-card.component.html',
   styleUrls: ['./trial-card.component.css']
 })
-export class TrialCardComponent {
-  @Input() reqs: TrialQuery;
+export class TrialCardComponent implements OnChanges {
+  @Input() query: TrialQuery;
   @Input() clinicalTrial: ResearchStudySearchEntry;
   @Input() trialSaved;
   @Output() trialSaveChanged = new EventEmitter<boolean>();
-  //constructor() { }
+  /**
+   * Formatted distance string, or null if not known
+   */
+  trialSiteDistance: string | null;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if ('query' in changes || 'clinicalTrial' in changes) {
+      // If the query or clinical trial has changed, update the distance
+      this.trialSiteDistance =
+        this.query && this.clinicalTrial ? this.clinicalTrial.getClosest(this.query.zipCode) : null;
+    }
+  }
 
   public toggleTrialSaved(): void {
     this.trialSaved = !this.trialSaved;
@@ -24,15 +35,16 @@ export class TrialCardComponent {
   }
 
   /**
-   * Function to get the correct color of the match type
+   * Determines the color to use for the likelihood indicator.
    */
-  public getColor(likelihood: string): string {
-    if (likelihood === 'No Match') {
-      return 'black';
-    } else if (likelihood === 'Possible Match') {
-      return '#E6BE03';
-    } else {
-      return 'green';
+  public likelihoodColor(): string {
+    switch (this.clinicalTrial.matchLikelihood) {
+      case 'No Match':
+        return 'black';
+      case 'Possible Match':
+        return '#E6BE03';
+      default:
+        return 'green';
     }
   }
 }

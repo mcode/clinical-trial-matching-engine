@@ -99,7 +99,7 @@
           <app-trial-card
             class="row containingDIV cards pointer"
             [clinicalTrial]="trial"
-            [reqs]="searchParameters"
+            [query]="searchParameters"
             [trialSaved]="savedClinicalTrialsNctIds.has(trial.nctId)"
             (trialSaveChanged)="setTrialSaved(trial, $event)"
           >
