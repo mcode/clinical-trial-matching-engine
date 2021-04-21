@@ -184,6 +184,10 @@ export class ResearchStudySearchEntry {
     return matchStr;
   }
 
+  get trialURL() : string {
+    return "https://www.clinicaltrials.gov/ct2/show/"+this.nctId;
+  }
+
   getClosest(zip: string): string {
     if (this.dist) {
       return `${this.dist} miles`;
