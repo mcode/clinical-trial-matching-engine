@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ResearchStudySearchEntry } from './../services/search.service';
 import { SearchResultsService, TrialQuery } from './../services/search-results.service';
 
@@ -16,7 +16,7 @@ export class ResultDetailsComponent implements OnInit {
   clinicalTrial: ResearchStudySearchEntry;
   trialSaved = false;
 
-  constructor(private route: ActivatedRoute, private resultsService: SearchResultsService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private resultsService: SearchResultsService) {}
 
   ngOnInit() {
     this.query = this.resultsService.query;
@@ -29,11 +29,15 @@ export class ResultDetailsComponent implements OnInit {
     }
   }
 
-  public toggleTrialSaved(): void {
+  navigateToResults(): void {
+    this.router.navigateByUrl('/results');
+  }
+
+  toggleTrialSaved(): void {
     this.trialSaved = this.resultsService.toggleTrialSaved(this.clinicalTrial);
   }
 
-  public replace(value: string): string {
+  replace(value: string): string {
     return value.replace(/[\[\]_'""]+/g, ' ');
   }
 
@@ -42,7 +46,7 @@ export class ResultDetailsComponent implements OnInit {
    * sibling that is a panel and then toggles the visibility of the display
    * on its style element).
    */
-  public showHideAccordian(event): void {
+  showHideAccordian(event): void {
     for (let sibling = event.target.nextElementSibling; sibling; sibling = sibling.nextElementSibling) {
       if (/\bpanel\b/.test(sibling.className)) {
         if (sibling.style.display === 'block') {
@@ -58,7 +62,7 @@ export class ResultDetailsComponent implements OnInit {
   /**
    * Function to get the correct color of the match type
    */
-  public getColor(likelihood: string): string {
+  getColor(likelihood: string): string {
     if (likelihood === 'No Match') {
       return 'black';
     } else if (likelihood === 'Possible Match') {

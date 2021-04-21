@@ -1,6 +1,14 @@
 <div class="clinical-trial-details">
-  <!-- Replace with back to results -->
-  <ng-content></ng-content>
+  <div class="back-to-results" (click)="navigateToResults()">
+    <span><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40.641 40.641">
+      <g id="arrow_upward-24px" transform="translate(0 40.641) rotate(-90)">
+        <path d="M0,0H40.641V40.641H0Z" fill="none" />
+        <path d="M4,17.547l2.388,2.388,9.466-9.449V31.094H19.24V10.486l9.449,9.466,2.4-2.4L17.547,4Z"
+          transform="translate(2.773 2.773)"
+          fill="#efefef"
+        />
+      </g></svg> Back to results</span>
+  </div>
   <div class="infobox">
     <div class="details-column">
       <h1>{{clinicalTrial.title}}</h1>

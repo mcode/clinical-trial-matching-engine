@@ -1,26 +1,3 @@
 <div class="mi-margin-5" style="margin-top: 9%;">
   <app-results [searchResults]="searchResults" [searchParameters]="searchParameters"></app-results>
 </div>
-<!--
-<app-result-details
-  *ngIf="!detailsPage"
-  [clinicalTrial]="detailedTrial"
-  [trialSaved]="savedClinicalTrialsNctIds.has(detailedTrial.nctId)"
-  [reqs]="searchReqObject"
-  (trialSaveChanged)="setTrialSaved(detailedTrial, $event)"
->
-  <div class="mi-margin-10 col100 containingDIV pointer" (click)="backToSearch()">
-    <svg xmlns="http://www.w3.org/2000/svg" width="40.641" height="40.641" viewBox="0 0 40.641 40.641">
-      <g id="arrow_upward-24px" transform="translate(0 40.641) rotate(-90)">
-        <path id="Path_20" data-name="Path 20" d="M0,0H40.641V40.641H0Z" fill="none" />
-        <path
-          id="Path_21"
-          data-name="Path 21"
-          d="M4,17.547l2.388,2.388,9.466-9.449V31.094H19.24V10.486l9.449,9.466,2.4-2.4L17.547,4Z"
-          transform="translate(2.773 2.773)"
-          fill="#efefef"
-        />
-      </g></svg><span class="color8" style="margin-top: 10px;"> Back to results</span>
-  </div>
-</app-result-details>
--->
