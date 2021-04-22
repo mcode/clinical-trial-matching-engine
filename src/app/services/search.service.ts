@@ -372,11 +372,6 @@ export class SearchResultsBundle {
   }
 }
 
-interface ClinicalTrialQuery {
-  patientData: PatientBundle;
-  count: number;
-  offset?: number;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -384,13 +379,10 @@ interface ClinicalTrialQuery {
 export class SearchService {
   constructor(private client: HttpClient, private config: AppConfigService, private distService: DistanceService) {}
 
-  searchClinicalTrials(patientBundle: PatientBundle, offset?: number, count = 10): Observable<SearchResultsBundle> {
-    const query: ClinicalTrialQuery = { patientData: patientBundle, count: count };
+  searchClinicalTrials(patientBundle: PatientBundle): Observable<SearchResultsBundle> {
     const zipCode = patientBundle.entry[0].resource.parameter[0].valueString;
-    if (offset > 0) {
-      query.offset = offset;
-    }
-    return this.client.post<fhirclient.FHIR.Bundle>(this.config.getServiceURL() + '/getClinicalTrial', query).pipe(
+
+    return this.client.post<fhirclient.FHIR.Bundle>(this.config.getServiceURL() + '/getClinicalTrial', patientBundle).pipe(
       map((bundle: fhirclient.FHIR.Bundle) => {
         return new SearchResultsBundle(bundle, this.distService, zipCode);
       })
