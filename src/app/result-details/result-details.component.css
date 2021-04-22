@@ -52,49 +52,31 @@
   content: " ";
 }
 
-.color3 {
-  color: #66d5e3;
-}
-.color7 {
-  color: #a5a3a3;
-}
-
-
-/* FIXME: These styles feel overly-specific. */
-.mi-margin-10 {
+.save-study {
   margin: 10px;
 }
 
-
-.accordion {
-  color: #B7B7B7;
-  cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-  transition: 0.4s;
+.save-study button {
+  background-color: #efefef;
+  color: #0079e0;
+  border: solid 1px #707070;
+  border-radius: 10px;
+  font-family: Roboto-Bold, Roboto;
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  width: 95%;
+  height: 50px;
 }
 
-.accordionDetails {
-  font-size: 20px;
-  color : #898686;
-  white-space: pre;
+.save-study button svg {
+  vertical-align: middle;
+  /* This gets the icon visually centered. There has to be a better way to do this. */
+  padding-bottom: 2px;
 }
 
-.panel {
-  padding: 0 18px;
-  display: none;
-  background-color: white;
-  overflow: hidden;
-}
-
-.pointer:hover {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+.save-study button.saved {
+  background-color: #a3c5d2;
 }
 
 .status-icons {
@@ -166,4 +148,13 @@
 }
 .emailIcon {
   background-image: url(/assets/images/email.svg);
+}
+
+.details mat-panel-title {
+  /* Set the max-width to make them all roughly the same size when space is available */
+  max-width: 12em;
+}
+.details p {
+  color: #898686;
+  white-space: pre;
 }

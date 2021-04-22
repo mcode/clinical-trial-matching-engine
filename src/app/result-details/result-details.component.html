@@ -69,63 +69,53 @@
           </li>
         </ul>
       </div>
-        <div class="mi-margin-10 pointer" (click)="toggleTrialSaved()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="95%" height="80%" viewBox="0 0 222 40">
-            <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)">
-              <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
-                <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)" stroke="#707070"
-                  stroke-width="1">
-                  <rect width="222" height="40" rx="10" stroke="none" />
-                  <rect x="0.5" y="0.5" width="221" height="39" rx="9.5" [ngClass]="trialSaved ? 'saved' : 'unsaved'" />
-                </g>
-                <g id="save-24px" transform="translate(1603.053 477)">
-                  <path id="Path_30" data-name="Path 30" d="M0,0H32V32H0Z" fill="none" />
-                  <path id="Path_31" data-name="Path 31"
-                    d="M21.667,3h-16A2.666,2.666,0,0,0,3,5.667V24.333A2.666,2.666,0,0,0,5.667,27H24.333A2.675,2.675,0,0,0,27,24.333v-16ZM15,24.333a4,4,0,1,1,4-4A3.995,3.995,0,0,1,15,24.333ZM19,11H5.667V5.667H19Z"
-                    transform="translate(1 1)" fill="#0079e0" />
-                </g>
-                <text id="Save_study" data-name="Save study" transform="translate(1654 500)" fill="#0079e0"
-                  font-size="20" font-family="Roboto-Bold, Roboto" font-weight="700">
-                  <tspan x="0" y="0">{{trialSaved ? 'STUDY SAVED' : 'SAVE STUDY'}}</tspan>
-                </text>
-              </g>
-            </g>
+      <div class="save-study">
+        <button [ngClass]="trialSaved ? 'saved' : 'unsaved'" (click)="toggleTrialSaved()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 30 30">
+            <path
+              d="M21.667,3h-16A2.666,2.666,0,0,0,3,5.667V24.333A2.666,2.666,0,0,0,5.667,27H24.333A2.675,2.675,0,0,0,27,24.333v-16ZM15,24.333a4,4,0,1,1,4-4A3.995,3.995,0,0,1,15,24.333ZM19,11H5.667V5.667H19Z"
+              fill="#0079e0" />
           </svg>
-        </div>
+          {{trialSaved ? 'Study Saved' : 'Save Study'}}
+        </button>
+      </div>
     </div>
   </div>
 </div>
-<div style="background-color: white;">
-  <button class="accordion" (click)="showHideAccordian($event)">Description</button>
-  <div class="panel">
-    <p id="description" class="accordionDetails">
-      {{clinicalTrial.detailedDescription}}
-    </p>
-  </div>
-  <button class="accordion" (click)="showHideAccordian($event)">Study Design </button>
-  <div class="panel">
-    <p id="studyDesign" class="accordionDetails">
-      NA
-    </p>
-  </div>
-  <div  *ngIf= "clinicalTrial.criteria!==''" >
-  <button class="accordion" (click)="showHideAccordian($event)">Eligibility criteria</button>
-  <div  class="panel">
-    <p id="eligibilityCriteria" class="accordionDetails">
-      {{clinicalTrial.criteria}}
-    </p>
-  </div>
-  </div>
-  <button class="accordion" (click)="showHideAccordian($event)">Arms & Interventions</button>
-  <div class="panel">
-    <p id="interventions" class="accordionDetails">
-      NA
-    </p>
-  </div>
-  <button class="accordion" (click)="showHideAccordian($event)">More information</button>
-  <div class="panel">
-    <p id="moreInformation" class="accordionDetails">
-      NA
-    </p>
-  </div>
-</div>
+<mat-accordion class="details">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Description</mat-panel-title>
+      <mat-panel-description>{{summary(clinicalTrial.detailedDescription)}}</mat-panel-description>
+    </mat-expansion-panel-header>
+    <p>{{clinicalTrial.detailedDescription}}</p>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Study Design</mat-panel-title>
+      <mat-panel-description>NA</mat-panel-description>
+    </mat-expansion-panel-header>
+    <p>NA</p>
+  </mat-expansion-panel>
+  <mat-expansion-panel *ngIf="clinicalTrial.criteria">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Description</mat-panel-title>
+      <mat-panel-description>{{summary(clinicalTrial.criteria)}}</mat-panel-description>
+    </mat-expansion-panel-header>
+    <p>{{clinicalTrial.criteria}}</p>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Arms &amp; Interventions</mat-panel-title>
+      <mat-panel-description>NA</mat-panel-description>
+    </mat-expansion-panel-header>
+    <p>NA</p>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>More information</mat-panel-title>
+      <mat-panel-description>NA</mat-panel-description>
+    </mat-expansion-panel-header>
+    <p>NA</p>
+  </mat-expansion-panel>
+</mat-accordion>

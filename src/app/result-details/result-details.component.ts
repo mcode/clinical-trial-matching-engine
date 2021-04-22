@@ -42,21 +42,13 @@ export class ResultDetailsComponent implements OnInit {
   }
 
   /**
-   * Toggle visibility of accordion sections (specifically, looks for next
-   * sibling that is a panel and then toggles the visibility of the display
-   * on its style element).
+   * Used to create basic summary text from longer text.
+   * @param text the text to create a summary of
+   * @returns summary text
    */
-  showHideAccordian(event): void {
-    for (let sibling = event.target.nextElementSibling; sibling; sibling = sibling.nextElementSibling) {
-      if (/\bpanel\b/.test(sibling.className)) {
-        if (sibling.style.display === 'block') {
-          sibling.style.display = 'none';
-        } else {
-          sibling.style.display = 'block';
-        }
-        break;
-      }
-    }
+  summary(text: string): string {
+    // substring clamps the range to the string, so the following returns up to 255 characters but not the entire thing
+    return text.replace(/[\s\r\n]+/g, ' ').substring(0, 255);
   }
 
   /**

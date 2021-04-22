@@ -3,3 +3,8 @@
 
 /* Load Roboto globally */
 @import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Roboto+Mono|Roboto+Slab&display=swap');
+
+/* Default to using it globally */
+html, body {
+  font-family: Roboto;
+}
