@@ -28,7 +28,6 @@ import { SearchPageComponent } from './search-page/search-page.component';
 import { TrialCardComponent } from './trial-card/trial-card.component';
 
 import { environment } from './../environments/environment';
-import { ResultsPageComponent } from './results-page/results-page.component';
 
 const fhirInitializeFn = (fhirService: ClientService) => {
   // Grab the client during bootstrap - this prevents the flash of a partially
@@ -56,8 +55,7 @@ const SEARCH_PROVIDER: Provider = {
     CustomSpinnerComponent,
     SearchFieldsComponent,
     ResultsComponent,
-    SearchPageComponent,
-    ResultsPageComponent
+    SearchPageComponent
   ],
   // prettier-ignore
   imports: [

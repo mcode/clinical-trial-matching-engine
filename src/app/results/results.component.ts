@@ -52,13 +52,11 @@ export class ResultsComponent implements OnInit {
    * Filter data.
    */
   public filtersArray: FilterData[] = [];
-  @Input()
   public searchParameters: TrialQuery;
   /**
    * The most recent search results. If null, no search has been executed.
    */
   private _searchResults: SearchResultsBundle | null = null;
-  @Input()
   get searchResults(): SearchResultsBundle | null {
     return this._searchResults;
   }
@@ -129,6 +127,9 @@ export class ResultsComponent implements OnInit {
   constructor(private router: Router, private searchResultsService: SearchResultsService) {}
 
   ngOnInit(): void {
+    // On init, restore values off the service
+    this.searchParameters = this.searchResultsService.query;
+    this.searchResults = this.searchResultsService.getResults();
     if (this.searchResults === null) {
       // If we have no search results, redirect back to the search page
       this.router.navigateByUrl('/search');
