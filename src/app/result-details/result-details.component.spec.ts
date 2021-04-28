@@ -39,7 +39,7 @@ describe('ResultDetailsComponent', () => {
 
   it('should create the detail results', () => {
     const distServ = TestBed.inject(DistanceService) as DistanceService;
-    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
+    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886',"example source");
     testHostComponent.resultDetails.reqs = {
       zipCode: '01886',
       travelRadius: null,
@@ -56,7 +56,7 @@ describe('ResultDetailsComponent', () => {
   });
   it('should toggle trial saved', () => {
     const distServ = TestBed.inject(DistanceService) as DistanceService;
-    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
+    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886',"example source");
     testHostComponent.resultDetails.reqs = {
       zipCode: '01886',
       travelRadius: null,
@@ -69,7 +69,7 @@ describe('ResultDetailsComponent', () => {
   });
   it('should get Color', () => {
     const distServ = TestBed.inject(DistanceService) as DistanceService;
-    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
+    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886',"example source");
     testHostComponent.resultDetails.reqs = {
       zipCode: '01886',
       travelRadius: null,

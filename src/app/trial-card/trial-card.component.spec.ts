@@ -42,7 +42,7 @@ describe('TrialCardComponent', () => {
 
   it('should create', () => {
     const distServ = TestBed.inject(DistanceService) as DistanceService;
-    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
+    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886',"example source");
     testHostComponent.trial.trialSaved = false;
     testHostComponent.trial.reqs = {
       zipCode: '01886',
@@ -56,7 +56,7 @@ describe('TrialCardComponent', () => {
   //trialsaved should be false on startup
   it('trial saved should be false', () => {
     const distServ = TestBed.inject(DistanceService) as DistanceService;
-    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
+    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886',"example source");
     testHostComponent.trial.trialSaved = false;
     testHostComponent.trial.reqs = {
       zipCode: '01886',
@@ -72,7 +72,7 @@ describe('TrialCardComponent', () => {
   });
   it('gets Color according to likelihood', () => {
     const distServ = TestBed.inject(DistanceService) as DistanceService;
-    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
+    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886',"example source");
     testHostComponent.trial.trialSaved = false;
     testHostComponent.trial.reqs = {
       zipCode: '01886',
