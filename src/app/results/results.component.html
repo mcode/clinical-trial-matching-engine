@@ -1,127 +1,47 @@
-<div style="margin: 9% 5% 5% 5%;">
-    <div class="containingDIV padding-bottom-20">
-      <div class="totalCount padding-top-10"></div>
-      <span class="color4 matching">
-        <span class="matching color3">{{ resultCount }}</span>
-        Matching Trials</span
-      >
-      <div>
-        <div
-          *ngFor="let filter of filtersArray; let i = index"
-          class="filters mi-margin-10"
-          style="position: relative; display: inline-block;"
-        >
-          <span class="color1 filterText pointer"> {{ filter.val }} </span>
-          <div class="dropdown-content">
-            <div style="height: 230px; overflow-y: scroll;">
-              <ul *ngFor="let filterdrop of filter.data; let j = index">
-                <li (click)="checkBoxClick(i, j)" class="color11">
-                  <input
-                    type="checkbox"
-                    class="checkboxClass"
-                    [checked]="filterdrop.selectedItems"
-                    [value]="filterdrop.selectedItems"
-                  />{{ filterdrop.val }}
-                </li>
-              </ul>
-            </div>
-            <div>
-              <div style="border-top: 0.5px solid #9d9d9d; margin-bottom: 10px;">
-                <div class="float-right mi-margin-10">
-                  <span (click)="clearFilter(i)" class="color11 pointer">CLEAR</span>
-                  <button
-                    (click)="applyFilter()"
-                    class="mi-margin-left-10 color8"
-                    style="background-color: #52e0f2; width: 89px;"
-                  >
-                    Apply
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+<div class="header">
+  <div class="results"><span class="count">{{ resultCount }}</span> Matching Trials</div>
+  <div class="filters">
+    <mat-form-field appearance="fill" *ngFor="let filter of filters; let filterIdx = index">
+      <mat-label>{{ filter.name }}</mat-label>
+      <mat-select [(ngModel)]="filter.activeFilterIndices" multiple>
+        <mat-option *ngFor="let filterValue of filter.values; let valueIdx = index" [value]="valueIdx">{{ filterValue.value }}</mat-option>
+        <!-- Turns out you can just add extra HTML below the options and it'll mostly work -->
+        <hr class="select-hr">
+        <div class="filter-buttons">
+          <button mat-stroked-button class="filter-clear" (click)="clearFilter(filterIdx)">Clear</button>
+          <button mat-stroked-button class="filter-apply" (click)="applyFilter()">Apply</button>
         </div>
-        <div
-          class="filters mi-margin-10"
-          (click)="exportSavedTrials()"
-          style="position: relative; display: inline-block;"
-        >
-          <span class="color1 filterText pointer">{{
-            savedClinicalTrialsNctIds.size > 0 ? 'Export Saved Trials' : 'Export All Trials'
-          }}</span>
-        </div>
-        <div>
-          <form>
-            <select
-              class="filters mi-margin-10 color1 pointer"
-              [(ngModel)]="sortType"
-              (ngModelChange)="applyFilter()"
-              [ngModelOptions]="{ standalone: true }"
-            >
-              <option value="likelihood">Match Likelihood</option>
-              <option value="distance">Distance</option>
-            </select>
-          </form>
-        </div>
-      </div>
-      <div class="padding-left-20 padding-top-15">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 37 37">
-          <path
-            id="ic_directions_24px"
-            d="M38.466,19.193,21.812,2.539a1.843,1.843,0,0,0-2.609,0L2.549,19.193a1.843,1.843,0,0,0,0,2.609L19.2,38.456a1.843,1.843,0,0,0,2.609,0L38.466,21.8a1.843,1.843,0,0,0,0-2.609ZM24.2,25.133V20.507H16.8v5.551H13.1v-7.4a1.856,1.856,0,0,1,1.85-1.85H24.2V12.18l6.477,6.477Z"
-            transform="translate(-2.007 -1.997)"
-            fill="#525151"
-          ></path>
-        </svg>
-        <span class="cardText2 font-size-20">{{ searchParameters.zipCode }}</span>
-      </div>
-      <div class="padding-left-20 padding-top-15">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 37 37">
-          <path
-            id="ic_directions_24px"
-            d="M38.466,19.193,21.812,2.539a1.843,1.843,0,0,0-2.609,0L2.549,19.193a1.843,1.843,0,0,0,0,2.609L19.2,38.456a1.843,1.843,0,0,0,2.609,0L38.466,21.8a1.843,1.843,0,0,0,0-2.609ZM24.2,25.133V20.507H16.8v5.551H13.1v-7.4a1.856,1.856,0,0,1,1.85-1.85H24.2V12.18l6.477,6.477Z"
-            transform="translate(-2.007 -1.997)"
-            fill="#525151"
-          ></path>
-        </svg>
-        <span class="cardText2 font-size-20">{{ searchParameters.travelRadius }} Miles</span>
-      </div>
-    </div>
-    <span class="color11">{{
-      resultCount == 0
-        ? 'Showing 0 of 0'
-        : 'Showing ' + (selectedPage.firstIndex + 1) + '-' + selectedPage.lastIndex + ' of ' + resultCount
-    }}</span>
-    <div style="padding-bottom: 20px; height: 60vh; overflow-y: scroll; margin-top: 10px;" class="mitTable">
-      <div *ngFor="let trial of selectedPageTrials; let k = index">
-        <div (click)="showDetails(k)">
-          <!-- Card Component-->
-          <app-trial-card
-            class="row containingDIV cards pointer"
-            [clinicalTrial]="trial"
-            [query]="searchParameters"
-            [trialSaved]="savedClinicalTrialsNctIds.has(trial.nctId)"
-            (trialSaveChanged)="setTrialSaved(trial, $event)"
-          >
-          </app-trial-card>
-        </div>
-      </div>
-    </div>
-    <div class="containingDIV float-right">
-      <p class="mi-margin-10 color7">Items per page</p>
-      <select class="pointer" (change)="updateItemsPerPage($event.target.value)">
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="30">30</option>
-      </select>
-      <span class="mi-margin-10 color7 pointer" (click)="showPage(0)">First </span>
-      <span
-        *ngFor="let page of getNearest()"
-        class="mi-margin-10 color7 pointer"
-        (click)="viewPage(page)"
-        [ngClass]="selectedPage.index == page.index ? 'selectedPage' : ''"
-        >{{ page.index + 1 }}</span
-      >
-      <span class="mi-margin-10 color7 pointer" (click)="showPage(pages.length - 1)">Last </span>
-    </div>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="export">
+    <button mat-stroked-button (click)="exportSavedTrials()">{{
+      savedTrialCount > 0 ? 'Export Saved Trials' : 'Export All Trials'
+    }}</button>
+  </div>
+  <div class="sort">
+    <mat-form-field appearance="fill">
+      <mat-label>Sort</mat-label>
+      <mat-select [(ngModel)]="sortType" (change)="applyFilter()">
+        <mat-option value="likelihood">Match Likelihood</mat-option>
+        <mat-option value="distance">Distance</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="query">
+    <div class="zipcode">{{ searchParameters.zipCode }}</div>
+    <div class="travel-radius">{{ searchParameters.travelRadius }} Miles</div>
+  </div>
 </div>
+<div class="results">
+  <div *ngFor="let trial of selectedPageTrials; let i = index" class="result" (click)="showDetails(i)">
+    <!-- Card Component-->
+    <app-trial-card
+      [clinicalTrial]="trial"
+      [query]="searchParameters"
+      [trialSaved]="isTrialSaved(trial)"
+      (trialSaveChanged)="setTrialSaved(trial, $event)"
+    ></app-trial-card>
+  </div>
+</div>
+<mat-paginator [length]="resultCount" [pageIndex]="selectedPage.index" [pageSize]="itemsPerPage" [pageSizeOptions]="[10,20,30]" (page)="pageChanged($event)"></mat-paginator>

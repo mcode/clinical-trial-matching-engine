@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 
 import Patient from '../patient';
@@ -20,16 +22,25 @@ class SearchPage {
  * Internal class for filter data
  */
 class FilterValue {
-  constructor(public val: string, public selectedItems = false) {}
+  id: string;
+  constructor(public value: string, public enabled = false) {
+    this.id = this.value.replace(/[^\w_-]+/g, '_');
+  }
 }
 
 /**
  * Internal interface for filter data.
  */
-class FilterData {
-  data: FilterValue[];
-  constructor(public val: string, public selectedVal: string | null = null, data: Iterable<string>) {
-    this.data = Array.from(data, (value) => new FilterValue(value));
+class Filter {
+  id: string;
+  values: FilterValue[];
+  activeFilterIndices: number[] = [];
+  get activeFilters(): string[] {
+    return this.activeFilterIndices.map((index) => this.values[index].value);
+  }
+  constructor(public name: string, public filterPath: string | null = null, values: Iterable<string>) {
+    this.id = this.name.replace(/[^\w_-]+/g, '_');
+    this.values = Array.from(values, (value) => new FilterValue(value));
   }
 }
 
@@ -49,9 +60,9 @@ function compareByMatch(trial1: ResearchStudySearchEntry, trial2: ResearchStudyS
 export class ResultsComponent implements OnInit {
   public patient: Promise<Patient> | Patient;
   /**
-   * Filter data.
+   * Data about the filters available for the current results.
    */
-  public filtersArray: FilterData[] = [];
+  public filters: Filter[] = [];
   public searchParameters: TrialQuery;
   /**
    * The most recent search results. If null, no search has been executed.
@@ -84,18 +95,6 @@ export class ResultsComponent implements OnInit {
     }
   }
   /**
-   * Saved clinical trials.
-   */
-  public savedClinicalTrials: ResearchStudySearchEntry[] = [];
-  /**
-   * The set of saved clinical trial nctIds.
-   */
-  public savedClinicalTrialsNctIds = new Set<string>();
-  /**
-   * The trial whose details are being displayed.
-   */
-  public detailedTrial: ResearchStudySearchEntry | null = null;
-  /**
    * The currently active page.
    */
   public selectedPage: SearchPage;
@@ -110,7 +109,7 @@ export class ResultsComponent implements OnInit {
   /**
    * The number of items per page.
    */
-  private itemsPerPage = 10;
+  public itemsPerPage = 10;
 
   /**
    * Store sorting preference
@@ -141,6 +140,14 @@ export class ResultsComponent implements OnInit {
    */
   get pageCount(): number {
     return this.pages.length;
+  }
+
+  get savedTrialCount(): number {
+    return this.searchResultsService.savedCount;
+  }
+
+  isTrialSaved(trial: ResearchStudySearchEntry): boolean {
+    return this.searchResultsService.isTrialSaved(trial);
   }
 
   /**
@@ -216,15 +223,16 @@ export class ResultsComponent implements OnInit {
    */
   private createFilters(): void {
     if (this.searchResults === null) {
-      this.filtersArray = [];
+      this.filters = [];
     } else {
-      this.filtersArray = [
-        new FilterData('Recruitment', 'status', this.searchResults.buildFilters('status')),
-        new FilterData('Phase', 'phase.text', this.searchResults.buildFilters('phase.text')),
-        new FilterData('Study Type', 'category.text', this.searchResults.buildFilters('category.text'))
+      this.filters = [
+        new Filter('Recruitment', 'status', this.searchResults.buildFilters('status')),
+        new Filter('Phase', 'phase.text', this.searchResults.buildFilters('phase.text')),
+        new Filter('Study Type', 'category.text', this.searchResults.buildFilters('category.text'))
       ];
     }
   }
+
   /**
    * Display details of a given trial.
    */
@@ -232,14 +240,23 @@ export class ResultsComponent implements OnInit {
     this.router.navigate(['results', 'details', i.toString()]);
   }
 
+  /**
+   * Sets whether a given filter is enabled.
+   * @param filterIdx the index of the filter in the filter array
+   * @param valueIdx the index of the value to set
+   */
+  setFilterEnabled(filterIdx: number, valueIdx: number, enabled: boolean) {
+    this.filters[filterIdx].values[valueIdx].enabled = enabled;
+  }
+
   /*
     Function for get event of selected Filter
     * */
   public checkBoxClick(i, j): void {
-    if (!this.filtersArray[i].data[j].selectedItems) {
-      this.filtersArray[i].data[j].selectedItems = true;
+    if (!this.filters[i].values[j].enabled) {
+      this.filters[i].values[j].enabled = true;
     } else {
-      this.filtersArray[i].data[j].selectedItems = false;
+      this.filters[i].values[j].enabled = false;
     }
   }
 
@@ -254,14 +271,13 @@ export class ResultsComponent implements OnInit {
       comparisonFunction = compareByDist;
     }
 
-    const activeFilters: { selectedItem: string; values: string[] }[] = [];
-    for (const filter of this.filtersArray) {
-      // See if there are any active filters in this filter
-      const values = filter.data.filter((value) => value.selectedItems === true);
-      if (values.length > 0) {
+    const activeFilters: { filterPath: string; values: string[] }[] = [];
+    for (const filter of this.filters) {
+      // If there are any active filters, grab them
+      if (filter.activeFilterIndices.length > 0) {
         activeFilters.push({
-          selectedItem: filter.selectedVal,
-          values: values.map((v) => v.val)
+          filterPath: filter.filterPath,
+          values: filter.activeFilters
         });
       }
     }
@@ -275,7 +291,7 @@ export class ResultsComponent implements OnInit {
     }
     this.filteredResults = this.searchResults.researchStudies.filter((study) => {
       for (const filter of activeFilters) {
-        const value = study.lookupString(filter.selectedItem);
+        const value = study.lookupString(filter.filterPath);
         // If it doesn't match, then filter it out
         if (!filter.values.some((v) => v === value)) return false;
       }
@@ -289,13 +305,13 @@ export class ResultsComponent implements OnInit {
     this.showPage(0);
   }
 
-  /*
-     Function for clear Filter
-  * */
-  public clearFilter(i): void {
-    this.filtersArray[i].data.forEach((element) => {
-      element.selectedItems = false;
-    });
+  /**
+   * Disable all filters for the given filter.
+   * @param filterIdx the filter index to clear
+   */
+  public clearFilter(filterIdx): void {
+    // Reset the active filters to empty
+    this.filters[filterIdx].activeFilterIndices = [];
     this.applyFilter();
   }
 
@@ -321,23 +337,13 @@ export class ResultsComponent implements OnInit {
     this.searchResultsService.exportSavedTrials();
   }
 
-  public updateItemsPerPage(items: string | number): void {
-    if (typeof items === 'string') {
-      items = parseInt(items);
+  pageChanged(event: PageEvent): void {
+    // See if the page size has changed
+    if (event.pageSize !== this.itemsPerPage) {
+      this.itemsPerPage = event.pageSize;
+      this.createPages();
     }
-    // Clamp to 10-100 - this somewhat weird logic is to catch NaN
-    if (!(items > 10 && items < 100)) {
-      if (items > 100) {
-        items = 100;
-      } else {
-        items = 10;
-      }
-    }
-    this.itemsPerPage = items;
-    // Have to recreate our pages
-    this.createPages();
-    // FIXME: Try and show the same page
-    this.showPage(0);
+    this.showPage(event.pageIndex);
   }
 
   public showRecord(): void {

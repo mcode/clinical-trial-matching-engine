@@ -1,6 +1,10 @@
-/* Indicate that the containing element should use the flexbox model */
+/* Styles that apply to the containing element */
 :host {
   display: flex;
+  border-radius: 3px;
+  border: 1px solid #cbcbcb;
+  margin-bottom: 10px;
+  background-color: white;
 }
 
 /* Overall status container */

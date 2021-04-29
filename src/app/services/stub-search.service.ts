@@ -27,7 +27,10 @@ export class StubSearchService extends SearchService {
           ],
           title: 'Demo Research Study',
           status: 'active',
-          phase: 'phase-1',
+          phase: {
+            coding: 'phase-1',
+            text: 'Phase 1'
+          },
           condition: [
             {
               coding: {
@@ -102,7 +105,11 @@ export class StubSearchService extends SearchService {
         fullUrl: 'https://www.example.com/result/2',
         resource: {
           resourceType: 'ResearchStudy',
-          status: 'active',
+          status: 'approved',
+          phase: {
+            coding: 'early-phase-1',
+            text: 'Early Phase 1'
+          },
           title: 'Likely Match'
         },
         search: {

@@ -58,6 +58,17 @@ export class SearchResultsService {
   }
 
   /**
+   * Gets the number of saved clinical trials.
+   */
+  get savedCount(): number {
+    return this.savedClinicalTrials.length;
+  }
+
+  getSavedTrial(index: number): ResearchStudySearchEntry {
+    return this.savedClinicalTrials[index];
+  }
+
+  /**
    * For now, returns the entire results. Eventually pagination and caching will
    * possibly be moved here.
    * @returns the entire results

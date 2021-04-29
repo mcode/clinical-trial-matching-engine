@@ -55,18 +55,6 @@ export class SearchPageComponent implements OnInit {
     }
   }
   /**
-   * Saved clinical trials.
-   */
-  public savedClinicalTrials: ResearchStudySearchEntry[] = [];
-  /**
-   * The set of saved clinical trial nctIds.
-   */
-  public savedClinicalTrialsNctIds = new Set<string>();
-  /**
-   * The trial whose details are being displayed.
-   */
-  public detailedTrial: ResearchStudySearchEntry | null = null;
-  /**
    * Trials on the current page.
    */
   public selectedPageTrials: ResearchStudySearchEntry[];
