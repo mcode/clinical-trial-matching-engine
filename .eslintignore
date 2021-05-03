@@ -1,2 +1,6 @@
 # Ignore everything in node_modules
 node_modules
+
+# Just ignore the stub script - it's trying to apply rules that make sense for
+# web browser stuff and it's not worth configuring eslint for one file
+/filter-json.js

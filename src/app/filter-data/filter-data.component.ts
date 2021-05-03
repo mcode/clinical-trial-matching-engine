@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { PatientBundle } from '../bundle';
-import { FhirFilter, FhirPathFilter, FhirComponentPathFilter, deepClone } from '../fhir-filter';
+import { FhirFilter, deepClone } from '../fhir-filter';
+import { FILTERS } from './default-filters';
 
 /**
  * Contains UI data on how to filter stuff out from a FHIR record.
@@ -14,42 +15,9 @@ class DataFilter {
   }
 }
 
-const DEFAULT_FILTERS: DataFilter[] = [
-  new DataFilter(
-    'Stage',
-    new FhirPathFilter(
-      'Condition.meta.where(' +
-        "profile = 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition'" +
-        "or profile = 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-tnm-patholical-stage-group')"
-    )
-  ),
-  new DataFilter(
-    'Cancer subtype',
-    new FhirComponentPathFilter(
-      'Condition.extension',
-      "url = 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-histology-morphology-behavior'"
-    )
-  ),
-  new DataFilter(
-    'Biomarker',
-    new FhirPathFilter(
-      "Observation.meta.where(profile = 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-tumor-marker'" +
-        "or profile = 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-cancer-genetic-variant')"
-    )
-  ),
-  new DataFilter(
-    'ECOG score',
-    new FhirPathFilter(
-      "Observation.meta.where(profile = 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-ecog-performance-status')"
-    )
-  ),
-  new DataFilter(
-    'Karnofsky score',
-    new FhirPathFilter(
-      "Observation.meta.where(profile = 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-karnofsky-performance-status')"
-    )
-  )
-];
+const DEFAULT_FILTERS: DataFilter[] = Object.entries(FILTERS).map(([name, filter]) => {
+  return new DataFilter(name, filter);
+});
 
 @Component({
   selector: 'app-filter-data',
