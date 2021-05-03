@@ -9,15 +9,25 @@ import {
 const SNOMED_SYSTEM = 'http://snomed.info/sct';
 
 export const FILTERS: { [key: string]: FhirFilter } = {
-  Stage: new FhirPathFilter(
-    'Observation.meta.where(' +
-      "profile = 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-tnm-clinical-stage-group')"
+  Stage: new FhirMultiFilter(
+    new FhirPathFilter(
+      'Observation.meta.where(' +
+        "profile = 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-tnm-clinical-stage-group')"
+    ),
+    new FhirComponentPathFilter('Condition.stage', {
+      resource: {
+        include:
+          'Condition.meta.where(' +
+          "profile = 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition')"
+      }
+    })
   ),
   'Cancer subtype': new FhirMultiFilter(
-    new FhirComponentPathFilter(
-      'Condition.extension',
-      "url = 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-histology-morphology-behavior'"
-    ),
+    new FhirComponentPathFilter('Condition.extension', {
+      element: {
+        include: "url = 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-histology-morphology-behavior'"
+      }
+    }),
     new FhirCodeRemapFilter(
       'Condition',
       'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition',

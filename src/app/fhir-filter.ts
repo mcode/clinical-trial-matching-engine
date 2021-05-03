@@ -81,6 +81,109 @@ export class FhirPathFilter extends FhirFilter {
   }
 }
 
+type CompiledPath = (resource: fhirpath.FHIRResource, context?: object) => fhirpath.PathLookupResult[];
+
+export type MatchMode = 'any' | 'all';
+
+export interface PathFilterOptions {
+  include?: string[] | string;
+  includeMode?: MatchMode;
+  exclude?: string[] | string;
+  excludeMode?: MatchMode;
+  order?: 'include,exclude' | 'exclude,include';
+}
+
+function compilePaths(paths?: string[] | string): CompiledPath[] {
+  if (paths) {
+    return Array.isArray(paths) ? paths.map((path) => fhirpath.compile(path)) : [fhirpath.compile(paths)];
+  } else {
+    return [];
+  }
+}
+
+function matchPaths(paths: CompiledPath[], all: boolean, resource: fhirpath.FHIRResource): boolean {
+  if (all) {
+    // All paths must match
+    for (const path of paths) {
+      if (path(resource).length === 0) return false;
+    }
+    return true;
+  } else {
+    // At least one path must match
+    for (const path of paths) {
+      if (path(resource).length > 0) return true;
+    }
+    return false;
+  }
+}
+
+export class PathFilter {
+  private _include: CompiledPath[];
+  private _exclude: CompiledPath[];
+  private includeAll: boolean;
+  private excludeAll: boolean;
+  private includeFirst: boolean;
+  constructor(options: PathFilterOptions) {
+    this._include = compilePaths(options.include);
+    this._exclude = compilePaths(options.exclude);
+    this.includeAll = options.includeMode === 'all';
+    this.excludeAll = options.excludeMode === 'all';
+    this.includeFirst = options.order !== 'exclude,include';
+  }
+
+  matches(resource: fhirpath.FHIRResource): boolean {
+    if (this.includeFirst) {
+      if (!this.included(resource)) return false;
+      return !this.excluded(resource);
+    } else {
+      if (this.excluded(resource)) return false;
+      return this.included(resource);
+    }
+  }
+
+  /**
+   * Determine if a resource is included. A resource is included if there are any inclusion criteria and they match
+   * given the match mode.
+   * @param resource
+   * @returns
+   */
+  included(resource: fhirpath.FHIRResource): boolean {
+    return this._include.length === 0 ? true : matchPaths(this._include, this.includeAll, resource);
+  }
+
+  excluded(resource: fhirpath.FHIRResource): boolean {
+    return this._exclude.length === 0 ? false : matchPaths(this._exclude, this.excludeAll, resource);
+  }
+}
+
+/**
+ * Options for the component filter.
+ */
+export interface FhirComponentFilterMatchOptions {
+  /**
+   * Filter to match against the element being selected. Elements that match this filter will be removed, elements that
+   * do not match will be left as-is.
+   */
+  element?: PathFilterOptions | PathFilter | string;
+  /**
+   * Filter to match against resources. Components will only be removed from resources that match this filter - any
+   * other resource will be left unchanged but NOT removed.
+   */
+  resource?: PathFilterOptions | PathFilter | string;
+}
+
+function parseFilter(o: PathFilterOptions | PathFilter | string | undefined): PathFilter | undefined {
+  if (o === undefined) {
+    return undefined;
+  } else if (typeof o === 'string') {
+    return new PathFilter({ include: o });
+  } else if (o instanceof PathFilter) {
+    return o;
+  } else {
+    return new PathFilter(o);
+  }
+}
+
 /**
  * Filter that removes a specific part of a FHIR record assuming that part
  * matches the given path. The path is a FHIR path for just the component, the
@@ -89,12 +192,18 @@ export class FhirPathFilter extends FhirFilter {
  */
 export class FhirComponentPathFilter extends FhirFilter {
   _elementPath: string[];
-  _matchPath: (resource: fhirpath.FHIRResource, context?: object) => fhirpath.PathLookupResult[];
-  _matchPathStr: string;
-  constructor(elementPath: string, matchPath: string) {
+  _elementFilter?: PathFilter;
+  _resourceFilter?: PathFilter;
+  /**
+   * Filters out individual elements.
+   * @param elementPath the path to the element that may be removed
+   * @param options options for this filter
+   */
+  constructor(elementPath: string, options: FhirComponentFilterMatchOptions) {
     super();
     this.elementPath = elementPath;
-    this.matchPath = matchPath;
+    this._elementFilter = parseFilter(options.element);
+    this._resourceFilter = parseFilter(options.resource);
   }
 
   get elementPath(): string {
@@ -110,15 +219,6 @@ export class FhirComponentPathFilter extends FhirFilter {
     this._elementPath = parts;
   }
 
-  get matchPath(): string {
-    return this._matchPathStr;
-  }
-
-  set matchPath(value: string) {
-    this._matchPath = fhirpath.compile(value);
-    this._matchPathStr = value;
-  }
-
   /**
    * Filters data out from the given resource. This modifies the given resource
    * in-place - the returned object is the same object as given. This will never
@@ -131,6 +231,10 @@ export class FhirComponentPathFilter extends FhirFilter {
     // First, see if this resource matches as all - first part of the path is
     // the resource type
     if (resource.resourceType !== this._elementPath[0]) return resource;
+    // Next up see if we have filters that may de-select this option
+    if (this._resourceFilter) {
+      if (!this._resourceFilter.matches(resource)) return resource;
+    }
     // Next, follow the path to get the actual components
     return this._filterResource(1, resource) ? null : resource;
   }
@@ -146,8 +250,8 @@ export class FhirComponentPathFilter extends FhirFilter {
     // If we've gone past the end of the path, we're looking at an element we
     // may or may not want to remove.
     if (idx >= this._elementPath.length) {
-      // Tell the parent to remove if the FHIR path hits results
-      return this._matchPath(component).length > 0;
+      // If the filter includes this component, always remove it
+      return this._elementFilter ? this._elementFilter.matches(component) : true;
     }
     // Otherwise, find the part
     const key = this._elementPath[idx];

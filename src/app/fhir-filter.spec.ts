@@ -120,10 +120,11 @@ describe('FhirPathFilter', () => {
 
 describe('FhirComponentPathFilter', () => {
   it('filters out a component', () => {
-    const filter = new FhirComponentPathFilter(
-      'Condition.extension',
-      "url = 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-histology-morphology-behavior'"
-    );
+    const filter = new FhirComponentPathFilter('Condition.extension', {
+      element: {
+        include: "url = 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-histology-morphology-behavior'"
+      }
+    });
     expect(filter.filterResource(createCondition(true))).toEqual(createCondition(false));
   });
 });
