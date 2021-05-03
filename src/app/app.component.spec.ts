@@ -128,7 +128,7 @@ describe('AppComponent', () => {
   it('should set markers for details page', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
 
     app.selectedPageTrials = [result];
     app.showDetails(0);
@@ -154,7 +154,7 @@ describe('AppComponent', () => {
       link: [],
       entry: [testEntry]
     };
-    const bundle = new SearchResultsBundle(bundleData, distServ, '01886');
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886',"example source");
     app.searchResults = bundle;
     app.viewPage(samplepage);
     expect(app.searchPage).toBeTruthy();
@@ -169,7 +169,7 @@ describe('AppComponent', () => {
       link: [],
       entry: [testEntry]
     };
-    const bundle = new SearchResultsBundle(bundleData, distServ, '01886');
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886',"example source");
     app.searchResults = bundle;
     app.createFilters();
     expect(app.filtersArray).toBeDefined();
@@ -182,7 +182,7 @@ describe('AppComponent', () => {
       link: [],
       entry: [testEntry]
     };
-    const bundle = new SearchResultsBundle(bundleData, distServ, '01886');
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886',"example source");
     app.searchResults = bundle;
     app.createFilters();
     app.sortType = 'likelihood';
@@ -203,7 +203,7 @@ describe('AppComponent', () => {
       link: [],
       entry: [testEntry]
     };
-    const bundle = new SearchResultsBundle(bundleData, distServ, '01886');
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886',"example source");
     app.searchResults = bundle;
     app.createFilters();
     app.clearFilter(0);
@@ -227,7 +227,7 @@ describe('AppComponent', () => {
       link: [],
       entry: [testEntry]
     };
-    const bundle = new SearchResultsBundle(bundleData, distServ, '01886');
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886',"example source");
     app.searchResults = bundle;
     app.showPage(0);
     expect(app.searchPage).toBeTruthy();

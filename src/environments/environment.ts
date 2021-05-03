@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  serviceURL: 'http://localhost:3000'
+  serviceURL: 'http://localhost:3000',
+  allServers: { 'http://localhost:3000': 'Trialscope', 'http://localhost:3001': 'Breast Cancer Trials' }
 };
 
 /*

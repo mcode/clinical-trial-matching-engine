@@ -31,7 +31,8 @@ describe('UnpackResearchStudyResults', () => {
           }
         },
         distServ,
-        '01886'
+        '01886',
+        "example source"
       )
     ]);
     expect(Array.isArray(actual)).toBe(true);
@@ -148,7 +149,8 @@ describe('UnpackResearchStudyResults', () => {
           }
         },
         distServ,
-        '01886'
+        '01886',
+        "example source"
       )
     ]);
     expect(Array.isArray(actual)).toBe(true);

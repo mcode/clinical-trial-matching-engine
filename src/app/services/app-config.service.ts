@@ -19,4 +19,8 @@ export class AppConfigService {
     if ('serviceURL' in environment) return environment.serviceURL;
     return window.location.toString();
   }
+
+  getAllURLs(): { [key: string]: string } {
+    return environment.allServers;
+  }
 }

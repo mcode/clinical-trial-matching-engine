@@ -1,7 +1,7 @@
 import { DistanceService } from './distance.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppConfigService } from './app-config.service';
 import { fhirclient } from 'fhirclient/lib/types';
@@ -57,11 +57,15 @@ export class ResearchStudySearchEntry {
   private cachedSites: fhirpath.FHIRResource[] | null = null;
   private containedResources: Map<string, fhirpath.FHIRResource> | null = null;
   dist: number | undefined;
-  constructor(public entry: BundleEntry, private distService: DistanceService, private zipCode: string) {
+  constructor(
+    public entry: BundleEntry,
+    private distService: DistanceService,
+    private zipCode: string,
+    public provider: string
+  ) {
     this.resource = this.entry.resource;
     this.search = this.entry.search;
     console.log(this.entry);
-
     this.getClosest(zipCode);
   }
 
@@ -178,6 +182,10 @@ export class ResearchStudySearchEntry {
       }
     }
     return matchStr;
+  }
+
+  get trialURL(): string {
+    return 'https://www.clinicaltrials.gov/ct2/show/' + this.nctId;
   }
 
   getClosest(zip: string): string {
@@ -341,16 +349,24 @@ export class ResearchStudySearchEntry {
 export class SearchResultsBundle {
   researchStudies: ResearchStudySearchEntry[];
 
-  constructor(public bundle: fhirclient.FHIR.Bundle, private distService: DistanceService, private zip: string) {
+  constructor(
+    public bundle: fhirclient.FHIR.Bundle,
+    private distService: DistanceService,
+    private zip: string,
+    source: string
+  ) {
     if (bundle.entry) {
       this.researchStudies = bundle.entry
         .filter((entry) => {
           return entry.resource.resourceType === 'ResearchStudy';
         })
-        .map((entry) => new ResearchStudySearchEntry(entry, distService, zip));
+        .map((entry) => new ResearchStudySearchEntry(entry, distService, zip, source));
     } else {
       this.researchStudies = [];
     }
+  }
+  public setStudies(studies: ResearchStudySearchEntry[]) {
+    this.researchStudies = studies;
   }
 
   get totalCount(): number {
@@ -372,20 +388,37 @@ export class SearchResultsBundle {
   }
 }
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
   constructor(private client: HttpClient, private config: AppConfigService, private distService: DistanceService) {}
 
-  searchClinicalTrials(patientBundle: PatientBundle): Observable<SearchResultsBundle> {
+  searchAllTrials(patientBundle: PatientBundle): Observable<SearchResultsBundle[]> {
+    let services: { [key: string]: string } = this.config.getAllURLs();
+    let urls: string[] = Object.keys(services);
     const zipCode = patientBundle.entry[0].resource.parameter[0].valueString;
 
-    return this.client.post<fhirclient.FHIR.Bundle>(this.config.getServiceURL() + '/getClinicalTrial', patientBundle).pipe(
-      map((bundle: fhirclient.FHIR.Bundle) => {
-        return new SearchResultsBundle(bundle, this.distService, zipCode);
-      })
+    let bundles = urls.map((url: string) => {
+      return this.client.post<fhirclient.FHIR.Bundle>(url + '/getClinicalTrial', patientBundle).pipe(
+        map((bundle: fhirclient.FHIR.Bundle) => {
+          return new SearchResultsBundle(bundle, this.distService, zipCode, services[url]);
+        })
+      );
+    });
+    return forkJoin(bundles);
+  }
+  mergeSearchBundles(bundles: SearchResultsBundle[]): SearchResultsBundle {
+    let mergedBundle = bundles[0];
+    let studies = bundles.map((bundle: SearchResultsBundle) => {
+      return bundle.researchStudies;
+    });
+
+    const allStudies: ResearchStudySearchEntry[] = studies.reduce(
+      (accumulator, value) => accumulator.concat(value),
+      []
     );
+    mergedBundle.setStudies(allStudies);
+    return mergedBundle;
   }
 }
