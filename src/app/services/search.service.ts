@@ -184,8 +184,8 @@ export class ResearchStudySearchEntry {
     return matchStr;
   }
 
-  get trialURL() : string {
-    return "https://www.clinicaltrials.gov/ct2/show/"+this.nctId;
+  get trialURL(): string {
+    return 'https://www.clinicaltrials.gov/ct2/show/' + this.nctId;
   }
 
   getClosest(zip: string): string {
@@ -388,29 +388,19 @@ export class SearchResultsBundle {
   }
 }
 
-interface ClinicalTrialQuery {
-  patientData: PatientBundle;
-  count: number;
-  offset?: number;
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
   constructor(private client: HttpClient, private config: AppConfigService, private distService: DistanceService) {}
 
-  searchAllTrials(patientBundle: PatientBundle, offset?: number, count = 10): Observable<SearchResultsBundle[]> {
+  searchAllTrials(patientBundle: PatientBundle): Observable<SearchResultsBundle[]> {
     let services: { [key: string]: string } = this.config.getAllURLs();
     let urls: string[] = Object.keys(services);
-    const query: ClinicalTrialQuery = { patientData: patientBundle, count: count };
     const zipCode = patientBundle.entry[0].resource.parameter[0].valueString;
-    if (offset > 0) {
-      query.offset = offset;
-    }
 
     let bundles = urls.map((url: string) => {
-      return this.client.post<fhirclient.FHIR.Bundle>(url + '/getClinicalTrial', query).pipe(
+      return this.client.post<fhirclient.FHIR.Bundle>(url + '/getClinicalTrial', patientBundle).pipe(
         map((bundle: fhirclient.FHIR.Bundle) => {
           return new SearchResultsBundle(bundle, this.distService, zipCode, services[url]);
         })
