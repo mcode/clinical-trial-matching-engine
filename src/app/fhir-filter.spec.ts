@@ -1,6 +1,6 @@
 import { Resource } from './fhir-types';
 import { PatientBundle } from './bundle';
-import { deepClone, FhirPathFilter, FhirComponentPathFilter, FhirFilter } from './fhir-filter';
+import { deepClone, FhirPathFilter, FhirComponentPathFilter, FhirCodeRemapFilter, FhirFilter } from './fhir-filter';
 
 const createCondition = (includeExtension = true): Resource => {
   const result = {
@@ -125,5 +125,50 @@ describe('FhirComponentPathFilter', () => {
       "url = 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-histology-morphology-behavior'"
     );
     expect(filter.filterResource(createCondition(true))).toEqual(createCondition(false));
+  });
+});
+
+describe('FhirCodeRemapFilter', () => {
+  let resource: Resource;
+  beforeEach(() => {
+    resource = {
+      resourceType: 'Condition',
+      meta: {
+        profile: ['http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition']
+      },
+      code: {
+        coding: [
+          {
+            system: 'http://snomed.info/sct',
+            code: '408643008',
+            display: 'Infiltrating duct carcinoma of breast (disorder)'
+          }
+        ]
+      }
+    };
+  });
+
+  it('remaps a code', () => {
+    const filter = new FhirCodeRemapFilter(
+      'Condition',
+      'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition',
+      [
+        [
+          {
+            system: 'http://snomed.info/sct',
+            code: '408643008'
+          },
+          {
+            system: 'http://snomed.info/sct',
+            code: '254837009',
+            display: 'Malignant neoplasm of breast'
+          }
+        ]
+      ]
+    );
+    expect(filter.filterResource(resource)).not.toBeNull();
+    expect(resource.code).toEqual({
+      coding: [{ system: 'http://snomed.info/sct', code: '254837009', display: 'Malignant neoplasm of breast' }]
+    });
   });
 });

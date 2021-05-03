@@ -11,6 +11,9 @@
     ]
   },
   "include": [
-    "lib/*.ts"
+    "lib/*.ts",
+    "src/app/filter-data/default-filters.ts",
+    "src/app/fhir-filter.ts",
+    "src/app/fhir-types.ts"
   ]
 }

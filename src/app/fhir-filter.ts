@@ -3,7 +3,7 @@
  */
 
 import { PatientBundle } from './bundle';
-import { Resource } from './fhir-types';
+import { CodeableConcept, Coding, Resource } from './fhir-types';
 import * as fhirpath from 'fhirpath';
 
 /**
@@ -187,6 +187,106 @@ export class FhirComponentPathFilter extends FhirFilter {
       }
     }
     return false;
+  }
+}
+
+/**
+ * Extension of the FhirFilter that runs input through multiple other filters.
+ */
+export class FhirMultiFilter extends FhirFilter {
+  private filters: FhirFilter[];
+  constructor(...filters: FhirFilter[]) {
+    super();
+    this.filters = filters;
+    // For now, allow empty filters
+  }
+
+  addFilter(filter: FhirFilter): void {
+    this.filters.push(filter);
+  }
+
+  /**
+   * This runs the given resource through all child filters, returning null
+   * immediately if any are null. Note: this is not called by #filterBundle
+   * in this implementation!
+   *
+   * @param resource the resource
+   * @returns the modified resource, or null to exclude the resource entirely
+   */
+  filterResource(resource: Resource): Resource | null {
+    for (const filter of this.filters) {
+      if (filter.filterResource(resource) === null) return null;
+    }
+    return resource;
+  }
+
+  /**
+   * Passes the given bundle through all filters in this filter in order. Each
+   * filter is allowed to pass over the entire bundle.
+   *
+   * @param bundle the bundle to filter
+   * @returns the input bundle after removing parts
+   */
+  filterBundle(bundle: PatientBundle): PatientBundle {
+    for (const filter of this.filters) {
+      filter.filterBundle(bundle);
+    }
+    return bundle;
+  }
+}
+
+interface Code {
+  system: string;
+  code: string;
+  display?: string;
+}
+
+type CodeMapping = [Code, Code];
+/**
+ * This filter maps a given set of codes to other codes.
+ */
+export class FhirCodeRemapFilter extends FhirFilter {
+  resourceType: string;
+  profile: string;
+  codeMapping: CodeMapping[];
+  constructor(resourceType: string, profile: string, codeMapping: CodeMapping[]) {
+    super();
+    this.resourceType = resourceType;
+    this.profile = profile;
+    this.codeMapping = codeMapping;
+  }
+  filterResource(resource: Resource): Resource {
+    // Only target condition resources
+    if (resource.resourceType !== this.resourceType) return resource;
+    // See if the profile matches
+    if (resource.meta && resource.meta.profile) {
+      if (!resource.meta.profile.includes(this.profile)) return resource;
+    }
+    // If it does, see if there are codes that can be altered
+    if ('code' in resource) {
+      const code: CodeableConcept = resource['code'];
+      // Everything in the codeable concept turns out to be optional anyway...
+      if (code.coding && Array.isArray(code.coding)) {
+        code.coding.forEach((o) => {
+          // Coding is where the actual mapping happens.
+          if (typeof o === 'object' && o !== null) {
+            const coding: Coding = o;
+            // Because the code mapping is a tuple (sort of) we have to go through it sequentially
+            for (const [from, to] of this.codeMapping) {
+              if (from.system === coding.system && from.code === coding.code) {
+                // Got a match
+                coding.system = to.system;
+                coding.code = to.code;
+                if (to.display) {
+                  coding.display = to.display;
+                }
+                break;
+              }
+            }
+          }
+        });
+      }
+    }
   }
 }
 
