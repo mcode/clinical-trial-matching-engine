@@ -128,7 +128,7 @@ describe('AppComponent', () => {
   it('should set markers for details page', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
 
     app.selectedPageTrials = [result];
     app.showDetails(0);

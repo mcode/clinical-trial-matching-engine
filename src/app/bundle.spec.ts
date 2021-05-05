@@ -7,7 +7,9 @@ describe('bundle tests', () => {
 
   it('should create the patient bundle', () => {
     expect(
-      createPatientBundle({ id: 'example' }, [{ fullUrl: 'sample', resource: { resourceType: 'Resource' } }])
+      createPatientBundle({ zipCode: '01780', travelRadius: 20 }, [
+        { fullUrl: 'sample', resource: { resourceType: 'Resource' } }
+      ])
     ).toBeDefined();
   });
 });

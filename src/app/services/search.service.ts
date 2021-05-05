@@ -171,6 +171,7 @@ export class ResearchStudySearchEntry {
     }
     return undefined;
   }
+
   get matchLikelihood(): string | null {
     let matchStr = null;
     if (this.search && this.search.score != null) {

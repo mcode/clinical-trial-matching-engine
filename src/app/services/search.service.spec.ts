@@ -167,13 +167,13 @@ describe('ResearchStudySearchEntry', () => {
     }
   };
   it('finds contained resources by id', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     const location = result.lookupContainedResource('location-1');
     expect(location).toBe(testEntry.resource.contained[1]);
   });
 
   it('getSites finds all sites', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     const sites = result.getSites();
     expect(Array.isArray(sites)).toBe(true);
     expect(sites.length).toBe(2);
@@ -182,7 +182,7 @@ describe('ResearchStudySearchEntry', () => {
   });
 
   it('maps values as expected', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     const sites = result.sites;
     expect(Array.isArray(sites)).toBe(true);
     expect(sites.length).toBe(2);
@@ -192,25 +192,25 @@ describe('ResearchStudySearchEntry', () => {
   });
 
   it('converts values as expected', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     expect(result.overallContact).toEqual('Example Contact');
   });
 
   it('closest site is null when no coordinate info', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     expect(result.getClosest('01886')).toBeNull();
   });
   it('closest site is null when no zip entered', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     expect(result.getClosest('')).toBeNull();
   });
 
   it('gets match likelihood as null when missing', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     expect(result.matchLikelihood).toBeNull();
   });
   it('gets match likelihood as expected', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     result.search = { mode: 'match', score: 0.3 };
     result.search.score = 0.23;
     expect(result.matchLikelihood).toBe('No Match');
@@ -220,39 +220,39 @@ describe('ResearchStudySearchEntry', () => {
     expect(result.matchLikelihood).toBe('Likely Match');
   });
   it('gets description as unknown when missing', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     expect(result.description).toBe('(unknown)');
   });
   it('gets phase as unknown when missing', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     expect(result.phase).toBe('(unknown)');
   });
   it('gets contact name', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     expect(result.overallContact).toBe('Example Contact');
   });
   it('gets sponsor as none when missing', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     expect(result.sponsor).toBe('(None)');
   });
   it('gets criteria as blank string when missing', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     expect(result.criteria).toBe('');
   });
   it('gets nctId as blank string when missing', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     expect(result.nctId).toBe('');
   });
   it('gets distance as undefined when no distance', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     expect(result.distance).toBeUndefined();
   });
   it('calculates/outputs closest distance properly', () => {
-    const result = new ResearchStudySearchEntry(testEntry2, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry2, 0, distServ, '01886');
     expect(result.getClosest('01886')).toBeDefined();
   });
   it('gets criteria', () => {
-    const result = new ResearchStudySearchEntry(testEntry2, distServ, '01886');
+    const result = new ResearchStudySearchEntry(testEntry2, 0, distServ, '01886');
     expect(result.criteria).toBeDefined();
   });
   it('makes search results bundle', () => {

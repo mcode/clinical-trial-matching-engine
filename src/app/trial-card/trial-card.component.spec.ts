@@ -36,53 +36,37 @@ describe('TrialCardComponent', () => {
   );
 
   beforeEach(() => {
+    const distServ = TestBed.inject(DistanceService) as DistanceService;
     testHostFixture = TestBed.createComponent(TestHostComponent);
     testHostComponent = testHostFixture.componentInstance;
+    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, 0, distServ, '01886');
+    testHostComponent.trial.trialSaved = false;
+    testHostComponent.trial.query = {
+      zipCode: '01886',
+      travelRadius: null,
+      phase: null,
+      recruitmentStatus: null
+    };
+    testHostFixture.detectChanges();
   });
 
   it('should create', () => {
-    const distServ = TestBed.inject(DistanceService) as DistanceService;
-    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
-    testHostComponent.trial.trialSaved = false;
-    testHostComponent.trial.reqs = {
-      zipCode: '01886',
-      travelRadius: null,
-      phase: null,
-      recruitmentStatus: null
-    };
-    testHostFixture.detectChanges();
     expect(testHostComponent.trial).toBeTruthy();
   });
+
   //trialsaved should be false on startup
   it('trial saved should be false', () => {
-    const distServ = TestBed.inject(DistanceService) as DistanceService;
-    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
-    testHostComponent.trial.trialSaved = false;
-    testHostComponent.trial.reqs = {
-      zipCode: '01886',
-      travelRadius: null,
-      phase: null,
-      recruitmentStatus: null
-    };
-    testHostFixture.detectChanges();
-
     expect(testHostComponent.trial.trialSaved).toBeFalsy();
     testHostComponent.trial.toggleTrialSaved();
     expect(testHostComponent.trial.trialSaved).toBeTruthy();
   });
+
   it('gets Color according to likelihood', () => {
-    const distServ = TestBed.inject(DistanceService) as DistanceService;
-    testHostComponent.trial.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
-    testHostComponent.trial.trialSaved = false;
-    testHostComponent.trial.reqs = {
-      zipCode: '01886',
-      travelRadius: null,
-      phase: null,
-      recruitmentStatus: null
-    };
-    testHostFixture.detectChanges();
-    expect(testHostComponent.trial.getColor('No Match')).toBe('black');
-    expect(testHostComponent.trial.getColor('Possible Match')).toBe('#E6BE03');
-    expect(testHostComponent.trial.getColor('likely Match')).toBe('green');
+    testHostComponent.trial.clinicalTrial.search = { score: 0.1 };
+    expect(testHostComponent.trial.likelihoodColor()).toBe('black');
+    testHostComponent.trial.clinicalTrial.search = { score: 0.5 };
+    expect(testHostComponent.trial.likelihoodColor()).toBe('#E6BE03');
+    testHostComponent.trial.clinicalTrial.search = { score: 0.9 };
+    expect(testHostComponent.trial.likelihoodColor()).toBe('green');
   });
 });
