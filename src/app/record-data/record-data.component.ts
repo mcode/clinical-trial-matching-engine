@@ -1,69 +1,73 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef, AfterContentChecked } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import Patient from '../patient';
-import { BundleEntry, Resource } from '../fhir-types';
+import { BundleEntry, Condition, MedicationStatement, Observation, Procedure, Resource } from '../fhir-types';
 
 @Component({
   selector: 'app-record-data',
   templateUrl: './record-data.component.html',
   styleUrls: ['./record-data.component.css']
 })
-export class RecordDataComponent implements AfterContentChecked {
-  @Input() patient: Patient;
-  @Input() displayOn: boolean;
-  @Input() bundleResources: BundleEntry[];
-  @Output() getDisplayChange = new EventEmitter<boolean>();
+export class RecordDataComponent {
+  patient: Patient;
+  _bundleResources: BundleEntry[];
 
-  conditions: Resource[];
-  observations: Resource[];
-  procedures: Resource[];
-  medications: Resource[];
-  otherResources: Resource[];
-
-  constructor(private cdRef: ChangeDetectorRef) {}
-
-  ngAfterContentChecked(): void {
-    this.cdRef.detectChanges();
+  get bundleResources(): BundleEntry[] {
+    return this._bundleResources;
+  }
+  set bundleResources(value: BundleEntry[]) {
+    this._bundleResources = value;
+    this.filterResources();
   }
 
-  setResources(): void {
-    // Initialize.
-    if (this.otherResources == undefined || this.otherResources == null) {
-      this.otherResources = [] as Resource[];
-      this.conditions = [] as Resource[];
-      this.observations = [] as Resource[];
-      this.procedures = [] as Resource[];
-      this.medications = [] as Resource[];
-      const allResources: Resource[] = this.bundleResources.map((br) => br.resource);
+  conditions: Condition[];
+  observations: Observation[];
+  procedures: Procedure[];
+  medications: MedicationStatement[];
+  otherResources: Resource[];
 
-      // Pull the resource types and add to resource lists.
-      for (const resource of allResources) {
-        switch (resource.resourceType) {
-          case 'Observation':
-            this.observations.unshift(resource);
-            break;
-          case 'Condition':
-            this.conditions.unshift(resource);
-            break;
-          case 'Procedure':
-            this.procedures.unshift(resource);
-            break;
-          case 'MedicationStatement':
-            this.medications.unshift(resource);
-            break;
-          default:
-            if (resource.code != null && resource.code != undefined) {
-              this.otherResources.unshift(resource);
-            }
-            break;
-        }
+  constructor(@Inject(MAT_DIALOG_DATA) data: { patient: Patient; resources: BundleEntry[] }) {
+    this.patient = data.patient;
+    this.bundleResources = data.resources;
+  }
+
+  /**
+   * Filter the resources into their given bundle.
+   */
+  private filterResources(): void {
+    // Reset the various bins
+    this.otherResources = [];
+    this.conditions = [];
+    this.observations = [];
+    this.procedures = [];
+    this.medications = [];
+
+    // Pull the resource types and add to resource lists.
+    for (const entry of this._bundleResources) {
+      const resource = entry.resource;
+      // Skip entries with no resources (shouldn't happen but technically allowed)
+      if (!resource) continue;
+      // The casts below are necessary because in theory the original resources within the bundle could be altered to
+      // be a different type, which would break the types.
+      switch (resource.resourceType) {
+        case 'Observation':
+          this.observations.unshift(resource as Observation);
+          break;
+        case 'Condition':
+          this.conditions.unshift(resource as Condition);
+          break;
+        case 'Procedure':
+          this.procedures.unshift(resource as Procedure);
+          break;
+        case 'MedicationStatement':
+          this.medications.unshift(resource as MedicationStatement);
+          break;
+        default:
+          if (resource.code != null && resource.code != undefined) {
+            this.otherResources.unshift(resource);
+          }
+          break;
       }
     }
   }
-
-  setStatus(status: boolean): void {
-    this.displayOn = status;
-    this.getDisplayChange.emit(status);
-  }
-
-  // ngOnInit() {}
 }

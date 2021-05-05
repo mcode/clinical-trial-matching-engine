@@ -148,3 +148,20 @@ export interface Patient extends DomainResource {
   birthDate?: Date;
   address?: Address[];
 }
+
+// These exist if we ever intend to expand the type definitions for them, but are presently mostly useless
+export interface Condition extends Resource {
+  resourceType: 'Condition';
+}
+
+export interface Observation extends Resource {
+  resourceType: 'Observation';
+}
+
+export interface Procedure extends Resource {
+  resourceType: 'Procedure';
+}
+
+export interface MedicationStatement extends Resource {
+  resourceType: 'MedicationStatement';
+}

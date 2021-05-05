@@ -1,39 +1,35 @@
-<div *ngIf='displayOn' [style.display]='none' max-height='90vh' vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>
-  <!-- Modal Close Outside -->
-  <div class ="modal-close-outside" (click)="setStatus(false);"></div>
-  <!-- Modal content -->
-    <div class="modal-content" max-height='90vh' vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>
-        <span class="close" (click)="setStatus(false);" max-height='90vh' vertical-align='top' position='absolute' overflow='scroll' overflow-y='scroll'>&times;</span>
-        <div class="set-resources"> {{setResources()}} </div>
-        <h2 class="cardText2 mi-margin-20">Patient Record</h2>
-        <span class="color14 mi-margin-20">If something doesn’t look right on your record, please contact your
-            healthcare provider.</span>
-        <div class="mi-margin-20">
-            <div class="color15">{{patient.getFullName()}}</div>
-            <div class="color15">AGE: {{patient.getAge()}}</div>
-            <div class="color15">Gender: {{patient.getGender()}}</div>
-        </div>
-        <div class="mi-margin-20">
-            <span class="color14 upperCase">Conditions:</span>
-            <ul>
-                <li *ngFor="let condition of conditions">{{condition.recordedDate.substr(0,10)}} : {{condition.code.text}} </li>
-            </ul>
-            <span class="color14 upperCase">Procedures:</span>
-            <ul>
-                <li *ngFor="let procedure of procedures">{{procedure.performedPeriod.start.substr(0,10)}} : {{procedure.code.text}}</li>
-            </ul>
-            <span class="color14 upperCase">Medications:</span>
-            <ul>
-                <li *ngFor="let medication of medications">{{medication.effectiveDateTime.substr(0,10)}} : {{medication.medicationCodeableConcept.text}}</li>
-            </ul>
-            <span class="color14 upperCase">Observations:</span>
-            <ul>
-                <li *ngFor="let observation of observations">{{observation.effectiveDateTime.substr(0,10)}} : {{observation.code.text}} {{observation.valueQuantity != null ? ' : ' + observation.valueQuantity.value + ' ' + observation.valueQuantity.unit : ''}}</li>
-            </ul>
-            <span class="color14 upperCase">Other Resources:</span>
-            <ul>
-                <li *ngFor="let resource of otherResources">{{resource.code.text}}</li>
-            </ul>
-        </div>
-    </div>
-</div>
+<h2 mat-dialog-title>Patient Record</h2>
+<mat-dialog-content>
+  <p>If something doesn’t look right on your record, please contact your healthcare provider.</p>
+  <dl class="patient-details">
+    <dt class="name">Name:</dt>
+    <dd>{{patient.getFullName()}}</dd>
+    <dt>Age:</dt>
+    <dd>{{patient.getAge()}}</dd>
+    <dt>Gender:</dt>
+    <dd>{{patient.getGender()}}</dd>
+  </dl>
+  <div class="records">
+    <h3>Conditions:</h3>
+    <ul>
+      <li *ngFor="let condition of conditions">{{condition.recordedDate.substr(0,10)}} : {{condition.code.text}} </li>
+    </ul>
+    <h3>Procedures:</h3>
+    <ul>
+      <li *ngFor="let procedure of procedures">{{procedure.performedPeriod.start.substr(0,10)}} : {{procedure.code.text}}</li>
+    </ul>
+    <h3>Medications:</h3>
+    <ul>
+      <li *ngFor="let medication of medications">{{medication.effectiveDateTime.substr(0,10)}} : {{medication.medicationCodeableConcept.text}}</li>
+    </ul>
+    <h3>Observations:</h3>
+    <ul>
+      <li *ngFor="let observation of observations">{{observation.effectiveDateTime.substr(0,10)}} : {{observation.code.text}} {{observation.valueQuantity != null ? ' : ' + observation.valueQuantity.value + ' ' + observation.valueQuantity.unit : ''}}</li>
+    </ul>
+    <h3>Other Resources:</h3>
+    <ul>
+      <li *ngFor="let resource of otherResources">{{resource.code.text}}</li>
+    </ul>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions><button mat-stroked-button mat-dialog-close>Close</button></mat-dialog-actions>

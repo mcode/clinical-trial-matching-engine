@@ -1,10 +1,11 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 
+import { RecordDataComponent } from '../record-data/record-data.component';
 import { ClientService } from '../smartonfhir/client.service';
 import Patient from '../patient';
 import { createPatientBundle } from '../bundle';
-import { SearchResultsBundle, ResearchStudySearchEntry } from '../services/search.service';
 import { SearchResultsService } from '../services/search-results.service';
 import { ResearchStudyStatus, ResearchStudyPhase } from '../fhir-constants';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
@@ -36,28 +37,6 @@ export interface SearchFields {
 export class SearchPageComponent implements OnInit {
   patient: Patient;
   patientName: string | null;
-  /**
-   * The most recent search results. If null, no search has been executed.
-   */
-  public searchResults: SearchResultsBundle | null = null;
-  /**
-   * If filters have been applied, the filtered results.
-   */
-  public filteredResults: ResearchStudySearchEntry[] | null = null;
-  /**
-   * Total number of results found.
-   */
-  public get resultCount(): number {
-    if (this.filteredResults === null) {
-      return this.searchResults === null ? 0 : this.searchResults.totalCount;
-    } else {
-      return this.filteredResults.length;
-    }
-  }
-  /**
-   * Trials on the current page.
-   */
-  public selectedPageTrials: ResearchStudySearchEntry[];
   @ViewChild(SearchFieldsComponent)
   private searchFieldsComponent: SearchFieldsComponent;
 
@@ -86,13 +65,12 @@ export class SearchPageComponent implements OnInit {
    */
   public bundleResources: BundleEntry[] = [];
 
-  public records = false;
-
   constructor(
     private router: Router,
     private searchResultsService: SearchResultsService,
     private fhirService: ClientService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dialog: MatDialog
   ) {
     // Set up the loading screen when constructed
     this.showLoadingOverlay('Loading...');
@@ -193,7 +171,6 @@ export class SearchPageComponent implements OnInit {
    */
   public searchClinicalTrials(query: TrialQuery): void {
     // For now, just copy the values over
-    this.searchResults = null;
     this.showLoadingOverlay('Searching clinical trials...');
     // Blank out any existing results
     if (query.zipCode === undefined || !/^[0-9]{5}$/.exec(query.zipCode)) {
@@ -208,10 +185,7 @@ export class SearchPageComponent implements OnInit {
     }
     const patientBundle = createPatientBundle(query, this.bundleResources);
     this.searchResultsService.search(query, patientBundle).subscribe(
-      (response) => {
-        // Store the results
-        this.searchResults = response;
-        console.log(response);
+      () => {
         this.router.navigateByUrl('/results');
       },
       (err) => {
@@ -224,7 +198,9 @@ export class SearchPageComponent implements OnInit {
   }
 
   public showRecord(): void {
-    this.records = !this.records;
+    this.dialog.open(RecordDataComponent, {
+      data: { patient: this.patient, resources: this.bundleResources }
+    });
   }
 
   private hideLoadingOverlay(): void {

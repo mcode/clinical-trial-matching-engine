@@ -53,15 +53,6 @@ describe('RecordDataComponent', () => {
         }
       }
     ];
-    component.setResources();
     expect(component).toBeTruthy();
-  });
-
-  it('displayOn should be false', () => {
-    expect(component.displayOn).toBeFalsy();
-  });
-  it('should set display status', () => {
-    component.setStatus(true);
-    expect(component.displayOn).toBeTruthy();
   });
 });

@@ -30,7 +30,10 @@ export class StubClientService extends ClientService {
           use: 'home',
           postalCode: '01730'
         }
-      ]
+      ],
+      // Flip a coin for gender
+      gender: Math.random() > 0.5 ? 'male' : 'female',
+      birthDate: new Date(1991, 1, 1)
     };
   }
   /**

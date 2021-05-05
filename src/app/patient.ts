@@ -47,6 +47,30 @@ function objectComparator<T extends ObjectWithUse>(usePreferences: { [key: strin
   };
 }
 
+/**
+ * Utility function to calculate age. (This exists more to make testing it easier
+ * than anything else.)
+ * @param birthDate the birth date
+ * @param date if given, the time to calculate the age as of
+ */
+export function calculateAge(birthDate: Date, date?: Date): number {
+  // Default to now if no date given
+  if (!date) date = new Date();
+  // Go ahead and do this in the local time zone
+  let age = date.getFullYear() - birthDate.getFullYear();
+  // This is potentially wrong - we need to see if we're before the actual birth day in the year
+  if (
+    date.getMonth() < birthDate.getMonth() ||
+    (date.getMonth() === birthDate.getMonth() && date.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+  return age;
+}
+
+/**
+ * This class provides convenience methods for pulling patient information from a FHIR patient record.
+ */
 export default class Patient {
   /**
    * The underlying FHIR resource.
@@ -106,8 +130,16 @@ export default class Patient {
   getGender(): FHIRPatient['gender'] {
     return this.resource.gender;
   }
-  getAge(): number {
-    return new Date().getFullYear() - new Date(this.resource.birthDate).getFullYear();
+  /**
+   * Returns the patient's age, if known
+   * @returns the patient's age, if known
+   */
+  getAge(): number | undefined {
+    if (this.resource.birthDate) {
+      return calculateAge(this.resource.birthDate);
+    } else {
+      return undefined;
+    }
   }
   /**
    * Returns the postal code from the address returned by getHomeAddress, if any.

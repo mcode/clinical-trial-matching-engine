@@ -1,115 +1,27 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Roboto+Mono|Roboto+Slab&display=swap');
+.patient-details {
+  color: #767575;
+  display: flex;
+  flex-wrap: wrap;
+}
 
-.color3 {
-  color: #66d5e3;
+.patient-details dt {
+  width: 5em;
+  flex-grow: 0;
 }
-.color9 {
-  color: #898686;
+
+.patient-details dd {
+  flex-grow: 1;
+  flex-basis: calc(100% - 5em);
+  margin: 0;
 }
-.color14 {
+
+.records h3 {
+  font-weight: normal;
+  font-size: 16px;
+  text-transform: uppercase;
   color: #babab8;
 }
-.color15 {
-  color: #767575;
-}
 
-.block {
-  width: 24%;
-  height: 63px;
-  background: #fff;
-  border: 1px solid #d8d6d6;
-}
-.block2 {
-  width: 6%;
-  height: 63px;
-  background: #66d5e3;
-  border: 1px solid #66d5e3;
-}
-::placeholder {
-  /* Chrome, Firefox, Opera, Safari 10.1+ */
-  font-family: Roboto;
-  font-weight: 300;
-  font-size: 21px;
-  text-align: left;
-  padding-left: 10px;
-  color: #707070;
-}
-.input {
-  width: 92%;
-  border: 0;
-  background: transparent;
-  height: 63px;
-}
-.select {
-  width: 100%;
-  border: 0;
-  background: transparent;
-  height: 63px;
-}
-.mi-margin-10 {
-  margin: 10px;
-}
-.mi-margin-20 {
-  margin: 20px;
-}
-.upperCase {
-  text-transform: uppercase;
-}
-.cardText2 {
-  font-family: Roboto;
-  font-weight: 500;
-  font-size: 21px;
-  text-align: left;
-  color: #525151;
-}
-
-/* The Close Button */
-.close {
-  position: 'sticky';
-  top: 10;
-  min-width: 1px;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  display: block;
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #707070;
-  width: 80vw;
-  height: 70vh;
-  overflow: auto;
-  top: 50%;
-  left: 45%;
-  position: absolute;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
-/* Modal Outside Border for Closing */
-.modal-close-outside {
-  background-color: #ffffff00;
-  margin: auto;
-  width: 100%;
-  height: 100vh;
-  top: 50%;
-  left: 45%;
-  position: absolute;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+p {
+  color: #babab8;
 }
