@@ -1,4 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+
+import { SearchService } from '../services/search.service';
+import { StubSearchService } from '../services/stub-search.service';
 
 import { ResultsComponent } from './results.component';
 
@@ -8,9 +12,16 @@ describe('ResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ResultsComponent ]
-    })
-    .compileComponents();
+      imports: [RouterTestingModule],
+      providers: [
+        {
+          // Use the stub search service so HttpClient isn't needed
+          provide: SearchService,
+          useClass: StubSearchService
+        }
+      ],
+      declarations: [ResultsComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -21,5 +32,46 @@ describe('ResultsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should get count', () => {
+    expect(component.resultCount).toEqual(0);
+  });
+
+  it('should get page count', () => {
+    // Stub search result has 3 results
+    expect(component.pageCount).toBe(3);
+  });
+
+  it('should clear filters', () => {
+    // const bundleData = {
+    //   resourceType: 'Bundle' as 'Bundle',
+    //   type: 'document' as 'document',
+    //   link: [],
+    //   entry: [testEntry]
+    // };
+    // const bundle = new SearchResultsBundle(bundleData, distServ, '01886');
+    // app.searchResults = bundle;
+    // component.createFilters();
+    component.clearFilter(0);
+
+    expect(component.filters[0]).toBeDefined();
+  });
+
+  it('should show a page', () => {
+    // TODO: Make a page visible, check page data
+  });
+
+  it('should create filters', () => {
+    expect(component.filters).toBeDefined();
+  });
+
+  it('should apply filters', () => {
+    component.sortType = 'likelihood';
+    component.applyFilter();
+    expect(component.filters).toBeDefined();
+  });
+  it('should update items per page', () => {
+    // TODO: Implement this
   });
 });

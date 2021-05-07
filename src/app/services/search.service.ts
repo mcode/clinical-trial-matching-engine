@@ -158,7 +158,7 @@ export class ResearchStudySearchEntry {
     return this.lookupString("contact.telecom.where(system = 'email').value", '');
   }
   /**
-   * Returns the NCT ID for the trial, if it has one.
+   * Returns the NCT ID for the trial, if it has one. If it does not have an NCT ID, returns undefined.
    */
   get nctId(): string | undefined {
     if (this.resource.identifier && this.resource.identifier.length > 0) {

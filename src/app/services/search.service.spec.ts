@@ -239,9 +239,9 @@ describe('ResearchStudySearchEntry', () => {
     const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
     expect(result.criteria).toBe('');
   });
-  it('gets nctId as blank string when missing', () => {
+  it('gets nctId as undefined when missing', () => {
     const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');
-    expect(result.nctId).toBe('');
+    expect(result.nctId).toBeUndefined();
   });
   it('gets distance as undefined when no distance', () => {
     const result = new ResearchStudySearchEntry(testEntry, 0, distServ, '01886');

@@ -129,7 +129,7 @@ describe('Patient Tests', () => {
 
   it('should get age as undefined when not specified ', () => {
     const patient: Patient = new Patient(patientData);
-    expect(patient.getAge()).toBeNaN();
+    expect(patient.getAge()).toBeUndefined();
   });
 
   it('should get home address ', () => {
