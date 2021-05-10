@@ -1,85 +1,92 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SearchService } from '../services/search.service';
+import { StubSearchService } from '../services/stub-search.service';
 import { DistanceService } from './../services/distance.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResearchStudySearchEntry } from './../services/search.service';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ResultDetailsComponent } from './result-details.component';
 
-import { Component } from '@angular/core';
-import { ViewChild } from '@angular/core';
-import data from './sample_trial.json';
+import sampleTrial from './sample_trial.json';
+import { ActivatedRoute } from '@angular/router';
+
 describe('ResultDetailsComponent', () => {
-  @Component({
-    selector: `host-component`,
-    template: `<app-result-details></app-result-details>`
-  })
-  class TestHostComponent {
-    @ViewChild(ResultDetailsComponent, { static: true })
-    public resultDetails: ResultDetailsComponent;
-  }
-  let testHostComponent: TestHostComponent;
-  let testHostFixture: ComponentFixture<TestHostComponent>;
+  let component: ResultDetailsComponent;
+  let fixture: ComponentFixture<ResultDetailsComponent>;
 
-  const sampleTrial = data;
-
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [ResultDetailsComponent, TestHostComponent],
-        imports: [HttpClientTestingModule],
-        providers: [DistanceService]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: () => '0' // The ID used for the result
+              }
+            }
+          }
+        },
+        {
+          // Use the stub search service so HttpClient isn't needed
+          provide: SearchService,
+          useClass: StubSearchService
+        }
+      ],
+      declarations: [ResultDetailsComponent]
+    }).compileComponents();
+  });
 
   beforeEach(() => {
-    testHostFixture = TestBed.createComponent(TestHostComponent);
-    testHostComponent = testHostFixture.componentInstance;
+    fixture = TestBed.createComponent(ResultDetailsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create the detail results', () => {
     const distServ = TestBed.inject(DistanceService) as DistanceService;
-    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886',"example source");
-    testHostComponent.resultDetails.reqs = {
+    component.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, 0, distServ, '01886', 'example source');
+    component.query = {
       zipCode: '01886',
       travelRadius: null,
       phase: null,
       recruitmentStatus: null
     };
-    testHostFixture.detectChanges();
+    fixture.detectChanges();
 
-    expect(testHostComponent.resultDetails).toBeTruthy();
+    expect(component).toBeTruthy();
   });
   //on testing startup no trial should be saved
   it('trialSaved should be false', () => {
-    expect(testHostComponent.resultDetails.trialSaved).toBeFalsy();
+    expect(component.trialSaved).toBeFalsy();
   });
   it('should toggle trial saved', () => {
     const distServ = TestBed.inject(DistanceService) as DistanceService;
-    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886',"example source");
-    testHostComponent.resultDetails.reqs = {
+    component.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, 0, distServ, '01886', 'example source');
+    component.query = {
       zipCode: '01886',
       travelRadius: null,
       phase: null,
       recruitmentStatus: null
     };
-    testHostFixture.detectChanges();
-    testHostComponent.resultDetails.toggleTrialSaved();
-    expect(testHostComponent.resultDetails.trialSaved).toBeTruthy();
+    fixture.detectChanges();
+    component.toggleTrialSaved();
+    expect(component.trialSaved).toBeTruthy();
   });
   it('should get Color', () => {
     const distServ = TestBed.inject(DistanceService) as DistanceService;
-    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886',"example source");
-    testHostComponent.resultDetails.reqs = {
+    component.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, 0, distServ, '01886', 'example source');
+    component.query = {
       zipCode: '01886',
       travelRadius: null,
       phase: null,
       recruitmentStatus: null
     };
-    testHostFixture.detectChanges();
+    fixture.detectChanges();
 
-    expect(testHostComponent.resultDetails.getColor('No Match')).toBe('black');
-    expect(testHostComponent.resultDetails.getColor('Possible Match')).toBe('#E6BE03');
-    expect(testHostComponent.resultDetails.getColor('likely Match')).toBe('green');
+    expect(component.getColor('No Match')).toBe('black');
+    expect(component.getColor('Possible Match')).toBe('#E6BE03');
+    expect(component.getColor('likely Match')).toBe('green');
   });
 });

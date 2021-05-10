@@ -1,6 +1,6 @@
 import { DistanceService } from './../services/distance.service';
 import { TestBed } from '@angular/core/testing';
-import { UnpackResearchStudyResults } from './parse-data';
+import { unpackResearchStudyResults } from './parse-data';
 import { ResearchStudySearchEntry } from '../services/search.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -13,7 +13,7 @@ describe('UnpackResearchStudyResults', () => {
   );
 
   it('works on an empty array', () => {
-    const actual = UnpackResearchStudyResults([]);
+    const actual = unpackResearchStudyResults([]);
     expect(Array.isArray(actual)).toBe(true);
     expect(actual.length).toEqual(1);
     expect('Match Count' in actual[0]).toBe(true);
@@ -22,7 +22,7 @@ describe('UnpackResearchStudyResults', () => {
 
   it('works on an almost empty ResearchStudy', () => {
     const distServ = TestBed.inject(DistanceService);
-    const actual = UnpackResearchStudyResults([
+    const actual = unpackResearchStudyResults([
       new ResearchStudySearchEntry(
         {
           fullUrl: 'http://www.example.com/',
@@ -30,6 +30,7 @@ describe('UnpackResearchStudyResults', () => {
             resourceType: 'ResearchStudy'
           }
         },
+        0,
         distServ,
         '01886',
         "example source"
@@ -43,7 +44,7 @@ describe('UnpackResearchStudyResults', () => {
 
   it('exports sites', () => {
     const distServ = TestBed.inject(DistanceService);
-    const actual = UnpackResearchStudyResults([
+    const actual = unpackResearchStudyResults([
       new ResearchStudySearchEntry(
         {
           fullUrl: 'http://www.example.com/',
@@ -148,6 +149,7 @@ describe('UnpackResearchStudyResults', () => {
             ]
           }
         },
+        0,
         distServ,
         '01886',
         "example source"

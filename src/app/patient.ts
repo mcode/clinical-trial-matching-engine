@@ -3,38 +3,31 @@
  * instead provides hooks sufficient to pull the data used.
  */
 
-import { fhirclient } from 'fhirclient/lib/types';
+import { Address, HumanName, Patient as FHIRPatient } from './fhir-types';
 
-interface FHIRAddress {
-  use: string;
-  postalCode: string;
-}
-
-interface FHIRHumanName {
-  use?: string;
-  text?: string;
-  family?: string[];
-  given?: string[];
-}
-
-interface FHIRPatient extends fhirclient.FHIR.Patient {
-  name?: FHIRHumanName[];
-  address?: FHIRAddress[];
-}
+export type NameUse = HumanName['use'];
 
 /** Maps name types to their "power" - higher is better (makes the comparison read better below) */
-const casualNamePreferences = {
+const casualNamePreferences: { [K in NameUse]?: number } = {
   usual: 3,
   nickname: 2,
   official: 1
 };
 
 interface ObjectWithUse {
-  use: string;
+  use?: string;
 }
 
 function objectComparator<T extends ObjectWithUse>(usePreferences: { [key: string]: number }): (a: T, b: T) => T {
   return (a, b): T => {
+    if (!('use' in a)) {
+      // If a has no use and b has a use, prefer b, otherwise return a as "first"
+      return 'use' in b ? b : a;
+    }
+    if (!('use' in b)) {
+      // If a has a use and b did not, use a
+      return a;
+    }
     if (a.use in usePreferences) {
       if (b.use in usePreferences) {
         return usePreferences[a.use] > usePreferences[b.use] ? a : b;
@@ -54,6 +47,30 @@ function objectComparator<T extends ObjectWithUse>(usePreferences: { [key: strin
   };
 }
 
+/**
+ * Utility function to calculate age. (This exists more to make testing it easier
+ * than anything else.)
+ * @param birthDate the birth date
+ * @param date if given, the time to calculate the age as of
+ */
+export function calculateAge(birthDate: Date, date?: Date): number {
+  // Default to now if no date given
+  if (!date) date = new Date();
+  // Go ahead and do this in the local time zone
+  let age = date.getFullYear() - birthDate.getFullYear();
+  // This is potentially wrong - we need to see if we're before the actual birth day in the year
+  if (
+    date.getMonth() < birthDate.getMonth() ||
+    (date.getMonth() === birthDate.getMonth() && date.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+  return age;
+}
+
+/**
+ * This class provides convenience methods for pulling patient information from a FHIR patient record.
+ */
 export default class Patient {
   /**
    * The underlying FHIR resource.
@@ -68,12 +85,31 @@ export default class Patient {
    */
   getUsualName(): string | null {
     const name = this.getPreferredName();
-    if (name == null) {
+    if (name === null) {
       return null;
     } else if (name.given && Array.isArray(name.given) && name.given.length > 0) {
       return name.given.join(' ');
     } else {
       return null;
+    }
+  }
+  /**
+   * Looks up the preferred full name, if one exists.
+   * @returns the preferred full name, if possible
+   */
+  getFullName(): string | null {
+    const name = this.getPreferredName();
+    if (name === null) {
+      return null;
+    } else {
+      const fullName = [];
+      if (name.given) {
+        fullName.push(...name.given);
+      }
+      if (name.family) {
+        fullName.push(name.family);
+      }
+      return fullName.length > 0 ? fullName.join(' ') : null;
     }
   }
   /**
@@ -83,7 +119,7 @@ export default class Patient {
    * returns the first name with a defined "use" field, otherwise, it returns
    * the first name.
    */
-  getPreferredName(): FHIRHumanName {
+  getPreferredName(): HumanName {
     if (Array.isArray(this.resource.name) && this.resource.name.length > 0) {
       // Pick out the "best" name if we can
       return this.resource.name.reduce(objectComparator(casualNamePreferences));
@@ -91,11 +127,19 @@ export default class Patient {
       return null;
     }
   }
-  getGender(): string {
+  getGender(): FHIRPatient['gender'] {
     return this.resource.gender;
   }
-  getAge(): number {
-    return new Date().getFullYear() - new Date(this.resource.birthDate).getFullYear();
+  /**
+   * Returns the patient's age, if known
+   * @returns the patient's age, if known
+   */
+  getAge(): number | undefined {
+    if (this.resource.birthDate) {
+      return calculateAge(this.resource.birthDate);
+    } else {
+      return undefined;
+    }
   }
   /**
    * Returns the postal code from the address returned by getHomeAddress, if any.
@@ -108,7 +152,7 @@ export default class Patient {
    * Gets the home address, if available, otherwise an office address, otherwise
    * the first address of any type listed in the patient record.
    */
-  getHomeAddress(): FHIRAddress | null {
+  getHomeAddress(): Address | null {
     if (Array.isArray(this.resource.address) && this.resource.address.length > 0) {
       return this.resource.address.reduce(
         objectComparator({

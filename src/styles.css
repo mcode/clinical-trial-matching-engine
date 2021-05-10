@@ -1,2 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+/* Load Roboto globally */
+@import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Roboto+Mono|Roboto+Slab&display=swap');
+
+/* Default to using it globally */
+html, body {
+  font-family: Roboto;
+}

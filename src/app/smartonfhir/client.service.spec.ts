@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import * as FHIR from 'fhirclient';
 import Client from 'fhirclient/lib/Client';
 import { fhirclient } from 'fhirclient/lib/types';
-import { promise } from 'protractor';
 
 import { ClientService } from './client.service';
 

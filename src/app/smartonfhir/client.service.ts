@@ -9,7 +9,7 @@ type Patient = fhirclient.FHIR.Patient;
 /**
  * Values that can be placed into parameters
  */
-type Stringable = string | number | boolean | null;
+export type Stringable = string | number | boolean | null;
 
 /**
  * This provides a wrapper around the FHIR client.
@@ -21,14 +21,6 @@ export class ClientService {
   client: Client;
   patient: Patient;
   private pendingClient: Promise<Client> | null = null;
-  public resourceTypes = ['Patient', 'Condition', 'MedicationStatement', 'Observation', 'Procedure'];
-  public resourceParams = {
-    Patient: {},
-    Condition: { 'clinical-status': 'active' },
-    MedicationStatement: {},
-    Observation: {},
-    Procedure: {}
-  };
   /**
    * Gets a Promise that resolves to the client when the client is ready. If
    * the client is already ready, this returns a resolved Promise.

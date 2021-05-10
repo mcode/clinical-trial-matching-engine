@@ -1,67 +1,160 @@
-/* FIXME: These styles feel overly-specific. */
-.mi-margin-2{
-  margin: 2%;
-}
-.mi-margin-30{
-  margin: 30px;
+/* infobox is the large gray box at the top of the details */
+.infobox, .back-to-results {
+  background: #525151;
+  color: #FFF;
+  margin: 0 16px;
+  font-family: Roboto;
 }
 
-.containingDIV {
+.infobox {
   display: flex;
 }
 
-.outerDiv{
-  text-align: center;
-  width: 321px;
-  height: 217px;
-  background: rgba(255, 255, 255, 0.94);
-}
-
-.accordion {
-  color: #B7B7B7;
+.back-to-results {
   cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-  transition: 0.4s;
+  line-height: 40px;
+  white-space: nowrap;
+  text-overflow: clip;
+  padding: 2px;
 }
 
-.accordionDetails {
-  font-size: 20px;
-  color : #898686;
-  white-space: pre;
+.back-to-results svg {
+  vertical-align: middle;
 }
 
-.panel {
-  padding: 0 18px;
-  display: none;
+.infobox .details-column {
+  width: 80%;
+}
+
+.infobox .details-column dt {
+  color: #a5a3a3;
+  text-transform: uppercase;
+}
+
+.infobox .contacts-column {
+  width: 20%;
+  background-color: bisque;
+  color: #898686;
+  padding: 16px;
+}
+
+.contacts-column h1, .contacts-column h2 {
+  font-size: inherit;
+  text-transform: uppercase;
+}
+
+.contacts-column .sponsor h2 {
+  display: inline;
+}
+
+/* Add a space after it for padding */
+.contacts-column .sponsor h2::after {
+  content: " ";
+}
+
+.save-study {
+  margin: 10px;
+}
+
+.save-study button {
+  background-color: #efefef;
+  color: #0079e0;
+  border: solid 1px #707070;
+  border-radius: 10px;
+  font-family: Roboto-Bold, Roboto;
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  width: 95%;
+  height: 50px;
+}
+
+.save-study button svg {
+  vertical-align: middle;
+  /* This gets the icon visually centered. There has to be a better way to do this. */
+  padding-bottom: 2px;
+}
+
+.save-study button.saved {
+  background-color: #a3c5d2;
+}
+
+.status-icons {
+  display: flex;
+}
+
+.status-icons > div {
+  flex-grow: 1;
   background-color: white;
+  color: black;
+  margin: 1em;
+  padding: 1em;
+}
+
+.status-icons div.icon {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+.status-icons .overall-status div.icon {
+  width: 90%;
+  height: 41px;
+  line-height: 41px;
+  border-radius: 20.5px;
+  background: #30b400;
+  color: white;
+  border: 1px solid #30b400;
+  text-transform: uppercase;
+}
+
+.facilityList {
+  overflow-y: auto;
+  max-height: 100px;
+  color: #898686;
+  padding: 10px;
+}
+
+.facilityList .phone,
+.facilityList .email {
+  font-size: 80%;
+  color: #0079e0;
+}
+
+.facility {
+  margin-bottom: 15px;
+}
+
+.phone, .email {
+  font-size: 80%;
+  color: #0079e0;
+  line-height: 200%;
+}
+
+.phoneIcon,
+.emailIcon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  text-indent: 100%;
+  white-space: nowrap;
   overflow: hidden;
+  vertical-align: middle;
 }
 
-.color8 {
-    color : #ffffff !important;
+.phoneIcon {
+  background-image: url(/assets/images/phone.svg);
+}
+.emailIcon {
+  background-image: url(/assets/images/email.svg);
 }
 
-.cardtext {
-  font-family: Roboto light;
-  font-weight: 300;
-  font-size: 18px;
-  text-align: left;
-  color: #9f9c9c;
-  line-height: 25px;
+.details mat-panel-title {
+  /* Set the max-width to make them all roughly the same size when space is available */
+  max-width: 12em;
 }
-
-.detailCardText {
-  font-size: 30px;
-  color: #FFFFFF;
-}
-
-.pointer:hover {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+.details p {
+  color: #898686;
+  white-space: pre;
 }

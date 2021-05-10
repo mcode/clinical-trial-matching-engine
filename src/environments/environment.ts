@@ -4,6 +4,12 @@
 
 export const environment = {
   production: false,
+  // When true, stub out the FHIR service for a test one
+  stubFHIR: true,
+  // When true, stub out the search service for a test one
+  stubSearch: true,
+  // When true, have the search service act as if the user already searched
+  stubSearchResults: true,
   serviceURL: 'http://localhost:3000',
   allServers: { 'http://localhost:3000': 'Trialscope', 'http://localhost:3001': 'Breast Cancer Trials' }
 };
