@@ -27,10 +27,4 @@ describe('AppComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain('CLINICAL TRIAL');
   });
-
-  it("should have as title 'clinicalTrial'", () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('clinicalTrial');
-  });
 });

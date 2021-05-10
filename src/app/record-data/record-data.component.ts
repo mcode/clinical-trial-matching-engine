@@ -42,6 +42,9 @@ export class RecordDataComponent {
     this.procedures = [];
     this.medications = [];
 
+    // If there are currently no resources, just stop
+    if (this._bundleResources === undefined) return;
+
     // Pull the resource types and add to resource lists.
     for (const entry of this._bundleResources) {
       const resource = entry.resource;

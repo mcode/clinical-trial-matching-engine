@@ -35,12 +35,13 @@ describe('ResultsComponent', () => {
   });
 
   it('should get count', () => {
-    expect(component.resultCount).toEqual(0);
+    // Stub results has 3 results
+    expect(component.resultCount).toEqual(3);
   });
 
   it('should get page count', () => {
-    // Stub search result has 3 results
-    expect(component.pageCount).toBe(3);
+    // Stub search result has 1 page
+    expect(component.pageCount).toBe(1);
   });
 
   it('should clear filters', () => {

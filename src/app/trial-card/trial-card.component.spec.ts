@@ -5,7 +5,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TrialCardComponent } from './trial-card.component';
 
-//declare function require(moduleName: string): any;
 import data from '../result-details/sample_trial.json';
 
 describe('TrialCardComponent', () => {

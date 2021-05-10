@@ -20,7 +20,7 @@ describe('RecordDataComponent', () => {
           provide: MAT_DIALOG_DATA,
           useValue: {
             patient: patient,
-            bundleResources: []
+            resources: []
           }
         }
       ],

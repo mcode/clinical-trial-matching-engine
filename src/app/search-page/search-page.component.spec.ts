@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
 import { MatDialogModule } from '@angular/material/dialog';
@@ -9,6 +10,9 @@ import { StubClientService } from '../smartonfhir/stub-client.service';
 import { SearchService } from '../services/search.service';
 import { StubSearchService } from '../services/stub-search.service';
 
+import { AppMaterialModule } from '../shared/material.module';
+import { CustomSpinnerComponent } from '../custom-spinner/custom-spinner.component';
+import { SearchFieldsComponent } from '../search-fields/search-fields.component';
 import { SearchPageComponent } from './search-page.component';
 
 describe('SearchPageComponent', () => {
@@ -17,7 +21,7 @@ describe('SearchPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, MatDialogModule, ToastrModule.forRoot()],
+      imports: [NoopAnimationsModule, RouterTestingModule, MatDialogModule, ToastrModule.forRoot(), AppMaterialModule],
       providers: [
         // Stub out client/search service with test data
         {
@@ -29,7 +33,7 @@ describe('SearchPageComponent', () => {
           useClass: StubSearchService
         }
       ],
-      declarations: [SearchPageComponent]
+      declarations: [CustomSpinnerComponent, SearchFieldsComponent, SearchPageComponent]
     }).compileComponents();
   });
 
