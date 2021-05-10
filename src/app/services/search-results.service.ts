@@ -89,7 +89,7 @@ export class SearchResultsService {
   search(query: TrialQuery, patientBundle: PatientBundle): Observable<SearchResultsBundle> {
     this._query = query;
     // Forward to the actual service
-    const observable = this.searchService.searchAllTrials(patientBundle);
+    const observable = this.searchService.searchClinicalTrials(patientBundle);
     observable.subscribe((results) => {
       this._results = results;
     });

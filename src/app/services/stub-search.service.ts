@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { SearchService, SearchResultsBundle } from './search.service';
+import { SearchService, SearchResultsBundle, SearchProvider } from './search.service';
 import { DistanceService } from './distance.service';
 import { Bundle } from '../fhir-types';
 import { PatientBundle } from '../bundle';
@@ -130,6 +130,7 @@ export class StubSearchService extends SearchService {
       }
     ]
   };
+  provider = new SearchProvider('Test Service', 'http://www.example.com/');
   constructor(distService: DistanceService) {
     super(null, null, distService);
   }
@@ -148,6 +149,6 @@ export class StubSearchService extends SearchService {
   }
 
   createSearchResultsBundle(): SearchResultsBundle {
-    return new SearchResultsBundle(this.demoResults, this.distService, '01730');
+    return new SearchResultsBundle(this.demoResults, this.distService, '01730', this.provider);
   }
 }

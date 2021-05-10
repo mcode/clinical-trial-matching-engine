@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { environment } from '../../environments/environment';
+import { SearchProvider } from './search.service';
 
 /**
  * Provides a method for accessing global app configuration. Currently pulls
@@ -12,15 +13,12 @@ import { environment } from '../../environments/environment';
 })
 export class AppConfigService {
   /**
-   * Get the service endpoint URL. If not set, assumes the current URL should be
-   * used.
+   * Gets configured search providers.
+   * @returns an array of configured search providers
    */
-  getServiceURL(): string {
-    if ('serviceURL' in environment) return environment.serviceURL;
-    return window.location.toString();
-  }
-
-  getAllURLs(): { [key: string]: string } {
-    return environment.allServers;
+  getSearchProviders(): SearchProvider[] {
+    return environment.servers.map((def) => {
+      return new SearchProvider(def.name, def.url);
+    });
   }
 }

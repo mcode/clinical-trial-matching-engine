@@ -35,6 +35,13 @@ interface Location extends BaseResource {
 }
 
 /**
+ * Class that represents a source.
+ */
+export class SearchProvider {
+  constructor(public name: string, public url: string) {}
+}
+
+/**
  * Wrapper class for a research study. Provides hooks to deal with looking up
  * fields that may be missing in the actual FHIR result.
  */
@@ -47,20 +54,22 @@ export class ResearchStudySearchEntry {
   private cachedSites: fhirpath.FHIRResource[] | null = null;
   private containedResources: Map<string, fhirpath.FHIRResource> | null = null;
   dist: number | undefined;
+  provider: SearchProvider;
   /**
    *
    * @param entry the bundle entry
    * @param index the index of the entry within the search results
    * @param distService the distance service
    * @param zipCode the ZIP code of the search, used to calculate distance
-   * @param provider the provider that produced this result
+   * @param provider the provider that produced this result, currently this accepts a string for backwards compatibility
+   *    (mostly to avoid having to rewrite a ton of tests)
    */
   constructor(
     public entry: BundleEntry,
     public readonly index: number,
     private distService: DistanceService,
     zipCode: string,
-    public provider: string
+    provider: string | SearchProvider
   ) {
     if (this.entry.resource.resourceType !== 'ResearchStudy')
       throw new Error('Invalid resource type "' + this.entry.resource.resourceType + '"');
@@ -68,6 +77,7 @@ export class ResearchStudySearchEntry {
     this.search = this.entry.search;
     console.log(this.entry);
     this.getClosest(zipCode);
+    this.provider = typeof provider === 'string' ? new SearchProvider(provider, '') : provider;
   }
 
   // These provide "simple" access to various FHIR fields. They are generally
@@ -352,9 +362,33 @@ export class ResearchStudySearchEntry {
 export class SearchResultsBundle {
   researchStudies: ResearchStudySearchEntry[];
 
-  constructor(public bundle: Bundle, private distService: DistanceService, private zip: string, source: string) {
-    if (bundle.entry) {
-      this.researchStudies = bundle.entry
+  /**
+   * Create a new results bundle.
+   * @param bundle the original bundle
+   * @param distService distance service for calculating distance to a given trial
+   * @param zip the ZIP code of the original search
+   * @param source the service providing the service
+   */
+  constructor(bundle: Bundle, distService: DistanceService, zip: string, source: SearchProvider);
+  /**
+   * Copies the given bundles into a new merged bundle that covers the results.
+   * @param others the bundles to copy
+   */
+  constructor(others: SearchResultsBundle[]);
+  constructor(
+    bundleOrCollection: Bundle | SearchResultsBundle[],
+    distService?: DistanceService,
+    zip?: string,
+    source?: SearchProvider
+  ) {
+    if (Array.isArray(bundleOrCollection)) {
+      // Merge mode
+      this.researchStudies = [];
+      for (const results of bundleOrCollection) {
+        this.researchStudies.push(...results.researchStudies);
+      }
+    } else if (bundleOrCollection.entry) {
+      this.researchStudies = bundleOrCollection.entry
         .filter((entry) => {
           return entry.resource.resourceType === 'ResearchStudy';
         })
@@ -362,9 +396,6 @@ export class SearchResultsBundle {
     } else {
       this.researchStudies = [];
     }
-  }
-  public setStudies(studies: ResearchStudySearchEntry[]) {
-    this.researchStudies = studies;
   }
 
   get totalCount(): number {
@@ -386,17 +417,6 @@ export class SearchResultsBundle {
   }
 }
 
-function mergeSearchBundles(bundles: SearchResultsBundle[]): SearchResultsBundle {
-  let mergedBundle = bundles[0];
-  let studies = bundles.map((bundle: SearchResultsBundle) => {
-    return bundle.researchStudies;
-  });
-
-  const allStudies: ResearchStudySearchEntry[] = studies.reduce((accumulator, value) => accumulator.concat(value), []);
-  mergedBundle.setStudies(allStudies);
-  return mergedBundle;
-}
-
 /**
  * Service for running the search.
  */
@@ -406,18 +426,22 @@ function mergeSearchBundles(bundles: SearchResultsBundle[]): SearchResultsBundle
 export class SearchService {
   constructor(private client: HttpClient, private config: AppConfigService, protected distService: DistanceService) {}
 
-  searchAllTrials(patientBundle: PatientBundle): Observable<SearchResultsBundle> {
-    let services: { [key: string]: string } = this.config.getAllURLs();
-    let urls: string[] = Object.keys(services);
+  /**
+   * Searches for clinical trials across all configured services.
+   * @param patientBundle the patient data that provides parameters for the search
+   * @returns an Observable that returns matching bundles
+   */
+  searchClinicalTrials(patientBundle: PatientBundle): Observable<SearchResultsBundle> {
+    let services: SearchProvider[] = this.config.getSearchProviders();
     const zipCode = patientBundle.entry[0].resource.parameter[0].valueString;
 
-    let bundles = urls.map((url: string) => {
-      return this.client.post<Bundle>(url + '/getClinicalTrial', patientBundle).pipe(
+    let bundles = services.map((service) => {
+      return this.client.post<Bundle>(service.url + '/getClinicalTrial', patientBundle).pipe(
         map((bundle: Bundle) => {
-          return new SearchResultsBundle(bundle, this.distService, zipCode, services[url]);
+          return new SearchResultsBundle(bundle, this.distService, zipCode, service);
         })
       );
     });
-    return forkJoin(bundles).pipe(map(mergeSearchBundles));
+    return forkJoin(bundles).pipe(map((bundles) => new SearchResultsBundle(bundles)));
   }
 }

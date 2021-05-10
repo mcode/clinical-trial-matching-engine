@@ -2,7 +2,7 @@ import { AppConfigService } from './app-config.service';
 import { DistanceService } from './distance.service';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ResearchStudySearchEntry, SearchService, SearchResultsBundle } from './search.service';
+import { ResearchStudySearchEntry, SearchProvider, SearchService, SearchResultsBundle } from './search.service';
 
 describe('SearchService', () => {
   beforeEach(() =>
@@ -262,7 +262,7 @@ describe('ResearchStudySearchEntry', () => {
       link: [],
       entry: [testEntry2]
     };
-    const bundle = new SearchResultsBundle(bundleData, distServ, '01886', 'example source');
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886', new SearchProvider('example source', ''));
     expect(bundle).toBeDefined();
   });
   it('builds filters', () => {
@@ -272,7 +272,7 @@ describe('ResearchStudySearchEntry', () => {
       link: [],
       entry: [testEntry2]
     };
-    const bundle = new SearchResultsBundle(bundleData, distServ, '01886', 'example source');
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886', new SearchProvider('example source', ''));
     expect(bundle.buildFilters('id')).toBeDefined();
   });
 });
