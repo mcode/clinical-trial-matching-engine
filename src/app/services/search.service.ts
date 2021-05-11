@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AppConfigService } from './app-config.service';
+import { AppConfigService, SearchProvider } from './app-config.service';
 import * as fhirpath from 'fhirpath';
 import { GeolibInputCoordinates } from 'geolib/es/types';
 import { PatientBundle } from '../bundle';
@@ -32,13 +32,6 @@ interface Location extends BaseResource {
   name?: string;
   telecom?: unknown;
   position?: { longitude?: number; latitude?: number };
-}
-
-/**
- * Class that represents a source.
- */
-export class SearchProvider {
-  constructor(public name: string, public url: string) {}
 }
 
 /**

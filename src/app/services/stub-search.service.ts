@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { SearchService, SearchResultsBundle, SearchProvider } from './search.service';
+import { SearchProvider } from './app-config.service';
+import { SearchService, SearchResultsBundle } from './search.service';
 import { DistanceService } from './distance.service';
 import { Bundle } from '../fhir-types';
 import { PatientBundle } from '../bundle';

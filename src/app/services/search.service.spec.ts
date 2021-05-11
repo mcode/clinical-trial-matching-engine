@@ -1,8 +1,8 @@
-import { AppConfigService } from './app-config.service';
+import { AppConfigService, SearchProvider } from './app-config.service';
 import { DistanceService } from './distance.service';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ResearchStudySearchEntry, SearchProvider, SearchService, SearchResultsBundle } from './search.service';
+import { ResearchStudySearchEntry, SearchService, SearchResultsBundle } from './search.service';
 
 describe('SearchService', () => {
   beforeEach(() =>
