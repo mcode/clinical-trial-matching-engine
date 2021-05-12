@@ -3,6 +3,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { SearchService } from '../services/search.service';
 import { StubSearchService } from '../services/stub-search.service';
+import { SearchResultsService } from '../services/search-results.service';
+import { StubSearchResultsService } from '../services/stub-search-results.service';
 
 import { ResultsComponent } from './results.component';
 
@@ -14,10 +16,14 @@ describe('ResultsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       providers: [
+        // Use stub search/search results services to pre-populate results
         {
-          // Use the stub search service so HttpClient isn't needed
           provide: SearchService,
           useClass: StubSearchService
+        },
+        {
+          provide: SearchResultsService,
+          useClass: StubSearchResultsService
         }
       ],
       declarations: [ResultsComponent]

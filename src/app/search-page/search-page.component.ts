@@ -3,9 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 
 import { RecordDataComponent } from '../record-data/record-data.component';
-import { ClientService } from '../smartonfhir/client.service';
 import Patient from '../patient';
 import { createPatientBundle } from '../bundle';
+import { PatientService } from '../services/patient.service';
 import { SearchResultsService } from '../services/search-results.service';
 import { ResearchStudyStatus, ResearchStudyPhase } from '../fhir-constants';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
@@ -68,7 +68,7 @@ export class SearchPageComponent implements OnInit {
   constructor(
     private router: Router,
     private searchResultsService: SearchResultsService,
-    private fhirService: ClientService,
+    private patientService: PatientService,
     private toastr: ToastrService,
     private dialog: MatDialog
   ) {
@@ -87,82 +87,36 @@ export class SearchPageComponent implements OnInit {
   loadPatientData(): void {
     // Show the loading screen when the patient data is loaded
     this.showLoadingOverlay('Loading patient data...');
-    this.fhirService
+    this.patientService
       .getPatient()
       .then((patient) => {
-        // Wrap the patient in a class that handles extracting values
-        this.patient = new Patient(patient);
+        this.patient = patient;
         this.patientName = this.patient.getUsualName();
         // Also take this opportunity to set the zip code, if there is one
         const zipCode = this.patient.getHomePostalCode();
         if (zipCode) {
           this.searchFieldsComponent.zipCode.setValue(zipCode);
         }
-      })
-      .catch((err) => {
-        console.log(err);
-        this.toastr.error(err.message, 'Error Loading Patient Data:');
-        return new Patient({ resourceType: 'Patient' });
-      });
-
-    // Gathering resources for patient bundle
-    this.fhirService
-      .getResources('Condition', {
-        _profile: 'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition'
-      })
-      .then((condition) => {
-        const resourceTypes = ['Patient', 'Condition', 'MedicationStatement', 'Observation', 'Procedure'];
-        const resourceParams = {
-          Patient: {},
-          Condition: { 'clinical-status': 'active' },
-          MedicationStatement: {},
-          Observation: {},
-          Procedure: {}
-        };
-        if (condition.length > 0) {
-          // get onset date of primary cancer condition
-          const dateString = condition[0]['resource']['onsetDateTime'];
-          if (dateString) {
-            const newDate = new Date(dateString);
-            newDate.setFullYear(newDate.getFullYear() - 2);
-            const newStringDate = newDate.toISOString();
-            // set search params for resource types: date more recent than 2 years before the primary cancer condition onset
-            resourceParams['Observation'] = { date: 'ge' + newStringDate };
-            resourceParams['Procedure'] = { date: 'ge' + newStringDate };
-            resourceParams['MedicationStatement'] = { effective: 'ge' + newStringDate };
+        // With the patient loaded, move on to loading resources
+        this.patientService.getPatientData().subscribe(
+          (next) => {
+            if (next.total) this.setLoadingProgress(next.loaded, next.total);
+          },
+          (error) => {
+            console.log(error);
+            this.toastr.error(error.message, 'Error Loading Patient Data:');
+            this.hideLoadingOverlay();
+          },
+          () => {
+            this.hideLoadingOverlay();
           }
-        }
-        const totalLoading = resourceTypes.length;
-        let currentLoaded = 0;
-        // Intentionally leave it indeterminite at 0, otherwise it disappears
-        return Promise.all(
-          resourceTypes.map((resourceType) => {
-            return this.fhirService
-              .getResources(resourceType, resourceParams[resourceType])
-              .then((records) => {
-                currentLoaded++;
-                this.setLoadingProgress(currentLoaded, totalLoading);
-                this.bundleResources.push(
-                  ...(records.filter((record) => {
-                    // Check to make sure it's a bundle entry
-                    return 'fullUrl' in record && 'resource' in record;
-                  }) as BundleEntry[])
-                );
-              })
-              .catch((err) => {
-                console.log(err);
-                this.toastr.error(err.message, 'Error Loading Patient Data: ' + resourceType);
-              });
-          })
-        ).finally(() => {
-          // Always end
-          this.hideLoadingOverlay();
-        });
+        );
       })
       .catch((err) => {
         console.log(err);
         this.toastr.error(err.message, 'Error Loading Patient Data:');
         this.hideLoadingOverlay();
+        return new Patient({ resourceType: 'Patient' });
       });
   }
 
@@ -216,6 +170,5 @@ export class SearchPageComponent implements OnInit {
   private setLoadingProgress(current: number, max: number): void {
     this.loadingMode = 'determinate';
     this.loadingPercentage = (current / max) * 100;
-    console.log('Current loading: ' + this.loadingPercentage);
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Observable, of as observableOf } from 'rxjs';
 import * as FHIR from 'fhirclient';
-import { ClientService, Stringable } from './client.service';
+import { ClientService, QueryParameters, AllRecordsChunk } from './client.service';
 import { fhirclient } from 'fhirclient/lib/types';
 
 /**
@@ -59,16 +60,7 @@ export class StubClientService extends ClientService {
   /**
    * Always returns an empty array.
    */
-  getAllRecords(_query: string): Promise<fhirclient.FHIR.BackboneElement[]> {
-    return Promise.resolve([]);
-  }
-  /**
-   * Always returns an empty array.
-   */
-  getResources(
-    _resourceType: string,
-    _parameters?: { [key: string]: Stringable }
-  ): Promise<fhirclient.FHIR.BackboneElement[]> {
-    return Promise.resolve([]);
+  getAllRecords(_type: string, _parameters?: QueryParameters): Observable<AllRecordsChunk> {
+    return observableOf(new AllRecordsChunk([]));
   }
 }

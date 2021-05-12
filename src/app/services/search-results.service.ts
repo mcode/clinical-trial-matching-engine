@@ -3,11 +3,8 @@ import { Observable } from 'rxjs';
 
 import { PatientBundle } from '../bundle';
 import { ResearchStudySearchEntry, SearchResultsBundle, SearchService } from './search.service';
-import { StubSearchService } from './stub-search.service';
 import { unpackResearchStudyResults } from '../export/parse-data';
 import { exportTrials } from '../export/export-data';
-
-import { environment } from '../../environments/environment';
 
 /**
  * This defines the fields that can be searched on as defined by the clinical
@@ -29,8 +26,8 @@ export interface TrialQuery {
   providedIn: 'root'
 })
 export class SearchResultsService {
-  private _query: TrialQuery = null;
-  private _results: SearchResultsBundle = null;
+  protected _query: TrialQuery = null;
+  protected _results: SearchResultsBundle = null;
   /**
    * Saved clinical trials.
    */
@@ -40,18 +37,7 @@ export class SearchResultsService {
    */
   private savedClinicalTrialsIdices = new Set<number>();
 
-  constructor(private searchService: SearchService) {
-    if (environment.stubSearchResults) {
-      this._query = {
-        zipCode: '01730',
-        travelRadius: 10
-      };
-      if (this.searchService instanceof StubSearchService) {
-        // Grab the fake results
-        this._results = this.searchService.createSearchResultsBundle();
-      }
-    }
-  }
+  constructor(private searchService: SearchService) {}
 
   get query(): TrialQuery {
     return this._query;

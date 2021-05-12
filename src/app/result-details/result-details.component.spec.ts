@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SearchService } from '../services/search.service';
 import { StubSearchService } from '../services/stub-search.service';
+import { SearchResultsService } from '../services/search-results.service';
+import { StubSearchResultsService } from '../services/stub-search-results.service';
 import { DistanceService } from './../services/distance.service';
 import { ResearchStudySearchEntry } from './../services/search.service';
 
@@ -28,10 +30,14 @@ describe('ResultDetailsComponent', () => {
             }
           }
         },
+        // Use stub search/search results services to pre-populate results
         {
-          // Use the stub search service so HttpClient isn't needed
           provide: SearchService,
           useClass: StubSearchService
+        },
+        {
+          provide: SearchResultsService,
+          useClass: StubSearchResultsService
         }
       ],
       declarations: [ResultDetailsComponent]
@@ -58,33 +64,14 @@ describe('ResultDetailsComponent', () => {
     expect(component).toBeTruthy();
   });
   //on testing startup no trial should be saved
-  it('trialSaved should be false', () => {
-    expect(component.trialSaved).toBeFalsy();
+  it('trialSaved should be initially false', () => {
+    expect(component.trialSaved).toBeFalse();
   });
   it('should toggle trial saved', () => {
-    const distServ = TestBed.inject(DistanceService) as DistanceService;
-    component.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, 0, distServ, '01886', 'example source');
-    component.query = {
-      zipCode: '01886',
-      travelRadius: null,
-      phase: null,
-      recruitmentStatus: null
-    };
-    fixture.detectChanges();
     component.toggleTrialSaved();
-    expect(component.trialSaved).toBeTruthy();
+    expect(component.trialSaved).toBeTrue();
   });
   it('should get Color', () => {
-    const distServ = TestBed.inject(DistanceService) as DistanceService;
-    component.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, 0, distServ, '01886', 'example source');
-    component.query = {
-      zipCode: '01886',
-      travelRadius: null,
-      phase: null,
-      recruitmentStatus: null
-    };
-    fixture.detectChanges();
-
     expect(component.getColor('No Match')).toBe('black');
     expect(component.getColor('Possible Match')).toBe('#E6BE03');
     expect(component.getColor('likely Match')).toBe('green');
