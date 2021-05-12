@@ -24,7 +24,7 @@ describe('ResultDetailsComponent', () => {
           useValue: {
             snapshot: {
               paramMap: {
-                get: () => '0' // The ID used for the result
+                get: () => 'Test_Service_0' // The ID used for the result
               }
             }
           }

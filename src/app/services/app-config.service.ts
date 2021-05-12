@@ -6,7 +6,10 @@ import { environment } from '../../environments/environment';
  * Class that represents a source.
  */
 export class SearchProvider {
-  constructor(public name: string, public url: string) {}
+  id: string;
+  constructor(public name: string, public url: string) {
+    this.id = name.replace(/\W+/g, '_');
+  }
 }
 
 /**

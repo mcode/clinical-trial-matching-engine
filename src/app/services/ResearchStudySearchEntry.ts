@@ -47,15 +47,22 @@ export class ResearchStudySearchEntry {
     public entry: BundleEntry,
     private distService: DistanceService,
     zipCode: string,
-    provider: string | SearchProvider
+    provider: string | SearchProvider,
+    id?: string
   ) {
     if (this.entry.resource.resourceType !== 'ResearchStudy')
       throw new Error(`Invalid resource type "${this.entry.resource.resourceType}"`);
     this.resource = this.entry.resource as ResearchStudy;
     this.search = this.entry.search;
-    this.id = createGlobalID();
-    this.getClosest(zipCode);
     this.provider = typeof provider === 'string' ? new SearchProvider(provider, '') : provider;
+    if (!id) {
+      // See if there's an ID within the entry
+      if (entry.resource?.id) {
+        id = this.provider.id + '_' + entry.resource.id;
+      }
+    }
+    this.id = id ?? createGlobalID();
+    this.getClosest(zipCode);
   }
 
   // These provide "simple" access to various FHIR fields. They are generally

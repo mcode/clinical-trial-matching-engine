@@ -19,6 +19,7 @@ export class StubSearchService extends SearchService {
         fullUrl: 'https://www.example.com/result/1',
         resource: {
           resourceType: 'ResearchStudy',
+          id: '0',
           identifier: [
             {
               use: 'official',
@@ -107,6 +108,7 @@ export class StubSearchService extends SearchService {
         resource: {
           resourceType: 'ResearchStudy',
           status: 'approved',
+          id: '1',
           phase: {
             coding: 'early-phase-1',
             text: 'Early Phase 1'
@@ -123,7 +125,8 @@ export class StubSearchService extends SearchService {
         fullUrl: 'https://www.example.com/result/2',
         resource: {
           resourceType: 'ResearchStudy',
-          status: 'active'
+          status: 'active',
+          id: '2'
         },
         search: {
           score: 0.1
