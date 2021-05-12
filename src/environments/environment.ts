@@ -2,8 +2,20 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
+export const environment: {
+  production: boolean;
+  stubFHIR?: boolean;
+  stubSearch?: boolean;
+  stubSearchResults?: boolean;
+  serviceURL: string;
+} = {
   production: false,
+  // When true, stub out the FHIR service for a test one
+  stubFHIR: true,
+  // When true, stub out the search service for a test one
+  stubSearch: true,
+  // When true, have the search service act as if the user already searched
+  stubSearchResults: true,
   serviceURL: 'http://localhost:3000'
 };
 

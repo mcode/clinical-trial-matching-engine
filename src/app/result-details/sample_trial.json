@@ -1,6 +1,7 @@
 {
     "fullUrl": "filler",
     "resource": {
+        "resourceType": "ResearchStudy",
         "nctId": "NCT03587740",
         "title": "ATOP TRIAL: T-DM1 in HER2 Positive Breast Cancer",
         "conditions": "[\"Breast Cancer\"]",

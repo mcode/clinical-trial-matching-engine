@@ -4,17 +4,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppConfigService } from './app-config.service';
-import { fhirclient } from 'fhirclient/lib/types';
 import * as fhirpath from 'fhirpath';
 import { GeolibInputCoordinates } from 'geolib/es/types';
 import { PatientBundle } from '../bundle';
+import { Bundle, BundleEntry, Group, ResearchStudy, Search } from '../fhir-types';
 
 /**
  * Marks a path.
  */
 export type FHIRPath = string;
-
-export type ResearchStudy = fhirclient.FHIR.Resource;
 
 /**
  * Very basic facility mapping. Will be removed in favor of direct access to
@@ -35,14 +33,6 @@ interface Location extends BaseResource {
   telecom?: unknown;
   position?: { longitude?: number; latitude?: number };
 }
-interface Search {
-  mode: string;
-  score: number;
-}
-
-interface BundleEntry extends fhirclient.FHIR.BundleEntry {
-  search?: Search;
-}
 
 /**
  * Wrapper class for a research study. Provides hooks to deal with looking up
@@ -52,13 +42,27 @@ export class ResearchStudySearchEntry {
   /**
    * The embedded resource.
    */
-  resource: fhirclient.FHIR.Resource;
+  resource: ResearchStudy;
   search?: Search;
   private cachedSites: fhirpath.FHIRResource[] | null = null;
   private containedResources: Map<string, fhirpath.FHIRResource> | null = null;
   dist: number | undefined;
-  constructor(public entry: BundleEntry, private distService: DistanceService, private zipCode: string) {
-    this.resource = this.entry.resource;
+  /**
+   *
+   * @param entry the bundle entry
+   * @param index the index of the entry within the search results
+   * @param distService the distance service
+   * @param zipCode the ZIP code of the search, used to calculate distance
+   */
+  constructor(
+    public entry: BundleEntry,
+    public readonly index: number,
+    private distService: DistanceService,
+    zipCode: string
+  ) {
+    if (this.entry.resource.resourceType !== 'ResearchStudy')
+      throw new Error('Invalid resource type "' + this.entry.resource.resourceType + '"');
+    this.resource = this.entry.resource as ResearchStudy;
     this.search = this.entry.search;
     console.log(this.entry);
 
@@ -87,21 +91,24 @@ export class ResearchStudySearchEntry {
   }
   get criteria(): string {
     if (this.resource.enrollment) {
-      const groupIds = this.resource.enrollment.map((enrollment) => (enrollment.reference as string).substr(1));
+      const groupIds = this.resource.enrollment.map((enrollment) => enrollment.reference.substr(1));
       const characteristics = [];
       for (const ref of this.resource.contained) {
         if (ref.resourceType == 'Group' && groupIds.includes(ref.id)) {
-          if (ref.characteristic) {
+          const groupRef = ref as Group;
+          if (groupRef.characteristic) {
             //characteristic is an array
 
             //how criteria is stored in characteristic currently unkown
             let exclusion = 'Exclusion: \n';
             let inclusion = 'Inclusion: \n';
-            for (const trait of ref.characteristic) {
-              if (trait.exclude) {
-                exclusion += `   ${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
-              } else {
-                inclusion += `   ${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
+            for (const trait of groupRef.characteristic) {
+              if (trait.valueCodeableConcept) {
+                if (trait.exclude) {
+                  exclusion += `   ${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
+                } else {
+                  inclusion += `   ${trait.code.text} : ${trait.valueCodeableConcept.text}, \n`;
+                }
               }
             }
             const traits = `${inclusion} \n ${exclusion}`;
@@ -151,11 +158,9 @@ export class ResearchStudySearchEntry {
     return this.lookupString("contact.telecom.where(system = 'email').value", '');
   }
   /**
-   * @deprecated This will be REMOVED as the NCT ID is not the proper ID to
-   * track for saved trials. Instead the URL of the ResearchStudy should be
-   * used.
+   * Returns the NCT ID for the trial, if it has one. If it does not have an NCT ID, returns undefined.
    */
-  get nctId(): string {
+  get nctId(): string | undefined {
     if (this.resource.identifier && this.resource.identifier.length > 0) {
       const identifier = this.resource.identifier.find(
         (id) => id.use === 'official' && id.system === 'http://clinicaltrials.gov'
@@ -164,8 +169,9 @@ export class ResearchStudySearchEntry {
         return identifier.value;
       }
     }
-    return '';
+    return undefined;
   }
+
   get matchLikelihood(): string | null {
     let matchStr = null;
     if (this.search && this.search.score != null) {
@@ -341,13 +347,33 @@ export class ResearchStudySearchEntry {
 export class SearchResultsBundle {
   researchStudies: ResearchStudySearchEntry[];
 
-  constructor(public bundle: fhirclient.FHIR.Bundle, private distService: DistanceService, private zip: string) {
-    if (bundle.entry) {
-      this.researchStudies = bundle.entry
+  /**
+   * Create a new results bundle.
+   * @param bundle the original bundle
+   * @param distService distance service for calculating distance to a given trial
+   * @param zip the ZIP code of the original search
+   */
+  constructor(bundle: Bundle, distService: DistanceService, zip: string);
+  /**
+   * Copies the given bundles into a new merged bundle that covers the results.
+   * @param others the bundles to copy
+   */
+  constructor(others: SearchResultsBundle[]);
+  constructor(bundleOrCollection: Bundle | SearchResultsBundle[], distService?: DistanceService, zip?: string) {
+    if (Array.isArray(bundleOrCollection)) {
+      // Merge mode
+      this.researchStudies = [];
+      console.log(`Merging ${bundleOrCollection.length} bundles`);
+      for (const results of bundleOrCollection) {
+        this.researchStudies.push(...results.researchStudies);
+        console.log(`Merged ${results.researchStudies.length} entries, have ${this.researchStudies.length} studies`);
+      }
+    } else if (bundleOrCollection.entry) {
+      this.researchStudies = bundleOrCollection.entry
         .filter((entry) => {
           return entry.resource.resourceType === 'ResearchStudy';
         })
-        .map((entry) => new ResearchStudySearchEntry(entry, distService, zip));
+        .map((entry, index) => new ResearchStudySearchEntry(entry, index, distService, zip));
     } else {
       this.researchStudies = [];
     }
@@ -372,18 +398,20 @@ export class SearchResultsBundle {
   }
 }
 
-
+/**
+ * Service for running the search.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
-  constructor(private client: HttpClient, private config: AppConfigService, private distService: DistanceService) {}
+  constructor(private client: HttpClient, private config: AppConfigService, protected distService: DistanceService) {}
 
   searchClinicalTrials(patientBundle: PatientBundle): Observable<SearchResultsBundle> {
     const zipCode = patientBundle.entry[0].resource.parameter[0].valueString;
 
-    return this.client.post<fhirclient.FHIR.Bundle>(this.config.getServiceURL() + '/getClinicalTrial', patientBundle).pipe(
-      map((bundle: fhirclient.FHIR.Bundle) => {
+    return this.client.post<Bundle>(this.config.getServiceURL() + '/getClinicalTrial', patientBundle).pipe(
+      map((bundle: Bundle) => {
         return new SearchResultsBundle(bundle, this.distService, zipCode);
       })
     );
