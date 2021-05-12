@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import * as FHIR from 'fhirclient';
 import Client from 'fhirclient/lib/Client';
@@ -10,6 +11,34 @@ type Patient = fhirclient.FHIR.Patient;
  * Values that can be placed into parameters
  */
 export type Stringable = string | number | boolean | null;
+
+/**
+ * Additional parameters to restrict a query. These are converted into a URL query string.
+ */
+export type QueryParameters = { [key: string]: Stringable };
+
+/**
+ * Converts a resourceType and optional query parameters to a FHIR query.
+ * @param resourceType the resource type
+ * @param parameters any optional query parameters
+ */
+export function createQuery(resourceType: string, parameters?: QueryParameters): string {
+  let query = resourceType;
+  if (parameters) {
+    const params = [];
+    for (const p in parameters) {
+      params.push(
+        encodeURIComponent(p) + '=' + encodeURIComponent(parameters[p] === null ? 'null' : parameters[p].toString())
+      );
+    }
+    query += '?' + params.join('&');
+  }
+  return query;
+}
+
+export class AllRecordsChunk {
+  constructor(public elements: fhirclient.FHIR.BackboneElement[], public total?: number) {}
+}
 
 /**
  * This provides a wrapper around the FHIR client.
@@ -74,6 +103,7 @@ export class ClientService {
   ): Promise<fhirclient.JsonObject> {
     return this.getClient().then((client) => client.patient.request(requestOptions, fhirOptions));
   }
+
   /**
    * Gets records from the current patient. There may be multiple pages of
    * results returned, to get multiple at once, set the page limit to be higher
@@ -83,69 +113,40 @@ export class ClientService {
   getRecords(query: string, pages = 1): Promise<fhirclient.JsonObject> {
     return this.request(query, { flat: true, pageLimit: pages });
   }
+
   /**
    * Fetches ALL records, continuing to send requests until all pages are
    * fetched. To get records with a limit, use getRecords with a limited number
    * of pages.
-   * @param query the type of FHIR record to fetch
+   * @param resourceType the resource type to use
+   * @param parameters the parameters to send
    */
-  getAllRecords(query: string): Promise<fhirclient.FHIR.BackboneElement[]> {
-    return new Promise((resolve, reject) => {
+  getAllRecords(resourceType: string, parameters?: QueryParameters): Observable<AllRecordsChunk> {
+    let query = createQuery(resourceType, parameters);
+    return new Observable((subscriber) => {
       this.getClient().then((client) => {
-        // Here is where the 'magic' happens
-        const results: fhirclient.FHIR.BackboneElement[] = [];
         const handlePage = (bundle): void => {
           if (bundle.entry) {
-            // Append these entries to the list - entry is conceptually optional,
-            // so make sure it exists before appending
-            // (Concat creates a new array, this pushes the results onto the end)
-            Array.prototype.push.apply(results, bundle.entry);
+            // Fire off the event
+            subscriber.next(new AllRecordsChunk(bundle.entry, bundle.total));
           }
           if (bundle.link) {
             // Look through the links to see if there's a next page
             for (const link of bundle.link) {
               if (link.relation === 'next') {
                 // Have a next page link - so follow it and only the first one.
-                client.request(link.url).then(handlePage, reject);
+                client.request(link.url).then(handlePage, subscriber.error);
                 return;
               }
             }
           }
           // If we've fallen through, we have no links, so just resolve with
           // whatever we have
-          resolve(results);
+          subscriber.complete();
           return;
         };
-        client.patient.request(query).then(handlePage, reject);
-      }, reject);
+        client.patient.request(query).then(handlePage, subscriber.error);
+      }, subscriber.error);
     });
-  }
-  /**
-   * Gets all conditions from the client.
-   */
-  getConditions(parameters?: { [key: string]: Stringable }): Promise<fhirclient.FHIR.Resource[]> {
-    return this.getResources('Condition', parameters).then((resources) =>
-      resources.map((resource) => (resource as fhirclient.FHIR.BundleEntry).resource)
-    );
-  }
-  /**
-   * Gets all resources of the given type from the client.
-   */
-  getResources(
-    resourceType: string,
-    parameters?: { [key: string]: Stringable }
-  ): Promise<fhirclient.FHIR.BackboneElement[]> {
-    let query = resourceType;
-    if (parameters) {
-      const params = [];
-      for (const p in parameters) {
-        params.push(
-          encodeURIComponent(p) + '=' + encodeURIComponent(parameters[p] === null ? 'null' : parameters[p].toString())
-        );
-      }
-      query += '?' + params.join('&');
-    }
-    // Resources should all be BundleEntries
-    return this.getAllRecords(query);
   }
 }

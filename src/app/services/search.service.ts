@@ -347,9 +347,29 @@ export class ResearchStudySearchEntry {
 export class SearchResultsBundle {
   researchStudies: ResearchStudySearchEntry[];
 
-  constructor(public bundle: Bundle, private distService: DistanceService, private zip: string) {
-    if (bundle.entry) {
-      this.researchStudies = bundle.entry
+  /**
+   * Create a new results bundle.
+   * @param bundle the original bundle
+   * @param distService distance service for calculating distance to a given trial
+   * @param zip the ZIP code of the original search
+   */
+  constructor(bundle: Bundle, distService: DistanceService, zip: string);
+  /**
+   * Copies the given bundles into a new merged bundle that covers the results.
+   * @param others the bundles to copy
+   */
+  constructor(others: SearchResultsBundle[]);
+  constructor(bundleOrCollection: Bundle | SearchResultsBundle[], distService?: DistanceService, zip?: string) {
+    if (Array.isArray(bundleOrCollection)) {
+      // Merge mode
+      this.researchStudies = [];
+      console.log(`Merging ${bundleOrCollection.length} bundles`);
+      for (const results of bundleOrCollection) {
+        this.researchStudies.push(...results.researchStudies);
+        console.log(`Merged ${results.researchStudies.length} entries, have ${this.researchStudies.length} studies`);
+      }
+    } else if (bundleOrCollection.entry) {
+      this.researchStudies = bundleOrCollection.entry
         .filter((entry) => {
           return entry.resource.resourceType === 'ResearchStudy';
         })

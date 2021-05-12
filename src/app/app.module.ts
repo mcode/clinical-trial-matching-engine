@@ -16,6 +16,8 @@ import Client from 'fhirclient/lib/Client';
 // Search service
 import { SearchService } from './services/search.service';
 import { StubSearchService } from './services/stub-search.service';
+import { SearchResultsService } from './services/search-results.service';
+import { StubSearchResultsService } from './services/stub-search-results.service';
 
 // Custom components
 import { AppComponent } from './app.component';
@@ -45,6 +47,10 @@ const SEARCH_PROVIDER: Provider = {
   provide: SearchService,
   useClass: environment.stubSearch ? StubSearchService : SearchService
 };
+const SEARCH_RESULTS_PROVIDER: Provider = {
+  provide: SearchResultsService,
+  useClass: environment.stubSearchResults ? StubSearchResultsService : SearchResultsService
+};
 @NgModule({
   // prettier-ignore
   declarations: [
@@ -71,6 +77,7 @@ const SEARCH_PROVIDER: Provider = {
   providers: [
     FHIR_PROVIDER,
     SEARCH_PROVIDER,
+    SEARCH_RESULTS_PROVIDER,
     {
       provide: APP_INITIALIZER,
       useFactory: fhirInitializeFn,

@@ -3,7 +3,7 @@
  * instead provides hooks sufficient to pull the data used.
  */
 
-import { Address, HumanName, Patient as FHIRPatient } from './fhir-types';
+import { Address, HumanName, parseFHIRDate, Patient as FHIRPatient } from './fhir-types';
 
 export type NameUse = HumanName['use'];
 
@@ -136,7 +136,12 @@ export default class Patient {
    */
   getAge(): number | undefined {
     if (this.resource.birthDate) {
-      return calculateAge(this.resource.birthDate);
+      try {
+        return calculateAge(parseFHIRDate(this.resource.birthDate));
+      } catch (ex) {
+        console.log(`Error calculating age: ${ex}`);
+        return undefined;
+      }
     } else {
       return undefined;
     }
