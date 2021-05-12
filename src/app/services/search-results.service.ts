@@ -74,12 +74,23 @@ export class SearchResultsService {
 
   search(query: TrialQuery, patientBundle: PatientBundle): Observable<SearchResultsBundle> {
     this._query = query;
-    // Forward to the actual service
-    const observable = this.searchService.searchClinicalTrials(patientBundle);
-    observable.subscribe((results) => {
-      this._results = results;
+    // This is sort of silly but we need to ensure our observable is called first
+    return new Observable<SearchResultsBundle>((subscriber) => {
+      // Forward to the actual service
+      const observable = this.searchService.searchClinicalTrials(patientBundle);
+      observable.subscribe(
+        (results) => {
+          this._results = results;
+          subscriber.next(results);
+        },
+        (error) => {
+          subscriber.error(error);
+        },
+        () => {
+          subscriber.complete();
+        }
+      );
     });
-    return observable;
   }
 
   isTrialSaved(trial: ResearchStudySearchEntry | number): boolean {
