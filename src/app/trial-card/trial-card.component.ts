@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { ResearchStudySearchEntry } from './../services/search.service';
-import { TrialQuery } from './../services/search-results.service';
+import { ResearchStudySearchEntry } from '../services/ResearchStudySearchEntry';
+import { TrialQuery } from '../services/search-results.service';
 
 @Component({
   selector: 'app-trial-card',

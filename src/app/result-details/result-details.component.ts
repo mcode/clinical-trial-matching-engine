@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResearchStudySearchEntry } from './../services/search.service';
+import { ResearchStudySearchEntry } from './../services/ResearchStudySearchEntry';
 import { SearchResultsService, TrialQuery } from './../services/search-results.service';
 
 /**
@@ -21,10 +21,8 @@ export class ResultDetailsComponent implements OnInit {
   ngOnInit() {
     this.query = this.resultsService.query;
     const id = this.route.snapshot.paramMap.get('id');
-    if (id && /^[0-9]+$/.test(id)) {
-      // Basic test to ensure it's an integer
-      const index = Number(id);
-      this.clinicalTrial = this.resultsService.getResult(index);
+    if (id) {
+      this.clinicalTrial = this.resultsService.getResult(id);
       this.trialSaved = this.resultsService.isTrialSaved(this.clinicalTrial);
     }
   }

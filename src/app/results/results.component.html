@@ -34,7 +34,7 @@
   </div>
 </div>
 <div class="results">
-  <div *ngFor="let trial of selectedPageTrials; let i = index" class="result" (click)="showDetails(i)">
+  <div *ngFor="let trial of selectedPageTrials" class="result" (click)="showDetails(trial)">
     <!-- Card Component-->
     <app-trial-card
       [clinicalTrial]="trial"

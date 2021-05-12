@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ResearchStudySearchEntry } from './../services/search.service';
+import { ResearchStudySearchEntry } from './../services/ResearchStudySearchEntry';
 import { DistanceService } from './../services/distance.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -25,7 +25,7 @@ describe('TrialCardComponent', () => {
     fixture = TestBed.createComponent(TrialCardComponent);
     component = fixture.componentInstance;
     const distServ = TestBed.inject(DistanceService) as DistanceService;
-    component.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, 0, distServ, '01886', 'example source');
+    component.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886', 'example source');
     component.trialSaved = false;
     component.query = {
       zipCode: '01886',

@@ -1,8 +1,9 @@
-import { DistanceService } from './../services/distance.service';
 import { TestBed } from '@angular/core/testing';
-import { unpackResearchStudyResults } from './parse-data';
-import { ResearchStudySearchEntry } from '../services/search.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+
+import { unpackResearchStudyResults } from './parse-data';
+import { DistanceService } from '../services/distance.service';
+import { ResearchStudySearchEntry } from '../services/ResearchStudySearchEntry';
 
 describe('UnpackResearchStudyResults', () => {
   beforeEach(() =>
@@ -30,10 +31,9 @@ describe('UnpackResearchStudyResults', () => {
             resourceType: 'ResearchStudy'
           }
         },
-        0,
         distServ,
         '01886',
-        "example source"
+        'example source'
       )
     ]);
     expect(Array.isArray(actual)).toBe(true);
@@ -149,10 +149,9 @@ describe('UnpackResearchStudyResults', () => {
             ]
           }
         },
-        0,
         distServ,
         '01886',
-        "example source"
+        'example source'
       )
     ]);
     expect(Array.isArray(actual)).toBe(true);

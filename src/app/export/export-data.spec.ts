@@ -1,10 +1,11 @@
-import { unpackResearchStudyResults } from './parse-data';
-import { ResearchStudySearchEntry } from './../services/search.service';
-import { DistanceService } from './../services/distance.service';
-import { exportTrials } from './export-data';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import * as FileSaver from 'file-saver';
+
+import { unpackResearchStudyResults } from './parse-data';
+import { ResearchStudySearchEntry } from '../services/ResearchStudySearchEntry';
+import { DistanceService } from '../services/distance.service';
+import { exportTrials } from './export-data';
 
 describe('export data', () => {
   beforeEach(() =>
@@ -121,10 +122,9 @@ describe('export data', () => {
             ]
           }
         },
-        0,
         distServ,
-        '01886', 
-        "example source"
+        '01886',
+        'example source'
       )
     ]);
     const spy = spyOn(FileSaver, 'saveAs');

@@ -30,7 +30,7 @@ export class StubSearchResultsService extends SearchResultsService {
     };
     if (searchService instanceof StubSearchService) {
       // Grab the fake results
-      this._results = searchService.createSearchResultsBundle();
+      this.setResults(searchService.createSearchResultsBundle());
     }
   }
 }

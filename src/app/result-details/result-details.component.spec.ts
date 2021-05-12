@@ -1,15 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchService } from '../services/search.service';
 import { StubSearchService } from '../services/stub-search.service';
 import { SearchResultsService } from '../services/search-results.service';
 import { StubSearchResultsService } from '../services/stub-search-results.service';
-import { DistanceService } from './../services/distance.service';
-import { ResearchStudySearchEntry } from './../services/search.service';
+import { AppMaterialModule } from '../shared/material.module';
 
 import { ResultDetailsComponent } from './result-details.component';
 
-import sampleTrial from './sample_trial.json';
 import { ActivatedRoute } from '@angular/router';
 
 describe('ResultDetailsComponent', () => {
@@ -18,7 +17,7 @@ describe('ResultDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, AppMaterialModule, NoopAnimationsModule],
       providers: [
         {
           provide: ActivatedRoute,
@@ -50,27 +49,20 @@ describe('ResultDetailsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create the detail results', () => {
-    const distServ = TestBed.inject(DistanceService) as DistanceService;
-    component.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, 0, distServ, '01886', 'example source');
-    component.query = {
-      zipCode: '01886',
-      travelRadius: null,
-      phase: null,
-      recruitmentStatus: null
-    };
-    fixture.detectChanges();
-
-    expect(component).toBeTruthy();
+  it('should create the component', () => {
+    expect(component).toBeDefined();
   });
+
   //on testing startup no trial should be saved
   it('trialSaved should be initially false', () => {
     expect(component.trialSaved).toBeFalse();
   });
+
   it('should toggle trial saved', () => {
     component.toggleTrialSaved();
     expect(component.trialSaved).toBeTrue();
   });
+
   it('should get Color', () => {
     expect(component.getColor('No Match')).toBe('black');
     expect(component.getColor('Possible Match')).toBe('#E6BE03');

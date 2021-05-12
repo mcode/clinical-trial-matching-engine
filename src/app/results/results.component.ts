@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 
 import Patient from '../patient';
-import { SearchResultsBundle, ResearchStudySearchEntry } from '../services/search.service';
+import { SearchResultsBundle } from '../services/search.service';
+import { ResearchStudySearchEntry } from '../services/ResearchStudySearchEntry';
 import { BundleEntry } from '../fhir-types';
 import { SearchResultsService, TrialQuery } from '../services/search-results.service';
 
@@ -236,8 +236,8 @@ export class ResultsComponent implements OnInit {
   /**
    * Display details of a given trial.
    */
-  public showDetails(i: number): void {
-    this.router.navigate(['results', 'details', i.toString()]);
+  public showDetails(trial: ResearchStudySearchEntry): void {
+    this.router.navigate(['results', 'details', trial.id]);
   }
 
   /**

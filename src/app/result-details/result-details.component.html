@@ -19,6 +19,10 @@
         <dd class="trial-id">{{clinicalTrial.nctId}}</dd>
         <dt>Brief summary</dt>
         <dd class="summary">{{clinicalTrial.description}}</dd>
+        <dt>Source:</dt>
+        <dd class="source">{{clinicalTrial.provider.name}}</dd>
+        <dt>Source:</dt>
+        <dd class="link"><a href="{{clinicalTrial.trialURL}}" rel="nofollw" target="_blank">{{clinicalTrial.trialURL}}</a></dd>
       </dl>
       <div class="status-icons">
         <div class="overall-status">

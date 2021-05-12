@@ -1,4 +1,4 @@
-import { ResearchStudySearchEntry } from '../services/search.service';
+import { ResearchStudySearchEntry } from '../services/ResearchStudySearchEntry';
 
 // This function converts the saved ResearchStudy resource into a data format that can be export to a .xlsx file
 export const unpackResearchStudyResults = (result: ResearchStudySearchEntry[]): object[] => {

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { PatientBundle } from '../bundle';
-import { ResearchStudySearchEntry, SearchResultsBundle, SearchService } from './search.service';
+import { SearchResultsBundle, SearchService } from './search.service';
+import { ResearchStudySearchEntry } from './ResearchStudySearchEntry';
 import { unpackResearchStudyResults } from '../export/parse-data';
 import { exportTrials } from '../export/export-data';
 
@@ -27,15 +28,16 @@ export interface TrialQuery {
 })
 export class SearchResultsService {
   protected _query: TrialQuery = null;
-  protected _results: SearchResultsBundle = null;
+  private _results: SearchResultsBundle = null;
   /**
    * Saved clinical trials.
    */
   private savedClinicalTrials: ResearchStudySearchEntry[] = [];
   /**
-   * The set of saved clinical trials by their internal index.
+   * The set of saved clinical trials by their internal ID.
    */
-  private savedClinicalTrialsIdices = new Set<number>();
+  private savedClinicalTrialsIdices = new Set<string>();
+  private resultMap: Map<string, ResearchStudySearchEntry>;
 
   constructor(private searchService: SearchService) {}
 
@@ -64,12 +66,12 @@ export class SearchResultsService {
   }
 
   /**
-   * Gets a single result from within all results. If the result is entirely out of range, returns null.
-   * @param idx the index of the result to get
+   * Gets a single result from within all results based on its ID.
+   * @param id the ID of the result to get
    */
-  getResult(idx: number): ResearchStudySearchEntry | null {
-    if (this._results === null || idx < 0 || idx >= this._results.researchStudies.length) return null;
-    return this._results.researchStudies[idx];
+  getResult(id: string): ResearchStudySearchEntry | undefined {
+    if (!this._results) return undefined;
+    return this.resultMap.get(id);
   }
 
   search(query: TrialQuery, patientBundle: PatientBundle): Observable<SearchResultsBundle> {
@@ -80,7 +82,7 @@ export class SearchResultsService {
       const observable = this.searchService.searchClinicalTrials(patientBundle);
       observable.subscribe(
         (results) => {
-          this._results = results;
+          this.setResults(results);
           subscriber.next(results);
         },
         (error) => {
@@ -93,8 +95,17 @@ export class SearchResultsService {
     });
   }
 
-  isTrialSaved(trial: ResearchStudySearchEntry | number): boolean {
-    return this.savedClinicalTrialsIdices.has(typeof trial === 'number' ? trial : trial.index);
+  protected setResults(results: SearchResultsBundle): void {
+    this._results = results;
+    // Go through the results and map them
+    this.resultMap = new Map<string, ResearchStudySearchEntry>();
+    this._results.researchStudies.forEach((study) => {
+      this.resultMap.set(study.id, study);
+    });
+  }
+
+  isTrialSaved(trial: ResearchStudySearchEntry | string): boolean {
+    return this.savedClinicalTrialsIdices.has(typeof trial === 'string' ? trial : trial.id);
   }
 
   /**
@@ -102,7 +113,7 @@ export class SearchResultsService {
    * removed.
    */
   public toggleTrialSaved(trial: ResearchStudySearchEntry): boolean {
-    const saved = !this.savedClinicalTrialsIdices.has(trial.index);
+    const saved = !this.savedClinicalTrialsIdices.has(trial.id);
     this.setTrialSaved(trial, saved);
     return saved;
   }
@@ -114,17 +125,17 @@ export class SearchResultsService {
    */
   public setTrialSaved(trial: ResearchStudySearchEntry, saved: boolean): void {
     if (saved) {
-      if (!this.savedClinicalTrialsIdices.has(trial.index)) {
+      if (!this.savedClinicalTrialsIdices.has(trial.id)) {
         // Need to add it
         this.savedClinicalTrials.push(trial);
-        this.savedClinicalTrialsIdices.add(trial.index);
+        this.savedClinicalTrialsIdices.add(trial.id);
       }
     } else {
-      if (this.savedClinicalTrialsIdices.has(trial.index)) {
+      if (this.savedClinicalTrialsIdices.has(trial.id)) {
         // Need to remove it
         const index = this.savedClinicalTrials.findIndex((t) => t.nctId === trial.nctId);
-        this.savedClinicalTrials.splice(index, 1);
-        this.savedClinicalTrialsIdices.delete(trial.index);
+        if (index >= 0) this.savedClinicalTrials.splice(index, 1);
+        this.savedClinicalTrialsIdices.delete(trial.id);
       }
     }
   }
