@@ -1,4 +1,4 @@
-<div class="search-fields">
+<form class="search-fields" action="" method="GET" (submit)="search($event)">
   <mat-form-field>
     <mat-label>Zip Code</mat-label>
     <input matInput type="text" placeholder="Zip code" [formControl]="zipCode">
@@ -60,4 +60,4 @@
       <path id="Path_6" data-name="Path 6" d="M0,0H40V40H0Z" fill="none" />
     </svg>
   </button>
-</div>
+</form>

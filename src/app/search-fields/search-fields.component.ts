@@ -48,13 +48,22 @@ export class SearchFieldsComponent {
     });
   }
 
-  search(): void {
-    const event: TrialQuery = {
+  /**
+   * Handles starting a search. Fires an event on the searchClicked handler. If given an HTML event that triggered
+   * this, calls preventDefault().
+   * @param event the HTML event that triggered this
+   * @returns false
+   */
+  search(event?: Event): void {
+    if (event) {
+      event.preventDefault();
+    }
+    const searchEvent: TrialQuery = {
       zipCode: this.zipCode.value,
       travelRadius: this.travelDistance.value
     };
-    if (this.trialPhase.value !== 'any') event.phase = this.trialPhase.value;
-    if (this.recruitmentStatus.value !== 'all') event.recruitmentStatus = this.recruitmentStatus.value;
-    this.searchClicked.emit(event);
+    if (this.trialPhase.value !== 'any') searchEvent.phase = this.trialPhase.value;
+    if (this.recruitmentStatus.value !== 'all') searchEvent.recruitmentStatus = this.recruitmentStatus.value;
+    this.searchClicked.emit(searchEvent);
   }
 }
