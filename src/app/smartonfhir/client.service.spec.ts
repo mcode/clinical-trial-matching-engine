@@ -21,7 +21,7 @@ describe('ClientService', () => {
     // getClient expects to invoke the FHIR OAUTH2 load but we don't want to
     // really create a client
     // Create a mock patient object
-    mockPatient = ({} as unknown) as fhirclient.FHIR.Patient;
+    mockPatient = {} as unknown as fhirclient.FHIR.Patient;
     // Set defaults for the mock request
     mockRequest = null;
     mockError = null;
@@ -38,13 +38,13 @@ describe('ClientService', () => {
         return Promise.resolve(mockRequestResult);
       }
     };
-    mockClient = ({
+    mockClient = {
       patient: {
         read: () => Promise.resolve(mockPatient),
         request: request
       },
       request: request
-    } as unknown) as Client;
+    } as unknown as Client;
     fhirInitSpy = spyOn(FHIR.oauth2, 'init').and.callFake(() => Promise.resolve(mockClient));
   });
 

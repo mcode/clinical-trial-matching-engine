@@ -29,7 +29,7 @@
           <div class="icon">{{clinicalTrial.overallStatus}}</div>
           <div class="label">{{clinicalTrial.overallStatus}}</div>
         </div>
-        <div *ngIf="clinicalTrial.getClosest(query.zipCode)!=null" class="nearest">
+        <div *ngIf="clinicalTrial.getClosest(query.zipCode) !== null" class="nearest">
           <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="47" height="47"
               viewBox="0 0 47 47">
@@ -40,7 +40,7 @@
           </div>
           <div class="label">Closest location {{clinicalTrial.getClosest(query.zipCode)}}</div>
         </div>
-        <div *ngIf="clinicalTrial.matchLikelihood!==null" class="match-likelihood">
+        <div *ngIf="clinicalTrial.matchLikelihood !== null" class="match-likelihood">
           <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="103" height="103"
               viewBox="0 0 103 103">

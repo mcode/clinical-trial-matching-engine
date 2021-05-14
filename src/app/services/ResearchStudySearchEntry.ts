@@ -195,7 +195,7 @@ export class ResearchStudySearchEntry {
     const points: GeolibInputCoordinates[] = [];
     for (const resource of allsites) {
       if (resource.resourceType === 'Location') {
-        const loc = (resource as unknown) as Location;
+        const loc = resource as unknown as Location;
         if (loc.position) {
           if (loc.position.latitude && loc.position.longitude) {
             const coordinate = {
