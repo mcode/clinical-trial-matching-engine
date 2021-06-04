@@ -13,7 +13,13 @@ export type JsonObject = Record<string, unknown>;
 
 // FHIR dates are strings in a specific format
 export type FHIRDate = string;
+export type FHIRDateTime = string;
 
+/**
+ * Parses a given FHIR date *in the local timezone*.
+ * @param date the date to parse
+ * @returns the parsed date
+ */
 export function parseFHIRDate(date: FHIRDate): Date {
   // Technically leading 0s are disallowed
   const m = /^([0-9]{4})(-[0-9]{1,2})?(-[0-9]{1,2})?$/.exec(date);
@@ -159,6 +165,9 @@ export interface Patient extends DomainResource {
   name?: HumanName[];
   gender?: 'male' | 'female' | 'other' | 'unknown';
   birthDate?: FHIRDate;
+  // Note: only one of the two following elements is allowed
+  deceasedBoolean?: boolean;
+  deceasedDateTime?: FHIRDateTime;
   address?: Address[];
 }
 
