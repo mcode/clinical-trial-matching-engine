@@ -47,6 +47,10 @@ export class PatientFilter extends FhirFilter {
   constructor() {
     super();
     // Maximum patient date is 90
+    // This is stored mainly on the chance someone decides to run the filter at exactly midnight January 1st, that way
+    // the results are consistent and won't change part-way through.
+    // The use of getUTCFullYear() and new Date() IS INTENTIONAL - this strips the timezone from the year. The year
+    // used by anonymizeDate() is the year in the Date object returned by getFullYear and NOT getUTCFullYear().
     this.oldestPatientDate = new Date(new Date().getUTCFullYear() - 89, 0, 1, 0, 0, 0, 0);
   }
   /**
@@ -75,10 +79,10 @@ export class PatientFilter extends FhirFilter {
     delete patient.telecom;
     // TODO: If gender is not male/female/unknown (ie, "other"), should it be kept?
     if (patient.birthDate) {
-      patient.birthDate = anonymizeDate(patient.birthDate);
+      patient.birthDate = anonymizeDate(patient.birthDate, this.oldestPatientDate);
     }
     if (patient.deceasedDateTime) {
-      patient.deceasedDateTime = anonymizeDate(patient.deceasedDateTime);
+      patient.deceasedDateTime = anonymizeDate(patient.deceasedDateTime, this.oldestPatientDate);
     }
     // TODO: Anonymize addresses (could keep specific zip codes, for now, just delete)
     delete patient.address;
@@ -144,6 +148,45 @@ export class AnonymizeBundleFilter extends FhirFilter {
     }
     // TODO: Attempt to replace any references to the old IDs with references to the new IDs
     // (That's what idMap is for)
+    return bundle;
+  }
+}
+
+/**
+ * This filter is essentially "all the PII filters at once," running the bundle first through the AnonymizeBundleFilter
+ * and then individual resource-specific filters as necessary.
+ */
+export class AnonymizeFilter extends FhirFilter {
+  patientFilter = new PatientFilter();
+  bundleFilter = new AnonymizeBundleFilter();
+
+  /**
+   * Invokes filterResource on the child filters.
+   * @param resource the resource to filter
+   * @returns the resource
+   */
+  filterResource(resource: Resource): Resource | null {
+    this.bundleFilter.filterResource(resource);
+    this.patientFilter.filterResource(resource);
+    return resource;
+  }
+
+  /**
+   * Filters the bundle.
+   *
+   * @param bundle the bundle to filter
+   * @returns the input bundle after removing parts
+   */
+  filterBundle(bundle: PatientBundle): PatientBundle {
+    this.bundleFilter.filterBundle(bundle);
+    // Then go through the individual resources and selectively send them off as appropriate
+    if (bundle.entry) {
+      for (const entry of bundle.entry) {
+        if (entry.resource?.resourceType === 'Patient') {
+          this.patientFilter.filterResource(entry.resource);
+        }
+      }
+    }
     return bundle;
   }
 }

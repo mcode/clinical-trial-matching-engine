@@ -1,5 +1,5 @@
 import { Patient } from './fhir-types';
-import { anonymizeDate, PatientFilter } from './pii-filters';
+import { AnonymizeBundleFilter, anonymizeDate, PatientFilter } from './pii-filters';
 
 describe('anonymizeDate', () => {
   it('anonymizes dates as strings', () => {
@@ -162,6 +162,72 @@ describe('PatientFilter', () => {
         text: 'Never Married'
       },
       multipleBirthBoolean: false
+    });
+  });
+});
+
+describe('AnonymizeBundleFilter', () => {
+  it('removes URLs and other info from a bundle', () => {
+    const filter = new AnonymizeBundleFilter();
+    expect(
+      filter.filterBundle({
+        resourceType: 'Bundle',
+        type: 'searchset',
+        identifier: {
+          use: 'temp',
+          system: 'urn:ietf:rfc:3986',
+          value: 'https://www.example.com/fhirserver/invented'
+        },
+        entry: [
+          {
+            resource: {
+              resourceType: 'Patient'
+            },
+            fullUrl: 'https://www.example.com/fhirserver/patient/1',
+            search: {
+              mode: 'match',
+              score: 0.75
+            },
+            link: [
+              {
+                relation: 'canonical',
+                url: 'https://www.example.com/fhirserver/patient/1'
+              }
+            ],
+            request: {
+              method: 'GET',
+              url: 'https://www.example.com/fhirserver/patient/1'
+            },
+            response: {
+              status: '200 OK'
+            }
+          }
+        ],
+        link: [
+          {
+            relation: 'canonical',
+            url: 'https://www.example.com/fhirserver/search/'
+          },
+          {
+            relation: 'next',
+            url: 'https://www.example.com/fhirserver/search/2'
+          }
+        ]
+      })
+    ).toEqual({
+      resourceType: 'Bundle',
+      type: 'searchset',
+      entry: [
+        {
+          resource: {
+            resourceType: 'Patient'
+          },
+          search: {
+            mode: 'match',
+            score: 0.75
+          }
+        }
+      ]
     });
   });
 });

@@ -6,6 +6,8 @@ import { SearchResultsBundle, SearchService } from './search.service';
 import { ResearchStudySearchEntry } from './ResearchStudySearchEntry';
 import { unpackResearchStudyResults } from '../export/parse-data';
 import { exportTrials } from '../export/export-data';
+import { deepClone } from '../fhir-filter';
+import { AnonymizeFilter } from '../pii-filters';
 
 /**
  * This defines the fields that can be searched on as defined by the clinical
@@ -74,7 +76,19 @@ export class SearchResultsService {
     return this.resultMap.get(id);
   }
 
+  /**
+   * Executes a search. This method will attempt to anonymize the search bundle sent to the other end by running it
+   * through the AnonymizeBundleFilter and PatientFilter.
+   * @param query the query to run
+   * @param patientBundle the patient bundle to use
+   * @returns an Observable that sends a single results object
+   */
   search(query: TrialQuery, patientBundle: PatientBundle): Observable<SearchResultsBundle> {
+    patientBundle = deepClone(patientBundle);
+    // The main reason this is constructed each time is because some filters set what the "oldest allowed date" is at
+    // construction time. They could conceptually be updated to reset them on each run. But the cost of creating a new
+    // object each run should be minimal and it does, in theory, save memory usage when not filtering.
+    new AnonymizeFilter().filterBundle(patientBundle);
     this._query = query;
     // This is sort of silly but we need to ensure our observable is called first
     return new Observable<SearchResultsBundle>((subscriber) => {
