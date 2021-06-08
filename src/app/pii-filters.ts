@@ -116,7 +116,9 @@ export class AnonymizeBundleFilter extends FhirFilter {
    * @returns the resource
    */
   filterResource(resource: Resource): Resource | null {
-    resource.id = (this.currentId++).toString();
+    if (resource.id) {
+      resource.id = (this.currentId++).toString();
+    }
     return resource;
   }
 

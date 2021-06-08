@@ -1,5 +1,5 @@
 import { Patient } from './fhir-types';
-import { AnonymizeBundleFilter, anonymizeDate, PatientFilter } from './pii-filters';
+import { AnonymizeBundleFilter, anonymizeDate, AnonymizeFilter, PatientFilter } from './pii-filters';
 
 describe('anonymizeDate', () => {
   it('anonymizes dates as strings', () => {
@@ -21,9 +21,20 @@ describe('anonymizeDate', () => {
       expect(anonymizeDate(new Date(1930, 12, 20))).toBe('1931');
     });
   });
+  it('handles an invalid string', () => {
+    expect(anonymizeDate('not a date')).toEqual('');
+  });
 });
 
 describe('PatientFilter', () => {
+  beforeEach(() => {
+    jasmine.clock().install();
+    jasmine.clock().mockDate(new Date(2021, 6, 4));
+  });
+  afterEach(() => {
+    jasmine.clock().uninstall();
+  });
+
   it('filters out PII fields', () => {
     // First, the record with potential PII
     const original: Patient = {
@@ -181,7 +192,8 @@ describe('AnonymizeBundleFilter', () => {
         entry: [
           {
             resource: {
-              resourceType: 'Patient'
+              resourceType: 'Patient',
+              id: 'patient/1'
             },
             fullUrl: 'https://www.example.com/fhirserver/patient/1',
             search: {
@@ -220,7 +232,8 @@ describe('AnonymizeBundleFilter', () => {
       entry: [
         {
           resource: {
-            resourceType: 'Patient'
+            resourceType: 'Patient',
+            id: '0'
           },
           search: {
             mode: 'match',
@@ -228,6 +241,184 @@ describe('AnonymizeBundleFilter', () => {
           }
         }
       ]
+    });
+  });
+});
+
+describe('AnonymizeFilter', () => {
+  beforeEach(() => {
+    jasmine.clock().install();
+    jasmine.clock().mockDate(new Date(2021, 6, 4));
+  });
+  afterEach(() => {
+    jasmine.clock().uninstall();
+  });
+  describe('#filterResource', () => {
+    it('invokes the proper child filters', () => {
+      // The question here isn't if just that it produces the expected results,
+      // it's that it does it using the child filters.
+      const filter = new AnonymizeFilter();
+      const anonymizeBundleSpy = spyOn(filter.bundleFilter, 'filterResource').and.callThrough();
+      const patientFilterSpy = spyOn(filter.patientFilter, 'filterResource').and.callThrough();
+      expect(
+        filter.filterResource({
+          resourceType: 'Patient',
+          identifier: [
+            {
+              use: 'usual',
+              system: 'http://www.example.com/invented',
+              value: 'Fake'
+            }
+          ],
+          active: false,
+          name: [
+            {
+              use: 'official',
+              text: 'Corpse McDeadbody',
+              family: 'McDeadbody',
+              given: ['Corpse']
+            }
+          ],
+          gender: 'male',
+          birthDate: '1901',
+          deceasedDateTime: '2020-05-15T12:00:00Z',
+          address: [
+            {
+              use: 'home',
+              type: 'both',
+              line: ['123 Fake St'],
+              city: 'Exampleville',
+              state: 'MA',
+              postalCode: '01234',
+              country: 'USA'
+            }
+          ],
+          managingOrganization: [
+            {
+              reference: '#mcode',
+              type: 'Organization'
+            }
+          ]
+        })
+      ).toEqual({
+        resourceType: 'Patient',
+        active: false,
+        name: [
+          {
+            use: 'anonymous',
+            text: 'Anonymous',
+            family: 'Anonymous',
+            given: ['Anonymous']
+          }
+        ],
+        gender: 'male',
+        birthDate: '1932',
+        deceasedDateTime: '2020'
+      });
+      expect(anonymizeBundleSpy).toHaveBeenCalledTimes(1);
+      expect(patientFilterSpy).toHaveBeenCalledTimes(1);
+    });
+  });
+  describe('#filterBundle', () => {
+    it('invokes the proper child filters', () => {
+      // The question here isn't if just that it produces the expected results,
+      // it's that it does it using the child filters.
+      const filter = new AnonymizeFilter();
+      const anonymizeBundleSpy = spyOn(filter.bundleFilter, 'filterBundle').and.callThrough();
+      const patientFilterSpy = spyOn(filter.patientFilter, 'filterResource').and.callThrough();
+      expect(
+        filter.filterBundle({
+          resourceType: 'Bundle',
+          type: 'searchset',
+          identifier: {
+            use: 'temp',
+            system: 'urn:ietf:rfc:3986',
+            value: 'https://www.example.com/fhirserver/invented'
+          },
+          entry: [
+            {
+              resource: {
+                resourceType: 'Patient',
+                identifier: [
+                  {
+                    use: 'usual',
+                    system: 'http://www.example.com/invented',
+                    value: 'Fake'
+                  }
+                ],
+                active: false,
+                name: [
+                  {
+                    use: 'official',
+                    text: 'Corpse McDeadbody',
+                    family: 'McDeadbody',
+                    given: ['Corpse']
+                  }
+                ],
+                gender: 'male',
+                birthDate: '1901',
+                deceasedDateTime: '2020-05-15T12:00:00Z',
+                address: [
+                  {
+                    use: 'home',
+                    type: 'both',
+                    line: ['123 Fake St'],
+                    city: 'Exampleville',
+                    state: 'MA',
+                    postalCode: '01234',
+                    country: 'USA'
+                  }
+                ],
+                managingOrganization: [
+                  {
+                    reference: '#mcode',
+                    type: 'Organization'
+                  }
+                ]
+              },
+              fullUrl: 'https://www.example.com/fhirserver/patient/2',
+              search: {
+                mode: 'match',
+                score: 0.75
+              }
+            }
+          ],
+          link: [
+            {
+              relation: 'next',
+              url: 'https://www.example.com/fhirserver/search/2'
+            }
+          ]
+        })
+      ).toEqual({
+        resourceType: 'Bundle',
+        type: 'searchset',
+        entry: [
+          {
+            resource: {
+              resourceType: 'Patient',
+              active: false,
+              name: [
+                {
+                  use: 'anonymous',
+                  text: 'Anonymous',
+                  family: 'Anonymous',
+                  given: ['Anonymous']
+                }
+              ],
+              gender: 'male',
+              birthDate: '1932',
+              deceasedDateTime: '2020'
+            },
+            search: {
+              mode: 'match',
+              score: 0.75
+            }
+          }
+        ]
+      });
+      expect(anonymizeBundleSpy).toHaveBeenCalledTimes(1);
+      expect(patientFilterSpy).toHaveBeenCalledTimes(1);
     });
   });
 });
