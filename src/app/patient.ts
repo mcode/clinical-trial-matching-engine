@@ -4,6 +4,7 @@
  */
 
 import { Address, HumanName, parseFHIRDate, Patient as FHIRPatient } from './fhir-types';
+import { fhirclient } from 'fhirclient/lib/types';
 
 export type NameUse = HumanName['use'];
 
@@ -76,8 +77,11 @@ export default class Patient {
    * The underlying FHIR resource.
    */
   resource: FHIRPatient;
-  constructor(resource: FHIRPatient) {
-    this.resource = resource;
+  constructor(resource: FHIRPatient | fhirclient.FHIR.Patient) {
+    // The fhirclient Patient type indicates that meta.lastUpdated is required, by which is really means that it's
+    // guaranteed to be filled out by the client, which causes type issues elsewhere, so accept both and "cast" to the
+    // "real" FHIR type which contains more information about how a patient looks.
+    this.resource = resource as FHIRPatient;
   }
   /**
    * Gets the usual name, if possible. If no name exists on the record, returns

@@ -7,7 +7,7 @@
  */
 
 import { FhirFilter } from './fhir-filter';
-import { Patient, Resource } from './fhir-types';
+import { JsonObject, Patient, Resource, Reference } from './fhir-types';
 import { PatientBundle } from './bundle';
 
 /**
@@ -42,6 +42,13 @@ export function anonymizeDate(date: Date | string, oldest?: Date | number): stri
   ).toString();
 }
 
+/**
+ * Removes PII fields from patient records. It does this by using anonymizeDate (based on oldestPatientDate) to
+ * anonymize dates within the record (specifically birthDate and deceasedDateTime). It replaces all names with a single
+ * name ("Anonymous") and removes the following fields:
+ *
+ * identifier, telecom, address, photo, contact, communication, generalPractitioner, managingOrganization, link
+ */
 export class PatientFilter extends FhirFilter {
   oldestPatientDate: Date;
   constructor() {
@@ -100,10 +107,161 @@ export class PatientFilter extends FhirFilter {
 }
 
 /**
+ * Known paths to references. Keys are resource types, values are an array of paths to all types within that resource
+ * type.
+ */
+const REFERENCE_PATHS: Record<string, Array<string | Array<string>>> = {
+  Condition: ['subject', 'encounter', 'recorder', 'asserter', ['stage', 'assessment'], ['evidence', 'detail']],
+  MedicationStatement: [
+    'basedOn',
+    'partOf',
+    'medicationReference',
+    'informationSource',
+    'derivedFrom',
+    'reasonReference'
+  ],
+  Observation: [
+    'basedOn',
+    'partOf',
+    'subject',
+    'focus',
+    'encounter',
+    'performer',
+    'specimen',
+    'device',
+    'hasMember',
+    'derivedFrom'
+  ],
+  Procedure: [
+    'basedOn',
+    'partOf',
+    'subject',
+    'encounter',
+    'recorder',
+    'asserter',
+    ['performer', 'actor'],
+    ['performer', 'onBehalfOf'],
+    'location',
+    'reasonReference',
+    'report',
+    'complicationDetail',
+    ['focalDevice', 'manipulated'],
+    'usedReference'
+  ]
+};
+
+function updateReference(reference: Reference, idMap: Map<string, string>): boolean {
+  if (reference.reference && reference.reference[0] === '#') {
+    // Internal resource, update the ID
+    const existingId = reference.reference.substring(1);
+    const newId = idMap.get(existingId);
+    if (newId !== undefined) {
+      reference.reference = '#' + newId;
+    }
+    // For now, delete the display text and the identifier because that could contain PII
+    delete reference.identifier;
+    delete reference.display;
+    return true;
+  } else {
+    // If this reference cannot be handled, return false
+    return false;
+  }
+}
+
+/**
+ * Updates all references within a given object, removing any external references or references that do not refer to a
+ * known ID. Exported for testing purposes.
+ * @param object the object to update
+ * @param path the path being checked
+ * @param idMap a map of IDs to use
+ * @param idx the index to use
+ * @returns true if the reference was updated, false if it should be removed
+ */
+export function updateReferences(
+  object: JsonObject,
+  path: string | Array<string>,
+  idMap: Map<string, string>,
+  idx = 0
+): boolean {
+  // If this is past the end of the path, the object should be the reference we want to replace
+  if (typeof path === 'string' ? idx > 0 : idx >= path.length) {
+    if (typeof object !== 'object' || object === null || Array.isArray(object)) {
+      // Not an object we can handle, abort
+      // (true indicates it should be left alone but the object is actually invalid)
+      return true;
+    }
+    const reference = object as Reference;
+    // See if this is an internal reference
+    if (reference.reference && reference.reference[0] === '#') {
+      // Internal resource, update the ID
+      const existingId = reference.reference.substring(1);
+      const newId = idMap.get(existingId);
+      if (newId === undefined) {
+        // If the new ID does not map anywhere, flag this for removal
+        return false;
+      } else {
+        reference.reference = '#' + newId;
+      }
+      // For now, delete the display text and the identifier because that could contain PII
+      delete reference.identifier;
+      delete reference.display;
+      return true;
+    } else {
+      // If this reference cannot be handled, indicate it should be removed
+      return false;
+    }
+  }
+  // The vast majority of references are single string paths
+  const currentPath = typeof path === 'string' ? path : path[idx];
+  // Move path index up since we have the current path now
+  idx++;
+  if (!(currentPath in object)) {
+    // If the path doesn't exist, just give up
+    return true;
+  }
+  const value = object[currentPath];
+  // And now handle the value. By definition we're not at the end of the path if here.
+  if (Array.isArray(value)) {
+    // Go through each instance of the object and recurse
+    let needsFiltering = false;
+    value.forEach((child, childIdx) => {
+      if (typeof child === 'object' && child !== null) {
+        if (!updateReferences(child as JsonObject, path, idMap, idx)) {
+          // This indicates it should be removed - for now, mark it undefined
+          needsFiltering = true;
+          value[childIdx] = undefined;
+        }
+      }
+    });
+    if (needsFiltering) {
+      const filtered = value.filter((value) => value !== undefined);
+      object[currentPath] = filtered;
+      // If we emptied the array, return false to indicate it should be removed
+      return filtered.length > 0;
+    }
+    return true;
+  } else if (typeof value === 'object' && value !== null) {
+    // Simpler
+    if (updateReferences(value as JsonObject, path, idMap, idx)) {
+      return true;
+    } else {
+      delete object[currentPath];
+      // If the child was removed, then this object should be removed if there are no more properties on it
+      return Object.keys(object).length > 0;
+    }
+  } else {
+    // In this case, the value is something we can't handle (and is likely invalid FHIR)
+    return true;
+  }
+}
+
+/**
  * This class attempts to rewrite various parts of a patient bundle to
  * anonymize the entire bundle. It:
  *
- * - Replaces all IDs with incrementing integers based on the bundle type
+ * - Replaces all IDs with incrementing integers
+ * - Rewrites all internal references to use these new IDs
+ * - Removes all other references
  * - Deletes links from the bundle entries
  */
 export class AnonymizeBundleFilter extends FhirFilter {
@@ -129,13 +287,13 @@ export class AnonymizeBundleFilter extends FhirFilter {
    * @returns the input bundle after removing parts
    */
   filterBundle(bundle: PatientBundle): PatientBundle {
-    // Maps existing IDs to the newly generated IDs.
-    const idMap = new Map<string, string>();
-    let tempId = 0;
     delete bundle.identifier;
     delete bundle.link;
     delete bundle.signature;
     if (bundle.entry) {
+      // Maps existing IDs to the newly generated IDs.
+      const idMap = new Map<string, string>();
+      let tempId = 0;
       for (const entry of bundle.entry) {
         if (entry.resource && entry.resource.id) {
           const newId = (tempId++).toString();
@@ -147,9 +305,18 @@ export class AnonymizeBundleFilter extends FhirFilter {
         delete entry.request;
         delete entry.response;
       }
+      // Attempt to replace any references to the old IDs with references to the new IDs
+      for (const entry of bundle.entry) {
+        // See if we know about references within this resource type
+        if (entry.resource && entry.resource.resourceType in REFERENCE_PATHS) {
+          const resource = entry.resource;
+          const paths = REFERENCE_PATHS[resource.resourceType];
+          for (const path of paths) {
+            updateReferences(resource, path, idMap);
+          }
+        }
+      }
     }
-    // TODO: Attempt to replace any references to the old IDs with references to the new IDs
-    // (That's what idMap is for)
     return bundle;
   }
 }

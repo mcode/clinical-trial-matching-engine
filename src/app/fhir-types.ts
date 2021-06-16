@@ -9,7 +9,10 @@
  * returned) that are not truly required.
  */
 
-export type JsonObject = Record<string, unknown>;
+export type JsonValue = boolean | null | number | string | JsonValue[] | { [key: string]: JsonValue };
+export interface JsonObject {
+  [key: string]: JsonValue;
+}
 
 // FHIR dates are strings in a specific format
 export type FHIRDate = string;
@@ -43,7 +46,7 @@ export interface Resource extends JsonObject {
   id?: string;
 }
 
-export interface Reference<T extends Resource = Resource> {
+export interface Reference<T extends Resource = Resource> extends JsonObject {
   reference?: string;
   type?: T['resourceType'];
   identifier?: string;
@@ -57,20 +60,20 @@ export type instant = string;
  */
 export type CanonicalStructureDefinition = string;
 
-export interface Meta {
+export interface Meta extends JsonObject {
   versionId?: string;
   lastUpdated?: instant;
   profile?: CanonicalStructureDefinition[];
 }
 
-export interface Coding {
+export interface Coding extends JsonObject {
   system?: string;
   version?: string;
   code?: string;
   display?: string;
   userSelected?: boolean;
 }
-export interface CodeableConcept {
+export interface CodeableConcept extends JsonObject {
   coding?: Coding[];
   text?: string;
 }

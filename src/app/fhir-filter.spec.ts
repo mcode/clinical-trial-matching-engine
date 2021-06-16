@@ -1,4 +1,4 @@
-import { Resource } from './fhir-types';
+import { JsonObject, Resource } from './fhir-types';
 import { PatientBundle } from './bundle';
 import { deepClone, FhirPathFilter, FhirComponentPathFilter, FhirCodeRemapFilter, FhirFilter } from './fhir-filter';
 
@@ -168,8 +168,8 @@ describe('FhirCodeRemapFilter', () => {
       ]
     );
     expect(filter.filterResource(resource)).not.toBeNull();
-    expect(resource.code).toEqual({
+    expect(resource.code as JsonObject).toEqual({
       coding: [{ system: 'http://snomed.info/sct', code: '254837009', display: 'Malignant neoplasm of breast' }]
-    });
+    } as JsonObject);
   });
 });

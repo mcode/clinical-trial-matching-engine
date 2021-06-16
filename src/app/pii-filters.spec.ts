@@ -1,5 +1,5 @@
-import { Patient } from './fhir-types';
-import { AnonymizeBundleFilter, anonymizeDate, AnonymizeFilter, PatientFilter } from './pii-filters';
+import { Bundle, JsonObject, Patient } from './fhir-types';
+import { AnonymizeBundleFilter, anonymizeDate, AnonymizeFilter, PatientFilter, updateReferences } from './pii-filters';
 
 describe('anonymizeDate', () => {
   it('anonymizes dates as strings', () => {
@@ -173,7 +173,7 @@ describe('PatientFilter', () => {
         text: 'Never Married'
       },
       multipleBirthBoolean: false
-    });
+    } as Patient);
   });
 });
 
@@ -241,7 +241,188 @@ describe('AnonymizeBundleFilter', () => {
           }
         }
       ]
-    });
+    } as Bundle);
+  });
+});
+
+describe('updateReferences()', () => {
+  // "Standard" idMap to use for each test
+  let idMap: Map<string, string>;
+  beforeEach(() => {
+    idMap = new Map<string, string>([
+      ['old', 'new'],
+      ['bar', 'baz']
+    ]);
+  });
+  it('removes unknown references', () => {
+    const testExternalRef: JsonObject = {
+      ref: {
+        reference: 'https://www.example.com/resource',
+        type: 'Observation'
+      }
+    };
+    expect(updateReferences(testExternalRef, 'ref', idMap)).toBeFalse();
+    expect(testExternalRef).toEqual({});
+    const testMissingRef: JsonObject = {
+      ref: {
+        reference: '#resource',
+        type: 'Observation'
+      }
+    };
+    expect(updateReferences(testMissingRef, 'ref', idMap)).toBeFalse();
+    expect(testMissingRef).toEqual({});
+  });
+  it("accepts paths that don't exist", () => {
+    const testObj: JsonObject = {
+      ref: {
+        reference: '#foo',
+        type: 'Observation'
+      }
+    };
+    expect(updateReferences(testObj, 'reference', idMap)).toBeTrue();
+    expect(testObj).toEqual({
+      ref: {
+        reference: '#foo',
+        type: 'Observation'
+      }
+    } as JsonObject);
+  });
+  it('rewrites known references', () => {
+    const obj: JsonObject = {
+      ref: {
+        reference: '#old',
+        type: 'Condition'
+      }
+    };
+    expect(updateReferences(obj, 'ref', idMap)).toBeTrue();
+    expect(obj).toEqual({
+      ref: {
+        reference: '#new',
+        type: 'Condition'
+      }
+    } as JsonObject);
+  });
+  it('rewrites and removes as required lists of references', () => {
+    const obj: JsonObject = {
+      foo: [
+        {
+          reference: '#old',
+          type: 'Condition'
+        },
+        {
+          reference: 'https://www.example.com/external',
+          type: 'Condition'
+        },
+        {
+          reference: '#bar',
+          type: 'Condition'
+        },
+        {
+          reference: '#unknown',
+          type: 'Condition'
+        }
+      ]
+    };
+    expect(updateReferences(obj, 'foo', idMap)).toBeTrue();
+    expect(obj).toEqual({
+      foo: [
+        {
+          reference: '#new',
+          type: 'Condition'
+        },
+        {
+          reference: '#baz',
+          type: 'Condition'
+        }
+      ]
+    } as JsonObject);
+  });
+  it('rewrites nested references to a single object', () => {
+    const obj: JsonObject = {
+      foo: {
+        ref: {
+          reference: '#old',
+          type: 'Condition'
+        }
+      }
+    };
+    expect(updateReferences(obj, ['foo', 'ref'], idMap)).toBeTrue();
+    expect(obj).toEqual({
+      foo: {
+        ref: {
+          reference: '#new',
+          type: 'Condition'
+        }
+      }
+    } as JsonObject);
+  });
+  it('rewrites nested references to multiple objects', () => {
+    const obj: JsonObject = {
+      foo: {
+        bar: [
+          {
+            reference: '#old',
+            type: 'Condition'
+          },
+          {
+            reference: '#bar',
+            type: 'Condition'
+          }
+        ]
+      }
+    };
+    expect(updateReferences(obj, ['foo', 'bar'], idMap)).toBeTrue();
+    expect(obj).toEqual({
+      foo: {
+        bar: [
+          {
+            reference: '#new',
+            type: 'Condition'
+          },
+          {
+            reference: '#baz',
+            type: 'Condition'
+          }
+        ]
+      }
+    } as JsonObject);
+  });
+  it("handles paths that point to things that aren't references", () => {
+    const obj: JsonObject = {
+      foo: 'hello'
+    };
+    expect(updateReferences(obj, 'foo', idMap)).toBeTrue();
+    expect(obj).toEqual({
+      foo: 'hello'
+    } as JsonObject);
+    obj.foo = ['hello'];
+    expect(updateReferences(obj, 'foo', idMap)).toBeTrue();
+    expect(obj).toEqual({
+      foo: ['hello']
+    } as JsonObject);
+  });
+  it('handles double-arrays in a path (by ignoring them)', () => {
+    const obj: JsonObject = {
+      foo: [
+        [
+          {
+            reference: '#old',
+            type: 'Condition'
+          }
+        ]
+      ]
+    };
+    expect(updateReferences(obj, 'foo', idMap)).toBeTrue();
+    expect(obj).toEqual({
+      foo: [
+        [
+          {
+            reference: '#old',
+            type: 'Condition'
+          }
+        ]
+      ]
+    } as JsonObject);
   });
 });
 
@@ -314,7 +495,7 @@ describe('AnonymizeFilter', () => {
         gender: 'male',
         birthDate: '1932',
         deceasedDateTime: '2020'
-      });
+      } as Patient);
       expect(anonymizeBundleSpy).toHaveBeenCalledTimes(1);
       expect(patientFilterSpy).toHaveBeenCalledTimes(1);
     });
@@ -416,7 +597,7 @@ describe('AnonymizeFilter', () => {
             }
           }
         ]
-      });
+      } as Bundle);
       expect(anonymizeBundleSpy).toHaveBeenCalledTimes(1);
       expect(patientFilterSpy).toHaveBeenCalledTimes(1);
     });

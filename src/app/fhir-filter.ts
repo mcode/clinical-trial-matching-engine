@@ -368,7 +368,7 @@ export class FhirCodeRemapFilter extends FhirFilter {
     }
     // If it does, see if there are codes that can be altered
     if ('code' in resource) {
-      const code: CodeableConcept = resource['code'];
+      const code = resource['code'] as CodeableConcept;
       // Everything in the codeable concept turns out to be optional anyway...
       if (code.coding && Array.isArray(code.coding)) {
         code.coding.forEach((o) => {
