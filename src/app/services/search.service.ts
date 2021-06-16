@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppConfigService, SearchProvider } from './app-config.service';
-import { PatientBundle } from '../bundle';
+import { PatientBundle, getZipCode } from '../bundle';
 import { Bundle } from '../fhir-types';
 import { ResearchStudySearchEntry } from './ResearchStudySearchEntry';
 
@@ -112,7 +112,7 @@ export class SearchService {
    */
   searchClinicalTrials(patientBundle: PatientBundle): Observable<SearchResultsBundle> {
     const services: SearchProvider[] = this.config.getSearchProviders();
-    const zipCode = patientBundle.entry[0].resource.parameter[0].valueString;
+    const zipCode = getZipCode(patientBundle);
 
     const observables = services.map((service) => {
       return this.client.post<Bundle>(service.url + '/getClinicalTrial', patientBundle).pipe(

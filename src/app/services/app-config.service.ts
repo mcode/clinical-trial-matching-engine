@@ -1,6 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 
 import { environment } from '../../environments/environment';
+
+export interface SearchProviderJSON {
+  name: string;
+  url: string;
+}
 
 /**
  * Class that represents a source.
@@ -21,12 +26,17 @@ export class SearchProvider {
   providedIn: 'root'
 })
 export class AppConfigService {
+  private _servers: SearchProviderJSON[];
+  constructor(@Optional() servers?: SearchProviderJSON[]) {
+    // If given servers, use that
+    this._servers = servers ? servers : environment.servers;
+  }
   /**
    * Gets configured search providers.
    * @returns an array of configured search providers
    */
   getSearchProviders(): SearchProvider[] {
-    return environment.servers.map((def) => {
+    return this._servers.map((def) => {
       return new SearchProvider(def.name, def.url);
     });
   }

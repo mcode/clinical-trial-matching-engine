@@ -14,6 +14,29 @@ export interface ParameterResource extends Resource {
 export type PatientBundle = Bundle;
 
 /**
+ * Looks through the bundle to find a ZIP code if one was given as a parameter
+ * @param bundle the bundle to look through
+ * @returns the ZIP code if one exists
+ */
+export function getZipCode(bundle: PatientBundle): string | undefined {
+  if (bundle.entry) {
+    for (const entry of bundle.entry) {
+      if (entry.resource?.resourceType === 'Parameters') {
+        const parameters = (entry.resource as ParameterResource).parameter;
+        if (parameters) {
+          for (const param of parameters) {
+            if (param.name === 'zipCode') {
+              return param.valueString.toString();
+            }
+          }
+        }
+      }
+    }
+  }
+  return undefined;
+}
+
+/**
  * Create collection bundle from parameters and entries
  */
 export function createPatientBundle(parameters: TrialQuery, entries: BundleEntry[]): PatientBundle {
