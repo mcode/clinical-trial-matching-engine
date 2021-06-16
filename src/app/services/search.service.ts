@@ -382,7 +382,7 @@ export class SearchService {
   searchClinicalTrials(patientBundle: PatientBundle): Observable<SearchResultsBundle> {
     const zipCode = patientBundle.entry[0].resource.parameter[0].valueString;
 
-    return this.client.post<fhirclient.FHIR.Bundle>(this.config.getServiceURL() + '/getClinicalTrial', patientBundle).pipe(
+    return this.client.post<fhirclient.FHIR.Bundle>(this.config.getServiceURL() /*+ '/getClinicalTrial'*/, patientBundle).pipe(
       map((bundle: fhirclient.FHIR.Bundle) => {
         return new SearchResultsBundle(bundle, this.distService, zipCode);
       })

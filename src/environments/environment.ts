@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  serviceURL: 'http://localhost:3000'
+  serviceURL: "https://gw8nzfltx8.execute-api.us-east-1.amazonaws.com/v1/bct-lambda"
 };
 
 /*
