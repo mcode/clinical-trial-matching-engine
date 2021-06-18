@@ -11,11 +11,11 @@ export const environment: {
 } = {
   production: false,
   // When true, stub out the FHIR service for a test one
-  stubFHIR: true,
+  stubFHIR: false,
   // When true, stub out the search service for a test one
-  stubSearch: true,
+  stubSearch: false,
   // When true, have the search service act as if the user already searched
-  stubSearchResults: true,
+  stubSearchResults: false,
   servers: [
     { name: 'Trialscope', url: 'http://localhost:3000' },
     { name: 'Breast Cancer Trials', url: 'http://localhost:3001' }
