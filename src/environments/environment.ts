@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  serviceURL: "https://gw8nzfltx8.execute-api.us-east-1.amazonaws.com/v1/bct-lambda"
+  serviceURL: "https://gw8nzfltx8.execute-api.us-east-1.amazonaws.com/v1/triljectory-lambda"
 };
 
 /*
