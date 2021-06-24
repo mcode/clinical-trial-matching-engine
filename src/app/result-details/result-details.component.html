@@ -26,7 +26,7 @@
       </dl>
       <div class="status-icons">
         <div class="overall-status">
-          <div class="icon">{{statusDisplay[clinicalTrial.overallStatus]}}</div>
+          <div class="icon" [ngStyle]="{'background': trialStatusColor()}">{{statusDisplay[clinicalTrial.overallStatus]}}</div>
         </div>
         <div *ngIf="clinicalTrial.getClosest(query.zipCode) !== null" class="nearest">
           <div class="icon">

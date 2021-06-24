@@ -102,9 +102,8 @@
   height: 41px;
   line-height: 41px;
   border-radius: 20.5px;
-  background: #30b400;
   color: white;
-  border: 1px solid #30b400;
+  border: 1px solid white;
   text-transform: uppercase;
 }
 

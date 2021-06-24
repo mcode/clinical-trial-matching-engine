@@ -49,4 +49,18 @@ export class TrialCardComponent implements OnChanges {
         return 'green';
     }
   }
+
+  public trialStatusColor(): string {
+    if (['active'].includes(this.clinicalTrial.overallStatus)) {
+      return '#30b400';
+    } else if (['administratively-completed', 'closed-to-accrual', 'closed-to-accrual-and-intervention', 'completed',
+                'disapproved', 'withdrawn'].includes(this.clinicalTrial.overallStatus)) {
+      return '#ba2020';
+    } else if (['approved', 'in-review', 'temporarily-closed-to-accrual', 'temporarily-closed-to-accrual-and-intervention',
+                 ].includes(this.clinicalTrial.overallStatus)) {
+      return '#0b96d6';
+    } else {
+      return '#ff0084';
+    }
+  }
 }
