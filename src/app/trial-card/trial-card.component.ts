@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ResearchStudySearchEntry } from '../services/ResearchStudySearchEntry';
 import { TrialQuery } from '../services/search-results.service';
+import { ResearchStudyStatusDisplay } from '../fhir-constants';
 
 @Component({
   selector: 'app-trial-card',
@@ -16,6 +17,7 @@ export class TrialCardComponent implements OnChanges {
    * Formatted distance string, or null if not known
    */
   trialSiteDistance: string | null;
+  statusDisplay = ResearchStudyStatusDisplay;
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('query' in changes || 'clinicalTrial' in changes) {

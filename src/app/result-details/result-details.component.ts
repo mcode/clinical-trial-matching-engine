@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResearchStudySearchEntry } from './../services/ResearchStudySearchEntry';
 import { SearchResultsService, TrialQuery } from './../services/search-results.service';
+import { ResearchStudyStatusDisplay } from '../fhir-constants';
 
 /**
  * Shows the details page for the results.
@@ -15,6 +16,7 @@ export class ResultDetailsComponent implements OnInit {
   query: TrialQuery;
   clinicalTrial: ResearchStudySearchEntry;
   trialSaved = false;
+  statusDisplay = ResearchStudyStatusDisplay;
 
   constructor(private route: ActivatedRoute, private router: Router, private resultsService: SearchResultsService) {}
 

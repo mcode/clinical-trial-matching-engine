@@ -9,16 +9,17 @@
 
 /* Overall status container */
 .overall-status {
-  width: 15%;
+  width: 20%;
 }
 
 /* Overall status "pill" */
 .overall-status > div {
-  height: 41px;
+  height: auto;
   margin: 16px;
   line-height: 41px;
   text-align: center;
   text-transform: uppercase;
+  font-size: 1.5vw;
   border-radius: 20.5px;
   background: #30b400;
   color: white;
