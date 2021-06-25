@@ -24,6 +24,7 @@
 
 .infobox .details-column {
   width: 80%;
+  margin: 0 16px;
 }
 
 .infobox .details-column dt {
@@ -153,6 +154,11 @@
   /* Set the max-width to make them all roughly the same size when space is available */
   max-width: 12em;
 }
+
+.details mat-expansion-panel {
+  margin: 0 16px;
+}
+
 .details p {
   color: #898686;
   white-space: pre;

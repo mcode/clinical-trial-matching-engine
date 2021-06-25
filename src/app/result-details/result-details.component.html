@@ -89,7 +89,6 @@
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>Description</mat-panel-title>
-      <mat-panel-description>{{summary(clinicalTrial.detailedDescription)}}</mat-panel-description>
     </mat-expansion-panel-header>
     <p>{{clinicalTrial.detailedDescription}}</p>
   </mat-expansion-panel>
@@ -102,8 +101,7 @@
   </mat-expansion-panel>
   <mat-expansion-panel *ngIf="clinicalTrial.criteria">
     <mat-expansion-panel-header>
-      <mat-panel-title>Description</mat-panel-title>
-      <mat-panel-description>{{summary(clinicalTrial.criteria)}}</mat-panel-description>
+      <mat-panel-title>Eligibility Criteria</mat-panel-title>
     </mat-expansion-panel-header>
     <p>{{clinicalTrial.criteria}}</p>
   </mat-expansion-panel>
