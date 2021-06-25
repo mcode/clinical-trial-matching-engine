@@ -64,8 +64,8 @@ export class ResultDetailsComponent implements OnInit {
     }
   }
 
-  trialStatusColor(): string {
-    if (['active'].includes(this.clinicalTrial.overallStatus)) {
+  trialStatusColor(status: string): string {
+    if (['active'].includes(status)) {
       return '#30b400';
     } else if (
       [
@@ -75,7 +75,7 @@ export class ResultDetailsComponent implements OnInit {
         'completed',
         'disapproved',
         'withdrawn'
-      ].includes(this.clinicalTrial.overallStatus)
+      ].includes(status)
     ) {
       return '#ba2020';
     } else if (
@@ -84,7 +84,7 @@ export class ResultDetailsComponent implements OnInit {
         'in-review',
         'temporarily-closed-to-accrual',
         'temporarily-closed-to-accrual-and-intervention'
-      ].includes(this.clinicalTrial.overallStatus)
+      ].includes(status)
     ) {
       return '#0b96d6';
     } else {

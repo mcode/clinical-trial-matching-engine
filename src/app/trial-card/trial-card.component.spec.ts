@@ -55,4 +55,11 @@ describe('TrialCardComponent', () => {
     component.clinicalTrial.search = { score: 0.9 };
     expect(component.likelihoodColor()).toBe('green');
   });
+
+  it('should get trial status color', () => {
+    expect(component.trialStatusColor('active')).toBe('#30b400');
+    expect(component.trialStatusColor('closed-to-accrual-and-intervention')).toBe('#ba2020');
+    expect(component.trialStatusColor('in-review')).toBe('#0b96d6');
+    expect(component.trialStatusColor('test-string')).toBe('#ff0084');
+  });
 });
