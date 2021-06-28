@@ -163,3 +163,7 @@
   color: #898686;
   white-space: pre;
 }
+
+.label {
+  text-align: center;
+}
