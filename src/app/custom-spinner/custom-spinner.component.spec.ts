@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CustomSpinnerComponent } from './custom-spinner.component';
 
@@ -6,13 +6,11 @@ describe('CustomSpinnerComponent', () => {
   let component: CustomSpinnerComponent;
   let fixture: ComponentFixture<CustomSpinnerComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [CustomSpinnerComponent]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [CustomSpinnerComponent]
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomSpinnerComponent);

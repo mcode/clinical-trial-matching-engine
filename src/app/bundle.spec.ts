@@ -6,6 +6,10 @@ describe('bundle tests', () => {
   beforeEach(() => TestBed.configureTestingModule({ imports: [HttpClientTestingModule], providers: [] }));
 
   it('should create the patient bundle', () => {
-    expect(createPatientBundle({ id: 'example' }, [{ fullUrl: 'sample', resource: {} }])).toBeDefined();
+    expect(
+      createPatientBundle({ zipCode: '01780', travelRadius: 20 }, [
+        { fullUrl: 'sample', resource: { resourceType: 'Resource' } }
+      ])
+    ).toBeDefined();
   });
 });

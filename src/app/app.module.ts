@@ -1,21 +1,35 @@
+import { NgModule, Provider, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { FormsModule } from '@angular/forms';
-// animation module
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+// Module that contains all the Material modules
+import { AppMaterialModule } from './shared/material.module';
+import { AppRoutingModule } from './app-routing.module';
+
+// FHIR stuff
 import { ClientService } from './smartonfhir/client.service';
+import { StubClientService } from './smartonfhir/stub-client.service';
+import Client from 'fhirclient/lib/Client';
+
+// Search service
+import { SearchService } from './services/search.service';
+import { StubSearchService } from './services/stub-search.service';
+import { SearchResultsService } from './services/search-results.service';
+import { StubSearchResultsService } from './services/stub-search-results.service';
+
+// Custom components
+import { AppComponent } from './app.component';
+import { CustomSpinnerComponent } from './custom-spinner/custom-spinner.component';
 import { RecordDataComponent } from './record-data/record-data.component';
 import { ResultDetailsComponent } from './result-details/result-details.component';
+import { ResultsComponent } from './results/results.component';
+import { SearchFieldsComponent } from './search-fields/search-fields.component';
+import { SearchPageComponent } from './search-page/search-page.component';
 import { TrialCardComponent } from './trial-card/trial-card.component';
-import { CustomSpinnerComponent } from './custom-spinner/custom-spinner.component';
-import Client from 'fhirclient/lib/Client';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ToastrModule } from 'ngx-toastr';
+
+import { environment } from './../environments/environment';
 
 const fhirInitializeFn = (fhirService: ClientService) => {
   // Grab the client during bootstrap - this prevents the flash of a partially
@@ -24,13 +38,19 @@ const fhirInitializeFn = (fhirService: ClientService) => {
   return (): Promise<Client> => fhirService.getClient();
 };
 
-/**
- * NgModule with required Material modules
- */
-@NgModule({
-  exports: [MatFormFieldModule, MatSelectModule, MatProgressSpinnerModule]
-})
-export class MaterialModule {}
+// Configure how the FHIR provider works depending on local settings
+const FHIR_PROVIDER: Provider = {
+  provide: ClientService,
+  useClass: environment.stubFHIR ? StubClientService : ClientService
+};
+const SEARCH_PROVIDER: Provider = {
+  provide: SearchService,
+  useClass: environment.stubSearch ? StubSearchService : SearchService
+};
+const SEARCH_RESULTS_PROVIDER: Provider = {
+  provide: SearchResultsService,
+  useClass: environment.stubSearchResults ? StubSearchResultsService : SearchResultsService
+};
 @NgModule({
   // prettier-ignore
   declarations: [
@@ -38,20 +58,26 @@ export class MaterialModule {}
     RecordDataComponent,
     ResultDetailsComponent,
     TrialCardComponent,
-    CustomSpinnerComponent
+    CustomSpinnerComponent,
+    SearchFieldsComponent,
+    ResultsComponent,
+    SearchPageComponent
   ],
   // prettier-ignore
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
+    AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
-    MaterialModule,
+    AppMaterialModule,
     ToastrModule.forRoot()
   ],
   providers: [
-    ClientService,
+    FHIR_PROVIDER,
+    SEARCH_PROVIDER,
+    SEARCH_RESULTS_PROVIDER,
     {
       provide: APP_INITIALIZER,
       useFactory: fhirInitializeFn,

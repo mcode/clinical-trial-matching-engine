@@ -1,10 +1,11 @@
-import { UnpackResearchStudyResults } from './parse-data';
-import { ResearchStudySearchEntry } from './../services/search.service';
-import { DistanceService } from './../services/distance.service';
-import { ExportTrials } from './export-data';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import * as FileSaver from 'file-saver';
+
+import { unpackResearchStudyResults } from './parse-data';
+import { ResearchStudySearchEntry } from '../services/ResearchStudySearchEntry';
+import { DistanceService } from '../services/distance.service';
+import { exportTrials } from './export-data';
 
 describe('export data', () => {
   beforeEach(() =>
@@ -16,7 +17,7 @@ describe('export data', () => {
 
   it('should export data', () => {
     const distServ: DistanceService = TestBed.inject(DistanceService);
-    const actual = UnpackResearchStudyResults([
+    const actual = unpackResearchStudyResults([
       new ResearchStudySearchEntry(
         {
           fullUrl: 'http://www.example.com/',
@@ -122,12 +123,13 @@ describe('export data', () => {
           }
         },
         distServ,
-        '01886'
+        '01886',
+        'example source'
       )
     ]);
     const spy = spyOn(FileSaver, 'saveAs');
     // Do the export
-    ExportTrials([actual], 'sampleTrial');
+    exportTrials([actual], 'sampleTrial');
     // TODO: What should it have been called with?
     expect(spy.calls.count()).toEqual(1);
     const calledWith = spy.calls.argsFor(0);

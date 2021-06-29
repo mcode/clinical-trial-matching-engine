@@ -12,6 +12,14 @@ declare module 'fhirpath' {
   export type PathLookupResult = FHIRResource | string;
 
   export function parse(path: string): FHIRPath;
-  export function compile(path: string, model: object): (resource: FHIRResource, context?: object) => PathLookupResult[];
-  export function evaluate(resource: FHIRResource | FHIRResource[], path: string, context?: object, model?: object): PathLookupResult[];
+  export function compile(
+    path: string,
+    model?: object
+  ): (resource: FHIRResource, context?: object) => PathLookupResult[];
+  export function evaluate(
+    resource: FHIRResource | FHIRResource[],
+    path: string,
+    context?: object,
+    model?: object
+  ): PathLookupResult[];
 }

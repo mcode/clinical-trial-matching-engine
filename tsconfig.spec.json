@@ -1,3 +1,4 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -5,9 +6,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "types": [
-      "jasmine",
-      "node",
-      "webpack-env"
+      "jasmine"
     ]
   },
   "files": [
