@@ -78,8 +78,6 @@ describe('ResultDetailsComponent', () => {
 
   it('should get trial status display text', () => {
     expect(component.getOverallStatus('test-string')).toBe('Invalid');
-    expect(component.getOverallStatus('closed-to-accrual-and-intervention')).toBe(
-      'Closed to Accrual and Intervention'
-    );
+    expect(component.getOverallStatus('closed-to-accrual-and-intervention')).toBe('Closed to Accrual and Intervention');
   });
 });
