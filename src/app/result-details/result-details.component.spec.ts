@@ -68,4 +68,16 @@ describe('ResultDetailsComponent', () => {
     expect(component.getColor('Possible Match')).toBe('#E6BE03');
     expect(component.getColor('likely Match')).toBe('green');
   });
+
+  it('should get trial status color', () => {
+    expect(component.getStatusClassName('active')).toBe('recruiting');
+    expect(component.getStatusClassName('closed-to-accrual-and-intervention')).toBe('finished-recruiting');
+    expect(component.getStatusClassName('in-review')).toBe('may-recruit');
+    expect(component.getStatusClassName('test-string')).toBe('unknown-status');
+  });
+
+  it('should get trial status display text', () => {
+    expect(component.getOverallStatus('test-string')).toBe('Invalid');
+    expect(component.getOverallStatus('closed-to-accrual-and-intervention')).toBe('Closed to Accrual and Intervention');
+  });
 });

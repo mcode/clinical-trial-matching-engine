@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResearchStudySearchEntry } from './../services/ResearchStudySearchEntry';
 import { SearchResultsService, TrialQuery } from './../services/search-results.service';
+import { ResearchStudyStatusDisplay } from '../fhir-constants';
 
 /**
  * Shows the details page for the results.
@@ -15,6 +16,7 @@ export class ResultDetailsComponent implements OnInit {
   query: TrialQuery;
   clinicalTrial: ResearchStudySearchEntry;
   trialSaved = false;
+  statusDisplay = ResearchStudyStatusDisplay;
 
   constructor(private route: ActivatedRoute, private router: Router, private resultsService: SearchResultsService) {}
 
@@ -60,5 +62,43 @@ export class ResultDetailsComponent implements OnInit {
     } else {
       return 'green';
     }
+  }
+
+  /**
+   * Determines the class to use for the trial status indicator.
+   */
+  public getStatusClassName(status: string): string {
+    if (!(status in ResearchStudyStatusDisplay)) {
+      return 'unknown-status';
+    } else if (['active'].includes(status)) {
+      return 'recruiting';
+    } else if (
+      [
+        'administratively-completed',
+        'closed-to-accrual',
+        'closed-to-accrual-and-intervention',
+        'completed',
+        'disapproved',
+        'withdrawn'
+      ].includes(status)
+    ) {
+      return 'finished-recruiting';
+    } else if (
+      [
+        'approved',
+        'in-review',
+        'temporarily-closed-to-accrual',
+        'temporarily-closed-to-accrual-and-intervention'
+      ].includes(status)
+    ) {
+      return 'may-recruit';
+    }
+  }
+
+  /**
+   * Maps to the the display text for the trial status indicator.
+   */
+  public getOverallStatus(status: string): string {
+    return status in ResearchStudyStatusDisplay ? ResearchStudyStatusDisplay[status] : 'Invalid';
   }
 }
