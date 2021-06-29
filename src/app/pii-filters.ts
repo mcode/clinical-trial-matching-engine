@@ -106,6 +106,28 @@ export class PatientFilter extends FhirFilter {
   }
 }
 
+// As it currently stands it's kind of pointless to have this be its own filter but it's not really attached to any
+// other part of the process and it's possible that it may be improved in the future. Right now it just deletes the
+// "note" field. There may be other places for annotations to reside and it may turn out to make more sense to restrict
+// it only to resources that can actually have a note attached.
+/**
+ * Removes any "note" field from input resources.
+ */
+export class AnnotationFilter extends FhirFilter {
+  constructor() {
+    super();
+  }
+  /**
+   * Deletes the "note" field.
+   * @param resource the resource to filter
+   * @returns
+   */
+  filterResource(resource: Resource): Resource | null {
+    delete resource.note;
+    return resource;
+  }
+}
+
 /**
  * Known paths to references. Keys are resource types, values are an array of paths to all types within that resource
  * type.
@@ -149,24 +171,6 @@ const REFERENCE_PATHS: Record<string, Array<string | Array<string>>> = {
     'usedReference'
   ]
 };
-
-function updateReference(reference: Reference, idMap: Map<string, string>): boolean {
-  if (reference.reference && reference.reference[0] === '#') {
-    // Internal resource, update the ID
-    const existingId = reference.reference.substring(1);
-    const newId = idMap.get(existingId);
-    if (newId !== undefined) {
-      reference.reference = '#' + newId;
-    }
-    // For now, delete the display text and the identifier because that could contain PII
-    delete reference.identifier;
-    delete reference.display;
-    return true;
-  } else {
-    // If this reference cannot be handled, return false
-    return false;
-  }
-}
 
 /**
  * Updates all references within a given object, removing any external references or references that do not refer to a
@@ -328,6 +332,7 @@ export class AnonymizeBundleFilter extends FhirFilter {
 export class AnonymizeFilter extends FhirFilter {
   patientFilter = new PatientFilter();
   bundleFilter = new AnonymizeBundleFilter();
+  annotationFilter = new AnnotationFilter();
 
   /**
    * Invokes filterResource on the child filters.
@@ -351,8 +356,11 @@ export class AnonymizeFilter extends FhirFilter {
     // Then go through the individual resources and selectively send them off as appropriate
     if (bundle.entry) {
       for (const entry of bundle.entry) {
-        if (entry.resource?.resourceType === 'Patient') {
-          this.patientFilter.filterResource(entry.resource);
+        if (entry.resource) {
+          if (entry.resource.resourceType === 'Patient') {
+            this.patientFilter.filterResource(entry.resource);
+          }
+          this.annotationFilter.filterResource(entry.resource);
         }
       }
     }

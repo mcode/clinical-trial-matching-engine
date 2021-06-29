@@ -507,6 +507,7 @@ describe('AnonymizeFilter', () => {
       const filter = new AnonymizeFilter();
       const anonymizeBundleSpy = spyOn(filter.bundleFilter, 'filterBundle').and.callThrough();
       const patientFilterSpy = spyOn(filter.patientFilter, 'filterResource').and.callThrough();
+      const annotationFilterSpy = spyOn(filter.annotationFilter, 'filterResource').and.callThrough();
       expect(
         filter.filterBundle({
           resourceType: 'Bundle',
@@ -520,6 +521,7 @@ describe('AnonymizeFilter', () => {
             {
               resource: {
                 resourceType: 'Patient',
+                id: 'CorpseMcDeadbody',
                 identifier: [
                   {
                     use: 'usual',
@@ -562,6 +564,20 @@ describe('AnonymizeFilter', () => {
                 mode: 'match',
                 score: 0.75
               }
+            },
+            {
+              resource: {
+                resourceType: 'Condition',
+                subject: {
+                  reference: '#CorpseMcDeadbody',
+                  display: 'Corpse McDeadbody'
+                },
+                note: [
+                  {
+                    text: 'Example text'
+                  }
+                ]
+              }
             }
           ],
           link: [
@@ -578,6 +594,7 @@ describe('AnonymizeFilter', () => {
           {
             resource: {
               resourceType: 'Patient',
+              id: '0',
               active: false,
               name: [
                 {
@@ -595,11 +612,20 @@ describe('AnonymizeFilter', () => {
               mode: 'match',
               score: 0.75
             }
+          },
+          {
+            resource: {
+              resourceType: 'Condition',
+              subject: {
+                reference: '#0'
+              }
+            }
           }
         ]
       } as Bundle);
       expect(anonymizeBundleSpy).toHaveBeenCalledTimes(1);
       expect(patientFilterSpy).toHaveBeenCalledTimes(1);
+      expect(annotationFilterSpy).toHaveBeenCalledTimes(2);
     });
   });
 });
