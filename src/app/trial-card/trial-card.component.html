@@ -1,6 +1,6 @@
 <!-- At some point the containing icon will likely be updated to include a class based on the actual status -->
 <div class="overall-status">
-  <div [ngStyle]="{'background': trialStatusColor(clinicalTrial.overallStatus)}">{{statusDisplay[clinicalTrial.overallStatus]}}</div>
+  <div class="{{getStatusClassName(clinicalTrial.overallStatus)}}">{{getOverallStatus(clinicalTrial.overallStatus)}}</div>
   <div class="distance">
     <div *ngIf="trialSiteDistance !== null">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 37 37">

@@ -167,3 +167,23 @@
 .label {
   text-align: center;
 }
+
+.recruiting {
+  border-radius: 20.5px;
+  background: #30b400;
+}
+
+.may-recruit {
+  border-radius: 20.5px;
+  background: #0b96d6;
+}
+
+.finished-recruiting {
+  border-radius: 20.5px;
+  background: #ba2020;
+}
+
+.unknown-status {
+  border-radius: 20.5px;
+  background: #ff0084;
+}

@@ -57,9 +57,16 @@ describe('TrialCardComponent', () => {
   });
 
   it('should get trial status color', () => {
-    expect(component.trialStatusColor('active')).toBe('#30b400');
-    expect(component.trialStatusColor('closed-to-accrual-and-intervention')).toBe('#ba2020');
-    expect(component.trialStatusColor('in-review')).toBe('#0b96d6');
-    expect(component.trialStatusColor('test-string')).toBe('#ff0084');
+    expect(component.getStatusClassName('active')).toBe('recruiting');
+    expect(component.getStatusClassName('closed-to-accrual-and-intervention')).toBe('finished-recruiting');
+    expect(component.getStatusClassName('in-review')).toBe('may-recruit');
+    expect(component.getStatusClassName('test-string')).toBe('unknown-status');
+  });
+
+  it('should get trial status display text', () => {
+    expect(component.getOverallStatus('test-string')).toBe('Invalid');
+    expect(component.getOverallStatus('closed-to-accrual-and-intervention')).toBe(
+      'Closed to Accrual and Intervention'
+    );
   });
 });

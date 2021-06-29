@@ -64,9 +64,14 @@ export class ResultDetailsComponent implements OnInit {
     }
   }
 
-  trialStatusColor(status: string): string {
-    if (['active'].includes(status)) {
-      return '#30b400';
+  /**
+   * Determines the class to use for the trial status indicator.
+   */
+  public getStatusClassName(status: string): string {
+    if (!(status in ResearchStudyStatusDisplay)) {
+      return 'unknown-status';
+    } else if (['active'].includes(status)) {
+      return 'recruiting';
     } else if (
       [
         'administratively-completed',
@@ -77,7 +82,7 @@ export class ResultDetailsComponent implements OnInit {
         'withdrawn'
       ].includes(status)
     ) {
-      return '#ba2020';
+      return 'finished-recruiting';
     } else if (
       [
         'approved',
@@ -86,9 +91,14 @@ export class ResultDetailsComponent implements OnInit {
         'temporarily-closed-to-accrual-and-intervention'
       ].includes(status)
     ) {
-      return '#0b96d6';
-    } else {
-      return '#ff0084';
+      return 'may-recruit';
     }
+  }
+
+  /**
+   * Maps to the the display text for the trial status indicator.
+   */
+  public getOverallStatus(status: string): string {
+    return status in ResearchStudyStatusDisplay ? ResearchStudyStatusDisplay[status] : 'Invalid';
   }
 }
