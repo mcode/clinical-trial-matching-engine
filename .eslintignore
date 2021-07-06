@@ -1,2 +1,4 @@
 # Ignore everything in node_modules
-node_modules
+/node_modules
+
+/karma.ci.conf.js

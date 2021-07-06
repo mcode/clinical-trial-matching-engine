@@ -1,55 +1,54 @@
-<div class="col15"> <button class="recButton mi-margin-10"> {{clinicalTrial.overallStatus}} </button>
-</div>
-<div class="col35 padding-top-15 padding-bottom-15 ">
-    <h2 class="cardtext ">
-        {{clinicalTrial.title}}</h2>
-    <div class="containingDIV padding-top-10">
-        <h3 class="cardtext color13">Conditions:</h3>
-        <span class="cardtext color13 mi-margin-left-10"> {{replace(clinicalTrial.conditions)}}</span>
+<!-- At some point the containing icon will likely be updated to include a class based on the actual status -->
+<div class="overall-status">
+  <div class="{{getStatusClassName(clinicalTrial.overallStatus)}}">{{getOverallStatus(clinicalTrial.overallStatus)}}</div>
+  <div class="distance">
+    <div *ngIf="trialSiteDistance !== null">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 37 37">
+        <path id="ic_directions_24px"
+              d="M38.466,19.193,21.812,2.539a1.843,1.843,0,0,0-2.609,0L2.549,19.193a1.843,1.843,0,0,0,0,2.609L19.2,38.456a1.843,1.843,0,0,0,2.609,0L38.466,21.8a1.843,1.843,0,0,0,0-2.609ZM24.2,25.133V20.507H16.8v5.551H13.1v-7.4a1.856,1.856,0,0,1,1.85-1.85H24.2V12.18l6.477,6.477Z"
+              transform="translate(-2.007 -1.997)" fill="#525151"></path>
+      </svg>
+      <span>{{trialSiteDistance}}</span>
     </div>
+  </div>
 </div>
-<div class="col10">
-    <div *ngIf="clinicalTrial.getClosest(reqs.zipCode)!=null" class="padding-top-30 padding-left-20"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-            viewBox="0 0 37 37">
-            <path id="ic_directions_24px"
-                d="M38.466,19.193,21.812,2.539a1.843,1.843,0,0,0-2.609,0L2.549,19.193a1.843,1.843,0,0,0,0,2.609L19.2,38.456a1.843,1.843,0,0,0,2.609,0L38.466,21.8a1.843,1.843,0,0,0,0-2.609ZM24.2,25.133V20.507H16.8v5.551H13.1v-7.4a1.856,1.856,0,0,1,1.85-1.85H24.2V12.18l6.477,6.477Z"
-                transform="translate(-2.007 -1.997)" fill="#525151" />
-        </svg><span class="cardText2">{{clinicalTrial.getClosest(reqs.zipCode)}} </span></div>
+<div class="summary">
+  <h2>{{clinicalTrial.title}}</h2>
+  <div class="conditions">
+    <h3>Conditions:</h3>
+    <p class="mi-margin-left-10">{{replace(clinicalTrial.conditions)}}</p>
+  </div>
 </div>
-<div class="col20">
-    <div class="containingDIV padding-top-10" style="margin-top: 7%;">
-        <div *ngIf="clinicalTrial.matchLikelihood!==null">
-            <h2 class="color1 padding-bottom-10 opacity-60 letter-spacing text-transform-uppercase">Match
-                likelihood:</h2>
-            <h2 [ngStyle]="{'color': getColor(clinicalTrial.matchLikelihood)}">{{clinicalTrial.matchLikelihood}}</h2>
-        </div>
-    </div>
+<div class="match-likelihood">
+  <div *ngIf="clinicalTrial.matchLikelihood !== null">
+      <h3>Match likelihood:</h3>
+      <div [ngStyle]="{'color': likelihoodColor()}">{{clinicalTrial.matchLikelihood}}</div>
+  </div>
 </div>
-<div class="col20 padding-10" style="text-align: center; background-color:#DFEEF0; vertical-align: middle; position: relative;" preserveAspectRatio="xMidYMid">
-    <button class="btn" style="border: none; display: block; margin: 0; width: 90%; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);" >
-        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 222 40" display="block" margin="auto" preserveAspectRatio="xMidYMid"
-            (click)="toggleTrialSaved()">
-            <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)" x="50%" y="50%">
-                <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
-                    <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)" stroke="#707070"
-                        stroke-width="1">
-                        <rect width="222" height="40" rx="10" stroke="none" />
-                        <rect x="0.5" y="0.5" width="221" height="39" rx="9.5"
-                            [ngClass]="trialSaved ? 'saved' : 'unsaved'" />
-                    </g>
-                    <g id="save-24px" transform="translate(1603.053 477)">
-                        <path id="Path_30" data-name="Path 30" d="M0,0H32V32H0Z" fill="none" />
-                        <path id="Path_31" data-name="Path 31"
-                            d="M21.667,3h-16A2.666,2.666,0,0,0,3,5.667V24.333A2.666,2.666,0,0,0,5.667,27H24.333A2.675,2.675,0,0,0,27,24.333v-16ZM15,24.333a4,4,0,1,1,4-4A3.995,3.995,0,0,1,15,24.333ZM19,11H5.667V5.667H19Z"
-                            transform="translate(1 1)" fill="#0079e0" />
-                    </g>
-                    <text id="Save_study" data-name="Save study" transform="translate(1654 500)" fill="#0079e0"
-                        font-size="20" font-family="Roboto-Bold, Roboto" font-weight="700">
-                        <tspan x="0" y="0">
-                            {{(trialSaved) ? 'STUDY SAVED' : 'SAVE STUDY'}}</tspan>
-                    </text>
-                </g>
-            </g>
-        </svg>
-    </button>
+<div class="save-trial">
+  <button class="btn" style="border: none; display: block; margin: 0; width: 90%; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);"
+    (click)="toggleTrialSaved();$event.stopPropagation();">
+     <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 222 40"
+          display="block" margin="auto" preserveAspectRatio="xMidYMid">
+      <g id="Group_46" data-name="Group 46" transform="translate(-1552 -451)" x="50%" y="50%">
+        <g id="Group_23" data-name="Group 23" transform="translate(-27 -22)">
+          <g id="Rectangle_250" data-name="Rectangle 250" transform="translate(1579 473)" stroke="#707070" stroke-width="1">
+            <rect width="222" height="40" rx="10" stroke="none" />
+            <rect x="0.5" y="0.5" width="221" height="39" rx="9.5"
+              [ngClass]="trialSaved ? 'saved' : 'unsaved'" />
+          </g>
+          <g id="save-24px" transform="translate(1603.053 477)">
+            <path id="Path_30" data-name="Path 30" d="M0,0H32V32H0Z" fill="none" />
+            <path id="Path_31" data-name="Path 31"
+                  d="M21.667,3h-16A2.666,2.666,0,0,0,3,5.667V24.333A2.666,2.666,0,0,0,5.667,27H24.333A2.675,2.675,0,0,0,27,24.333v-16ZM15,24.333a4,4,0,1,1,4-4A3.995,3.995,0,0,1,15,24.333ZM19,11H5.667V5.667H19Z"
+                  transform="translate(1 1)" fill="#0079e0" />
+          </g>
+          <text id="Save_study" data-name="Save study" transform="translate(1654 500)" fill="#0079e0" font-size="20"
+                font-family="Roboto-Bold, Roboto" font-weight="700">
+            <tspan x="0" y="0">{{(trialSaved) ? 'STUDY SAVED' : 'SAVE STUDY'}}</tspan>
+          </text>
+        </g>
+      </g>
+    </svg>
+  </button>
 </div>

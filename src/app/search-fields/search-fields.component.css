@@ -1,0 +1,12 @@
+.search-fields {
+  display: flex;
+}
+
+mat-form-field, button {
+  flex-grow: 1;
+  flex-basis: 20%;
+}
+
+button {
+  margin: 0 0 1.25em 16px;
+}

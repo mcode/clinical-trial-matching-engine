@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
+import { reduce } from 'rxjs/operators';
 
 import * as FHIR from 'fhirclient';
 import Client from 'fhirclient/lib/Client';
 import { fhirclient } from 'fhirclient/lib/types';
-import { promise } from 'protractor';
 
-import { ClientService } from './client.service';
+import { ClientService, createQuery } from './client.service';
 
 describe('ClientService', () => {
   let service: ClientService;
@@ -21,7 +21,7 @@ describe('ClientService', () => {
     // getClient expects to invoke the FHIR OAUTH2 load but we don't want to
     // really create a client
     // Create a mock patient object
-    mockPatient = ({} as unknown) as fhirclient.FHIR.Patient;
+    mockPatient = {} as unknown as fhirclient.FHIR.Patient;
     // Set defaults for the mock request
     mockRequest = null;
     mockError = null;
@@ -38,13 +38,13 @@ describe('ClientService', () => {
         return Promise.resolve(mockRequestResult);
       }
     };
-    mockClient = ({
+    mockClient = {
       patient: {
         read: () => Promise.resolve(mockPatient),
         request: request
       },
       request: request
-    } as unknown) as Client;
+    } as unknown as Client;
     fhirInitSpy = spyOn(FHIR.oauth2, 'init').and.callFake(() => Promise.resolve(mockClient));
   });
 
@@ -144,70 +144,27 @@ describe('ClientService', () => {
         responseIndex++;
         return Promise.resolve(response);
       };
-      return expectAsync(service.getAllRecords('query')).toBeResolvedTo([entry1, entry2]);
+      // This mixes Promises and Observables so we can't use marble testing
+      return expectAsync(
+        service
+          .getAllRecords('query')
+          // Accumulate all the entries into an array for ease of checking that they came out correctly
+          .pipe(
+            reduce((existing, next) => {
+              existing.push(...next.elements);
+              return existing;
+            }, [])
+          )
+          .toPromise()
+      ).toBeResolvedTo([entry1, entry2]);
     });
   });
+});
 
-  describe('#getConditions', () => {
-    let expectedCondition: fhirclient.FHIR.Resource = {
-      resourceType: 'Condition'
-    };
-    let getAllRecords: jasmine.Spy<(query: string) => Promise<fhirclient.FHIR.BackboneElement[]>>;
-    beforeEach(() => {
-      getAllRecords = spyOn(service, 'getAllRecords');
-      getAllRecords.and.callFake(() =>
-        Promise.resolve<fhirclient.FHIR.BundleEntry[]>([
-          { fullUrl: 'http://www.example.com/condition/1', resource: expectedCondition }
-        ])
-      );
-    });
-
-    it('gets conditions without parameters', () => {
-      return expectAsync(service.getConditions())
-        .toBeResolvedTo([expectedCondition])
-        .then(() => {
-          expect(getAllRecords).toHaveBeenCalledOnceWith('Condition');
-        });
-    });
-
-    it('adds query parameters', () => {
-      return expectAsync(service.getConditions({ foo: 'bar', two: 2, bool: true, baz: null }))
-        .toBeResolvedTo([expectedCondition])
-        .then(() => {
-          expect(getAllRecords).toHaveBeenCalledOnceWith('Condition?foo=bar&two=2&bool=true&baz=null');
-        });
-    });
-  });
-
-  describe('#getResources', () => {
-    let expected: fhirclient.FHIR.BundleEntry[] = [
-      {
-        fullUrl: 'http://www.example.com/encounter/1',
-        resource: {
-          resourceType: 'Encounter'
-        }
-      }
-    ];
-    let getAllRecords: jasmine.Spy<(query: string) => Promise<fhirclient.FHIR.BackboneElement[]>>;
-    beforeEach(() => {
-      getAllRecords = spyOn(service, 'getAllRecords');
-      getAllRecords.and.callFake(() => Promise.resolve<fhirclient.FHIR.BundleEntry[]>(expected));
-    });
-
-    it('gets resources without parameters', () => {
-      return expectAsync(service.getResources('Encounter'))
-        .toBeResolvedTo(expected)
-        .then(() => {
-          expect(getAllRecords).toHaveBeenCalledOnceWith('Encounter');
-        });
-    });
-
-    it('adds query parameters', () => {
-      return expectAsync(service.getResources('Encounter', { foo: 'bar', two: 2, bool: true, baz: null }))
-        .toBeResolvedTo(expected)
-        .then(() => {
-          expect(getAllRecords).toHaveBeenCalledOnceWith('Encounter?foo=bar&two=2&bool=true&baz=null');
-        });
-    });
+describe('.createQuery', () => {
+  it('adds query parameters', () => {
+    expect(createQuery('Encounter', { foo: 'bar', two: 2, bool: true, baz: null })).toEqual(
+      'Encounter?foo=bar&two=2&bool=true&baz=null'
+    );
   });
 });

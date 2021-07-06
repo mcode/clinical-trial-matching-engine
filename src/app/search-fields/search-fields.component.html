@@ -1,0 +1,61 @@
+<form class="search-fields" action="" method="GET" (submit)="search($event)">
+  <mat-form-field>
+    <mat-label>Zip Code</mat-label>
+    <input matInput type="text" placeholder="Zip code" [formControl]="zipCode">
+    <span matPrefix><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24.5 35">
+      <path
+        id="ic_place_24px"
+        d="M17.25,2A12.241,12.241,0,0,0,5,14.25C5,23.437,17.25,37,17.25,37S29.5,23.437,29.5,14.25A12.241,12.241,0,0,0,17.25,2Zm0,16.625a4.375,4.375,0,1,1,4.375-4.375A4.377,4.377,0,0,1,17.25,18.625Z"
+        transform="translate(-5 -2)"
+        fill="#525151"
+      />
+    </svg></span>
+    <mat-error *ngIf="zipCode.invalid">Invalid or missing zip code</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Travel Distance</mat-label>
+    <input matInput type="number" placeholder="travel distance" min="0" [formControl]="travelDistance">
+    <span matPrefix>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 39 39">
+        <path
+          id="ic_directions_24px"
+          d="M40.437,20.122,22.883,2.568a1.942,1.942,0,0,0-2.75,0L2.578,20.122a1.942,1.942,0,0,0,0,2.75L20.132,40.427a1.942,1.942,0,0,0,2.75,0L40.437,22.873a1.942,1.942,0,0,0,0-2.75ZM25.4,26.383V21.507H17.6v5.851H13.7v-7.8a1.956,1.956,0,0,1,1.95-1.95H25.4V12.73l6.827,6.827Z"
+          transform="translate(-2.008 -1.997)"
+          fill="#525151"
+        />
+      </svg>
+    </span>
+    <mat-error *ngIf="travelDistance.invalid">Invalid or missing travel distance</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Trial Phase</mat-label>
+    <mat-select [formControl]="trialPhase">
+      <mat-option value="any">Any Phase</mat-option>
+      <mat-option *ngFor="let phase of phases" [value]="phase.value">{{ phase.display }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Recruitment Status</mat-label>
+    <mat-select [formControl]="recruitmentStatus">
+      <mat-option value="all">All</mat-option>
+      <mat-option *ngFor="let rec of recruitmentStatuses" [value]="rec.value">{{ rec.display }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-flat-button color="primary" (click)="search()">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="40"
+      height="40"
+      viewBox="0 0 40 40"
+    >
+      <path
+        id="Path_5"
+        data-name="Path 5"
+        d="M22.224,19.917H21.009l-.431-.415A10.012,10.012,0,1,0,19.5,20.579l.415.431v1.215l7.69,7.674L29.9,27.607Zm-9.228,0A6.921,6.921,0,1,1,19.917,13,6.912,6.912,0,0,1,13,19.917Z"
+        transform="translate(3.037 3.037)"
+        fill="#efefef"
+      />
+      <path data-name="Path 6" d="M0,0H40V40H0Z" fill="none" />
+    </svg>
+  </button>
+</form>
