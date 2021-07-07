@@ -81,8 +81,20 @@ export class ResearchStudySearchEntry {
     return JSON.stringify(this.lookup('condition.text'));
   }
   get studyType(): string {
-    return this.resource.category && this.resource.category.length > 0 ? this.resource.category[0].text : '';
+    if (!this.resource.category || this.resource.category.length < 1) return '';
+
+    const display = this.resource.category.find((item) => item.text && item.text.startsWith("Study Type: "));
+    return display ? display.text : '';
   }
+
+  get studyDesign(): string {
+    if (!this.resource.category) return 'N/A';
+
+    const design = this.resource.category.map((item) => (item.text ? item.text : ''))
+                                 .reduce((acc, item) => { return item.length > 0 ? acc + "        " + item + "\n\n" : '' }, '');
+    return design.length > 0 ? '\n' + design : 'N/A';
+  }
+
   get description(): string {
     return this.detailedDescription;
   }
@@ -186,6 +198,68 @@ export class ResearchStudySearchEntry {
 
   get trialURL(): string {
     return 'https://www.clinicaltrials.gov/ct2/show/' + this.nctId;
+  }
+
+  get protocol(): object[] {
+    if (this.resource.protocol) {
+
+      let arr = this.resource.protocol.map(item => this.lookupResource(item.reference) );
+
+      return arr;
+    }
+    else {
+      return [];
+    }
+  }
+
+  get contact(): object[] {
+    if (this.resource.contact) {
+      return this.resource.contact.map( contact => ({ name: contact.name, 
+                                               phone: contact.telecom.find(item => item.system == 'phone'),
+                                               email: contact.telecom.find(item => item.system == 'email')
+                                              }))
+    }
+    else {
+      return [];
+    }
+  }
+
+  get arm(): object[] {  
+    if (this.resource.arm) {
+          let arms = {};
+
+          for (const arm of this.resource.arm) {
+            arms[arm.name] = {
+                                display: (arm.type ? (arm.type.text ? arm.type.text + ": " + arm.name : "") : "" ),
+                                ...(arm.description && { description: arm.description}),
+                                interventions: []
+                              };
+          }
+
+          if (this.resource.protocol) {
+            const interventions = this.resource.protocol.map(item => this.lookupResource(item.reference) );
+
+            // Map back the intervention to arm group
+            for (const intervention of interventions) {
+              if (intervention.subjectCodeableConcept && intervention.subjectCodeableConcept.text) {
+                console.log(intervention);
+                const formated_intervention = { ...(intervention.type && intervention.type.text && { type: intervention.type.text} ),
+                                                    ...(intervention.title && { title: intervention.title } ),
+                                                    ...(intervention.subtitle && { subtitle: intervention.subtitle } ),
+                                                    ...(intervention.description && { description: intervention.description } ) };
+                arms[intervention.subjectCodeableConcept.text].interventions.push(formated_intervention);
+              }
+            }
+          }
+
+          return Object.values(arms);
+    } else {
+      [];
+    }
+  }
+
+  get arms(): object[] {
+    return this.resource.arm;
   }
 
   getClosest(zip: string): string {
@@ -376,13 +450,36 @@ export class SearchResultsBundle {
   /**
    * Create a set of all current values at the given FHIR path. Values are
    * assumed to be string values.
-   * @param path the FHIR path
+   * @param path Required; The FHIR path
+   * @param isArray Optional; True/False on whether the results of path is array
+   * @param secondary_path Required if isArray=True; FHIR path of resulting resources in isArray
+   * @param prefix Optional; If the given value needs to start with a given text
    */
-  buildFilters(path: string): Set<string> {
+  buildFilters(path: string, isArray?: boolean, secondary_path?: string, prefix?: string): Set<string> {
     const results = new Set<string>();
+
     for (const researchStudy of this.researchStudies) {
-      const value = researchStudy.lookupString(path);
-      if (value !== null && value !== undefined) results.add(value);
+      if (isArray) {
+        const arr:fhirpath.FHIRResource[] = researchStudy.lookup(path) as fhirpath.FHIRResource[];
+
+        for (const item of arr) {
+          if (secondary_path) {
+            const value = fhirpath.evaluate(item, secondary_path);
+            if (prefix && value !== null && value !== undefined) {
+              if (value.toString().startsWith(prefix)) results.add(value.toString());
+            } 
+            else if (value !== null && value !== undefined) results.add(value.toString());
+          }
+        }
+
+      }
+      else {
+        const value = researchStudy.lookupString(path);
+        if (prefix && value !== null && value !== undefined) {
+          if (value.toString().startsWith(prefix)) results.add(value.toString());
+        } 
+        else if (value !== null && value !== undefined) results.add(value.toString());
+      }
     }
     return results;
   }

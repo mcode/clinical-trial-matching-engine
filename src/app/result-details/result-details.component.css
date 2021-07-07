@@ -1,8 +1,8 @@
 /* FIXME: These styles feel overly-specific. */
-.mi-margin-2{
+.mi-margin-2 {
   margin: 2%;
 }
-.mi-margin-30{
+.mi-margin-30 {
   margin: 30px;
 }
 
@@ -10,7 +10,7 @@
   display: flex;
 }
 
-.outerDiv{
+.outerDiv {
   text-align: center;
   width: 321px;
   height: 217px;
@@ -18,7 +18,7 @@
 }
 
 .accordion {
-  color: #B7B7B7;
+  color: #b7b7b7;
   cursor: pointer;
   padding: 18px;
   width: 100%;
@@ -31,7 +31,7 @@
 
 .accordionDetails {
   font-size: 20px;
-  color : #898686;
+  color: #898686;
   white-space: pre;
 }
 
@@ -43,7 +43,7 @@
 }
 
 .color8 {
-    color : #ffffff !important;
+  color: #ffffff !important;
 }
 
 .cardtext {
@@ -57,11 +57,23 @@
 
 .detailCardText {
   font-size: 30px;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .pointer:hover {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+
+.armTable th,
+td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding: 10px;
+  border: 1px solid;
+}
+
+.armTableDetails {
+  white-space: pre-wrap;
 }

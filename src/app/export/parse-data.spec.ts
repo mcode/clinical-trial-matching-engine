@@ -70,7 +70,7 @@ describe('UnpackResearchStudyResults', () => {
               ],
               text: 'Active'
             },
-            category: [{ text: 'Example Category' }],
+            category: [{ text: 'Study Type: Example Type' }],
             contact: [
               {
                 name: 'Example Contact',
@@ -170,7 +170,7 @@ describe('UnpackResearchStudyResults', () => {
     expect('Conditions' in row).toBe(true);
     expect(row['Conditions']).toEqual('[]');
     expect('StudyType' in row).toBe(true);
-    expect(row['StudyType']).toEqual('Example Category');
+    expect(row['StudyType']).toEqual('Study Type: Example Type');
     expect('Description' in row).toBe(true);
     expect(row['Description']).toEqual('A test research study object for testing this feature.');
     expect('DetailedDescription' in row).toBe(true);

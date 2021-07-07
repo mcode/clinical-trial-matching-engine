@@ -50,6 +50,35 @@ describe('ResearchStudySearchEntry', () => {
           ]
         }
       ],
+      category: [
+        {
+          text: 'Study Type: Study Type'
+        },
+        {
+          text: 'Intervention Model: Intervention Model'
+        },
+        {
+          text: 'Primary Purpose: Primary Purpose'
+        },
+        {
+          text: 'Masking: Masking'
+        }
+      ],
+      arm: [
+        {
+          name: 'Arm',
+          type: {
+            text: 'Experimental'
+          },
+          description: 'Description'
+        }
+      ],
+      protocol: [
+        {
+          reference: '#plan-0',
+          type: 'PlanDefinition'
+        }
+      ],
       contained: [
         {
           resourceType: 'Organization',
@@ -72,6 +101,15 @@ describe('ResearchStudySearchEntry', () => {
               use: 'work'
             }
           ]
+        },
+        {
+          resourceType: 'PlanDefinition',
+          id: 'plan-0',
+          title: 'Title',
+          status: 'unknown',
+          type: { text: 'Drug' },
+          subjectCodeableConcept: { text: 'Arm' },
+          subtitle: 'Other Name'
         }
       ],
       site: [
@@ -167,13 +205,13 @@ describe('ResearchStudySearchEntry', () => {
     }
   };
   it('finds contained resources by id', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
     const location = result.lookupContainedResource('location-1');
     expect(location).toBe(testEntry.resource.contained[1]);
   });
 
   it('getSites finds all sites', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
     const sites = result.getSites();
     expect(Array.isArray(sites)).toBe(true);
     expect(sites.length).toBe(2);
@@ -182,7 +220,7 @@ describe('ResearchStudySearchEntry', () => {
   });
 
   it('maps values as expected', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
     const sites = result.sites;
     expect(Array.isArray(sites)).toBe(true);
     expect(sites.length).toBe(2);
@@ -192,25 +230,25 @@ describe('ResearchStudySearchEntry', () => {
   });
 
   it('converts values as expected', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
     expect(result.overallContact).toEqual('Example Contact');
   });
 
   it('closest site is null when no coordinate info', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
     expect(result.getClosest('01886')).toBeNull();
   });
   it('closest site is null when no zip entered', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
     expect(result.getClosest('')).toBeNull();
   });
 
   it('gets match likelihood as null when missing', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
     expect(result.matchLikelihood).toBeNull();
   });
   it('gets match likelihood as expected', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
     result.search = { mode: 'example', score: 0.3 };
     result.search.score = 0.23;
     expect(result.matchLikelihood).toBe('No Match');
@@ -220,48 +258,72 @@ describe('ResearchStudySearchEntry', () => {
     expect(result.matchLikelihood).toBe('Likely Match');
   });
   it('gets description as unknown when missing', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
     expect(result.description).toBe('(unknown)');
   });
   it('gets phase as unknown when missing', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
     expect(result.phase).toBe('(unknown)');
   });
   it('gets contact name', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
     expect(result.overallContact).toBe('Example Contact');
   });
   it('gets sponsor as none when missing', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
     expect(result.sponsor).toBe('(None)');
   });
   it('gets criteria as blank string when missing', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
     expect(result.criteria).toBe('');
   });
   it('gets nctId as blank string when missing', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
     expect(result.nctId).toBe('');
   });
   it('gets distance as undefined when no distance', () => {
-    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
     expect(result.distance).toBeUndefined();
   });
   it('calculates/outputs closest distance properly', () => {
-    const result = new ResearchStudySearchEntry(testEntry2, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry2, distServ, '01886', 'example source');
     expect(result.getClosest('01886')).toBeDefined();
   });
   it('gets criteria', () => {
-    const result = new ResearchStudySearchEntry(testEntry2, distServ, '01886',"example source");
+    const result = new ResearchStudySearchEntry(testEntry2, distServ, '01886', 'example source');
     expect(result.criteria).toBeDefined();
   });
+  it('gets study design', () => {
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
+    expect(result.studyDesign).toBeDefined();
+  });
+  it('gets arms and interventions', () => {
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
+    expect(result.arm).toBeDefined();
+    expect(result.arm).toBeDefined();
+    expect(result.arm).toHaveSize(1);
+    expect(result.arm[0]).toEqual(
+      jasmine.objectContaining({
+        display: 'Experimental: Arm',
+        description: 'Description',
+        interventions: jasmine.arrayContaining([
+          jasmine.objectContaining({
+            title: 'Title',
+            type: 'Drug',
+            subtitle: 'Other Name'
+          })
+        ])
+      })
+    );
+  });
+
   it('makes search results bundle', () => {
     const bundleData = {
       type: 'document' as 'document',
       link: [],
       entry: [testEntry2]
     };
-    const bundle = new SearchResultsBundle(bundleData, distServ, '01886',"example source");
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886', 'example source');
     expect(bundle).toBeDefined();
   });
   it('builds filters', () => {
@@ -270,7 +332,16 @@ describe('ResearchStudySearchEntry', () => {
       link: [],
       entry: [testEntry2]
     };
-    const bundle = new SearchResultsBundle(bundleData, distServ, '01886', "example source");
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886', 'example source');
     expect(bundle.buildFilters('id')).toBeDefined();
+  });
+  it('builds array filters', () => {
+    const bundleData = {
+      type: 'document' as 'document',
+      link: [],
+      entry: [testEntry]
+    };
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886', 'example source');
+    expect(bundle.buildFilters('category', true, 'text', 'Intervention Model')).toBeDefined();
   });
 });

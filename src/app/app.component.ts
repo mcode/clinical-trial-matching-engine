@@ -13,6 +13,7 @@ import {
   ResearchStudyStatusDisplay,
   ResearchStudyPhaseDisplay
 } from './fhir-constants';
+import * as fhirpath from 'fhirpath';
 import { fhirclient } from 'fhirclient/lib/types';
 import { TrialCardComponent } from './trial-card/trial-card.component';
 
@@ -38,7 +39,7 @@ class FilterValue {
  */
 class FilterData {
   data: FilterValue[];
-  constructor(public val: string, public selectedVal: string | null = null, data: Iterable<string>) {
+  constructor(public val: string, public selectedVal: string | null = null, data: Iterable<string>, public isArray: boolean | null = false, public secondarySelectedVal: string | null = null) {
     this.data = Array.from(data, (value) => new FilterValue(value));
   }
 }
@@ -374,7 +375,7 @@ export class AppComponent {
     this.filtersArray = [
       new FilterData('Recruitment', 'status', this.searchResults.buildFilters('status')),
       new FilterData('Phase', 'phase.text', this.searchResults.buildFilters('phase.text')),
-      new FilterData('Study Type', 'category.text', this.searchResults.buildFilters('category.text'))
+      new FilterData('Study Type', 'category', this.searchResults.buildFilters('category', true, 'text', 'Study Type'), true, 'text')
     ];
   }
   /**
@@ -423,14 +424,16 @@ export class AppComponent {
       comparisonFunction = this.compareByDist;
     }
 
-    const activeFilters: { selectedItem: string; values: string[] }[] = [];
+    const activeFilters: { selectedItem: string; values: string[]; isArray: boolean, secondaryPath: string}[] = [];
     for (const filter of this.filtersArray) {
       // See if there are any active filters in this filter
       const values = filter.data.filter((value) => value.selectedItems === true);
       if (values.length > 0) {
         activeFilters.push({
           selectedItem: filter.selectedVal,
-          values: values.map((v) => v.val)
+          values: values.map((v) => v.val),
+          isArray: filter.isArray,
+          secondaryPath: filter.secondarySelectedVal
         });
       }
     }
@@ -442,11 +445,26 @@ export class AppComponent {
       this.showPage(0);
       return;
     }
+    console.log(activeFilters);
     this.filteredResults = this.searchResults.researchStudies.filter((study) => {
       for (const filter of activeFilters) {
-        const value = study.lookupString(filter.selectedItem);
-        // If it doesn't match, then filter it out
-        if (!filter.values.some((v) => v === value)) return false;
+        if (filter.isArray) {
+          // If the filter is an array type, we'll look through all of the options defined by secondaryPath
+          const arr:fhirpath.FHIRResource[] = study.lookup(filter.selectedItem) as fhirpath.FHIRResource[];
+
+          const values:string[] = arr.map( (item) => fhirpath.evaluate(item, filter.secondaryPath).toString() );
+
+          // const matches = filter.values.reduce( (acc, curr) => (acc + (values.includes(curr) ? 1 : 0)), 0);
+          // if (matches == 0) return false;
+
+          if (!filter.values.some((v) => values.includes(v))) return false;
+
+        } else {
+          const value = study.lookupString(filter.selectedItem);
+
+          // If it doesn't match, then filter it out
+          if (!filter.values.some((v) => v === value)) return false;
+        }
       }
       // If all filters matched, return true
       return true;
