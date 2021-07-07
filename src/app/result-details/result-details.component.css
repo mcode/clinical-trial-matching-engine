@@ -1,7 +1,8 @@
 /* infobox is the large gray box at the top of the details */
-.infobox, .back-to-results {
+.infobox,
+.back-to-results {
   background: #525151;
-  color: #FFF;
+  color: #fff;
   margin: 0 16px;
   font-family: Roboto;
 }
@@ -39,7 +40,8 @@
   padding: 16px;
 }
 
-.contacts-column h1, .contacts-column h2 {
+.contacts-column h1,
+.contacts-column h2 {
   font-size: inherit;
   text-transform: uppercase;
 }
@@ -50,7 +52,7 @@
 
 /* Add a space after it for padding */
 .contacts-column .sponsor h2::after {
-  content: " ";
+  content: ' ';
 }
 
 .save-study {
@@ -125,7 +127,8 @@
   margin-bottom: 15px;
 }
 
-.phone, .email {
+.phone,
+.email {
   font-size: 80%;
   color: #0079e0;
   line-height: 200%;
@@ -186,4 +189,28 @@
 .unknown-status {
   border-radius: 20.5px;
   background: #ff0084;
+}
+
+.armTable {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.armTable th,
+.armTable td {
+  width: 50%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.armTableDetails {
+  white-space: pre-wrap !important;
+}
+
+.indented {
+  margin-left: 20px;
+}
+
+li.interventionItem:not(:last-child) {
+  margin: 0 0 3px 0;
 }

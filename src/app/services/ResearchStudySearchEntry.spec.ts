@@ -38,6 +38,35 @@ describe('ResearchStudySearchEntry', () => {
           ]
         }
       ],
+      category: [
+        {
+          text: 'Study Type: Study Type'
+        },
+        {
+          text: 'Intervention Model: Intervention Model'
+        },
+        {
+          text: 'Primary Purpose: Primary Purpose'
+        },
+        {
+          text: 'Masking: Masking'
+        }
+      ],
+      arm: [
+        {
+          name: 'Arm',
+          type: {
+            text: 'Experimental'
+          },
+          description: 'Description'
+        }
+      ],
+      protocol: [
+        {
+          reference: '#plan-0',
+          type: 'PlanDefinition'
+        }
+      ],
       contained: [
         {
           resourceType: 'Organization',
@@ -60,6 +89,15 @@ describe('ResearchStudySearchEntry', () => {
               use: 'work'
             }
           ]
+        },
+        {
+          resourceType: 'PlanDefinition',
+          id: 'plan-0',
+          title: 'Title',
+          status: 'unknown',
+          type: { text: 'Drug' },
+          subjectCodeableConcept: { text: 'Arm' },
+          subtitle: 'Other Name'
         }
       ],
       site: [
@@ -243,6 +281,29 @@ describe('ResearchStudySearchEntry', () => {
     const result = new ResearchStudySearchEntry(testEntry2, distServ, '01886', 'example source');
     expect(result.criteria).toBeDefined();
   });
+  it('gets study design', () => {
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
+    expect(result.studyDesign).toBeDefined();
+  });
+  it('gets arms and interventions', () => {
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
+    expect(result.arm).toBeDefined();
+    expect(result.arm).toBeDefined();
+    expect(result.arm).toHaveSize(1);
+    expect(result.arm[0]).toEqual(
+      jasmine.objectContaining({
+        display: 'Experimental: Arm',
+        description: 'Description',
+        interventions: jasmine.arrayContaining([
+          jasmine.objectContaining({
+            title: 'Title',
+            type: 'Drug',
+            subtitle: 'Other Name'
+          })
+        ])
+      })
+    );
+  });
   it('makes search results bundle', () => {
     const bundleData = {
       resourceType: 'Bundle' as 'Bundle',
@@ -262,5 +323,15 @@ describe('ResearchStudySearchEntry', () => {
     };
     const bundle = new SearchResultsBundle(bundleData, distServ, '01886', new SearchProvider('example source', ''));
     expect(bundle.buildFilters('id')).toBeDefined();
+  });
+  it('builds array filters', () => {
+    const bundleData = {
+      resourceType: 'Bundle' as 'Bundle',
+      type: 'document' as 'document',
+      link: [],
+      entry: [testEntry]
+    };
+    const bundle = new SearchResultsBundle(bundleData, distServ, '01886', new SearchProvider('example source', ''));
+    expect(bundle.buildFilters('category', true, 'text', 'Intervention Model')).toBeDefined();
   });
 });
