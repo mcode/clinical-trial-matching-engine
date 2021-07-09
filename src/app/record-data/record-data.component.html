@@ -24,7 +24,7 @@
     </ul>
     <h3>Observations:</h3>
     <ul>
-      <li *ngFor="let observation of observations">{{observation.effectiveDateTime.substr(0,10)}} : {{observation.code.text}} {{observation.valueQuantity !== null ? ' : ' + observation.valueQuantity.value + ' ' + observation.valueQuantity.unit : ''}}</li>
+      <li *ngFor="let observation of observations">{{observation.effectiveDateTime.substr(0,10)}} : {{observation.code.text}} {{observation.valueQuantity != null ||  observation.valueQuantity != undefined ? ' : ' + observation.valueQuantity.value + ' ' + observation.valueQuantity.unit : ''}}</li>
     </ul>
     <h3>Other Resources:</h3>
     <ul>
