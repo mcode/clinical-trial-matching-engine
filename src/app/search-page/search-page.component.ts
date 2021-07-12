@@ -101,6 +101,10 @@ export class SearchPageComponent implements OnInit {
         this.patientService.getPatientData().subscribe(
           (next) => {
             if (next.total) this.setLoadingProgress(next.loaded, next.total);
+            // Add the entries of the patient resource to the bundle resources array.
+            if (next.type === 'complete') {
+              this.bundleResources = next.entries;
+            }
           },
           (error) => {
             console.log(error);
