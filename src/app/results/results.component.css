@@ -1,7 +1,16 @@
 .header {
   display: flex;
   padding-bottom: 20px;
+  justify-content: space-between;
+  height: 100%;
 }
+
+.header .header-side {
+  display: flex;
+  padding-bottom: 20px;
+  height: 100%;
+}
+
 .results {
   color: #716f6f;
   font-family: Roboto;
@@ -30,9 +39,10 @@
 }
 
 .query {
-  display: flex;
+  display: block;
   font-size: 20px;
   color: #525151;
+  float: right;
 }
 .query > div {
   margin: 4px;
@@ -46,6 +56,23 @@
   width: 20px;
   height: 20px;
   padding-right: 4px;
+}
+
+.export-button-wrapper {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+button {
+  display: inline-block;
+  height: 100%;
+  padding: 2px;
+  vertical-align: middle;
+  margin: 3px;
+  flex-shrink: 1;
+  line-height: 40px;
 }
 
 .results {
