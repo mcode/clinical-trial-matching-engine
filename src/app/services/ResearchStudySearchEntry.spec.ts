@@ -304,6 +304,14 @@ describe('ResearchStudySearchEntry', () => {
       })
     );
   });
+  it('gets protocol', () => {
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
+    expect(result.protocol).toBeDefined();
+  });
+  it('gets arms', () => {
+    const result = new ResearchStudySearchEntry(testEntry, distServ, '01886', 'example source');
+    expect(result.arms).toBeDefined();
+  });
   it('makes search results bundle', () => {
     const bundleData = {
       resourceType: 'Bundle' as 'Bundle',
