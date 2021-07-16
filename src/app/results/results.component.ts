@@ -7,6 +7,7 @@ import { SearchResultsBundle } from '../services/search.service';
 import { ResearchStudySearchEntry } from '../services/ResearchStudySearchEntry';
 import { BundleEntry } from '../fhir-types';
 import { SearchResultsService, TrialQuery } from '../services/search-results.service';
+import * as fhirpath from 'fhirpath';
 
 /**
  * Provides basic information about a given page.
@@ -38,7 +39,13 @@ class Filter {
   get activeFilters(): string[] {
     return this.activeFilterIndices.map((index) => this.values[index].value);
   }
-  constructor(public name: string, public filterPath: string | null = null, values: Iterable<string>) {
+  constructor(
+    public name: string,
+    public filterPath: string | null = null,
+    values: Iterable<string>,
+    public isArray: boolean | null = false,
+    public secondaryFilterPath: string | null = null
+  ) {
     this.id = this.name.replace(/[^\w_-]+/g, '_');
     this.values = Array.from(values, (value) => new FilterValue(value));
   }
@@ -228,7 +235,13 @@ export class ResultsComponent implements OnInit {
       this.filters = [
         new Filter('Recruitment', 'status', this.searchResults.buildFilters('status')),
         new Filter('Phase', 'phase.text', this.searchResults.buildFilters('phase.text')),
-        new Filter('Study Type', 'category.text', this.searchResults.buildFilters('category.text'))
+        new Filter(
+          'Study Type',
+          'category',
+          this.searchResults.buildFilters('category', true, 'text', 'Study Type'),
+          true,
+          'text'
+        )
       ];
     }
   }
@@ -271,16 +284,19 @@ export class ResultsComponent implements OnInit {
       comparisonFunction = compareByDist;
     }
 
-    const activeFilters: { filterPath: string; values: string[] }[] = [];
+    const activeFilters: { filterPath: string; values: string[]; isArray: boolean; secondaryPath: string }[] = [];
     for (const filter of this.filters) {
       // If there are any active filters, grab them
       if (filter.activeFilterIndices.length > 0) {
         activeFilters.push({
           filterPath: filter.filterPath,
-          values: filter.activeFilters
+          values: filter.activeFilters,
+          isArray: filter.isArray,
+          secondaryPath: filter.secondaryFilterPath
         });
       }
     }
+
     if (activeFilters.length === 0) {
       // No filters active, don't filter
       this.filteredResults = null;
@@ -291,9 +307,22 @@ export class ResultsComponent implements OnInit {
     }
     this.filteredResults = this.searchResults.researchStudies.filter((study) => {
       for (const filter of activeFilters) {
-        const value = study.lookupString(filter.filterPath);
-        // If it doesn't match, then filter it out
-        if (!filter.values.some((v) => v === value)) return false;
+        if (filter.isArray) {
+          // If the filter is an array type, we'll look through all of the options defined by secondaryPath
+          const arr: fhirpath.FHIRResource[] = study.lookup(filter.filterPath) as fhirpath.FHIRResource[];
+
+          const values: string[] = arr.map((item) => fhirpath.evaluate(item, filter.secondaryPath).toString());
+
+          // const matches = filter.values.reduce( (acc, curr) => (acc + (values.includes(curr) ? 1 : 0)), 0);
+          // if (matches == 0) return false;
+
+          if (!filter.values.some((v) => values.includes(v))) return false;
+        } else {
+          const value = study.lookupString(filter.filterPath);
+
+          // If it doesn't match, then filter it out
+          if (!filter.values.some((v) => v === value)) return false;
+        }
       }
       // If all filters matched, return true
       return true;

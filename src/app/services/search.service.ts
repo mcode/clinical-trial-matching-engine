@@ -7,6 +7,7 @@ import { AppConfigService, SearchProvider } from './app-config.service';
 import { PatientBundle } from '../bundle';
 import { Bundle } from '../fhir-types';
 import { ResearchStudySearchEntry } from './ResearchStudySearchEntry';
+import * as fhirpath from 'fhirpath';
 
 /**
  * Marks a path.
@@ -84,13 +85,32 @@ export class SearchResultsBundle {
   /**
    * Create a set of all current values at the given FHIR path. Values are
    * assumed to be string values.
-   * @param path the FHIR path
+   * @param path Required; The FHIR path
+   * @param isArray Optional; True/False on whether the results of path is array
+   * @param secondary_path Required if isArray=True; FHIR path of resulting resources in isArray
+   * @param prefix Optional; If the given value needs to start with a given text
    */
-  buildFilters(path: string): Set<string> {
+  buildFilters(path: string, isArray?: boolean, secondary_path?: string, prefix?: string): Set<string> {
     const results = new Set<string>();
+
     for (const researchStudy of this.researchStudies) {
-      const value = researchStudy.lookupString(path);
-      if (value !== null && value !== undefined) results.add(value);
+      if (isArray) {
+        const arr: fhirpath.FHIRResource[] = researchStudy.lookup(path) as fhirpath.FHIRResource[];
+
+        for (const item of arr) {
+          if (secondary_path) {
+            const value = fhirpath.evaluate(item, secondary_path);
+            if (prefix && value !== null && value !== undefined) {
+              if (value.toString().startsWith(prefix)) results.add(value.toString());
+            } else if (value !== null && value !== undefined) results.add(value.toString());
+          }
+        }
+      } else {
+        const value = researchStudy.lookupString(path);
+        if (prefix && value !== null && value !== undefined) {
+          if (value.toString().startsWith(prefix)) results.add(value.toString());
+        } else if (value !== null && value !== undefined) results.add(value.toString());
+      }
     }
     return results;
   }

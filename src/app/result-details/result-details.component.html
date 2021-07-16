@@ -1,13 +1,12 @@
 <div class="clinical-trial-details">
   <div class="back-to-results" (click)="navigateToResults()">
     <span><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40.641 40.641">
-      <g id="arrow_upward-24px" transform="translate(0 40.641) rotate(-90)">
-        <path d="M0,0H40.641V40.641H0Z" fill="none" />
-        <path d="M4,17.547l2.388,2.388,9.466-9.449V31.094H19.24V10.486l9.449,9.466,2.4-2.4L17.547,4Z"
-          transform="translate(2.773 2.773)"
-          fill="#efefef"
-        />
-      </g></svg> Back to results</span>
+        <g id="arrow_upward-24px" transform="translate(0 40.641) rotate(-90)">
+          <path d="M0,0H40.641V40.641H0Z" fill="none" />
+          <path d="M4,17.547l2.388,2.388,9.466-9.449V31.094H19.24V10.486l9.449,9.466,2.4-2.4L17.547,4Z"
+            transform="translate(2.773 2.773)" fill="#efefef" />
+        </g>
+      </svg> Back to results</span>
   </div>
   <div class="infobox">
     <div class="details-column">
@@ -22,18 +21,19 @@
         <dt>Source:</dt>
         <dd class="source">{{clinicalTrial.provider.name}}</dd>
         <dt>Source:</dt>
-        <dd class="link"><a href="{{clinicalTrial.trialURL}}" rel="nofollw" target="_blank">{{clinicalTrial.trialURL}}</a></dd>
+        <dd class="link"><a href="{{clinicalTrial.trialURL}}" rel="nofollw"
+            target="_blank">{{clinicalTrial.trialURL}}</a></dd>
       </dl>
       <div class="status-icons">
         <div class="overall-status">
           <div class="icon">
-            <div class="{{getStatusClassName(clinicalTrial.overallStatus)}}">{{getOverallStatus(clinicalTrial.overallStatus)}}</div>
+            <div class="{{getStatusClassName(clinicalTrial.overallStatus)}}">
+              {{getOverallStatus(clinicalTrial.overallStatus)}}</div>
           </div>
         </div>
         <div *ngIf="clinicalTrial.getClosest(query.zipCode) !== null" class="nearest">
           <div class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="47" height="47"
-              viewBox="0 0 47 47">
+            <svg xmlns="http://www.w3.org/2000/svg" width="47" height="47" viewBox="0 0 47 47">
               <path id="ic_directions_24px"
                 d="M48.32,23.84,27.165,2.685a2.341,2.341,0,0,0-3.314,0L2.7,23.84a2.341,2.341,0,0,0,0,3.314L23.85,48.31a2.341,2.341,0,0,0,3.314,0L48.32,27.155a2.341,2.341,0,0,0,0-3.314ZM30.2,31.386V25.509h-9.4v7.052h-4.7v-9.4a2.358,2.358,0,0,1,2.351-2.351H30.2V14.932l8.227,8.227Z"
                 transform="translate(-2.007 -1.997)" fill="#525151" />
@@ -43,15 +43,17 @@
         </div>
         <div *ngIf="clinicalTrial.matchLikelihood !== null" class="match-likelihood">
           <div class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="103" height="103"
-              viewBox="0 0 103 103">
-              <g id="Ellipse_1" data-name="Ellipse 1" fill="none" [ngStyle]="{'stroke': getColor(clinicalTrial.matchLikelihood)}" stroke-width="10">
+            <svg xmlns="http://www.w3.org/2000/svg" width="103" height="103" viewBox="0 0 103 103">
+              <g id="Ellipse_1" data-name="Ellipse 1" fill="none"
+                [ngStyle]="{'stroke': getColor(clinicalTrial.matchLikelihood)}" stroke-width="10">
                 <circle cx="51.5" cy="51.5" r="51.5" stroke="none" />
                 <circle cx="51.5" cy="51.5" r="46.5" fill="none" />
               </g>
             </svg>
           </div>
-          <div class="label">Match likelihood: <span [ngStyle]="{'color': getColor(clinicalTrial.matchLikelihood)}">{{clinicalTrial.matchLikelihood}}</span></div>
+          <div class="label">Match likelihood: <span
+              [ngStyle]="{'color': getColor(clinicalTrial.matchLikelihood)}">{{clinicalTrial.matchLikelihood}}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -98,7 +100,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title>Study Design</mat-panel-title>
     </mat-expansion-panel-header>
-    <p>NA</p>
+    <p>{{clinicalTrial.studyDesign}}</p>
   </mat-expansion-panel>
   <mat-expansion-panel *ngIf="clinicalTrial.criteria">
     <mat-expansion-panel-header>
@@ -110,12 +112,58 @@
     <mat-expansion-panel-header>
       <mat-panel-title>Arms &amp; Interventions</mat-panel-title>
     </mat-expansion-panel-header>
-    <p>NA</p>
+    <table id="interventions" class="armTable" rules="rows">
+      <thead>
+        <th>Arm</th>
+        <th>Intervention/Treatment</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let arm of clinicalTrial.arm">
+          <td>
+            <p class="armTableDetails">{{ arm.display }}</p>
+            <p class="armTableDetails">{{ arm.description }}</p>
+          </td>
+          <td>
+            <ul>
+              <li *ngFor="let intervention of arm.interventions" class="interventionItem">
+                <p class="armTableDetails">{{ intervention.type }}: {{ intervention.title }}</p>
+                <p class="armTableDetails">{{ intervention.description }}</p>
+                <p *ngIf="intervention.subtitle" class="armTableDetails">Other name: {{
+                  intervention.subtitle }}</p>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </mat-expansion-panel>
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>More information</mat-panel-title>
     </mat-expansion-panel-header>
-    <p>NA</p>
+    <p class="accordionDetails">Contact information: </p>
+    <div *ngFor="let contact of clinicalTrial.contact" class="indented">
+      <br>
+      <p class="accordianDetails">
+        {{ contact.name ? contact.name : ''}}
+      </p>
+      <p>
+        <svg id="phone-24px" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 30 30">
+          <path id="Path_26" data-name="Path 26" d="M0,0H30V30H0Z" fill="none" />
+          <path id="Path_27" data-name="Path 27"
+            d="M7.525,12.738a18.936,18.936,0,0,0,8.238,8.238l2.75-2.75a1.243,1.243,0,0,1,1.275-.3,14.259,14.259,0,0,0,4.462.712,1.254,1.254,0,0,1,1.25,1.25V24.25a1.254,1.254,0,0,1-1.25,1.25A21.248,21.248,0,0,1,3,4.25,1.254,1.254,0,0,1,4.25,3H8.625a1.254,1.254,0,0,1,1.25,1.25,14.2,14.2,0,0,0,.712,4.462,1.254,1.254,0,0,1-.312,1.275Z"
+            transform="translate(0.75 0.75)" fill="#0079e0" />
+        </svg>
+        <span class="accordianDetails contact-text"> {{ contact.phone ? contact.phone.value : '' }}</span>
+      </p>
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 25 20">
+          <path id="Path_22" data-name="Path 22"
+            d="M24.5,4H4.5A2.5,2.5,0,0,0,2.013,6.5L2,21.5A2.507,2.507,0,0,0,4.5,24h20A2.507,2.507,0,0,0,27,21.5V6.5A2.507,2.507,0,0,0,24.5,4Zm0,5-10,6.25L4.5,9V6.5l10,6.25,10-6.25Z"
+            transform="translate(-2 -4)" fill="#0079e0" />
+        </svg>
+        <span class="accordianDetails contact-text"> {{ contact.email ? contact.email.value : '' }}</span>
+      </p>
+    </div>
   </mat-expansion-panel>
 </mat-accordion>
