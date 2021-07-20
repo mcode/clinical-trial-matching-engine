@@ -9,7 +9,6 @@ import { PatientService } from '../services/patient.service';
 import { SearchResultsService } from '../services/search-results.service';
 import { ResearchStudyStatus, ResearchStudyPhase } from '../fhir-constants';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
-import { BundleEntry } from '../fhir-types';
 import { SearchFieldsComponent } from '../search-fields/search-fields.component';
 import { TrialQuery } from '../services/search-results.service';
 import { Router } from '@angular/router';
@@ -60,11 +59,6 @@ export class SearchPageComponent implements OnInit {
    */
   public sortType = 'likelihood';
 
-  /**
-   * Patient bundle resources from the FHIR client.
-   */
-  public bundleResources: BundleEntry[] = [];
-
   constructor(
     private router: Router,
     private searchResultsService: SearchResultsService,
@@ -98,9 +92,9 @@ export class SearchPageComponent implements OnInit {
           this.searchFieldsComponent.zipCode.setValue(zipCode);
         }
         // With the patient loaded, move on to loading resources
-        this.patientService.getPatientData().subscribe(
-          (next) => {
-            if (next.total) this.setLoadingProgress(next.loaded, next.total);
+        this.patientService.loadPatientData().subscribe(
+          (event) => {
+            if (event.total) this.setLoadingProgress(event.loaded, event.total);
           },
           (error) => {
             console.log(error);
@@ -124,6 +118,9 @@ export class SearchPageComponent implements OnInit {
    * Execute a search on clinical trial data based on the current user.
    */
   public searchClinicalTrials(query: TrialQuery): void {
+    // TODO: Check to make sure patient data was loaded
+    // (Note that it shouldn't be possible to trigger this callback if it wasn't, but still.)
+    const patientData = this.patientService.getPatientData();
     // For now, just copy the values over
     this.showLoadingOverlay('Searching clinical trials...');
     // Blank out any existing results
@@ -137,7 +134,7 @@ export class SearchPageComponent implements OnInit {
       this.hideLoadingOverlay();
       return;
     }
-    const patientBundle = createPatientBundle(query, this.bundleResources);
+    const patientBundle = createPatientBundle(query, patientData);
     this.searchResultsService.search(query, patientBundle).subscribe(
       () => {
         this.router.navigateByUrl('/results');
@@ -152,8 +149,10 @@ export class SearchPageComponent implements OnInit {
   }
 
   public showRecord(): void {
+    // TODO: Check to make sure patient data was loaded.
+    // (Note that it shouldn't be possible to trigger this callback if it wasn't, but still.)
     this.dialog.open(RecordDataComponent, {
-      data: { patient: this.patient, resources: this.bundleResources }
+      data: { patient: this.patient, resources: this.patientService.getPatientData() }
     });
   }
 

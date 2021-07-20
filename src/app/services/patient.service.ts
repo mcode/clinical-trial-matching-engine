@@ -9,15 +9,17 @@ import { ClientService, QueryParameters, Stringable } from '../smartonfhir/clien
 export type PatientEventType = 'progress' | 'complete';
 
 /**
- * Notification that a chunk of patient data has been loaded. If complete, entries is all the loaded entries.
- * Otherwise, the various elements indicate the loading progress.
+ * Notification that a chunk of patient data has been loaded. If 'complete', entries is all the loaded entries. If
+ * 'progress', it contains a chunk of entries just loaded. On 'progress', total will only be set if it is currently
+ * known - on the initial few events it may not be. Loaded is the number of entries currently loaded, including entries
+ * in the current 'progress' event.
  */
 export class PatientDataEvent {
   constructor(
     public type: PatientEventType,
-    public entries?: BundleEntry[],
-    public total?: number,
-    public loaded?: number
+    public loaded: number,
+    public entries: BundleEntry[],
+    public total?: number
   ) {}
 }
 
@@ -30,18 +32,25 @@ export class PatientDataEvent {
 export class PatientService {
   private patient: Patient;
   private pendingPatient: Promise<Patient> | null = null;
-  private patientData: BundleEntry[];
+  private patientData?: BundleEntry[];
   private pendingObservable: Observable<PatientDataEvent> | null = null;
   constructor(private fhirClient: ClientService) {}
 
   /**
-   * Clears all cache entries. Does not cancel any pending loads.
+   * Clears all cache entries. Does not cancel any pending loads - if there are outstanding loads that have not been
+   * completed, they will still be cached when they do complete. At present there is no way to cancel a pending load
+   * due to the way the FHIR client works.
    */
   clear(): void {
     this.patient = undefined;
     this.patientData = undefined;
   }
 
+  /**
+   * Loads the Patient record from the FHIR server. This will only load data on the first call, once the record has been
+   * successfully loaded once, it will instead return a Promise that immediately resolves to that loaded Patient.
+   * @returns a Promise that resolves to the Patient
+   */
   getPatient(): Promise<Patient> {
     if (this.patient) {
       return Promise.resolve(this.patient);
@@ -55,11 +64,24 @@ export class PatientService {
     }
   }
 
-  getPatientData(): Observable<PatientDataEvent> {
+  /**
+   * Gets any loaded patient data. Does not attempt to load it if it has not been loaded.
+   * @returns patient data if it has been loaded, undefined if it has not
+   */
+  getPatientData(): BundleEntry[] | undefined {
+    return this.patientData;
+  }
+
+  /**
+   * Loads patient data from the FHIR server. This will only load data on the first call, once the data has been loaded,
+   * it will return the cached data.
+   * @returns an Observable that pushes events as patient data is loaded
+   */
+  loadPatientData(): Observable<PatientDataEvent> {
     if (this.patientData) {
       // If we have the patient data, immediately return it
       return observableOf(
-        new PatientDataEvent('complete', this.patientData, this.patientData.length, this.patientData.length)
+        new PatientDataEvent('complete', this.patientData.length, this.patientData, this.patientData.length)
       );
     }
     if (this.pendingObservable) return this.pendingObservable;
@@ -118,7 +140,7 @@ export class PatientService {
               if (building) return;
               if (remaining <= 0) {
                 // If all done, send our final event and tell the subscribers we're done
-                subscriber.next(new PatientDataEvent('complete', entries, entries.length, entries.length));
+                subscriber.next(new PatientDataEvent('complete', entries.length, entries, entries.length));
                 // Cache this
                 this.patientData = entries;
                 subscriber.complete();
@@ -153,9 +175,9 @@ export class PatientService {
                   subscriber.next(
                     new PatientDataEvent(
                       'progress',
+                      loaded,
                       loadedEntries,
-                      overallTotalRemaining <= 0 ? overallTotal : undefined,
-                      loaded
+                      overallTotalRemaining <= 0 ? overallTotal : undefined
                     )
                   );
                 },
