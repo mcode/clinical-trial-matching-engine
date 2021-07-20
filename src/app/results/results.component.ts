@@ -267,7 +267,7 @@ export class ResultsComponent implements OnInit {
     let comparisonFunction = undefined;
     if (this.sortType == 'likelihood') {
       comparisonFunction = compareByMatch;
-    } else if(this.sortType == 'distance') {
+    } else if (this.sortType == 'distance') {
       comparisonFunction = compareByDist;
     } else {
       comparisonFunction = this.compareBySaved.bind(this);
@@ -352,7 +352,9 @@ export class ResultsComponent implements OnInit {
     this.records = !this.records;
   }
 
-  public compareBySaved(trial2: ResearchStudySearchEntry, trial1: ResearchStudySearchEntry): number{
-    return Number(this.searchResultsService.isTrialSaved(trial1)) - Number(this.searchResultsService.isTrialSaved(trial2))
+  public compareBySaved(trial2: ResearchStudySearchEntry, trial1: ResearchStudySearchEntry): number {
+    return (
+      Number(this.searchResultsService.isTrialSaved(trial1)) - Number(this.searchResultsService.isTrialSaved(trial2))
+    );
   }
 }
