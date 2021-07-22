@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ResearchStudySearchEntry } from '../services/ResearchStudySearchEntry';
 import { TrialQuery } from '../services/search-results.service';
+import { ResearchStudyStatusDisplay } from '../fhir-constants';
 
 @Component({
   selector: 'app-trial-card',
@@ -16,6 +17,7 @@ export class TrialCardComponent implements OnChanges {
    * Formatted distance string, or null if not known
    */
   trialSiteDistance: string | null;
+  statusDisplay = ResearchStudyStatusDisplay;
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('query' in changes || 'clinicalTrial' in changes) {
@@ -46,5 +48,43 @@ export class TrialCardComponent implements OnChanges {
       default:
         return 'green';
     }
+  }
+
+  /**
+   * Determines the class to use for the trial status indicator.
+   */
+  public getStatusClassName(status: string): string {
+    if (!(status in ResearchStudyStatusDisplay)) {
+      return 'unknown-status';
+    } else if (['active'].includes(status)) {
+      return 'recruiting';
+    } else if (
+      [
+        'administratively-completed',
+        'closed-to-accrual',
+        'closed-to-accrual-and-intervention',
+        'completed',
+        'disapproved',
+        'withdrawn'
+      ].includes(status)
+    ) {
+      return 'finished-recruiting';
+    } else if (
+      [
+        'approved',
+        'in-review',
+        'temporarily-closed-to-accrual',
+        'temporarily-closed-to-accrual-and-intervention'
+      ].includes(status)
+    ) {
+      return 'may-recruit';
+    }
+  }
+
+  /**
+   * Maps to the the display text for the trial status indicator.
+   */
+  public getOverallStatus(status: string): string {
+    return status in ResearchStudyStatusDisplay ? ResearchStudyStatusDisplay[status] : 'Invalid';
   }
 }

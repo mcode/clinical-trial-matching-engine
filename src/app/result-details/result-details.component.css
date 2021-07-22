@@ -24,6 +24,7 @@
 
 .infobox .details-column {
   width: 80%;
+  margin: 0 16px;
 }
 
 .infobox .details-column dt {
@@ -102,9 +103,8 @@
   height: 41px;
   line-height: 41px;
   border-radius: 20.5px;
-  background: #30b400;
   color: white;
-  border: 1px solid #30b400;
+  border: 1px solid white;
   text-transform: uppercase;
 }
 
@@ -154,7 +154,36 @@
   /* Set the max-width to make them all roughly the same size when space is available */
   max-width: 12em;
 }
+
+.details mat-expansion-panel {
+  margin: 0 16px;
+}
+
 .details p {
   color: #898686;
   white-space: pre;
+}
+
+.label {
+  text-align: center;
+}
+
+.recruiting {
+  border-radius: 20.5px;
+  background: #30b400;
+}
+
+.may-recruit {
+  border-radius: 20.5px;
+  background: #0b96d6;
+}
+
+.finished-recruiting {
+  border-radius: 20.5px;
+  background: #ba2020;
+}
+
+.unknown-status {
+  border-radius: 20.5px;
+  background: #ff0084;
 }
