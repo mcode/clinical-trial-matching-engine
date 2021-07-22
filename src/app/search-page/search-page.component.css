@@ -69,3 +69,8 @@ header {
 .view-record-text:hover {
   color: #ff00b3;
 }
+
+app-search-fields {
+  display: block;
+  padding: 0 16px;
+}
