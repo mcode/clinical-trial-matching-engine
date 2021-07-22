@@ -165,6 +165,7 @@ export interface Patient extends DomainResource {
 // These exist if we ever intend to expand the type definitions for them, but are presently mostly useless
 export interface Condition extends Resource {
   resourceType: 'Condition';
+  code?: CodeableConcept;
 }
 
 export interface Observation extends Resource {

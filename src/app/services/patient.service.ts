@@ -3,10 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable, of as observableOf } from 'rxjs';
 
 import Patient from '../patient';
-import { BundleEntry } from '../fhir-types';
-import { ClientService, QueryParameters, Stringable } from '../smartonfhir/client.service';
+import { BundleEntry, CodeableConcept, Condition } from '../fhir-types';
+import { ClientService, QueryParameters } from '../smartonfhir/client.service';
+import { FhirPathFilter, deepClone } from '../fhir-filter';
 
 export type PatientEventType = 'progress' | 'complete';
+
+const MCODE_PRIMARY_CANCER_CONDITION =
+  'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition';
 
 /**
  * Notification that a chunk of patient data has been loaded. If 'complete', entries is all the loaded entries. If
@@ -33,6 +37,7 @@ export class PatientService {
   private patient: Patient;
   private pendingPatient: Promise<Patient> | null = null;
   private patientData?: BundleEntry[];
+  private originalPatientData?: BundleEntry[];
   private pendingObservable: Observable<PatientDataEvent> | null = null;
   constructor(private fhirClient: ClientService) {}
 
@@ -44,6 +49,7 @@ export class PatientService {
   clear(): void {
     this.patient = undefined;
     this.patientData = undefined;
+    this.originalPatientData = undefined;
   }
 
   /**
@@ -142,7 +148,8 @@ export class PatientService {
                 // If all done, send our final event and tell the subscribers we're done
                 subscriber.next(new PatientDataEvent('complete', entries.length, entries, entries.length));
                 // Cache this
-                this.patientData = entries;
+                this.originalPatientData = entries;
+                this.patientData = deepClone(entries);
                 subscriber.complete();
               }
               // Otherwise do nothing and continue to wait
@@ -203,5 +210,47 @@ export class PatientService {
           }
         );
     }));
+  }
+
+  /**
+   * Remove any modifications made since the patient data was loaded. Resets back to the original patient data. If no
+   * patient data is presently loaded, this does nothing.
+   */
+  reset() {
+    if (this.originalPatientData) {
+      this.patientData = deepClone(this.originalPatientData);
+    }
+  }
+
+  /**
+   * Sets the primary cancer condition. If no patient data is currently loaded, this will throw an Error.
+   * @param condition
+   *     the new primary cancer condition - this is used AS-IS in the newly created resource, meaning that any changes
+   *     to the passed in object after the fact will also be reflected in the new resource
+   * @return the newly created Condition resource
+   */
+  setPrimaryCancerCondition(condition: CodeableConcept): Condition {
+    const patientData = this.patientData;
+    if (!patientData) {
+      throw new Error('No patient data loaded');
+    }
+    // First, we need to filter out any existing primary cancer conditions
+    new FhirPathFilter("Condition.meta.where(profile = '" + MCODE_PRIMARY_CANCER_CONDITION + "')").filterBundle({
+      resourceType: 'Bundle',
+      type: 'searchset',
+      entry: patientData
+    });
+    const conditionResource: Condition = {
+      resourceType: 'Condition',
+      meta: {
+        profile: [MCODE_PRIMARY_CANCER_CONDITION]
+      },
+      code: condition
+    };
+    // Next, we add in a new Condition record that records this condition
+    patientData.push({
+      resource: conditionResource
+    });
+    return conditionResource;
   }
 }
