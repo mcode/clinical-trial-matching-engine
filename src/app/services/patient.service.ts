@@ -6,11 +6,9 @@ import Patient from '../patient';
 import { BundleEntry, CodeableConcept, Condition } from '../fhir-types';
 import { ClientService, QueryParameters } from '../smartonfhir/client.service';
 import { FhirPathFilter, deepClone } from '../fhir-filter';
+import { MCODE_PRIMARY_CANCER_CONDITION, MCODE_HISTOLOGY_MORPHOLOGY_BEHAVIOR } from '../mcode';
 
 export type PatientEventType = 'progress' | 'complete';
-
-const MCODE_PRIMARY_CANCER_CONDITION =
-  'http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-primary-cancer-condition';
 
 /**
  * Notification that a chunk of patient data has been loaded. If 'complete', entries is all the loaded entries. If
@@ -224,12 +222,12 @@ export class PatientService {
 
   /**
    * Sets the primary cancer condition. If no patient data is currently loaded, this will throw an Error.
-   * @param condition
+   * @param primaryCondition
    *     the new primary cancer condition - this is used AS-IS in the newly created resource, meaning that any changes
    *     to the passed in object after the fact will also be reflected in the new resource
    * @return the newly created Condition resource
    */
-  setPrimaryCancerCondition(condition: CodeableConcept): Condition {
+  setPrimaryCancerCondition(primaryCondition: CodeableConcept, histologyMorphology?: CodeableConcept): Condition {
     const patientData = this.patientData;
     if (!patientData) {
       throw new Error('No patient data loaded');
@@ -245,8 +243,17 @@ export class PatientService {
       meta: {
         profile: [MCODE_PRIMARY_CANCER_CONDITION]
       },
-      code: condition
+      code: primaryCondition
     };
+    if (histologyMorphology) {
+      // Add an extension
+      conditionResource.extension = [
+        {
+          url: MCODE_HISTOLOGY_MORPHOLOGY_BEHAVIOR,
+          valueCodeableConcept: histologyMorphology
+        }
+      ];
+    }
     // Next, we add in a new Condition record that records this condition
     patientData.push({
       resource: conditionResource

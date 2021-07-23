@@ -26,9 +26,31 @@ export function parseFHIRDate(date: FHIRDate): Date {
 
 export interface Element extends JsonObject {
   id?: string;
+  extension?: Extension[];
 }
 export interface BackboneElement extends Element {
   // Currently intentionally empty, should hold modifierExtension
+}
+
+// Note that as an Extension is itself an Element, it can contain its own Extensions. This is correct according to the
+// spec, but also requires the use of a more recent version of TypeScript, as it means the type refers to itself.
+export interface Extension extends Element {
+  url: string;
+  // Technically the value types are all disjoint: if one is present, the rest cannot be. There are 50 of them, see
+  // https://www.hl7.org/fhir/extensibility.html Not all of them are present in this type as they aren't used in this
+  // app.
+  valueBoolean?: boolean;
+  valueCode?: string;
+  valueDate?: FHIRDate;
+  // DateTime hasn't come up yet
+  // valueDateTime?: FHIRDateTime;
+  valueDecimal?: number;
+  valueId?: string;
+  valueInteger?: number;
+  valueMarkdown?: string;
+  valueString?: string;
+  valueCodeableConcept?: CodeableConcept;
+  valueCoding?: Coding;
 }
 
 export interface Resource extends JsonObject {
@@ -101,6 +123,8 @@ export interface Bundle extends Resource {
 }
 
 export interface DomainResource extends Resource {
+  extension?: Extension[];
+  modifierExtension?: Extension[];
   contained?: Resource[];
 }
 
@@ -163,19 +187,19 @@ export interface Patient extends DomainResource {
 }
 
 // These exist if we ever intend to expand the type definitions for them, but are presently mostly useless
-export interface Condition extends Resource {
+export interface Condition extends DomainResource {
   resourceType: 'Condition';
   code?: CodeableConcept;
 }
 
-export interface Observation extends Resource {
+export interface Observation extends DomainResource {
   resourceType: 'Observation';
 }
 
-export interface Procedure extends Resource {
+export interface Procedure extends DomainResource {
   resourceType: 'Procedure';
 }
 
-export interface MedicationStatement extends Resource {
+export interface MedicationStatement extends DomainResource {
   resourceType: 'MedicationStatement';
 }
