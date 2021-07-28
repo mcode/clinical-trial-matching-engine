@@ -5,7 +5,7 @@ import { Observable, of as observableOf } from 'rxjs';
 import Patient from '../patient';
 import { BundleEntry, CodeableConcept, Condition } from '../fhir-types';
 import { ClientService, QueryParameters } from '../smartonfhir/client.service';
-import { FhirPathFilter, deepClone } from '../fhir-filter';
+import { FhirPathFilter, FhirComponentPathFilter, deepClone } from '../fhir-filter';
 import { MCODE_PRIMARY_CANCER_CONDITION, MCODE_HISTOLOGY_MORPHOLOGY_BEHAVIOR } from '../mcode';
 
 export type PatientEventType = 'progress' | 'complete';
@@ -225,6 +225,9 @@ export class PatientService {
    * @param primaryCondition
    *     the new primary cancer condition - this is used AS-IS in the newly created resource, meaning that any changes
    *     to the passed in object after the fact will also be reflected in the new resource
+   * @param histologyMorphology
+   *     if given, the new histology morphology that will be included as an extension in the newly generated Condition
+   *     record
    * @return the newly created Condition resource
    */
   setPrimaryCancerCondition(primaryCondition: CodeableConcept, histologyMorphology?: CodeableConcept): Condition {
@@ -233,11 +236,20 @@ export class PatientService {
       throw new Error('No patient data loaded');
     }
     // First, we need to filter out any existing primary cancer conditions
-    new FhirPathFilter("Condition.meta.where(profile = '" + MCODE_PRIMARY_CANCER_CONDITION + "')").filterBundle({
+    // (Note that resulting bundle is the input bundle)
+    const bundle = new FhirPathFilter(
+      `Condition.meta.where(profile = '${MCODE_PRIMARY_CANCER_CONDITION}')`
+    ).filterBundle({
       resourceType: 'Bundle',
       type: 'searchset',
       entry: patientData
     });
+    // Also need to remove any existing histology conditions
+    new FhirComponentPathFilter('Condition.extension', {
+      element: {
+        include: `url = '${MCODE_HISTOLOGY_MORPHOLOGY_BEHAVIOR}'`
+      }
+    }).filterBundle(bundle);
     const conditionResource: Condition = {
       resourceType: 'Condition',
       meta: {
