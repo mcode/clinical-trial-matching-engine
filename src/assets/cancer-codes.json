@@ -1,0 +1,191 @@
+[
+  {
+    "display": "Breast Cancer",
+    "primary": "372137005"
+  },
+  {
+    "display": "Breast Ductal Carcinoma In Situ",
+    "primary": "826978004"
+  },
+  {
+    "display": "Breast Fibroepithelial Neoplasm",
+    "primary": "372137005",
+    "histology": "43369006"
+  },
+  {
+    "display": "Breast Sarcoma",
+    "snomed": "278050001"
+  },
+  {
+    "display": "Breast Sarcoma",
+    "primary": "372137005",
+    "histology": "2424003"
+  },
+  {
+    "display": "Invasive Breast Carcinoma",
+    "primary": "713609000"
+  },
+  {
+    "display": "Invasive Breast Carcinoma",
+    "primary": "372137005",
+    "histology": "82711006"
+  },
+  {
+    "display": "Metaplastic Breast Cancer",
+    "snomed": "763479005"
+  },
+  {
+    "display": "Adenomyoepithelioma of the Breast",
+    "primary": "372137005",
+    "histology": "703644009"
+  },
+  {
+    "display": "Breast Lobular Carcinoma in Situ",
+    "primary": "109888004"
+  },
+  {
+    "display": "Breast Lobular Carcinoma in Situ",
+    "primary": "372137005",
+    "histology": "77284006"
+  },
+  {
+    "display": "Inflammatory Breast Cancer",
+    "primary": "254840009"
+  },
+  {
+    "display": "Inflammatory Breast Cancer",
+    "primary": "372137005",
+    "histology": "32968003"
+  },
+  {
+    "display": "Juvenile Secretory Carcinoma of the Breast",
+    "primary": "372137005",
+    "histology": "41919003"
+  },
+  {
+    "display": "Phyllodes Tumor of the Breast",
+    "primary": "254844000"
+  },
+  {
+    "display": "Phyllodes Tumor of the Breast",
+    "primary": "372137005",
+    "histology": "87913009"
+  },
+  {
+    "display": "Epithelial Type Metaplastic Breast Cancer",
+    "primary": "763479005",
+    "histology": "68453008"
+  },
+  {
+    "display": "Mixed Type Metaplastic Breast Cancer",
+    "primary": "8145008",
+    "histology": "68453008"
+  },
+  {
+    "display": "Paget Disese of the Nipple",
+    "primary": "403946000"
+  },
+  {
+    "display": "Paget Disese of the Nipple",
+    "primary": "826978004",
+    "histology": "2985005"
+  },
+  {
+    "display": "Fibroadenoma",
+    "primary": "254845004"
+  },
+  {
+    "display": "Breast Angiosarcoma",
+    "primary": "278050001",
+    "histology": "863926008"
+  },
+  {
+    "display": "Adenoid Cystic Breast Cancer",
+    "primary": "713609000",
+    "histology": "11671000"
+  },
+  {
+    "display": "Breast Carcinoma with Signet Ring",
+    "primary": "87737001",
+    "histology": "11671000"
+  },
+  {
+    "display": "Breeast Invasive Carcinoma, NOS",
+    "primary": "713609000"
+  },
+  {
+    "display": "Breeast Invasive Carcinoma, NOS",
+    "primary": "713609000",
+    "histology": "82711006"
+  },
+  {
+    "display": "Breast Invasive Carcinosarcoma",
+    "primary": "713609000",
+    "histology": "63264007"
+  },
+  {
+    "display": "Breast Invasive Ductal Carcinoma",
+    "primary": "408643008"
+  },
+  {
+    "display": "Breast Invasive Ductal Carcinoma",
+    "primary": "713609000",
+    "histology": "82711006"
+  },
+  {
+    "display": "Breast Invasive Lobular Carcinoma",
+    "primary": "278054005"
+  },
+  {
+    "display": "Breast Invasive Lobular Carcinoma",
+    "primary": "713609000",
+    "histology": "89740008"
+  },
+  {
+    "display": "Breast Invasive Mixed Mucinous Carcinoma",
+    "primary": "444712000"
+  },
+  {
+    "display": "Breast Invasive Mixed Mucinous Carcinoma",
+    "primary": "713609000"
+  },
+  {
+    "display": "Breast Mixed Ductal and Lobular Carcinoma",
+    "primary": "722523004"
+  },
+  {
+    "display": "Breast Mixed Ductal and Lobular Carcinoma",
+    "primary": "713609000",
+    "histology": "444057000"
+  },
+  {
+    "display": "Solid Papillary Carcinoma of the Breast",
+    "primary": "721596003"
+  },
+  {
+    "display": "Metaplastic Adenocarcinoma with Spindle Cell Differentiaion",
+    "primary": "763479005",
+    "histology": "68358000"
+  },
+  {
+    "display": "Metaplastic Adenosquamous Carcinoma",
+    "primary": "763479005",
+    "histology": "59367005"
+  },
+  {
+    "display": "Metaplastic Squamous Cell Carcinoma",
+    "primary": "763479005",
+    "histology": "28899001"
+  },
+  {
+    "display": "Carcinoma with Chondroid Metaplasia"
+  },
+  {
+    "display": "Carcinoma with Osseous Metaplasia"
+  },
+  {
+    "display": "Metaplastic Carcinosarcoma",
+    "primary": "763479005",
+    "histology": "63264007"
+  }
+]
