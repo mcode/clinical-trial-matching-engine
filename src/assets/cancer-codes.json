@@ -14,7 +14,7 @@
   },
   {
     "display": "Breast Sarcoma",
-    "snomed": "278050001"
+    "primary": "278050001"
   },
   {
     "display": "Breast Sarcoma",
@@ -32,7 +32,7 @@
   },
   {
     "display": "Metaplastic Breast Cancer",
-    "snomed": "763479005"
+    "primary": "763479005"
   },
   {
     "display": "Adenomyoepithelioma of the Breast",
