@@ -2,7 +2,7 @@ import { DistanceService } from './distance.service';
 import { SearchProvider } from './app-config.service';
 import * as fhirpath from 'fhirpath';
 import { GeolibInputCoordinates } from 'geolib/es/types';
-import { BundleEntry, Group, ResearchStudy, Search } from '../fhir-types';
+import { BundleEntry, Group, PlanDefinition, ResearchStudy, Search } from '../fhir-types';
 import { Location, Facility, FHIRPath } from './search.service';
 
 /**
@@ -77,7 +77,20 @@ export class ResearchStudySearchEntry {
     return JSON.stringify(this.lookup('condition.text'));
   }
   get studyType(): string {
-    return this.resource.category && this.resource.category.length > 0 ? this.resource.category[0].text : '';
+    if (!this.resource.category || this.resource.category.length < 1) return '';
+
+    const display = this.resource.category.find((item) => item.text && item.text.startsWith('Study Type: '));
+    return display ? display.text : '';
+  }
+  get studyDesign(): string {
+    if (!this.resource.category) return 'N/A';
+
+    const design = this.resource.category
+      .map((item) => (item.text ? item.text : ''))
+      .reduce((acc, item) => {
+        return item.length > 0 ? acc + '        ' + item + '\n\n' : '';
+      }, '');
+    return design.length > 0 ? '\n' + design : 'N/A';
   }
   get description(): string {
     return this.detailedDescription;
@@ -183,6 +196,70 @@ export class ResearchStudySearchEntry {
 
   get trialURL(): string {
     return 'https://www.clinicaltrials.gov/ct2/show/' + this.nctId;
+  }
+
+  get protocol(): object[] {
+    if (this.resource.protocol) {
+      let arr = this.resource.protocol.map((item) => this.lookupResource(item.reference));
+
+      return arr;
+    } else {
+      return [];
+    }
+  }
+
+  get contact(): object[] {
+    if (this.resource.contact) {
+      return this.resource.contact.map((contact) => ({
+        name: contact.name,
+        phone: contact.telecom.find((item) => item.system == 'phone'),
+        email: contact.telecom.find((item) => item.system == 'email')
+      }));
+    } else {
+      return [];
+    }
+  }
+
+  get arm(): object[] {
+    if (this.resource.arm) {
+      let arms = {};
+
+      for (const arm of this.resource.arm) {
+        arms[arm.name] = {
+          display: arm.type ? (arm.type.text ? arm.type.text + ': ' + arm.name : '') : '',
+          ...(arm.description && { description: arm.description }),
+          interventions: []
+        };
+      }
+
+      if (this.resource.protocol) {
+        const interventions = this.resource.protocol.map(
+          (item) => this.lookupResource(item.reference) as PlanDefinition
+        );
+
+        // Map back the intervention to arm group
+        for (const intervention of interventions) {
+          if (intervention.subjectCodeableConcept && intervention.subjectCodeableConcept.text) {
+            console.log(intervention);
+            const formated_intervention = {
+              ...(intervention.type && intervention.type.text && { type: intervention.type.text }),
+              ...(intervention.title && { title: intervention.title }),
+              ...(intervention.subtitle && { subtitle: intervention.subtitle }),
+              ...(intervention.description && { description: intervention.description })
+            };
+            arms[intervention.subjectCodeableConcept.text].interventions.push(formated_intervention);
+          }
+        }
+      }
+
+      return Object.values(arms);
+    } else {
+      [];
+    }
+  }
+
+  get arms(): object[] {
+    return this.resource.arm;
   }
 
   getClosest(zip: string): string {

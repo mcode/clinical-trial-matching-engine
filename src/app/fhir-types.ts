@@ -107,6 +107,17 @@ export interface Identifier extends Element {
   system?: string;
   value?: string;
 }
+export interface ContactDetail extends Element {
+  name?: string;
+  telecom?: ContactPoint[];
+}
+export interface ContactPoint extends Element {
+  system?: 'phone' | 'fax' | 'email' | 'pager' | 'url' | 'sms' | 'other';
+  value?: string;
+  use?: 'home' | 'work' | 'temp' | 'old' | 'mobile';
+  rank?: number;
+}
+
 export interface Bundle extends Resource {
   resourceType: 'Bundle';
   type:
@@ -136,6 +147,12 @@ interface GroupCharacteristicBase extends BackboneElement {
   valueReference?: Reference;
 }
 
+interface Arm extends BackboneElement {
+  name: string;
+  type?: CodeableConcept;
+  description?: string;
+}
+
 // There unfortunately does not appear to be any way in TypeScript to say
 // "one and only one of these fields is required." There is a way to require at
 // least one, as explained in:
@@ -163,6 +180,9 @@ export interface ResearchStudy extends DomainResource {
     | 'withdrawn';
   category?: CodeableConcept[];
   enrollment?: Reference<Group>[];
+  protocol?: Reference<PlanDefinition>[];
+  arm?: Arm[];
+  contact?: ContactDetail[];
 }
 
 export interface Address extends Element {
@@ -202,4 +222,14 @@ export interface Procedure extends DomainResource {
 
 export interface MedicationStatement extends DomainResource {
   resourceType: 'MedicationStatement';
+}
+
+export interface PlanDefinition extends Resource {
+  resourceType: 'PlanDefinition';
+  status: 'draft' | 'active' | 'retired' | 'unknown';
+  type?: CodeableConcept;
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  subjectCodeableConcept?: CodeableConcept;
 }
