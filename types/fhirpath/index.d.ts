@@ -9,7 +9,7 @@ declare module 'fhirpath' {
   // This is effectively "any object"
   export type FHIRResource = { [key: string]: unknown };
   // This is almost certainly overly restrictive
-  export type PathLookupResult = FHIRResource | string;
+  export type PathLookupResult = FHIRResource | string | number;
 
   export function parse(path: string): FHIRPath;
   export function compile(
