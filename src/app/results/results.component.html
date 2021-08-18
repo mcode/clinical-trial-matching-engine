@@ -1,0 +1,52 @@
+<div class="header">
+  <div class="header-side">
+    <div class="results"><span class="count">{{ resultCount }}</span> Matching Trials</div>
+    <div class="filters">
+      <mat-form-field appearance="fill" *ngFor="let filter of filters; let filterIdx = index">
+        <mat-label>{{ filter.name }}</mat-label>
+        <mat-select [(ngModel)]="filter.activeFilterIndices" multiple>
+          <mat-option *ngFor="let filterValue of filter.values; let valueIdx = index" [value]="valueIdx">{{ filterValue.value }}</mat-option>
+          <!-- Turns out you can just add extra HTML below the options and it'll mostly work -->
+          <hr class="select-hr">
+          <div class="filter-buttons">
+            <button mat-stroked-button class="filter-clear" (click)="clearFilter(filterIdx)">Clear</button>
+            <button mat-stroked-button class="filter-apply" (click)="applyFilter()">Apply</button>
+          </div>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="sort">
+      <mat-form-field appearance="fill">
+        <mat-label>Sort</mat-label>
+        <mat-select [(ngModel)]="sortType" (change)="applyFilter()">
+          <mat-option value="likelihood">Match Likelihood</mat-option>
+          <mat-option value="distance">Distance</mat-option>
+          <mat-option value="saved">Saved</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class = "header-side">
+    <div class="query">
+      <div class="zipcode">{{ searchParameters.zipCode }}</div>
+      <div class="travel-radius">{{ searchParameters.travelRadius }} Miles</div>
+    </div>
+    <div class="export-button-wrapper">
+      <button mat-stroked-button (click)="exportSavedTrials()">{{
+        savedTrialCount > 0 ? 'Export Saved Trials' : 'Export All Trials'
+      }}</button>
+    </div>
+  </div>
+</div>
+<div class="results">
+  <div *ngFor="let trial of selectedPageTrials" class="result" (click)="showDetails(trial)">
+    <!-- Card Component-->
+    <app-trial-card
+      [clinicalTrial]="trial"
+      [query]="searchParameters"
+      [trialSaved]="isTrialSaved(trial)"
+      (trialSaveChanged)="setTrialSaved(trial, $event)"
+    ></app-trial-card>
+  </div>
+</div>
+<mat-paginator [length]="resultCount" [pageIndex]="selectedPage.index" [pageSize]="itemsPerPage" [pageSizeOptions]="[10,20,30]" (page)="pageChanged($event)"></mat-paginator>

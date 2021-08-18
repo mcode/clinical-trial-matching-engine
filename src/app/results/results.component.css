@@ -1,0 +1,81 @@
+.header {
+  display: flex;
+  padding-bottom: 20px;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.header .header-side {
+  display: flex;
+  padding-bottom: 20px;
+  height: 100%;
+}
+
+.results {
+  color: #716f6f;
+  font-family: Roboto;
+  font-weight: 900;
+  font-size: 25px;
+  text-align: left;
+  margin-top: 12px;
+}
+.results .count {
+  color: #66d5e3;
+}
+/* To remove space from the HR in the filter selects */
+.select-hr {
+  margin: 0;
+}
+.filter-buttons {
+  margin: 4px;
+  text-align: end;
+}
+.filter-buttons button {
+  margin: 4px;
+}
+.filter-buttons button.filter-apply {
+  background-color: #52e0f2;
+  color: #FFF;
+}
+
+.query {
+  display: block;
+  font-size: 20px;
+  color: #525151;
+  float: right;
+}
+.query > div {
+  margin: 4px;
+}
+
+.query .zipcode::before, .query .travel-radius::before {
+  display: inline-block;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 37 37'><path d='M38.466,19.193,21.812,2.539a1.843,1.843,0,0,0-2.609,0L2.549,19.193a1.843,1.843,0,0,0,0,2.609L19.2,38.456a1.843,1.843,0,0,0,2.609,0L38.466,21.8a1.843,1.843,0,0,0,0-2.609ZM24.2,25.133V20.507H16.8v5.551H13.1v-7.4a1.856,1.856,0,0,1,1.85-1.85H24.2V12.18l6.477,6.477Z' transform='translate(-2.007 -1.997)' fill='%23525151'></path></svg>");
+  background-repeat: no-repeat;
+  content: "\0A";
+  width: 20px;
+  height: 20px;
+  padding-right: 4px;
+}
+
+.export-button-wrapper {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+button {
+  display: inline-block;
+  height: 100%;
+  padding: 2px;
+  vertical-align: middle;
+  margin: 3px;
+  flex-shrink: 1;
+  line-height: 40px;
+}
+
+.results {
+  padding-bottom: 20px;
+  margin: 10px 20px;
+}

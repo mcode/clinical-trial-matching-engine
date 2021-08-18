@@ -1,89 +1,90 @@
+import { Patient as FHIRPatient } from './fhir-types';
 import Patient from 'src/app/patient';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-const patientData = {
+const patientData: FHIRPatient = {
   resourceType: 'Patient' as 'Patient',
   name: [
     {
       use: 'usual',
       text: 'ex',
-      family: ['last'],
+      family: 'last',
       given: ['Usual']
     },
     {
       use: 'official',
       text: 'ex2',
-      family: ['last'],
+      family: 'last',
       given: ['official']
     },
     {
-      use: 'random',
+      use: 'old',
       text: 'ex3',
-      family: ['last'],
-      given: ['random']
+      family: 'last',
+      given: ['old']
     },
     {
-      use: 'random2',
+      use: 'nickname',
       text: 'ex4',
-      family: ['last'],
-      given: ['random2']
+      family: 'last',
+      given: ['nickname']
     }
   ],
   address: [
     {
-      use: 'official',
+      use: 'home',
       postalCode: '01234'
     }
   ]
 };
-const patientData2 = {
+const patientData2: FHIRPatient = {
   resourceType: 'Patient' as 'Patient',
   name: [
     {
-      use: 'random',
+      use: 'old',
       text: 'ex3',
-      family: ['last'],
-      given: ['Random1']
+      family: 'last',
+      given: ['old']
     },
     {
-      use: 'random2',
+      use: 'anonymous',
       text: 'ex4',
-      family: ['last'],
-      given: ['random2']
+      family: 'last',
+      given: ['anonymous']
     }
   ],
   address: [
     {
-      use: 'official',
+      use: 'home',
       postalCode: '01234'
     }
   ]
 };
 
-const patientData3 = {
+const patientData3: FHIRPatient = {
   resourceType: 'Patient' as 'Patient'
 };
 
-const patientData4 = {
+const patientData4: FHIRPatient = {
   resourceType: 'Patient' as 'Patient',
   name: [
     {
-      use: 'random',
+      use: 'old',
       text: 'ex3',
-      family: ['last'],
+      family: 'last',
       given: ['random']
     },
     {
       use: 'nickname',
       text: 'ex4',
-      family: ['last'],
+      family: 'last',
       given: ['Nickname']
     }
   ],
   address: [
     {
-      use: 'official',
+      use: 'home',
       postalCode: '01234'
     }
   ]
@@ -98,7 +99,7 @@ describe('Patient Tests', () => {
     });
 
     it('gets the first name in the record if there is no use: "usual" name', () => {
-      expect(new Patient(patientData2).getUsualName()).toEqual('Random1');
+      expect(new Patient(patientData2).getUsualName()).toEqual('old');
     });
 
     it('returns null if there is no name in the patient record', () => {
@@ -128,7 +129,7 @@ describe('Patient Tests', () => {
 
   it('should get age as undefined when not specified ', () => {
     const patient: Patient = new Patient(patientData);
-    expect(patient.getAge()).toBeNaN();
+    expect(patient.getAge()).toBeUndefined();
   });
 
   it('should get home address ', () => {

@@ -1,7 +1,7 @@
-import { ResearchStudySearchEntry } from '../services/search.service';
+import { ResearchStudySearchEntry } from '../services/ResearchStudySearchEntry';
 
 // This function converts the saved ResearchStudy resource into a data format that can be export to a .xlsx file
-export const UnpackResearchStudyResults = (result: ResearchStudySearchEntry[]): object[] => {
+export const unpackResearchStudyResults = (result: ResearchStudySearchEntry[]): object[] => {
   const data: object[] = [];
 
   data.push({ 'Match Count': result.length });
@@ -47,3 +47,5 @@ export const UnpackResearchStudyResults = (result: ResearchStudySearchEntry[]): 
 
   return data;
 };
+
+export default unpackResearchStudyResults;

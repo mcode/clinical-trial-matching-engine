@@ -7,10 +7,10 @@ describe('AppConfigService', () => {
 
   it('should be created', () => {
     const service: AppConfigService = TestBed.inject(AppConfigService);
-    expect(service).toBeTruthy();
+    expect(service).toBeDefined();
   });
-  it('should get service url', () => {
+  it('should get configured services', () => {
     const service: AppConfigService = TestBed.inject(AppConfigService);
-    expect(service.getServiceURL()).toMatch('^https?:');
+    expect(Array.isArray(service.getSearchProviders())).toBeTrue();
   });
 });

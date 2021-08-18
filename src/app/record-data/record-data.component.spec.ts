@@ -1,18 +1,32 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { RecordDataComponent } from './record-data.component';
+import Patient from '../patient';
 
 describe('RecordDataComponent', () => {
   let component: RecordDataComponent;
   let fixture: ComponentFixture<RecordDataComponent>;
+  let patient: Patient;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [RecordDataComponent]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async () => {
+    patient = new Patient({
+      resourceType: 'Patient' as 'Patient'
+    });
+    await TestBed.configureTestingModule({
+      imports: [MatDialogModule],
+      providers: [
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: {
+            patient: patient,
+            resources: []
+          }
+        }
+      ],
+      declarations: [RecordDataComponent]
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RecordDataComponent);
@@ -53,15 +67,6 @@ describe('RecordDataComponent', () => {
         }
       }
     ];
-    component.setResources();
     expect(component).toBeTruthy();
-  });
-
-  it('displayOn should be false', () => {
-    expect(component.displayOn).toBeFalsy();
-  });
-  it('should set display status', () => {
-    component.setStatus(true);
-    expect(component.displayOn).toBeTruthy();
   });
 });
