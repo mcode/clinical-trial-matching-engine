@@ -35,9 +35,9 @@ export interface Location extends BaseResource {
   address?: Address;
 }
 
-export interface Address{
-  country?: string,
-  postalCode?: string
+export interface Address {
+  country?: string;
+  postalCode?: string;
 }
 
 /**

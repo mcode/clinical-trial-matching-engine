@@ -288,16 +288,15 @@ export class ResearchStudySearchEntry {
         }
         // If not, look to see if there is a postal code
         else if (loc.address && loc.address.postalCode && loc.address.country) {
-            // Check to see if the country and zip code are US patterns.
-            const country = united_states.exec(loc.address.country);
-            const zip = us_zip.exec(loc.address.postalCode);
+          // Check to see if the country and zip code are US patterns.
+          const country = united_states.exec(loc.address.country);
+          const zip = us_zip.exec(loc.address.postalCode);
 
-            // If so, use the zip to find the coordinates and then push accordingly.
-            if (country != null && zip != null) {
-              const coordinate = this.distService.getCoord(loc.address.postalCode) as GeolibInputCoordinates;
-              points.push(coordinate);
-            }
-            
+          // If so, use the zip to find the coordinates and then push accordingly.
+          if (country != null && zip != null) {
+            const coordinate = this.distService.getCoord(loc.address.postalCode) as GeolibInputCoordinates;
+            points.push(coordinate);
+          }
         }
       }
     }
