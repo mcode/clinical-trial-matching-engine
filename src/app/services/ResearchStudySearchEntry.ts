@@ -5,6 +5,9 @@ import { GeolibInputCoordinates } from 'geolib/es/types';
 import { BundleEntry, Group, PlanDefinition, ResearchStudy, Search } from '../fhir-types';
 import { Location, Facility, FHIRPath } from './search.service';
 
+const united_states = new RegExp(/(United States|United States of America|USA|US)/, 'i');
+const us_zip = new RegExp(/^\d{5}$/);
+
 /**
  * Helper function to create a unique ID.
  */
@@ -273,6 +276,7 @@ export class ResearchStudySearchEntry {
     for (const resource of allsites) {
       if (resource.resourceType === 'Location') {
         const loc = resource as unknown as Location;
+        // If there is direct positional information, go ahead and use that.
         if (loc.position) {
           if (loc.position.latitude && loc.position.longitude) {
             const coordinate = {
@@ -281,6 +285,19 @@ export class ResearchStudySearchEntry {
             } as GeolibInputCoordinates;
             points.push(coordinate);
           }
+        }
+        // If not, look to see if there is a postal code
+        else if (loc.address && loc.address.postalCode && loc.address.country) {
+            // Check to see if the country and zip code are US patterns.
+            const country = united_states.exec(loc.address.country);
+            const zip = us_zip.exec(loc.address.postalCode);
+
+            // If so, use the zip to find the coordinates and then push accordingly.
+            if (country != null && zip != null) {
+              const coordinate = this.distService.getCoord(loc.address.postalCode) as GeolibInputCoordinates;
+              points.push(coordinate);
+            }
+            
         }
       }
     }
