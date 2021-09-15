@@ -32,6 +32,12 @@ export interface Location extends BaseResource {
   name?: string;
   telecom?: unknown;
   position?: { longitude?: number; latitude?: number };
+  address?: Address;
+}
+
+export interface Address {
+  country?: string;
+  postalCode?: string;
 }
 
 /**
