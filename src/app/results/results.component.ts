@@ -377,7 +377,9 @@ export class ResultsComponent implements OnInit {
   }
 
   public compareBySaved(trial2: ResearchStudySearchEntry, trial1: ResearchStudySearchEntry): number {
-    if (Number(this.searchResultsService.isTrialSaved(trial1)) == Number(this.searchResultsService.isTrialSaved(trial2))) {
+    if (
+      Number(this.searchResultsService.isTrialSaved(trial1)) == Number(this.searchResultsService.isTrialSaved(trial2))
+    ) {
       // If the trials are both saved, then compare the scores
       if (trial2.search.score == trial1.search.score) {
         // If the scores are both the same, then compare the distances
@@ -390,28 +392,26 @@ export class ResultsComponent implements OnInit {
     return (
       Number(this.searchResultsService.isTrialSaved(trial1)) - Number(this.searchResultsService.isTrialSaved(trial2))
     );
-
   }
-
 
   public compareByDist(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
-  if (trial1.dist == trial2.dist) {
-    if (trial2.search.score == trial1.search.score) {
-      Number(this.searchResultsService.isTrialSaved(trial1)) - Number(this.searchResultsService.isTrialSaved(trial2))
-    }
-    return trial2.search.score - trial1.search.score;
-  }
-  return trial1.dist - trial2.dist;
-}
-
-  public compareByMatch(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
-  if (trial2.search.score == trial1.search.score) {
     if (trial1.dist == trial2.dist) {
-      Number(this.searchResultsService.isTrialSaved(trial1)) - Number(this.searchResultsService.isTrialSaved(trial2))
+      if (trial2.search.score == trial1.search.score) {
+        Number(this.searchResultsService.isTrialSaved(trial1)) - Number(this.searchResultsService.isTrialSaved(trial2));
+      }
+      return trial2.search.score - trial1.search.score;
     }
     return trial1.dist - trial2.dist;
   }
 
-  return trial2.search.score - trial1.search.score;
-}
+  public compareByMatch(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
+    if (trial2.search.score == trial1.search.score) {
+      if (trial1.dist == trial2.dist) {
+        Number(this.searchResultsService.isTrialSaved(trial1)) - Number(this.searchResultsService.isTrialSaved(trial2));
+      }
+      return trial1.dist - trial2.dist;
+    }
+
+    return trial2.search.score - trial1.search.score;
+  }
 }
