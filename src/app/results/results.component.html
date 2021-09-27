@@ -18,7 +18,7 @@
     <div class="sort">
       <mat-form-field appearance="fill">
         <mat-label>Sort</mat-label>
-        <mat-select [(ngModel)]="sortType" (change)="applyFilter()">
+        <mat-select [(ngModel)]="sortType" (selectionChange)="applyFilter()">
           <mat-option value="likelihood">Match Likelihood</mat-option>
           <mat-option value="distance">Distance</mat-option>
           <mat-option value="saved">Saved</mat-option>
