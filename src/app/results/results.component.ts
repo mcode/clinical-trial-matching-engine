@@ -51,14 +51,6 @@ class Filter {
   }
 }
 
-function compareByDist(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
-  return trial1.dist - trial2.dist;
-}
-
-function compareByMatch(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
-  return trial2.search.score - trial1.search.score;
-}
-
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
@@ -136,6 +128,9 @@ export class ResultsComponent implements OnInit {
     // On init, restore values off the service
     this.searchParameters = this.searchResultsService.query;
     this.searchResults = this.searchResultsService.getResults();
+    if (this.searchResults != null) {
+      this.applyFilter();
+    }
     if (this.searchResults === null) {
       // If we have no search results, redirect back to the search page
       this.router.navigateByUrl('/search');
@@ -279,9 +274,9 @@ export class ResultsComponent implements OnInit {
   public applyFilter(): void {
     let comparisonFunction = undefined;
     if (this.sortType == 'likelihood') {
-      comparisonFunction = compareByMatch;
+      comparisonFunction = this.compareByMatch.bind(this);
     } else if (this.sortType == 'distance') {
-      comparisonFunction = compareByDist;
+      comparisonFunction = this.compareByDist.bind(this);
     } else {
       comparisonFunction = this.compareBySaved.bind(this);
     }
@@ -382,8 +377,41 @@ export class ResultsComponent implements OnInit {
   }
 
   public compareBySaved(trial2: ResearchStudySearchEntry, trial1: ResearchStudySearchEntry): number {
+    if (
+      Number(this.searchResultsService.isTrialSaved(trial1)) == Number(this.searchResultsService.isTrialSaved(trial2))
+    ) {
+      // If the trials are both saved, then compare the scores
+      if (trial2.search.score == trial1.search.score) {
+        // If the scores are both the same, then compare the distances
+        return trial1.dist - trial2.dist;
+      }
+
+      return trial2.search.score - trial1.search.score;
+    }
+
     return (
       Number(this.searchResultsService.isTrialSaved(trial1)) - Number(this.searchResultsService.isTrialSaved(trial2))
     );
+  }
+
+  public compareByDist(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
+    if (trial1.dist == trial2.dist) {
+      if (trial2.search.score == trial1.search.score) {
+        Number(this.searchResultsService.isTrialSaved(trial1)) - Number(this.searchResultsService.isTrialSaved(trial2));
+      }
+      return trial2.search.score - trial1.search.score;
+    }
+    return trial1.dist - trial2.dist;
+  }
+
+  public compareByMatch(trial1: ResearchStudySearchEntry, trial2: ResearchStudySearchEntry): number {
+    if (trial2.search.score == trial1.search.score) {
+      if (trial1.dist == trial2.dist) {
+        Number(this.searchResultsService.isTrialSaved(trial1)) - Number(this.searchResultsService.isTrialSaved(trial2));
+      }
+      return trial1.dist - trial2.dist;
+    }
+
+    return trial2.search.score - trial1.search.score;
   }
 }
