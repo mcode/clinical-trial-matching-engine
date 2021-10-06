@@ -1,6 +1,7 @@
 {
     "fullUrl": "filler",
     "resource": {
+        "resourceType": "ResearchStudy",
         "nctId": "NCT03587740",
         "title": "ATOP TRIAL: T-DM1 in HER2 Positive Breast Cancer",
         "conditions": "[\"Breast Cancer\"]",
@@ -19,9 +20,24 @@
                 "arm_group_label": "T-DM1"
             }
         ],
+        "arm": {
+            "T-DM1": {
+                "display": "Experimental: T-DM1",
+                "description": "T-DM1 will be administered every 3 weeks intravenously, with 21 consecutive days defined as a treatment.",
+                "interventions": [
+                    {
+                        "type": "Drug",
+                        "title": "T-DM1",
+                        "description": "T-DM1 is an antibody-drug conjugate; it is made up of an antibody (trastuzumab) linked to a cytotoxic drug, DM1 (chemotherapy). T-DM1 functions as a targeted cancer therapy because it targets HER2-positive breast cancer cells directly, limiting exposure of the rest of the body to chemotherapy.",
+                        "subtitle": "Kadcyla"
+                    }
+                ]
+            }
+        },
         "phase": "Phase 2",
         "minimumAge": 60,
-        "studyType": "Interventional",
+        "studyType": "Study Type: Interventional",
+        "studyDesign": "        \n\nStudy Type: Interventional        \n\n        \n\nIntervention Model: Single Group Assignment        \n\nPrimary Purpose: Treatment        \n\nMasking: None (Open Label)",
         "maximumAge": 120,
         "sites": [
             {

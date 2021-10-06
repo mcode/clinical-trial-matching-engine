@@ -1,85 +1,83 @@
-import { DistanceService } from './../services/distance.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ResearchStudySearchEntry } from './../services/search.service';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { SearchService } from '../services/search.service';
+import { StubSearchService } from '../services/stub-search.service';
+import { SearchResultsService } from '../services/search-results.service';
+import { StubSearchResultsService } from '../services/stub-search-results.service';
+import { AppMaterialModule } from '../shared/material.module';
 
 import { ResultDetailsComponent } from './result-details.component';
 
-import { Component } from '@angular/core';
-import { ViewChild } from '@angular/core';
-import data from './sample_trial.json';
+import { ActivatedRoute } from '@angular/router';
+
 describe('ResultDetailsComponent', () => {
-  @Component({
-    selector: `host-component`,
-    template: `<app-result-details></app-result-details>`
-  })
-  class TestHostComponent {
-    @ViewChild(ResultDetailsComponent, { static: true })
-    public resultDetails: ResultDetailsComponent;
-  }
-  let testHostComponent: TestHostComponent;
-  let testHostFixture: ComponentFixture<TestHostComponent>;
+  let component: ResultDetailsComponent;
+  let fixture: ComponentFixture<ResultDetailsComponent>;
 
-  const sampleTrial = data;
-
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [ResultDetailsComponent, TestHostComponent],
-        imports: [HttpClientTestingModule],
-        providers: [DistanceService]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [RouterTestingModule, AppMaterialModule, NoopAnimationsModule],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: () => 'Test_Service_0' // The ID used for the result
+              }
+            }
+          }
+        },
+        // Use stub search/search results services to pre-populate results
+        {
+          provide: SearchService,
+          useClass: StubSearchService
+        },
+        {
+          provide: SearchResultsService,
+          useClass: StubSearchResultsService
+        }
+      ],
+      declarations: [ResultDetailsComponent]
+    }).compileComponents();
+  });
 
   beforeEach(() => {
-    testHostFixture = TestBed.createComponent(TestHostComponent);
-    testHostComponent = testHostFixture.componentInstance;
+    fixture = TestBed.createComponent(ResultDetailsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  it('should create the detail results', () => {
-    const distServ = TestBed.inject(DistanceService) as DistanceService;
-    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
-    testHostComponent.resultDetails.reqs = {
-      zipCode: '01886',
-      travelRadius: null,
-      phase: null,
-      recruitmentStatus: null
-    };
-    testHostFixture.detectChanges();
-
-    expect(testHostComponent.resultDetails).toBeTruthy();
+  it('should create the component', () => {
+    expect(component).toBeDefined();
   });
+
   //on testing startup no trial should be saved
-  it('trialSaved should be false', () => {
-    expect(testHostComponent.resultDetails.trialSaved).toBeFalsy();
+  it('trialSaved should be initially false', () => {
+    expect(component.trialSaved).toBeFalse();
   });
-  it('should toggle trial saved', () => {
-    const distServ = TestBed.inject(DistanceService) as DistanceService;
-    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
-    testHostComponent.resultDetails.reqs = {
-      zipCode: '01886',
-      travelRadius: null,
-      phase: null,
-      recruitmentStatus: null
-    };
-    testHostFixture.detectChanges();
-    testHostComponent.resultDetails.toggleTrialSaved();
-    expect(testHostComponent.resultDetails.trialSaved).toBeTruthy();
-  });
-  it('should get Color', () => {
-    const distServ = TestBed.inject(DistanceService) as DistanceService;
-    testHostComponent.resultDetails.clinicalTrial = new ResearchStudySearchEntry(sampleTrial, distServ, '01886');
-    testHostComponent.resultDetails.reqs = {
-      zipCode: '01886',
-      travelRadius: null,
-      phase: null,
-      recruitmentStatus: null
-    };
-    testHostFixture.detectChanges();
 
-    expect(testHostComponent.resultDetails.getColor('No Match')).toBe('black');
-    expect(testHostComponent.resultDetails.getColor('Possible Match')).toBe('#E6BE03');
-    expect(testHostComponent.resultDetails.getColor('likely Match')).toBe('green');
+  it('should toggle trial saved', () => {
+    component.toggleTrialSaved();
+    expect(component.trialSaved).toBeTrue();
+  });
+
+  it('should get Color', () => {
+    expect(component.getColor('No Match')).toBe('black');
+    expect(component.getColor('Possible Match')).toBe('#E6BE03');
+    expect(component.getColor('likely Match')).toBe('green');
+  });
+
+  it('should get trial status color', () => {
+    expect(component.getStatusClassName('active')).toBe('recruiting');
+    expect(component.getStatusClassName('closed-to-accrual-and-intervention')).toBe('finished-recruiting');
+    expect(component.getStatusClassName('in-review')).toBe('may-recruit');
+    expect(component.getStatusClassName('test-string')).toBe('unknown-status');
+  });
+
+  it('should get trial status display text', () => {
+    expect(component.getOverallStatus('test-string')).toBe('Invalid');
+    expect(component.getOverallStatus('closed-to-accrual-and-intervention')).toBe('Closed to Accrual and Intervention');
   });
 });

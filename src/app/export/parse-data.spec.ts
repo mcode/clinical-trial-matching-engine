@@ -1,8 +1,9 @@
-import { DistanceService } from './../services/distance.service';
 import { TestBed } from '@angular/core/testing';
-import { UnpackResearchStudyResults } from './parse-data';
-import { ResearchStudySearchEntry } from '../services/search.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+
+import { unpackResearchStudyResults } from './parse-data';
+import { DistanceService } from '../services/distance.service';
+import { ResearchStudySearchEntry } from '../services/ResearchStudySearchEntry';
 
 describe('UnpackResearchStudyResults', () => {
   beforeEach(() =>
@@ -13,7 +14,7 @@ describe('UnpackResearchStudyResults', () => {
   );
 
   it('works on an empty array', () => {
-    const actual = UnpackResearchStudyResults([]);
+    const actual = unpackResearchStudyResults([]);
     expect(Array.isArray(actual)).toBe(true);
     expect(actual.length).toEqual(1);
     expect('Match Count' in actual[0]).toBe(true);
@@ -22,7 +23,7 @@ describe('UnpackResearchStudyResults', () => {
 
   it('works on an almost empty ResearchStudy', () => {
     const distServ = TestBed.inject(DistanceService);
-    const actual = UnpackResearchStudyResults([
+    const actual = unpackResearchStudyResults([
       new ResearchStudySearchEntry(
         {
           fullUrl: 'http://www.example.com/',
@@ -31,7 +32,8 @@ describe('UnpackResearchStudyResults', () => {
           }
         },
         distServ,
-        '01886'
+        '01886',
+        'example source'
       )
     ]);
     expect(Array.isArray(actual)).toBe(true);
@@ -42,7 +44,7 @@ describe('UnpackResearchStudyResults', () => {
 
   it('exports sites', () => {
     const distServ = TestBed.inject(DistanceService);
-    const actual = UnpackResearchStudyResults([
+    const actual = unpackResearchStudyResults([
       new ResearchStudySearchEntry(
         {
           fullUrl: 'http://www.example.com/',
@@ -69,7 +71,7 @@ describe('UnpackResearchStudyResults', () => {
               ],
               text: 'Active'
             },
-            category: [{ text: 'Example Category' }],
+            category: [{ text: 'Study Type: Example Type' }],
             contact: [
               {
                 name: 'Example Contact',
@@ -148,7 +150,8 @@ describe('UnpackResearchStudyResults', () => {
           }
         },
         distServ,
-        '01886'
+        '01886',
+        'example source'
       )
     ]);
     expect(Array.isArray(actual)).toBe(true);
@@ -168,7 +171,7 @@ describe('UnpackResearchStudyResults', () => {
     expect('Conditions' in row).toBe(true);
     expect(row['Conditions']).toEqual('[]');
     expect('StudyType' in row).toBe(true);
-    expect(row['StudyType']).toEqual('Example Category');
+    expect(row['StudyType']).toEqual('Study Type: Example Type');
     expect('Description' in row).toBe(true);
     expect(row['Description']).toEqual('A test research study object for testing this feature.');
     expect('DetailedDescription' in row).toBe(true);
