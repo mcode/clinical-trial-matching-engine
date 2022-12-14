@@ -1,6 +1,16 @@
 # Clinical Trial Matching Engine
 
-This is a SMART on FHIR ([SMART on FHIR documentation](https://docs.smarthealthit.org/)) application that is used for a standard way of sending relevant patient data for clinical trials and returning the results uniformly. The goal of this application is provide an easy to use interface for connecting clinical trial matching services. 
+---
+
+**This project has been archived**
+
+This project is no longer in active development and has been replaced with the
+[clinical-trial-matching-app](https://github.com/mcode/clinical-trial-matching-app)
+which is still being actively developed.
+
+---
+
+This is a SMART on FHIR ([SMART on FHIR documentation](https://docs.smarthealthit.org/)) application that is used for a standard way of sending relevant patient data for clinical trials and returning the results uniformly. The goal of this application is provide an easy to use interface for connecting clinical trial matching services.
 
 Visit our [wiki](https://github.com/mcode/clinical-trial-matching-engine/wiki) for more information on the architecture and data flow of the system.
 
@@ -8,7 +18,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `ng serve` for a development server. 
+Run `ng serve` for a development server.
 Once the development server is running, launch the application from the SMART launcher.
     - Visit [SMART Launcher](http://launch.smarthealthit.org) (for example)
     - Make sure r4 is selected for the FHIR version
